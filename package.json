@@ -22,13 +22,13 @@
   "homepage": "https://github.com/jpbberry/discord-rose#readme",
   "dependencies": {
     "@discordjs/collection": "^0.1.6",
-    "@types/node-fetch": "^2.5.8",
     "discord-api-types": "^0.12.1",
     "node-fetch": "^2.6.1",
     "querystring": "^0.2.0",
     "ws": "^7.4.2"
   },
   "devDependencies": {
+    "@types/node-fetch": "^2.5.8",
     "@types/ws": "^7.4.0"
   }
 }
