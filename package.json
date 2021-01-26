@@ -1,0 +1,34 @@
+{
+  "name": "discord-rose",
+  "version": "0.0.1a",
+  "description": "Advanced Discord Library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpbberry/discord-rose.git"
+  },
+  "keywords": [
+    "discord",
+    "discordapp"
+  ],
+  "author": "JPBBerry",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jpbberry/discord-rose/issues"
+  },
+  "homepage": "https://github.com/jpbberry/discord-rose#readme",
+  "dependencies": {
+    "@discordjs/collection": "^0.1.6",
+    "@types/node-fetch": "^2.5.8",
+    "discord-api-types": "^0.12.1",
+    "node-fetch": "^2.6.1",
+    "querystring": "^0.2.0",
+    "ws": "^7.4.2"
+  },
+  "devDependencies": {
+    "@types/ws": "^7.4.0"
+  }
+}
