@@ -6,12 +6,10 @@ import { Cache } from '../utils/Cache'
 import { Bucket } from './Bucket'
 
 export class RestManager {
-  token: string
-  buckets: Cache<string, Bucket>
+  public buckets: Cache<string, Bucket>
+  public global?: Promise<void>
 
-  global?: Promise<void>
-
-  constructor (token: string) {
+  constructor (private token: string) {
     this.token = token
     this.buckets = new Cache(60000)
 
@@ -58,7 +56,7 @@ export class RestManager {
     if (options.body) headers.set('Content-Type', 'application/json')
     if (options.reason) headers.set('X-Audit-Log-Reason', options.reason)
 
-    headers.set('User-Agent', 'DiscordBot (Discord.TS, v1)')
+    headers.set('User-Agent', 'DiscordBot (Discord-Rose, v0)')
 
     const res = await fetch(`https://discord.com/api/v7${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
       method, headers, body: options.body ? JSON.stringify(options.body) : null

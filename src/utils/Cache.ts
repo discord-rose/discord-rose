@@ -6,23 +6,11 @@ import Collection from '@discordjs/collection'
  */
 export class Cache<K, V> extends Collection<K, V> {
   /**
-   * Death rate in milliseconds
-   */
-  private time: number
-  /**
    * Timeout store
    */
-  private timeouts: Collection<any, NodeJS.Timeout>
-  /**
-   * Cache
-   * @param {Number} time Death rate in milliseconds
-   */
-  constructor (time: number) {
-    super()
+  private timeouts: Collection<any, NodeJS.Timeout> = new Collection()
 
-    this.time = time
-    this.timeouts = new Collection()
-  }
+  constructor (private time: number) { super() }
 
   /**
    * Get

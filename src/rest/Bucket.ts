@@ -5,14 +5,13 @@ import { Request } from './Manager'
 import { RestError } from './Error'
 
 export class Bucket {
-  id: string
-  manager: RestManager
-  working: boolean
-  queue: Request[]
-  remaining: number
-  reset: number
+  public working: Boolean
+  public remaining: number
+  public reset: number
+  
+  private queue: Request[]
 
-  constructor (id: string, manager: RestManager) {
+  constructor (public id: string, private manager: RestManager) {
     this.id = id
     this.manager = manager
 

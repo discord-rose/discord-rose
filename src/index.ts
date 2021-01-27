@@ -1,8 +1,7 @@
-import { Cluster } from './clustering/master/Cluster'
-import { ThreadComms } from './clustering/ThreadComms'
-import '@types/node'
+import Master from './clustering/master/Master'
+import Client from './socket/Client'
 
 export default {
-  Cluster,
-  ThreadComms
+  Master,
+  Client
 }

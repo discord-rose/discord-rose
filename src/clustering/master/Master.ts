@@ -5,29 +5,43 @@ import { chunkShards } from '../../utils/UtilityFunctions'
 import Collection from '@discordjs/collection'
 
 import { Cluster } from './Cluster'
+import { Sharder } from './Sharder'
 
+import path from 'path'
+
+/**
+ * Master process controller
+ */
 export default class Master {
   private options: BotOptions
   private rest: RestManager
 
+  public sharder = new Sharder(this)
   public chunks: number[][]
   public clusters: Collection<string, Cluster> = new Collection()
   public fileName: string
+  public spawned: boolean = false
   
   public log: (msg: string) => void
 
+  /**
+   * Creates a new Master instance
+   * @param fileName Location of Worker file
+   * @param options Options
+   */
   constructor (fileName: string, options: BotOptions) {
     if (!fileName) throw new Error('Please provide the file name for the Worker')
     if (!options.token) throw new TypeError('Expected options.token')
 
-    this.fileName = fileName
+    this.fileName = path.isAbsolute(fileName) ? fileName : path.resolve(process.cwd(), fileName)
 
     this.options = {
       token: options.token,
       shards: options.shards || 'auto',
       shardsPerCluster: options.shardsPerCluster || 5,
       shardOffset: options.shardOffset || 0,
-      cache: options.cache || {}
+      cache: options.cache || {},
+      ws: options.ws || null
     }
 
     this.log = options.log ?? console.log
@@ -35,10 +49,15 @@ export default class Master {
     this.log('Starting Master.')
   }
 
+  /**
+   * Starts the bot and spawns workers
+   */
   async start () {
     this.rest = new RestManager(this.options.token)
 
     const gatewayRequest: APIGatewayBotInfo = await this.rest.request('GET', '/gateway/bot')
+
+    if (!this.options.ws) this.options.ws = gatewayRequest.url
 
     if (this.options.shards === 'auto') this.options.shards = gatewayRequest.shards
     this.options.shards += this.options.shardOffset
@@ -57,6 +76,24 @@ export default class Master {
 
     await Promise.all(promises)
     this.log('All clusters have been spawned, registering shards.')
+
+    await Promise.all(this.clusters.map(x => x.sendCommand('START', {
+      shards: this.chunks[x.id],
+      options: this.options
+    })))
+
+    this.log('All shards registered, spawning.')
+    await this.sharder.loop()
+
+    this.log('Finished spawning')
+
+    this.spawned = true
+  }
+
+  shardToCluster (id: number) {
+    for (let i = 0; i < this.chunks.length; i++) {
+      if (this.chunks[i].includes(id)) return this.clusters.get(`${i}`)
+    }
   }
 }
 
@@ -94,4 +131,8 @@ export interface BotOptions {
    * @default console.log
    */
   log?: (msg: string) => void
+  /**
+   * URL for Discord Gateway (leave null for auto)
+   */
+  ws?: string
 }

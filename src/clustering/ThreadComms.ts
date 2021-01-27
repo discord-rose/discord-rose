@@ -1,11 +1,9 @@
 import { EventEmitter } from "events";
-import { Worker } from 'worker_threads'
+import { Worker, MessagePort } from 'worker_threads'
 
 import { generateID } from '../utils/UtilityFunctions'
 import { BotOptions } from "./master/Master";
 import Collection from '@discordjs/collection'
-
-import '@types/node/worker_threads'
 
 enum ThreadMethod {
   COMMAND,
@@ -26,33 +24,45 @@ interface ThreadEvents {
       shards: number[]
       options: BotOptions
     }
-    receive: null
+    receive: {}
   }
   KILL: {
     send: null,
     receive: null
   }
+  REGISTER_SHARD: {
+    send: {
+      id: number
+    }
+    receive: {}
+  }
+  START_SHARD: {
+    send: {
+      id: number
+    },
+    receive: {}
+  }
+  SHARD_READY: {
+    send: {
+      id: number
+    }
+    receive: null
+  }
 }
 
-interface ThreadCommsInterface {
-  on<K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve?: (data: ThreadEvents[K]['receive']) => void) => void)
-  emit<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], resolve?: (data: ThreadEvents[K]['receive']) => void)
-}
+export class ThreadComms extends EventEmitter {
+  private comms?: Worker | MessagePort = null
+  private commands: Collection<string, (value?: any) => void> = new Collection()
 
-export class ThreadComms extends EventEmitter implements ThreadCommsInterface {
-  private comms?: Worker = null
-  private commands: Collection<string, (value?: any) => void>
+  
+  on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve?: (data: ThreadEvents[K]['receive']) => void) => void) => this
 
-  constructor () {
-    super()
+  emit<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], resolve?: (data: ThreadEvents[K]['receive']) => void): boolean {
+    super.emit('*', event, data, resolve)
+    return super.emit(event, data, resolve)
   }
 
-  emit(event: string | symbol, ...args: any[]): boolean {
-    super.emit('*', event, ...args)
-    return super.emit(event, ...args)
-  }
-
-  register (comms: Worker) {
+  register (comms: Worker | MessagePort) {
     this.comms = comms
 
     this.comms.on('message', (msg: ThreadEvent) => {
@@ -104,5 +114,9 @@ export class ThreadComms extends EventEmitter implements ThreadCommsInterface {
 
   public respond (id: string, data: any) {
     this._send(ThreadMethod.RESPONSE, null, id, data)
+  }
+
+  public tell<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): void {
+    this._send(ThreadMethod.TELL, event, null, data)
   }
 }

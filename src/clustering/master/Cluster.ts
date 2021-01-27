@@ -3,15 +3,21 @@ import { Worker } from 'worker_threads'
 import { ThreadComms } from "../ThreadComms";
 
 export class Cluster extends ThreadComms {
-  private master: Master
   private thread: Worker
 
-  public id: string
-
-  constructor (id: string, master: Master) {
+  constructor (public id: string, private master: Master) {
     super()
-    this.id = id
-    this.master = master
+
+    this.on('REGISTER_SHARD', ({ id }, respond) => {
+      this.master.sharder.register(id)
+
+      this.master.log(`Cluster ${this.id} registered shard ${id}`)
+
+      respond({})
+    })
+    this.on('SHARD_READY', ({ id }) => {
+      this.master.log(`Shard ${id} connected to Discord.`)
+    })
   }
 
   public start (): Promise<void> {
