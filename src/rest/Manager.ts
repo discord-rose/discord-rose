@@ -5,9 +5,15 @@ import { Cache } from '../utils/Cache'
 
 import { Bucket } from './Bucket'
 
+import { ChannelsResource } from './resources/Channels'
+import { MessagesResource } from './resources/Messages'
+
 export class RestManager {
   public buckets: Cache<string, Bucket>
   public global?: Promise<void>
+
+  public channels = new ChannelsResource(this)
+  public messages = new MessagesResource(this)
 
   constructor (private token: string) {
     this.token = token
@@ -74,12 +80,8 @@ interface RequestOptions {
   headers?: {
     [key: string]: string
   }
-  query?: {
-    [key: string]: string
-  }
-  body?: {
-    [key: string]: any
-  }
+  query?: any
+  body?: any
   reason?: string
 }
 

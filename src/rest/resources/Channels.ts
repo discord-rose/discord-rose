@@ -1,4 +1,4 @@
-import { APIChannel, OverwriteType, Permissions, RESTDeleteAPIChannelPermissionResult, RESTDeleteAPIChannelPinResult, RESTDeleteAPIChannelResult, RESTGetAPIChannelInvitesResult, RESTGetAPIChannelPinsResult, RESTPatchAPIChannelJSONBody, RESTPatchAPIChannelResult, RESTPostAPIChannelInviteJSONBody, RESTPostAPIChannelInviteResult, RESTPostAPIChannelTypingResult, RESTPutAPIChannelPermissionJSONBody, RESTPutAPIChannelPermissionResult, RESTPutAPIChannelPinResult, Snowflake } from 'discord-api-types';
+import { APIChannel, OverwriteType, Permissions, RESTDeleteAPIChannelPermissionResult, RESTDeleteAPIChannelPinResult, RESTDeleteAPIChannelResult, RESTGetAPIChannelInvitesResult, RESTGetAPIChannelMessagesQuery, RESTGetAPIChannelMessagesResult, RESTGetAPIChannelPinsResult, RESTPatchAPIChannelJSONBody, RESTPatchAPIChannelResult, RESTPostAPIChannelInviteJSONBody, RESTPostAPIChannelInviteResult, RESTPostAPIChannelTypingResult, RESTPutAPIChannelPermissionJSONBody, RESTPutAPIChannelPermissionResult, RESTPutAPIChannelPinResult, Snowflake } from 'discord-api-types';
 import { RestManager } from '../Manager'
 
 export class ChannelsResource {
@@ -127,5 +127,11 @@ export class ChannelsResource {
    */
   typing (id: Snowflake): Promise<RESTPostAPIChannelTypingResult> {
     return this.rest.request('POST', `/channels/${id}/typing`) as RESTPostAPIChannelTypingResult 
+  }
+
+  getMessages (id: Snowflake, query: RESTGetAPIChannelMessagesQuery): Promise<RESTGetAPIChannelMessagesResult> {
+    return this.rest.request(`GET`, `/channels/${id}/messages`, {
+      query: query
+    })
   }
 }

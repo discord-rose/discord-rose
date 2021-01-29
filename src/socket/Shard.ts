@@ -1,5 +1,5 @@
 import { GatewayGuildCreateDispatchData, GatewayReadyDispatchData } from "discord-api-types"
-import Client from "./Client"
+import Client from "../clustering/worker/Worker"
 import { DiscordSocket } from './WebSocket'
 
 export class Shard {
@@ -28,5 +28,11 @@ export class Shard {
     })
   }
 
-  restart () {}
+  restart (kill: boolean) {
+    if (kill) this.ws.cleanup()
+    else {
+      this.ws.resuming = true
+    }
+    this.ws.ws.close()
+  }
 }

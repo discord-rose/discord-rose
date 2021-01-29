@@ -1,12 +1,12 @@
 import { workerData, parentPort } from 'worker_threads'
-import Client from '../../socket/Client';
+import Worker from './Worker';
 
 import { ThreadComms } from "../ThreadComms";
 
 export class Thread extends ThreadComms {
   public id: string = workerData.id
 
-  constructor (private worker: Client) {
+  constructor (private worker: Worker) {
     super()
     super.register(parentPort)
 

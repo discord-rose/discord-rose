@@ -8,24 +8,29 @@ export class DiscordSocket extends EventEmitter {
   private sequence: number
   private sessionID: string
   private hbInterval: NodeJS.Timeout
-  private waitingHeartbeat: false|number = false
-  private heartbeatRetention: number = 0
+  private waitingHeartbeat: false | number
+  private heartbeatRetention: number
 
-  public ws: WebSocket = null
-  public connected: boolean = false
+  public ws: WebSocket
+  public connected: boolean
   public resuming: boolean = false
 
   constructor (private shard: Shard) { super() }
 
-  async spawn (resolve: () => void) {
+  async spawn (resolve?: () => void) {
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) this.ws.close()
+    this.ws = null
+    this.connected = false
+    this.heartbeatRetention = 0
+    this.waitingHeartbeat = false
+    if (this.hbInterval) clearInterval(this.hbInterval)
+
     this.once('READY', () => resolve())
 
     this.ws = new WebSocket(this.shard.client.options.ws)
 
-    this.connected = false
-
     this.connectTimeout = setTimeout(() => {
-      if (!this.connected) return this.shard.restart()
+      if (!this.connected) return this.shard.restart(true)
     }, 30e3)
 
     this.ws.on('message', (data) => this._handleMessage(data))
@@ -54,9 +59,9 @@ export class DiscordSocket extends EventEmitter {
     } else if (msg.op === GatewayOPCodes.Heartbeat) {
       this._heartbeat()
     } else if (msg.op === GatewayOPCodes.Reconnect) {
-
+      this.shard.restart(false)
     } else if (msg.op === GatewayOPCodes.InvalidSession) {
-
+      this.shard.restart(!msg.d)
     } else if (msg.op === GatewayOPCodes.Hello) {
       if (this.resuming) {
         this._send({
@@ -85,7 +90,6 @@ export class DiscordSocket extends EventEmitter {
       this.hbInterval = setInterval(this._heartbeat.bind(this), (msg.d as unknown as GatewayHelloData).heartbeat_interval)
       this.waitingHeartbeat = false
       this.heartbeatRetention = 0
-      // this._heartbeat()
     } else if (msg.op === GatewayOPCodes.HeartbeatAck) {
       this.heartbeatRetention = 0
       this.shard.ping = Date.now() - (this.waitingHeartbeat as number)
@@ -99,7 +103,7 @@ export class DiscordSocket extends EventEmitter {
     if (this.waitingHeartbeat) {
       this.heartbeatRetention++
 
-      if (this.heartbeatRetention > 5) return this.shard.restart()
+      if (this.heartbeatRetention > 5) return this.shard.restart(false)
     }
     this._send({
       op: GatewayOPCodes.Heartbeat, 
@@ -108,7 +112,15 @@ export class DiscordSocket extends EventEmitter {
     this.waitingHeartbeat = Date.now()
   }
 
-  close (code: number, reason: string) {
+  private close (code: number, reason: string) {
     console.log(`Shard ${this.shard.id} with ${code} & ${reason}`)
+
+    this.spawn()
+  }
+
+  cleanup () {
+    this.resuming = false
+    this.sequence = null
+    this.sessionID = null
   }
 }

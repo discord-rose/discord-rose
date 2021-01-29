@@ -1,5 +1,6 @@
-dist/
+src/
 node_modules/
 .vscode/
 test/
-package-lock.json
+tsconfig.json
+.gitignore

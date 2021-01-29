@@ -1,14 +1,18 @@
-import { BotOptions } from '../clustering/master/Master'
-import { Thread } from '../clustering/worker/Thread'
+import { BotOptions } from '../master/Master'
+import { Thread } from './Thread'
 
-import { DiscordEventMap } from '../typings/DiscordEventMap'
+import { DiscordEventMap } from '../../typings/DiscordEventMap'
 import { EventEmitter } from 'events'
 import Collection from '@discordjs/collection'
 
-import { Shard } from './Shard'
+import { Shard } from '../../socket/Shard'
 import { GatewayGuildCreateDispatchData, Snowflake } from 'discord-api-types'
 
-export default class Client extends EventEmitter {
+import { CommandHandler } from '../../structures/CommandHandler'
+
+import { RestManager } from '../../rest/Manager'
+
+export default class Worker extends EventEmitter {
   on: <K extends keyof DiscordEventMap>(event: K, listener?: (data:  DiscordEventMap[K]) => void) => this
 
   once: <K extends keyof DiscordEventMap>(event: K, listener?: (data: DiscordEventMap[K]) => void) => this
@@ -22,11 +26,16 @@ export default class Client extends EventEmitter {
   public options: BotOptions
   public shards: Collection<number, Shard> = new Collection()
 
+  public api: RestManager
+  public commands = new CommandHandler(this)
+
   public guilds: Collection<Snowflake, GatewayGuildCreateDispatchData>
   
   public comms: Thread = new Thread(this)
 
   async start (shardNumbers: number[]) {
+    this.api = new RestManager(this.options.token)
+
     for (let i = 0; i < shardNumbers.length; i++) {
       this.shards.set(shardNumbers[i], new Shard(shardNumbers[i], this))
       await this.comms.registerShard(shardNumbers[i])
