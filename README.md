@@ -44,6 +44,7 @@ Discord-Rose comes with caching fully customizable. There is a .cache option in 
   guilds: true,
   roles: true,
   channels: true,
+  self: true, // caches own member object, good for permissions
   members: false, // be warned, these two options
   presence: false, // require special intents
   messages: false,

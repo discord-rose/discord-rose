@@ -6,7 +6,9 @@ import { EventEmitter } from 'events'
 import Collection from '@discordjs/collection'
 
 import { Shard } from '../../socket/Shard'
-import { GatewayGuildCreateDispatchData, Snowflake } from 'discord-api-types'
+import { InternalEvents } from '../../socket/cache/InternalEvents'
+
+import { Snowflake } from 'discord-api-types'
 
 import { CommandHandler } from '../../structures/CommandHandler'
 
@@ -28,18 +30,26 @@ export default class Worker extends EventEmitter {
 
   public api: RestManager
   public commands = new CommandHandler(this)
-
-  public guilds: Collection<Snowflake, GatewayGuildCreateDispatchData>
-  
   public comms: Thread = new Thread(this)
+
+  public guilds: Collection<Snowflake, DiscordEventMap['GUILD_CREATE']>
+  public guildRoles: Collection<Snowflake, Collection<Snowflake, DiscordEventMap['GUILD_ROLE_CREATE']['role']>>
+  public channels: Collection<Snowflake, DiscordEventMap['CHANNEL_CREATE']>
+
+  public internalEvents: InternalEvents
 
   async start (shardNumbers: number[]) {
     this.api = new RestManager(this.options.token)
+    this.internalEvents = new InternalEvents(this)
 
     for (let i = 0; i < shardNumbers.length; i++) {
       const shard = new Shard(shardNumbers[i], this)
       this.shards.set(shardNumbers[i], shard)
       await shard.register()
     }
+  }
+
+  log (data: string) {
+    this.comms.tell('LOG', data)
   }
 }

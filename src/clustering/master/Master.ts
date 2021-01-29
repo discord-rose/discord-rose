@@ -40,11 +40,18 @@ export default class Master {
       shards: options.shards || 'auto',
       shardsPerCluster: options.shardsPerCluster || 5,
       shardOffset: options.shardOffset || 0,
-      cache: options.cache || {},
+      cache: options.cache === false ? {} : typeof options.cache === 'undefined'
+        ? {
+          guilds: true,
+          roles: true,
+          channels: true
+        }
+        : options.cache,
       ws: options.ws || null
     }
 
-    this.log = options.log ?? console.log
+    this.log = typeof options.log === 'undefined' ? console.log : options.log
+    if (!this.log) this.log = () => {}
 
     this.log('Starting Master.')
   }
@@ -55,7 +62,7 @@ export default class Master {
   async start () {
     this.rest = new RestManager(this.options.token)
 
-    const gatewayRequest: APIGatewayBotInfo = await this.rest.request('GET', '/gateway/bot')
+    const gatewayRequest = await this.rest.misc.getGateway()
 
     if (!this.options.ws) this.options.ws = gatewayRequest.url
 
@@ -96,9 +103,12 @@ export default class Master {
 
 interface CacheOptions {
   guilds?: boolean
-  channels?: boolean
   roles?: boolean
+  channels?: boolean
+  members?: boolean
+  presence?: boolean
   messages?: boolean
+  reactions?: boolean
 }
 
 export interface BotOptions {

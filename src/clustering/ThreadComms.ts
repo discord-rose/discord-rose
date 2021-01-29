@@ -48,6 +48,10 @@ interface ThreadEvents {
     }
     receive: null
   }
+  LOG: {
+    send: string
+    receive: null
+  }
 }
 
 export class ThreadComms extends EventEmitter {

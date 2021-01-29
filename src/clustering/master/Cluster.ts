@@ -19,6 +19,9 @@ export class Cluster extends ThreadComms {
     this.on('SHARD_READY', ({ id }) => {
       this.master.log(`Shard ${id} connected to Discord.`)
     })
+    this.on('LOG', (data) => {
+      this.master.log(data)
+    })
   }
 
   public spawn (): Promise<void> {

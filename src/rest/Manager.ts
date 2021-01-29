@@ -7,6 +7,7 @@ import { Bucket } from './Bucket'
 
 import { ChannelsResource } from './resources/Channels'
 import { MessagesResource } from './resources/Messages'
+import { MiscResource } from './resources/Misc'
 
 export class RestManager {
   public buckets: Cache<string, Bucket>
@@ -14,6 +15,7 @@ export class RestManager {
 
   public channels = new ChannelsResource(this)
   public messages = new MessagesResource(this)
+  public misc = new MiscResource(this)
 
   constructor (private token: string) {
     this.token = token
