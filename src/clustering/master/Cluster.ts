@@ -4,6 +4,7 @@ import { ThreadComms } from "../ThreadComms";
 
 export class Cluster extends ThreadComms {
   private thread: Worker
+  private started = false
 
   constructor (public id: string, private master: Master) {
     super()
@@ -20,7 +21,7 @@ export class Cluster extends ThreadComms {
     })
   }
 
-  public start (): Promise<void> {
+  public spawn (): Promise<void> {
     return new Promise(resolve => {
       this.master.log(`Starting cluster ${this.id}`)
       this.thread = new Worker(this.master.fileName, {
@@ -33,7 +34,7 @@ export class Cluster extends ThreadComms {
     
       this.thread.on('exit', (code) => {
         this.master.log(`Cluster ${this.id} closed with code ${code}`)
-        this.start()
+        this.spawn()
       })
 
       this.thread.on('error', (err) => {
@@ -42,7 +43,17 @@ export class Cluster extends ThreadComms {
       this.thread.on('online', () => {
         this.master.log(`Cluster ${this.id} started.`)
         resolve()
+
+        if (this.started) this.start()
       })
+    })
+  }
+
+  start () {
+    this.started = true
+    return this.sendCommand('START', {
+      shards: this.master.chunks[this.id],
+      options: this.master.options
     })
   }
 }

@@ -33,11 +33,24 @@ export class CommandHandler {
     if (!data.content) return
     if (![MessageType.DEFAULT, MessageType.REPLY].includes(data.type)) return
 
-    const cmd = this.commands.find(x => x.command === data.content || x.command instanceof RegExp ? data.content.match(x.command) : false)
+    const args = data.content.split(/\s/)
+    const command = args.shift()
+
+    const cmd = this.commands.find(x => x.command === command || x.command instanceof RegExp ? command.match(x.command) : false)
     if (!cmd) return
 
     const ctx = new CommandContext(this.worker, data)
+    ctx.args = args
 
-    cmd.exec(ctx)
+    try {
+      cmd.exec(ctx)
+    } catch (err) {
+      console.error(err)
+      ctx.embed
+        .color(0xFF0000)
+        .title('Error')
+        .description(err.message)
+        .send()
+    }
   }
 }

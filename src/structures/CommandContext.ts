@@ -5,6 +5,8 @@ import { Embed } from './Embed'
 import { MessageTypes } from "../rest/resources/Messages";
 
 export class CommandContext {
+  public args: string[] = []
+
   constructor (private worker: Worker, public message: APIMessage) {}
 
   get guild () {
@@ -15,16 +17,11 @@ export class CommandContext {
    * Replies to the invoking message
    * @param data Data for message
    */
-  reply (data: MessageTypes | string) {
-    if (typeof data === 'string') data = { content: data }
-
-    return this.send({
-      ...data,
-      message_reference: {
-        message_id: this.message.id,
-        channel_id: this.message.channel_id,
-        guild_id: this.message.guild_id
-      }
+  reply (data: MessageTypes) {
+    return this.worker.api.messages.send(this.message.channel_id, data, {
+      message_id: this.message.id,
+      channel_id: this.message.channel_id,
+      guild_id: this.message.guild_id
     })
   }
 
@@ -33,8 +30,6 @@ export class CommandContext {
    * @param data Data for message
    */
   send (data: MessageTypes) {
-    if (typeof data === 'string') data = { content: data }
-
     return this.worker.api.messages.send(this.message.channel_id, data)
   }
 

@@ -37,8 +37,9 @@ export default class Worker extends EventEmitter {
     this.api = new RestManager(this.options.token)
 
     for (let i = 0; i < shardNumbers.length; i++) {
-      this.shards.set(shardNumbers[i], new Shard(shardNumbers[i], this))
-      await this.comms.registerShard(shardNumbers[i])
+      const shard = new Shard(shardNumbers[i], this)
+      this.shards.set(shardNumbers[i], shard)
+      await shard.register()
     }
   }
 }

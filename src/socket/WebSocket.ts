@@ -14,6 +14,7 @@ export class DiscordSocket extends EventEmitter {
   public ws: WebSocket
   public connected: boolean
   public resuming: boolean = false
+  public dying: boolean = false
 
   constructor (private shard: Shard) { super() }
 
@@ -23,18 +24,19 @@ export class DiscordSocket extends EventEmitter {
     this.connected = false
     this.heartbeatRetention = 0
     this.waitingHeartbeat = false
+    this.dying = false
     if (this.hbInterval) clearInterval(this.hbInterval)
 
-    this.once('READY', () => resolve())
+    if (resolve) this.once('READY', () => resolve())
 
-    this.ws = new WebSocket(this.shard.client.options.ws)
+    this.ws = new WebSocket(this.shard.worker.options.ws)
 
     this.connectTimeout = setTimeout(() => {
       if (!this.connected) return this.shard.restart(true)
     }, 30e3)
 
     this.ws.on('message', (data) => this._handleMessage(data))
-    this.ws.on('close', (code, reason) => this.close(code, reason))
+    this.ws.once('close', (code, reason) => this.close(code, reason))
   }
 
   private _send (data: GatewaySendPayload) {
@@ -55,7 +57,7 @@ export class DiscordSocket extends EventEmitter {
 
       if ([GatewayDispatchEvents.GuildCreate, GatewayDispatchEvents.Ready].includes(msg.t)) return this.emit(msg.t, msg.d)
 
-      this.shard.client.emit(msg.t, msg.d)
+      this.shard.worker.emit(msg.t, msg.d)
     } else if (msg.op === GatewayOPCodes.Heartbeat) {
       this._heartbeat()
     } else if (msg.op === GatewayOPCodes.Reconnect) {
@@ -67,18 +69,19 @@ export class DiscordSocket extends EventEmitter {
         this._send({
           op: GatewayOPCodes.Resume,
           d: {
-            token: this.shard.client.options.token,
+            token: this.shard.worker.options.token,
             session_id: this.sessionID,
             seq: this.sequence
           }
         })
+        console.log(`Shard ${this.shard.id} resuming.`)
       } else {
         this._send({
           op: GatewayOPCodes.Identify, 
           d: {
-            shard: [this.shard.id, this.shard.client.options.shards as number],
+            shard: [this.shard.id, this.shard.worker.options.shards as number],
             intents: 32509,
-            token: this.shard.client.options.token,
+            token: this.shard.worker.options.token,
             properties: {
               $os: 'linux',
               $browser: 'Discord-Rose',
@@ -113,12 +116,14 @@ export class DiscordSocket extends EventEmitter {
   }
 
   private close (code: number, reason: string) {
-    console.log(`Shard ${this.shard.id} with ${code} & ${reason}`)
+    console.log(`Shard ${this.shard.id} closed with ${code} & ${reason || 'No Reason'}`)
 
-    this.spawn()
+    if (this.dying) this.shard.register()
+    else this.spawn()
   }
 
-  cleanup () {
+  kill () {
+    this.dying = true
     this.resuming = false
     this.sequence = null
     this.sessionID = null

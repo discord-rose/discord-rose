@@ -13,7 +13,7 @@ import path from 'path'
  * Master process controller
  */
 export default class Master {
-  private options: BotOptions
+  public options: BotOptions
   private rest: RestManager
 
   public sharder = new Sharder(this)
@@ -71,16 +71,13 @@ export default class Master {
       const cluster = new Cluster(`${i}`, this)
       this.clusters.set(`${i}`, cluster)
 
-      promises.push(cluster.start())
+      promises.push(cluster.spawn())
     }
 
     await Promise.all(promises)
     this.log('All clusters have been spawned, registering shards.')
 
-    await Promise.all(this.clusters.map(x => x.sendCommand('START', {
-      shards: this.chunks[x.id],
-      options: this.options
-    })))
+    await Promise.all(this.clusters.map(x => x.start()))
 
     this.log('All shards registered, spawning.')
     await this.sharder.loop()

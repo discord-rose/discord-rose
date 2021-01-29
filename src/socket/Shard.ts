@@ -7,18 +7,18 @@ export class Shard {
 
   private ws = new DiscordSocket(this)
 
-  constructor (public id: number, public client: Client) {
+  constructor (public id: number, public worker: Client) {
     let unavailableGuilds = []
     this.ws.on('READY', (data: GatewayReadyDispatchData) => {
-      this.client.comms.tell('SHARD_READY', { id })
+      this.worker.comms.tell('SHARD_READY', { id })
 
-      unavailableGuilds = data.guilds
+      // unavailableGuilds = data.guilds
     })
 
     this.ws.on('GUILD_CREATE', (data: GatewayGuildCreateDispatchData) => {
-      if (unavailableGuilds.length < 1) return this.client.emit('GUILD_CREATE', data)
+      if (unavailableGuilds.length < 1) return this.worker.emit('GUILD_CREATE', data)
 
-      if (this.client.options.cache.guilds) this.client
+      // if (this.client.options.cache.guilds) this.client
     })
   }
 
@@ -28,8 +28,12 @@ export class Shard {
     })
   }
 
+  register () {
+    return this.worker.comms.registerShard(this.id)
+  }
+
   restart (kill: boolean) {
-    if (kill) this.ws.cleanup()
+    if (kill) this.ws.kill()
     else {
       this.ws.resuming = true
     }
