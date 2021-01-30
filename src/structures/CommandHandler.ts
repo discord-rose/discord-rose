@@ -17,9 +17,9 @@ export class CommandHandler {
 
   /**
    * Sets a prefix fetcher
-   * @param fn Function to choose prefix with
+   * @param fn String of prefix or Function to choose prefix with
    */
-  setPrefix (fn: (message: APIMessage | string) => Promise<string> | string): this {
+  setPrefix (fn: string | ((message: APIMessage) => Promise<string> | string)): this {
     if (typeof fn === 'string') {
       this.prefixFunction = () => fn
     } else {
@@ -65,14 +65,16 @@ export class CommandHandler {
     ctx.args = args
 
     try {
-      cmd.exec(ctx, this.worker)
+      await cmd.exec(ctx, this.worker)
     } catch (err) {
-      console.error(err)
       ctx.embed
         .color(0xFF0000)
         .title('Error')
         .description(err.message)
         .send()
+
+      err.message += ` (While Running Command: ${command})`
+      console.error(err)
     }
   }
 }

@@ -105,6 +105,7 @@ worker.commands
 
 | Name              | Description
 | ----------------- | --------------------------------------------
+| `.args`           | Array of arguments after the initial command
 | `.guild`          | Guild (if in cache) where the message was ran
 | `.channel`        | Channel (if in cache) where the message was ran
 | `.reply(msg)`     | Replies inline to the messaege

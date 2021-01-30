@@ -39,10 +39,6 @@ export class Cluster extends ThreadComms {
         this.master.log(`Cluster ${this.id} closed with code ${code}`)
         this.spawn()
       })
-
-      this.thread.on('error', (err) => {
-        this.master.log(`Error on cluster ${this.id}; ${err}`)
-      })
       this.thread.on('online', () => {
         this.master.log(`Cluster ${this.id} started.`)
         resolve()

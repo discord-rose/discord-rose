@@ -1,8 +1,8 @@
-import { APIEmbed } from "discord-api-types";
+import { APIEmbed, APIMessage } from "discord-api-types";
 
 export class Embed {
   public obj: APIEmbed = {}
-  constructor (private sendback?: (embed: Embed, reply: boolean) => void) {}
+  constructor (private sendback?: (embed: Embed, reply: boolean) => Promise<APIMessage>) {}
 
   /**
    * Sets the color
@@ -113,7 +113,7 @@ export class Embed {
    * @param reply Whether or not to do so in an inline reply (defaults to true)
    */
   send (reply: boolean = false) {
-    this.sendback(this, reply)
+    return this.sendback(this, reply)
   }
 
   render () {

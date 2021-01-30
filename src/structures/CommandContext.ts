@@ -68,8 +68,8 @@ export class CommandContext {
    */
   get embed () {
     return new Embed((embed, reply) => {
-      if (reply) this.reply(embed)
-      else this.send(embed)
+      if (reply) return this.reply(embed)
+      else return this.send(embed)
     })
   }
 
