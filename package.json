@@ -24,6 +24,7 @@
   "dependencies": {
     "@discordjs/collection": "^0.1.6",
     "discord-api-types": "^0.12.1",
+    "form-data": "^3.0.0",
     "node-fetch": "^2.6.1",
     "querystring": "^0.2.0",
     "ws": "^7.4.2"

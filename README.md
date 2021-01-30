@@ -110,6 +110,7 @@ worker.commands
 | `.channel`        | Channel (if in cache) where the message was ran
 | `.reply(msg)`     | Replies inline to the messaege
 | `.send(msg)`      | Sends a message to the same channel
+| `.sendFile(file)` | Sends a file to the channel, file being `{ name: 'name.ext', buffer: Buffer }`
 | `.delete()`       | Deletes the invoking command
 | `.hasPerms(perm)` | Whether or not the invoking user has `perm` (doesn't work well if role/guild cache is off)
 | `.myPerms(perm)`  | Whether or not the bot has `perm` (doesn't work well if role/guild cache is off)

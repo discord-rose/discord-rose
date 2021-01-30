@@ -1,6 +1,8 @@
-import { APIMessageReferenceSend, MessageType, RESTGetAPIChannelMessageReactionUsersQuery, RESTGetAPIChannelMessageReactionUsersResult, RESTGetAPIChannelMessageResult, RESTPatchAPIChannelMessageResult, RESTPostAPIChannelMessageCrosspostResult, RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult, RESTPutAPIChannelMessageReactionResult, Snowflake } from 'discord-api-types';
+import { APIMessageReferenceSend, RESTGetAPIChannelMessageReactionUsersQuery, RESTGetAPIChannelMessageReactionUsersResult, RESTGetAPIChannelMessageResult, RESTPatchAPIChannelMessageResult, RESTPostAPIChannelMessageCrosspostResult, RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult, RESTPutAPIChannelMessageReactionResult, Snowflake } from 'discord-api-types';
 import { Embed } from '../../structures/Embed';
 import { RestManager } from '../Manager'
+
+import FormData from 'form-data'
 
 /**
  * ID of custom emoji or unicode emoji
@@ -33,6 +35,24 @@ export class MessagesResource {
 
     return this.rest.request('POST', `/channels/${channel}/messages`, {
       body: msg
+    })
+  }
+
+  /**
+   * Sends a file to a channel
+   * @param channel ID of channel
+   * @param data File Buffer
+   * @param extra Extra message data
+   */
+  sendFile (channel: Snowflake, data: { name: string, buffer: Buffer }, extra?: MessageTypes): Promise<RESTPostAPIChannelMessageResult> {
+    const formData = new FormData()
+    formData.append('file', data.buffer, data.name || 'file')
+    if (extra) formData.append('payload_json', JSON.stringify(this._formMessage(extra)))
+
+    return this.rest.request('POST', `/channels/${channel}/messages`, {
+      body: formData,
+      headers: formData.getHeaders(),
+      parser: (_) => _
     })
   }
 

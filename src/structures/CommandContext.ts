@@ -53,6 +53,15 @@ export class CommandContext {
   }
 
   /**
+   * Sends a file to the same channel
+   * @param file File buffer
+   * @param extra Extra message options
+   */
+  sendFile (file: { name: string, buffer: Buffer }, extra?: MessageTypes) {
+    return this.worker.api.messages.sendFile(this.message.channel_id, file, extra)
+  }
+
+  /**
    * Deletes the invoking message
    */
   delete () {

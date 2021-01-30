@@ -57,7 +57,7 @@ export class RestManager {
     const route: string = opts.route
     const options: RequestOptions = opts.options
 
-    const headers = new Headers(options.headers)
+    const headers = new Headers()
 
     if (this.token) headers.set('Authorization', `Bot ${this.token}`)
 
@@ -65,9 +65,13 @@ export class RestManager {
     if (options.reason) headers.set('X-Audit-Log-Reason', options.reason)
 
     headers.set('User-Agent', 'DiscordBot (Discord-Rose, v0)')
+    
+    if (options.headers) Object.keys(options.headers).forEach(key => {
+      headers.set(key, options.headers[key])
+    })
 
     const res = await fetch(`https://discord.com/api/v7${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
-      method, headers, body: options.body ? JSON.stringify(options.body) : null
+      method, headers, body: options.body ? (options.parser || JSON.stringify)(options.body) : null
     })
 
     const json = res.status === 204 ? { success: true } : await res.json()
@@ -85,6 +89,7 @@ interface RequestOptions {
   query?: any
   body?: any
   reason?: string
+  parser?: (data: any) => string
 }
 
 export interface Request {
