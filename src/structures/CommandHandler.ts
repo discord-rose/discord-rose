@@ -5,13 +5,29 @@ import { CommandContext } from './CommandContext'
 
 interface CommandOptions {
   command: string | RegExp
-  exec: (ctx: CommandContext) => void
+  exec: (ctx: CommandContext, worker: Worker) => void
 }
 
 export class CommandHandler {
   private added: boolean = false
   private commands: CommandOptions[]
   constructor (private worker: Worker) {}
+
+  public prefixFunction?: (message: APIMessage) => Promise<string> | string
+
+  /**
+   * Sets a prefix fetcher
+   * @param fn Function to choose prefix with
+   */
+  setPrefix (fn: (message: APIMessage | string) => Promise<string> | string): this {
+    if (typeof fn === 'string') {
+      this.prefixFunction = () => fn
+    } else {
+      this.prefixFunction = fn
+    }
+
+    return this
+  }
 
   /**
    * Adds a command to the command handler
@@ -29,11 +45,17 @@ export class CommandHandler {
     return this
   }
 
-  private _exec (data: APIMessage) {
+  private async _exec (data: APIMessage) {
     if (!data.content) return
     if (![MessageType.DEFAULT, MessageType.REPLY].includes(data.type)) return
 
-    const args = data.content.split(/\s/)
+    let prefix: string
+    if (this.prefixFunction) {
+      prefix = await this.prefixFunction(data)
+      if (!data.content.startsWith(prefix)) return
+    }
+
+    const args = data.content.slice(prefix ? prefix.length : 0).split(/\s/)
     const command = args.shift()
 
     const cmd = this.commands.find(x => x.command === command || x.command instanceof RegExp ? command.match(x.command) : false)
@@ -43,7 +65,7 @@ export class CommandHandler {
     ctx.args = args
 
     try {
-      cmd.exec(ctx)
+      cmd.exec(ctx, this.worker)
     } catch (err) {
       console.error(err)
       ctx.embed

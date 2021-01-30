@@ -29,6 +29,7 @@ export function guilds (events: InternalEvents, worker: Worker) {
 
   events.add('GUILD_UPDATE', (guild) => {
     const currentGuild = worker.guilds.get(guild.id)
+    if (!currentGuild) return
 
     currentGuild.name = guild.name
     currentGuild.region = guild.region

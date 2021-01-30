@@ -8,7 +8,7 @@ import Collection from '@discordjs/collection'
 import { Shard } from '../../socket/Shard'
 import { InternalEvents } from '../../socket/cache/InternalEvents'
 
-import { Snowflake } from 'discord-api-types'
+import { APIUser, Snowflake } from 'discord-api-types'
 
 import { CommandHandler } from '../../structures/CommandHandler'
 
@@ -35,6 +35,10 @@ export default class Worker extends EventEmitter {
   public guilds: Collection<Snowflake, DiscordEventMap['GUILD_CREATE']>
   public guildRoles: Collection<Snowflake, Collection<Snowflake, DiscordEventMap['GUILD_ROLE_CREATE']['role']>>
   public channels: Collection<Snowflake, DiscordEventMap['CHANNEL_CREATE']>
+  public selfMember: Collection<Snowflake, DiscordEventMap['GUILD_MEMBER_ADD']>
+
+
+  public user: APIUser
 
   public internalEvents: InternalEvents
 

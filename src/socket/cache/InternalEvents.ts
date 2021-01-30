@@ -5,6 +5,7 @@ import Worker from '../../clustering/worker/Worker'
 import { guilds } from './guilds'
 import { roles } from './roles'
 import { channels } from './channels'
+import { self } from './self'
 
 import { EventEmitter } from 'events'
 
@@ -17,6 +18,7 @@ export class InternalEvents {
     if (cache.guilds) guilds(this, this.worker)
     if (cache.roles) roles(this, this.worker)
     if (cache.channels) channels(this, this.worker)
+    if (cache.self) self(this, this.worker)
   }
 
   add <K extends keyof DiscordEventMap> (event: K, fn: (data: DiscordEventMap[K]) => void) {

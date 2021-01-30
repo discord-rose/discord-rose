@@ -2,7 +2,7 @@
   "name": "discord-rose",
   "version": "0.0.3",
   "description": "Advanced Discord Library",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublishOnly": "tsc"
@@ -31,5 +31,6 @@
   "devDependencies": {
     "@types/node-fetch": "^2.5.8",
     "@types/ws": "^7.4.0"
-  }
+  },
+  "typings": "./dist/index.d.ts"
 }

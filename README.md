@@ -53,6 +53,30 @@ Discord-Rose comes with caching fully customizable. There is a .cache option in 
 ```
 If you want to disable cache entirely, you can set `MasterOptions.cache` to `false`
 
+# Using the API
+
+Everything to do with the API in Discord-Rose is fairly raw, other than some methods like sending messages to take simpler args, there's no further parsing.
+
+Every API interface is added to what we call `resources`, these resources are on the `RestManager` aka `Worker.api` and `Master.rest`
+
+Current resources:
+- `api.channels`
+- `api.messages`
+- `api.misc`
+
+These all have typings so type them out to see what functions there are, for example, here's how to send a message.
+```js
+worker.api.messages.send(channel_id, 'Hello world!')
+```
+Or edit a channel
+```js
+worker.api.channels.edit(channel_id, {
+  name: 'poggers-mate'
+})
+```
+
+For the most part, every paramater is raw Discord, so check out the official Discord docs for what paramaters to pass, (there are typings for parameters too).
+
 # Command Handler
 
 You obviously don't need to use it, but Discord-Rose has a built in command handler as there's a distinct lack of classes with methods. This can be confusing at times, however with commands, a special CommandContext is passed along to your command. Here's how to use the command handler:
@@ -61,14 +85,15 @@ You obviously don't need to use it, but Discord-Rose has a built in command hand
 const worker = new Worker()
 
 worker.commands
+  .setPrefix('!')
   .add({
-    command: '!hello',
+    command: 'hello',
     exec: (ctx) => {
       ctx.reply('World!') // replies inline
     }
   }) // you can daisy chain .add()
   .add({
-    command: '!test',
+    command: 'test',
     exec: (ctx) => {
       ctx.delete() // delete's the invoking message
       ctx.send(':evilpepe: bye bye message') // sends a message in the same channel
@@ -98,3 +123,15 @@ ctx.embed // creates a new embed
   .send() // sends back to the context telling it to send
 ```
 There are other functions for embeds, check the typings.
+
+### Custom Prefix
+
+The `CommandHandler.setPrefix()` method can also take an (optionally async) method to decide prefixes depending on the data in the message. For example a per-guild prefix:
+```js
+worker.commands
+  .setPrefix(async message => {
+    const prefix = await DB.collection('prefixes').get(message.guild_id)
+
+    return prefix
+  })
+```

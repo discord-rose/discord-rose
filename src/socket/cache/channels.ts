@@ -11,6 +11,7 @@ export function channels (events: InternalEvents, worker: Worker) {
 
   events.add('CHANNEL_UPDATE', (channel) => {
     const currentChannel = worker.channels.get(channel.id)
+    if (!currentChannel) return
 
     currentChannel.name = channel.name
     currentChannel.type = channel.type

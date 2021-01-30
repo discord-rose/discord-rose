@@ -44,7 +44,8 @@ export default class Master {
         ? {
           guilds: true,
           roles: true,
-          channels: true
+          channels: true,
+          self: true
         }
         : options.cache,
       ws: options.ws || null
@@ -105,6 +106,7 @@ interface CacheOptions {
   guilds?: boolean
   roles?: boolean
   channels?: boolean
+  self?: boolean
   members?: boolean
   presence?: boolean
   messages?: boolean

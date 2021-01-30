@@ -17,7 +17,9 @@ export function roles (events: InternalEvents, worker: Worker) {
 
   events.add('GUILD_ROLE_UPDATE', (role) => {
     const guildRoles = worker.guildRoles.get(role.guild_id)
+    if (!guildRoles) return
     const currentRole = guildRoles.get(role.role.id)
+    if (!currentRole) return
     
     currentRole.name = role.role.name
     currentRole.permissions = role.role.permissions

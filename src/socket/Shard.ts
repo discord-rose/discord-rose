@@ -13,6 +13,8 @@ export class Shard {
     this.ws.on('READY', (data: GatewayReadyDispatchData) => {
       this.worker.comms.tell('SHARD_READY', { id })
 
+      this.worker.user = data.user
+
       this.unavailableGuilds = new Collection()
 
       if (data.guilds.length < 1 || !this.worker.options.cache.guilds) return this._ready()
