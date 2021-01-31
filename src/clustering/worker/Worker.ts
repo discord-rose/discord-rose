@@ -36,7 +36,7 @@ export default class Worker extends EventEmitter {
   public guildRoles: Collection<Snowflake, Collection<Snowflake, DiscordEventMap['GUILD_ROLE_CREATE']['role']>>
   public channels: Collection<Snowflake, DiscordEventMap['CHANNEL_CREATE']>
   public selfMember: Collection<Snowflake, DiscordEventMap['GUILD_MEMBER_ADD']>
-
+  public members: Collection<Snowflake, Collection<Snowflake, DiscordEventMap['GUILD_MEMBER_ADD']>>
 
   public user: APIUser
 

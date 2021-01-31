@@ -36,4 +36,10 @@ export function roles (events: InternalEvents, worker: Worker) {
 
     guildRoles.delete(role.role_id)
   })
+
+  events.add('GUILD_DELETE', (guild) => {
+    if (guild.unavailable) return
+
+    worker.guildRoles.delete(guild.id)
+  })
 }

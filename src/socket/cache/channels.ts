@@ -30,4 +30,11 @@ export function channels (events: InternalEvents, worker: Worker) {
   events.add('CHANNEL_DELETE', (channel) => {
     worker.channels.delete(channel.id)
   })
+
+  events.add('GUILD_DELETE', (guild) => {
+    if (guild.unavailable) return
+
+    worker.channels.filter(x => x.guild_id === guild.id)
+      .forEach(x => worker.channels.delete(x.id))
+  })
 }

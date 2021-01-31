@@ -23,6 +23,8 @@ export function self (events: InternalEvents, worker: Worker) {
   })
 
   events.add('GUILD_DELETE', (guild) => {
-    if (!guild.unavailable) worker.selfMember.delete(guild.id)
+    if (guild.unavailable) return
+    
+    worker.selfMember.delete(guild.id)
   })
 }

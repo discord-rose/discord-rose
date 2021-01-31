@@ -89,6 +89,8 @@ export class ThreadComms extends EventEmitter {
         }
       }
     })
+
+    this.on('KILL', () => process.exit(5))
   }
 
   private _send (op, e, i, d) {

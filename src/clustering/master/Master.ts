@@ -8,6 +8,7 @@ import { Cluster } from './Cluster'
 import { Sharder } from './Sharder'
 
 import path from 'path'
+import { ClientOptions } from 'ws'
 
 /**
  * Master process controller
@@ -40,19 +41,47 @@ export default class Master {
       shards: options.shards || 'auto',
       shardsPerCluster: options.shardsPerCluster || 5,
       shardOffset: options.shardOffset || 0,
-      cache: options.cache === false ? {} : typeof options.cache === 'undefined'
-        ? {
-          guilds: true,
-          roles: true,
-          channels: true,
-          self: true
-        }
-        : options.cache,
-      ws: options.ws || null
+      cache: options.cache === false ? {} : {
+        guilds: options.cache?.guilds ?? true,
+        roles: options.cache?.roles ?? true,
+        channels: options.cache?.channels ?? true,
+        self: options.cache?.self ?? true,
+        members: options.cache?.members ?? false,
+        presences: options.cache?.presences ?? false,
+        messages: options.cache?.messages ?? false
+      },
+      ws: options.ws || null,
+      intents: Array.isArray(options.intents)
+        ? options.intents.reduce((a, b) => a | Intents[b], 0)
+        : options.intents === true
+          ? Object.values(Intents).reduce((a, b) => a | b, 0)
+          : options.intents
+            ? options.intents
+            : Object.values(Intents).reduce((a, b) => a | b) &~ Intents['GUILD_MEMBERS'] &~ Intents['GUILD_PRESENCES'],
+      warnings: {
+        cachedIntents: options.warnings?.cachedIntents ?? true
+      }
     }
 
     this.log = typeof options.log === 'undefined' ? console.log : options.log
     if (!this.log) this.log = () => {}
+
+    if (this.options.warnings) {
+      const cacheDeps = {
+        guilds: 'GUILDS',
+        roles: 'GUILDS',
+        channels: 'GUILDS',
+        members: 'GUILD_MEMBERS',
+        presences: 'GUILD_PRESENCES',
+        messages: 'GUILD_MESSAGES'
+      }
+
+      Object.keys(cacheDeps).forEach(key => {
+        if (this.options.cache[key] && !(((options.intents as number) & Intents[cacheDeps[key]]) !== 0)) {
+          console.warn(`WARNING: CacheOptions.${key} was turned on, but is missing the ${cacheDeps[key]} intent. Meaning your cache with be empty. Either turn this on, or if it's intentional set Options.warnings.cachedIntents to false.`)
+        }
+      })
+    }
 
     this.log('Starting Master.')
   }
@@ -108,9 +137,27 @@ interface CacheOptions {
   channels?: boolean
   self?: boolean
   members?: boolean
-  presence?: boolean
+  presences?: boolean
   messages?: boolean
   reactions?: boolean
+}
+
+const Intents = {
+  'GUILDS': 1 << 0,
+  'GUILD_MEMBERS': 1 << 1,
+  'GUILD_BANS': 1 << 2,
+  'GUILD_EMOJIS': 1 << 3,
+  'GUILD_INTEGRATIONS': 1 << 4,
+  'GUILD_WEBHOOKS': 1 << 5,
+  'GUILD_INVITES': 1 << 6,
+  'GUILD_VOICE_STATES': 1 <<  7,
+  'GUILD_PRESENCES': 1 << 8,
+  'GUILD_MESSAGES': 1 << 9,
+  'GUILD_MESSAGE_REACTIONS': 1 << 10,
+  'GUILD_MESSAGE_TYPING': 1 << 11,
+  'DIRECT_MESSAGES': 1 << 12,
+  'DIRECT_MESSAGE_REACTIONS': 1 << 13,
+  'DIRECT_MESSAGE_TYPING': 1 << 14
 }
 
 export interface BotOptions {
@@ -128,6 +175,10 @@ export interface BotOptions {
    */
   shardsPerCluster?: number
   /**
+   * Array of intents to enable if true, enables all, if undefined enables all non-priveleged intents.
+   */
+  intents?: true | number | keyof typeof Intents
+  /**
    * Amount of shards to add after requesting shards
    */
   shardOffset?: number
@@ -144,4 +195,13 @@ export interface BotOptions {
    * URL for Discord Gateway (leave null for auto)
    */
   ws?: string
+  /**
+   * Whether or not to log warnings for certain things
+   */
+  warnings?: {
+    /**
+     * Whether or not warn when cache is enabled but it's required intents are not
+     */
+    cachedIntents: boolean
+  }
 }

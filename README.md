@@ -2,7 +2,21 @@
 
 ## The simple library for advanced users.
 
-### Discord-Rose is not yet fully released, breaking changes can and will be introduced at a moments notice. We do not recommend creating a production bot with the library just yet.
+# Discord-Rose is not yet fully released, breaking changes can and will be introduced at a moments notice. We do not recommend creating a production bot with the library just yet.
+
+# Installation
+
+Run `npm i --save discord-rose`
+
+## Requirements
+
+- A coding software that has support for typings, this library lacks documentation as it's entirely just a proxy to raw Discord, the typings allow you to see what you have to fill.
+- A full read of this README. I know it's long, but to get the general gist, please just read the full thing
+- [The discord docs](https://discord.com/developers/docs)
+
+## Links
+
+[NPM](https://npmjs.com/package/discord-rose), [GitHub](https://github.com/jpbberry/discord-rose)
 
 # Creating a bot
 
@@ -46,12 +60,19 @@ Discord-Rose comes with caching fully customizable. There is a .cache option in 
   channels: true,
   self: true, // caches own member object, good for permissions
   members: false, // be warned, these two options
-  presence: false, // require special intents
-  messages: false,
-  reactions: false
+  presences: false, // require special intents
+  messages: false
 }
 ```
 If you want to disable cache entirely, you can set `MasterOptions.cache` to `false`
+
+- `.guilds` defines Worker.guilds which is key'd by Guild ID and value'd by said guild's data
+- `.roles` defines Worker.guildRoles which is key'd by Guild ID and value'd by a collection, this collection is key'd by role ID and value'd by said role's data
+- `.channels` defines Worker.channels which is key'd by Channel ID and value'd by said channel's data
+- `.self` defines Worker.selfMember which is key'd by Guild ID and value'd by the clients subsequent member data in that server
+- `.members` defines Worker.members which is key'd by Guild ID and value'd by a collection, this collection is key'd by user ID and their member's data within the guild
+- `.presences` defines Worker.presences which is key'd by User ID and value'd by said user's presence data
+- `.messages` defines Worker.messages which is key'd by Channel ID and value'd by a collection, this collection is key'd by message ID and said message's data
 
 # Using the API
 
@@ -62,6 +83,8 @@ Every API interface is added to what we call `resources`, these resources are on
 Current resources:
 - `api.channels`
 - `api.messages`
+- `api.members`
+- `api.guilds`
 - `api.misc`
 
 These all have typings so type them out to see what functions there are, for example, here's how to send a message.

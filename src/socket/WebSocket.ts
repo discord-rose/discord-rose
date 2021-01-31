@@ -80,7 +80,7 @@ export class DiscordSocket extends EventEmitter {
           op: GatewayOPCodes.Identify, 
           d: {
             shard: [this.shard.id, this.shard.worker.options.shards as number],
-            intents: 32509,
+            intents: this.shard.worker.options.intents as number,
             token: this.shard.worker.options.token,
             properties: {
               $os: 'linux',

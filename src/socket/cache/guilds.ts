@@ -54,13 +54,5 @@ export function guilds (events: InternalEvents, worker: Worker) {
     if (guild.unavailable) return worker.emit('GUILD_UNAVAILABLE', worker.guilds.get(guild.id))
 
     worker.guilds.delete(guild.id)
-
-    if (worker.options.cache.roles) {
-      worker.guildRoles.delete(guild.id)
-    }
-    if (worker.options.cache.channels) {
-      worker.channels.filter(x => x.guild_id === guild.id)
-        .forEach(x => worker.channels.delete(x.id))
-    }
   })
 }
