@@ -77,7 +77,7 @@ export default class Master {
       }
 
       Object.keys(cacheDeps).forEach(key => {
-        if (this.options.cache[key] && !(((options.intents as number) & Intents[cacheDeps[key]]) !== 0)) {
+        if (this.options.cache[key] && ((this.options.intents as number) & Intents[cacheDeps[key]]) === 0) {
           console.warn(`WARNING: CacheOptions.${key} was turned on, but is missing the ${cacheDeps[key]} intent. Meaning your cache with be empty. Either turn this on, or if it's intentional set Options.warnings.cachedIntents to false.`)
         }
       })
