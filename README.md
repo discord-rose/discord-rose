@@ -124,10 +124,61 @@ worker.commands
   })
 ```
 
+*`.command` and .`aliases`[] can also be RegExp statements*
+
+## Other properties
+
+### aliases
+Aliases allow for other commands to register with the same command, CommandOptions`.aliases` is an array of alternative command checks.
+```js
+.add({
+  command: 'help',
+  aliases: ['h'],
+  exec: () => // ...
+})
+```
+
+## Middleware
+
+CommandHandler comes with the .middleware() function which can be daisy chained as well.
+This will make this function run everytime before a command is executed, which should return a boolean about whether or not the command should run.
+
+You can also `throw new Error('message')` to send an error via traditional error logging.
+
+Middleware functions are supplied with ctx, here's an example of usage
+
+#### Admin locked commands
+
+```js
+worker.commands
+  .middleware((ctx) => {
+    if (ctx.command.adminOnly) {
+      if (!isAdmin(ctx.message.author)) return false // return false because they're not an admin
+
+      // or you can tell the user
+
+      if (isAdmin(ctx.message.author)) {
+        throw new Error("You're not an admin!") // responds to user with message
+      }
+    }
+
+    return true // return true to allow execution of command
+  })
+  .add({ // for example a restart command should be admin only
+    command: 'restart',
+    exec: () => process.exit(), 
+    adminOnly: true // set this custom property
+  })
+```
+
+The usage for middlewares are essentially infinite, you can do anything from admin locks to cooldowns without repeating code.
+
 ## Current CommandContext methods/properties:
 
 | Name              | Description
 | ----------------- | --------------------------------------------
+| `.command`        | Original command options
+| `.worker`         | Worker object
 | `.args`           | Array of arguments after the initial command
 | `.guild`          | Guild (if in cache) where the message was ran
 | `.channel`        | Channel (if in cache) where the message was ran
@@ -160,3 +211,17 @@ worker.commands
     return prefix
   })
 ```
+
+*Note: if you want to use the command handler using separate files, in TypeScript, you can import command options like such*
+
+**/commands/help.ts**
+```ts
+import { CommandOptions } from 'discord-rose/dist/structures/CommandHandler'
+
+export default {
+  command: 'help',
+  aliases: ['h'],
+  exec: (ctx) => {
+    // ...
+  }
+} as CommandOptions // this will enable types!

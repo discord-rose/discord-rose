@@ -4,12 +4,14 @@ import { APIGuildMember, APIMessage } from "discord-api-types";
 import { Embed } from './Embed'
 import { MessageTypes } from "../rest/resources/Messages";
 
+import { CommandOptions } from './CommandHandler'
+
 import { PermissionsUtils, bits } from '../utils/Permissions'
 
 export class CommandContext {
   public args: string[] = []
 
-  constructor (private worker: Worker, public message: APIMessage) {}
+  constructor (public worker: Worker, public message: APIMessage, public command: CommandOptions) {}
 
   /**
    * Guild where the message was sent

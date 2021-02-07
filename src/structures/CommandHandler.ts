@@ -3,14 +3,21 @@ import Worker from "../clustering/worker/Worker";
 
 import { CommandContext } from './CommandContext'
 
-interface CommandOptions {
-  command: string | RegExp
-  exec: (ctx: CommandContext, worker: Worker) => void
+type CommandType = string | RegExp
+type MiddlewareFunction = (ctx: CommandContext) => boolean | Promise<boolean>
+
+export interface CommandOptions {
+  command: CommandType
+  aliases?: CommandType[]
+  exec: (ctx: CommandContext) => void | Promise<void>
 }
 
 export class CommandHandler {
   private added: boolean = false
-  private commands: CommandOptions[]
+
+  public middlewares: MiddlewareFunction[] = []
+  public commands: CommandOptions[]
+
   constructor (private worker: Worker) {}
 
   public prefixFunction?: (message: APIMessage) => Promise<string> | string
@@ -25,6 +32,16 @@ export class CommandHandler {
     } else {
       this.prefixFunction = fn
     }
+
+    return this
+  }
+
+  /**
+   * Adds a global middleware function
+   * @param fn Middleware function
+   */
+  middleware (fn: MiddlewareFunction): this {
+    this.middlewares.push(fn)
 
     return this
   }
@@ -45,6 +62,13 @@ export class CommandHandler {
     return this
   }
 
+  private _test (command: string, cmd: CommandType): boolean {
+    if (typeof cmd === 'string') return command === cmd
+    if (cmd instanceof RegExp) return !!command.match(cmd)
+
+    return false
+  }
+
   private async _exec (data: APIMessage) {
     if (!data.content) return
     if (![MessageType.DEFAULT, MessageType.REPLY].includes(data.type)) return
@@ -58,14 +82,15 @@ export class CommandHandler {
     const args = data.content.slice(prefix ? prefix.length : 0).split(/\s/)
     const command = args.shift()
 
-    const cmd = this.commands.find(x => x.command === command || x.command instanceof RegExp ? command.match(x.command) : false)
+    const cmd = this.commands.find(x => this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)))
     if (!cmd) return
 
-    const ctx = new CommandContext(this.worker, data)
+    const ctx = new CommandContext(this.worker, data, cmd)
     ctx.args = args
 
     try {
-      await cmd.exec(ctx, this.worker)
+      if (!this.middlewares.every(x => x(ctx))) return
+      await cmd.exec(ctx)
     } catch (err) {
       ctx.embed
         .color(0xFF0000)
