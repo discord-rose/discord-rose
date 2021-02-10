@@ -52,8 +52,8 @@ export class PermissionsUtils {
     if (guild.owner_id === member.user.id) return true
     return this.has(
       member.roles.reduce(
-        (a, b) => a | Number(roleList.get(b).permissions),
-        Number(roleList.get(guild.id).permissions)
+        (a, b) => a | Number(roleList.get(b)?.permissions),
+        Number(roleList.get(guild.id)?.permissions)
       ),
       required
     )
