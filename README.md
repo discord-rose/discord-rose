@@ -51,6 +51,21 @@ worker.on('MESSAGE_CREATE', (message) => {
 })
 ```
 
+## Options
+
+| Property               | Type                | Default            | Description
+-------------------------|---------------------|--------------------|------------------------------------------
+| token                  | string              | none               | Discord bot token to connect with
+| shards                 | number or 'auto'    | 'auto'             | Amount of shards to spawn, leave auto to automatically fetch
+| shardsPerCluster       | number              | 5                  | Amount of shards per cluster to spawn
+| intents                | number or Intents[] | undefined          | What intents to use, set to `undefined` to use non-priveleged intents and `true` to enable all
+| shardOffset            | number              | 0                  | Amount of shards to add after requesting shards
+| cache                  | CacheOptions        | Default            | [CacheOptions](#caching)
+| log                    | function(string)    | console.log        | Log function supplied with debug messages, set to false to disable internal logging
+| ws                     | string              | Default            | Forcefully set WS URL, defaults to one gotten from gateway endpoint
+| warnings               | object              | all                | Warnings options
+| warnings.cachedIntents | boolean             | true               | Whether to warn when a cache is enabled but it's required intent is not
+
 # Caching
 Discord-Rose comes with caching fully customizable. There is a .cache option in your MasterOptions
 ```js

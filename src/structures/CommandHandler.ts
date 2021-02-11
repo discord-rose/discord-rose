@@ -3,14 +3,10 @@ import Worker from "../clustering/worker/Worker";
 
 import { CommandContext } from './CommandContext'
 
-type CommandType = string | RegExp
-type MiddlewareFunction = (ctx: CommandContext) => boolean | Promise<boolean>
 
-export interface CommandOptions {
-  command: CommandType
-  aliases?: CommandType[]
-  exec: (ctx: CommandContext) => void | Promise<void>
-}
+import { CommandOptions, CommandType } from '../typings/lib'
+
+type MiddlewareFunction = (ctx: CommandContext) => boolean | Promise<boolean>
 
 export class CommandHandler {
   private added: boolean = false
@@ -89,7 +85,15 @@ export class CommandHandler {
     ctx.args = args
 
     try {
-      if (!this.middlewares.every(x => x(ctx))) return
+      for (const midFn of this.middlewares) {
+        try {
+          if (await midFn(ctx) !== true) return
+        } catch (err) {
+          err.nonFatal = true
+
+          throw err
+        }
+      }
       await cmd.exec(ctx)
     } catch (err) {
       ctx.embed
@@ -97,6 +101,8 @@ export class CommandHandler {
         .title('Error')
         .description(err.message)
         .send()
+
+      if (err.nonFatal) return
 
       err.message += ` (While Running Command: ${command})`
       console.error(err)
