@@ -193,6 +193,7 @@ The usage for middlewares are essentially infinite, you can do anything from adm
 Here are some in-house made middlewares made by the same people making this library.
 
 - [Cooldown](https://npmjs.com/@discord-rose/cooldown-middleware) Adds the ability to add individual cooldown timers to your code.
+- [Permissions](https://npmjs.com/@discord-rose/permissions-middleware) Adds the ability to check if your bot or the user running a command has required permissions
 - [Admin lock](https://npmjs.com/@discord-rose/admin-middleware) Super simple, and definitely easy to do yourself, but a built in admin middleware
 
 *And more to come! Have any ideas? Let us know in the issues tab*
