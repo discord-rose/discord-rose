@@ -188,6 +188,15 @@ worker.commands
 
 The usage for middlewares are essentially infinite, you can do anything from admin locks to cooldowns without repeating code.
 
+### In-house middlewares
+
+Here are some in-house made middlewares made by the same people making this library.
+
+- [Cooldown](https://npmjs.com/@discord-rose/cooldown-middleware) Adds the ability to add individual cooldown timers to your code.
+- [Admin lock](https://npmjs.com/@discord-rose/admin-middleware) Super simple, and definitely easy to do yourself, but a built in admin middleware
+
+*And more to come! Have any ideas? Let us know in the issues tab*
+
 ## Current CommandContext methods/properties:
 
 | Name              | Description

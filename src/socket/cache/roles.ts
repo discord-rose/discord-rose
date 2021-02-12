@@ -12,7 +12,7 @@ export function roles (events: InternalEvents, worker: Worker) {
       worker.guildRoles.set(role.guild_id, guildRoles)
     }
 
-    guildRoles.set(role.guild_id, role.role)
+    guildRoles.set(role.role.id, role.role)
   })
 
   events.add('GUILD_ROLE_UPDATE', (role) => {
