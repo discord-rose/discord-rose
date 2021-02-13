@@ -250,3 +250,30 @@ export default {
     // ...
   }
 } as CommandOptions // this will enable types!
+```
+
+# In TypeScript
+
+Using the bot in TypeScript is relatively simple.
+
+You can easily add types by declaring a module change to `discord-rose/dist/typings/lib`
+
+For examples;
+
+```ts
+declare module 'discord-rose/dist/typings/lib' {
+  // Really nice, changing the worker in all instances
+  // Like if you have your own class you want to be globally typed
+  type Worker = MyWorkerClass
+
+  // These two are nice for middleware stuff
+  // Adding an option to CommandOptions
+  interface CommandOptions {
+    test?: boolean
+  }
+  // Adding a function to CommandContext
+  interface CommandContext {
+    func: (thing: string) => ...
+  }
+}
+```

@@ -1,12 +1,10 @@
-import { APIMessage, MessageType } from "discord-api-types";
-import Worker from "../clustering/worker/Worker";
+import { APIMessage, MessageType } from "discord-api-types"
 
 import { CommandContext } from './CommandContext'
 
+import { CommandOptions, CommandType, CommandContext as ctx, Worker } from '../typings/lib'
 
-import { CommandOptions, CommandType } from '../typings/lib'
-
-type MiddlewareFunction = (ctx: CommandContext) => boolean | Promise<boolean>
+type MiddlewareFunction = (ctx: ctx) => boolean | Promise<boolean>
 
 export class CommandHandler {
   private added: boolean = false

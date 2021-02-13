@@ -1,6 +1,6 @@
 import Collection from "@discordjs/collection"
 import { GatewayGuildCreateDispatchData, GatewayReadyDispatchData, Snowflake } from "discord-api-types"
-import Client from "../clustering/worker/Worker"
+import { Worker } from "../typings/lib"
 import { DiscordSocket } from './WebSocket'
 
 export class Shard {
@@ -9,7 +9,7 @@ export class Shard {
   private ws = new DiscordSocket(this)
   private unavailableGuilds: Collection<Snowflake, {}>
 
-  constructor (public id: number, public worker: Client) {
+  constructor (public id: number, public worker: Worker) {
     this.ws.on('READY', (data: GatewayReadyDispatchData) => {
       this.worker.comms.tell('SHARD_READY', { id })
 

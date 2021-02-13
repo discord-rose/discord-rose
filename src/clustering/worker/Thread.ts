@@ -1,5 +1,5 @@
 import { workerData, parentPort } from 'worker_threads'
-import Worker from './Worker';
+import { Worker } from "../../typings/lib"
 
 import { ThreadComms } from "../ThreadComms";
 

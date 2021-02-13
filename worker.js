@@ -1,1 +1,1 @@
-module.exports = require('./dist/index').default.Worker
+module.exports = require('./dist/clustering/worker/Worker').default

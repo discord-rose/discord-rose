@@ -1,10 +1,9 @@
-import Worker from "../clustering/worker/Worker"
 import { APIGuildMember, APIMessage } from "discord-api-types";
 
 import { Embed } from './Embed'
 import { MessageTypes } from "../rest/resources/Messages";
 
-import { CommandOptions } from '../typings/lib'
+import { CommandOptions, Worker } from '../typings/lib'
 
 import { PermissionsUtils, bits } from '../utils/Permissions'
 

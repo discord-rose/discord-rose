@@ -1,12 +1,15 @@
-import { CommandContext } from '../structures/CommandContext'
+import { CommandContext as ctx } from '../structures/CommandContext'
+import worker from '../clustering/worker/Worker'
 
-declare namespace DiscordRose {
+namespace DiscordRose {
   export type CommandType = string | RegExp
   export interface CommandOptions {
     command: CommandType
     aliases?: CommandType[]
     exec: (ctx: CommandContext) => void | Promise<void>
   }
+  export interface CommandContext extends ctx {}
+  export type Worker = worker
 }
 
 export = DiscordRose

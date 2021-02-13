@@ -1,1 +1,1 @@
-module.exports = require('./dist/index').default.Master
+module.exports = require('./dist/clustering/master/Master').default
