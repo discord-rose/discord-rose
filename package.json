@@ -4,8 +4,8 @@
   "description": "Advanced Discord Library",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublishOnly": "tsc"
+    "test": "npm ci && rm -rf ./dist && tsc",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
