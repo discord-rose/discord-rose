@@ -1,8 +1,8 @@
 import Collection from '@discordjs/collection';
 import Worker from '../../clustering/worker/Worker';
-import { InternalEvents } from './InternalEvents';
+import { CacheManager } from '../CacheManager';
 
-export function channels (events: InternalEvents, worker: Worker) {
+export function channels (events: CacheManager, worker: Worker) {
   worker.channels = new Collection()
 
   events.add('CHANNEL_CREATE', (channel) => {

@@ -10,7 +10,7 @@ import { PermissionsUtils, bits } from '../utils/Permissions'
 export class CommandContext {
   public args: string[] = []
 
-  constructor (public worker: Worker, public message: APIMessage, public command: CommandOptions) {}
+  constructor (public worker: Worker, public message: APIMessage, public command: CommandOptions, public prefix: string) {}
 
   /**
    * Guild where the message was sent

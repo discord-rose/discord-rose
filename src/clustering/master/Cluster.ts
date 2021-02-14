@@ -1,10 +1,13 @@
 import Master from "./Master";
 import { Worker } from 'worker_threads'
 import { ThreadComms } from "../ThreadComms";
+import { Snowflake } from "discord-api-types";
 
 export class Cluster extends ThreadComms {
   private thread: Worker
   private started = false
+
+  public dying = false
 
   constructor (public id: string, private master: Master) {
     super()
@@ -22,6 +25,15 @@ export class Cluster extends ThreadComms {
     this.on('LOG', (data) => {
       this.master.log(data)
     })
+    this.on('RESTART_CLUSTER', ({ id }) => {
+      this.master.clusters.get(id)?.restart()
+    })
+    this.on('RESTART_SHARD', ({ id }) => {
+      this.master.shardToCluster(id)?.restartShard(id)
+    })
+    this.on('GET_GUILD', async ({ id }, respond) => {
+      respond(await this.master.guildToCluster(id)?.getGuild(id))
+    })
   }
 
   public spawn (): Promise<void> {
@@ -37,7 +49,7 @@ export class Cluster extends ThreadComms {
     
       this.thread.on('exit', (code) => {
         this.master.log(`Cluster ${this.id} closed with code ${code}`)
-        this.spawn()
+        if (!this.dying) this.spawn()
       })
       this.thread.on('online', () => {
         this.master.log(`Cluster ${this.id} started.`)
@@ -54,5 +66,39 @@ export class Cluster extends ThreadComms {
       shards: this.master.chunks[this.id],
       options: this.master.options
     })
+  }
+
+  /**
+   * Restarts the cluster
+   */
+  restart () {
+    this.dying = false
+
+    this.tell('KILL', null)
+  }
+
+  /**
+   * Kills cluster without restarting
+   */
+  kill () {
+    this.dying = true
+
+    this.tell('KILL', null)
+  }
+
+  /**
+   * Restarts a shard
+   * @param id ID of shard to restart
+   */
+  restartShard (id: number) {
+    this.tell('RESTART_SHARD', { id })
+  }
+
+  /**
+   * Gets a guild from the clusters cache
+   * @param id ID of guild
+   */
+  getGuild (id: Snowflake) {
+    return this.sendCommand('GET_GUILD', { id })
   }
 }

@@ -4,6 +4,7 @@ import { Worker, MessagePort } from 'worker_threads'
 import { generateID } from '../utils/UtilityFunctions'
 import { BotOptions } from "./master/Master";
 import Collection from '@discordjs/collection'
+import { APIGuild, Snowflake } from "discord-api-types";
 
 enum ThreadMethod {
   COMMAND,
@@ -52,6 +53,24 @@ interface ThreadEvents {
     send: string
     receive: null
   }
+  RESTART_CLUSTER: {
+    send: {
+      id: any
+    },
+    receive: void
+  }
+  RESTART_SHARD: {
+    send: {
+      id: number
+    }
+    receive: void
+  }
+  GET_GUILD: {
+    send: {
+      id: Snowflake
+    }
+    receive: APIGuild
+  }
 }
 
 export class ThreadComms extends EventEmitter {
@@ -73,7 +92,7 @@ export class ThreadComms extends EventEmitter {
       switch (msg.op) {
         case ThreadMethod.COMMAND: {
           this.emit(msg.e, msg.d, (data) => {
-            this.respond(msg.i, data)
+            this._respond(msg.i, data)
           })
           break
         }
@@ -81,6 +100,8 @@ export class ThreadComms extends EventEmitter {
           const command = this.commands.get(msg.i)
           if (!command) return
           command(msg.d)
+
+          this.commands.delete(msg.i)
           break
         }
         case ThreadMethod.TELL: {
@@ -118,7 +139,7 @@ export class ThreadComms extends EventEmitter {
     })
   }
 
-  public respond (id: string, data: any) {
+  private _respond (id: string, data: any) {
     this._send(ThreadMethod.RESPONSE, null, id, data)
   }
 

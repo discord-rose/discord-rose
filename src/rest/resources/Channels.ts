@@ -8,8 +8,8 @@ export class ChannelsResource {
    * Gets a channel
    * @param id ID of channel
    */
-  get (id: Snowflake): APIChannel {
-    return this.rest.request('GET', `/channels/${id}`) as unknown as APIChannel
+  get (id: Snowflake): Promise<APIChannel> {
+    return this.rest.request('GET', `/channels/${id}`) as Promise<APIChannel>
   }
 
   /**

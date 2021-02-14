@@ -1,8 +1,8 @@
 import Collection from '@discordjs/collection';
 import Worker from '../../clustering/worker/Worker';
-import { InternalEvents } from './InternalEvents';
+import { CacheManager } from '../CacheManager';
 
-export function roles (events: InternalEvents, worker: Worker) {
+export function roles (events: CacheManager, worker: Worker) {
   worker.guildRoles = new Collection()
 
   events.add('GUILD_ROLE_CREATE', (role) => {

@@ -59,6 +59,7 @@ export class Embed {
    * @param inline Whether the field is inline
    */
   field (name: string, value: string, inline?: boolean) {
+    if (!this.obj.fields) this.obj.fields = []
     this.obj.fields.push({
       name,
       value,
@@ -112,7 +113,7 @@ export class Embed {
    * Sends embed to channel
    * @param reply Whether or not to do so in an inline reply (defaults to true)
    */
-  send (reply: boolean = false) {
+  send (reply: boolean = true) {
     return this.sendback(this, reply)
   }
 

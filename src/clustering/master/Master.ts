@@ -1,6 +1,6 @@
 import { RestManager } from '../../rest/Manager'
-import { APIGatewayBotInfo } from 'discord-api-types'
-import { chunkShards } from '../../utils/UtilityFunctions'
+import { Snowflake } from 'discord-api-types'
+import { chunkShards, guildShard } from '../../utils/UtilityFunctions'
 
 import Collection from '@discordjs/collection'
 
@@ -8,7 +8,6 @@ import { Cluster } from './Cluster'
 import { Sharder } from './Sharder'
 
 import path from 'path'
-import { ClientOptions } from 'ws'
 
 /**
  * Master process controller
@@ -128,6 +127,14 @@ export default class Master {
     for (let i = 0; i < this.chunks.length; i++) {
       if (this.chunks[i].includes(id)) return this.clusters.get(`${i}`)
     }
+  }
+
+  guildToShard (id: Snowflake) {
+    return guildShard(id, this.options.shards as number)
+  }
+
+  guildToCluster (id: Snowflake) {
+    return this.shardToCluster(this.guildToShard(id))
   }
 }
 

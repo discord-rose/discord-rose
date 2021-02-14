@@ -27,7 +27,7 @@ export class Shard {
     this.ws.on('GUILD_CREATE', (data: GatewayGuildCreateDispatchData) => {
       if (!this.unavailableGuilds) return this.worker.emit('GUILD_CREATE', data)
       
-      this.worker.internalEvents.run('GUILD_CREATE', data)
+      this.worker.cacheManager.run('GUILD_CREATE', data)
 
       if (!checkTimeout) {
         checkTimeout = setTimeout(() => {
@@ -54,6 +54,8 @@ export class Shard {
   private _ready () {
     this.worker.emit('SHARD_READY', this)
     this.unavailableGuilds = null
+
+    if (this.worker.shards.every(x => x.unavailableGuilds === null)) this.worker.emit('READY', null)
   }
 
   register () {

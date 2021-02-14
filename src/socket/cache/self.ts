@@ -1,8 +1,8 @@
 import Collection from '@discordjs/collection';
 import Worker from '../../clustering/worker/Worker';
-import { InternalEvents } from './InternalEvents';
+import { CacheManager } from '../CacheManager';
 
-export function self (events: InternalEvents, worker: Worker) {
+export function self (events: CacheManager, worker: Worker) {
   worker.selfMember = new Collection()
 
   events.add('GUILD_MEMBER_ADD', (member) => {

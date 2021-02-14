@@ -1,13 +1,13 @@
-import { DiscordEventMap } from '../../typings/DiscordEventMap'
-import Worker from '../../clustering/worker/Worker'
+import { DiscordEventMap } from '../typings/Discord'
+import Worker from '../clustering/worker/Worker'
 import Collection from '@discordjs/collection'
 
 // caches
-import { guilds } from './guilds'
-import { roles } from './roles'
-import { channels } from './channels'
-import { self } from './self'
-import { members } from './members'
+import { guilds } from './cache/guilds'
+import { roles } from './cache/roles'
+import { channels } from './cache/channels'
+import { self } from './cache/self'
+import { members } from './cache/members'
 
 
 import { EventEmitter } from 'events'
@@ -19,7 +19,7 @@ const createNulledCollection = (cache: string) => {
   }
 }
 
-export class InternalEvents {
+export class CacheManager {
   public events = new EventEmitter()
 
   constructor (private worker: Worker) {

@@ -1,12 +1,12 @@
 import { BotOptions } from '../master/Master'
 import { Thread } from './Thread'
 
-import { DiscordEventMap } from '../../typings/DiscordEventMap'
+import { DiscordEventMap, CachedGuild } from '../../typings/Discord'
 import { EventEmitter } from 'events'
 import Collection from '@discordjs/collection'
 
 import { Shard } from '../../socket/Shard'
-import { InternalEvents } from '../../socket/cache/InternalEvents'
+import { CacheManager } from '../../socket/CacheManager'
 
 import { APIUser, Snowflake } from 'discord-api-types'
 
@@ -32,7 +32,7 @@ export default class Worker extends EventEmitter {
   public commands = new CommandHandler(this)
   public comms: Thread = new Thread(this)
 
-  public guilds: Collection<Snowflake, DiscordEventMap['GUILD_CREATE']>
+  public guilds: Collection<Snowflake, CachedGuild>
   public guildRoles: Collection<Snowflake, Collection<Snowflake, DiscordEventMap['GUILD_ROLE_CREATE']['role']>>
   public channels: Collection<Snowflake, DiscordEventMap['CHANNEL_CREATE']>
   public selfMember: Collection<Snowflake, DiscordEventMap['GUILD_MEMBER_ADD']>
@@ -40,11 +40,11 @@ export default class Worker extends EventEmitter {
 
   public user: APIUser
 
-  public internalEvents: InternalEvents
+  public cacheManager: CacheManager
 
   async start (shardNumbers: number[]) {
     this.api = new RestManager(this.options.token)
-    this.internalEvents = new InternalEvents(this)
+    this.cacheManager = new CacheManager(this)
 
     for (let i = 0; i < shardNumbers.length; i++) {
       const shard = new Shard(shardNumbers[i], this)

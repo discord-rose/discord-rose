@@ -1,3 +1,4 @@
+import { Snowflake } from "discord-api-types"
 
 /**
  * Promisify a waiting time
@@ -39,4 +40,8 @@ export function generateID (currently: string[]): string {
   const current = `${Date.now()}${(Math.random() * 10000).toFixed(0)}`
   if (currently.includes(current)) return generateID(currently)
   return current
+}
+
+export function guildShard (id: Snowflake, totalShards: number) {
+  return Number((BigInt(id) >> BigInt(22)) % BigInt(totalShards))
 }

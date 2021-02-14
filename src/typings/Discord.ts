@@ -1,5 +1,7 @@
-import { APIGuild, APIUser, GatewayChannelCreateDispatchData, GatewayChannelDeleteDispatchData, GatewayChannelPinsUpdateDispatchData, GatewayChannelUpdateDispatchData, GatewayGuildBanAddDispatchData, GatewayGuildBanRemoveDispatchData, GatewayGuildCreateDispatchData, GatewayGuildDeleteDispatchData, GatewayGuildEmojisUpdateDispatchData, GatewayGuildIntegrationsUpdateDispatch, GatewayGuildMemberAddDispatchData, GatewayGuildMemberRemoveDispatchData, GatewayGuildMembersChunkDispatchData, GatewayGuildMemberUpdateDispatchData, GatewayGuildRoleCreateDispatchData, GatewayGuildRoleDeleteDispatch, GatewayGuildRoleUpdateDispatchData, GatewayGuildUpdateDispatchData, GatewayInteractionCreateDispatchData, GatewayInviteCreateDispatchData, GatewayInviteDeleteDispatchData, GatewayMessageCreateDispatchData, GatewayMessageDeleteBulkDispatchData, GatewayMessageDeleteDispatchData, GatewayMessageReactionAddDispatchData, GatewayMessageReactionRemoveAllDispatchData, GatewayMessageReactionRemoveDispatchData, GatewayMessageReactionRemoveEmojiDispatchData, GatewayMessageUpdateDispatchData, GatewayPresenceUpdateDispatchData, GatewayReadyDispatchData, GatewayResumeData, GatewayTypingStartDispatchData, GatewayUserUpdateDispatchData, GatewayVoiceServerUpdateDispatchData, GatewayVoiceStateUpdateData, GatewayWebhooksUpdateDispatchData } from 'discord-api-types'
+import { GatewayChannelCreateDispatchData, GatewayChannelDeleteDispatchData, GatewayChannelPinsUpdateDispatchData, GatewayChannelUpdateDispatchData, GatewayGuildBanAddDispatchData, GatewayGuildBanRemoveDispatchData, GatewayGuildCreateDispatchData, GatewayGuildDeleteDispatchData, GatewayGuildEmojisUpdateDispatchData, GatewayGuildIntegrationsUpdateDispatchData, GatewayGuildMemberAddDispatchData, GatewayGuildMemberRemoveDispatchData, GatewayGuildMembersChunkDispatchData, GatewayGuildMemberUpdateDispatchData, GatewayGuildRoleCreateDispatchData, GatewayGuildRoleDeleteDispatchData, GatewayGuildRoleUpdateDispatchData, GatewayGuildUpdateDispatchData, GatewayInteractionCreateDispatchData, GatewayInviteCreateDispatchData, GatewayInviteDeleteDispatchData, GatewayMessageCreateDispatchData, GatewayMessageDeleteBulkDispatchData, GatewayMessageDeleteDispatchData, GatewayMessageReactionAddDispatchData, GatewayMessageReactionRemoveAllDispatchData, GatewayMessageReactionRemoveDispatchData, GatewayMessageReactionRemoveEmojiDispatchData, GatewayMessageUpdateDispatchData, GatewayPresenceUpdateDispatchData, GatewayReadyDispatchData, GatewayResumeData, GatewayTypingStartDispatchData, GatewayUserUpdateDispatchData, GatewayVoiceServerUpdateDispatchData, GatewayVoiceStateUpdateData, GatewayWebhooksUpdateDispatchData } from 'discord-api-types'
 import { Shard } from '../socket/Shard';
+
+export type CachedGuild = Pick<DiscordEventMap['GUILD_CREATE'], Exclude<keyof DiscordEventMap['GUILD_CREATE'], 'channels' | 'roles' | 'members'>>
 
 export interface DiscordEventMap {
   "CHANNEL_CREATE": GatewayChannelCreateDispatchData,
@@ -11,13 +13,13 @@ export interface DiscordEventMap {
   "GUILD_CREATE": GatewayGuildCreateDispatchData,
   "GUILD_DELETE": GatewayGuildDeleteDispatchData,
   "GUILD_EMOJIS_UPDATE": GatewayGuildEmojisUpdateDispatchData,
-  "GUILD_INTEGRATIONS_UPDATE": GatewayGuildIntegrationsUpdateDispatch['d'],
+  "GUILD_INTEGRATIONS_UPDATE": GatewayGuildIntegrationsUpdateDispatchData,
   "GUILD_MEMBER_ADD": GatewayGuildMemberAddDispatchData,
   "GUILD_MEMBER_REMOVE": GatewayGuildMemberRemoveDispatchData,
   "GUILD_MEMBERS_CHUNK": GatewayGuildMembersChunkDispatchData,
   "GUILD_MEMBER_UPDATE": GatewayGuildMemberUpdateDispatchData,
   "GUILD_ROLE_CREATE": GatewayGuildRoleCreateDispatchData,
-  "GUILD_ROLE_DELETE": GatewayGuildRoleDeleteDispatch['d'],
+  "GUILD_ROLE_DELETE": GatewayGuildRoleDeleteDispatchData,
   "GUILD_ROLE_UPDATE": GatewayGuildRoleUpdateDispatchData,
   "GUILD_UPDATE": GatewayGuildUpdateDispatchData,
   "INTERACTION_CREATE": GatewayInteractionCreateDispatchData,
@@ -32,7 +34,6 @@ export interface DiscordEventMap {
   "MESSAGE_REACTION_REMOVE_EMOJI": GatewayMessageReactionRemoveEmojiDispatchData,
   "MESSAGE_UPDATE": GatewayMessageUpdateDispatchData,
   "PRESENCE_UPDATE": GatewayPresenceUpdateDispatchData,
-  "READY": GatewayReadyDispatchData,
   "RESUMED": GatewayResumeData,
   "TYPING_START": GatewayTypingStartDispatchData,
   "USER_UPDATE": GatewayUserUpdateDispatchData,
@@ -41,5 +42,6 @@ export interface DiscordEventMap {
   "WEBHOOKS_UPDATE": GatewayWebhooksUpdateDispatchData,
   // custom
   "SHARD_READY": Shard
-  "GUILD_UNAVAILABLE": APIGuild
+  "GUILD_UNAVAILABLE": CachedGuild
+  "READY": null
 }

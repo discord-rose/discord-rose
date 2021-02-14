@@ -1,31 +1,33 @@
-import Collection from "@discordjs/collection";
-import Master from "./Master";
+import Master from "./Master"
 
 import { wait } from '../../utils/UtilityFunctions'
 
 export class Sharder {
-  public shards: Collection<number, number> = new Collection()
+  public shards = []
   private looping: boolean = false
 
   constructor (public master: Master) {}
 
   register (id: number) {
-    this.shards.set(id, id)
+    if (!this.shards.includes(id)) this.shards.push(id)
 
     if (!this.looping && this.master.spawned) this.loop()
   }
 
   async loop () {
     this.looping = true
-    const next = this.shards.first()
+    const next = this.shards.shift()
     if (typeof next === 'undefined') {
       this.looping = false
       return
     }
 
     await this.master.shardToCluster(next).sendCommand('START_SHARD', { id: next })
+      .catch(() => {
+        this.master.log(`Shard ${next} failed to start in time. Continuing and will try again later.`)
 
-    this.shards.delete(next)
+        this.shards.push(next)
+      })
 
     await wait(5000)
 

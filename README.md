@@ -207,6 +207,7 @@ Here are some in-house made middlewares made by the same people making this libr
 | `.args`           | Array of arguments after the initial command
 | `.guild`          | Guild (if in cache) where the message was ran
 | `.channel`        | Channel (if in cache) where the message was ran
+| `.prefix`         | The prefix the command was ran with
 | `.reply(msg)`     | Replies inline to the messaege
 | `.send(msg)`      | Sends a message to the same channel
 | `.sendFile(file)` | Sends a file to the channel, file being `{ name: 'name.ext', buffer: Buffer }`
@@ -251,6 +252,42 @@ export default {
   }
 } as CommandOptions // this will enable types!
 ```
+
+# Cross cluster communication
+
+As the bot is clustered, there comes some challenges, like managing things that are simply not apart of the same process.
+
+Introducing Worker`.comms`, .comms is the entry point for all things cluster communication
+
+## Cache flow functions
+
+### `comms.getGuild(id: Snowflake)`
+
+Fetches a guild from it's clusters cache
+
+*Example*
+```js
+const guild = await worker.comms.getGuild('399688888739692552')
+console.log(guild.name) // JPBBots
+```
+
+## Management Functions
+
+### `comms.destroy()`
+
+Destroys entire bot process by killing the master process
+
+### `comms.log(msg: string)`
+
+Logs a message to the MasterOptions.log
+
+### `comms.restartCluster(id: ClusterID)`
+
+Restarts cluster by it's ID
+
+### `comms.restartShard(id: ShardID)`
+
+Restarts a shard by it's ID
 
 # In TypeScript
 

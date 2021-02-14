@@ -1,10 +1,10 @@
 import Collection from '@discordjs/collection';
 import Worker from '../../clustering/worker/Worker';
-import { InternalEvents } from './InternalEvents';
+import { CacheManager } from '../CacheManager';
 
 import { GatewayGuildMemberAddDispatchData } from 'discord-api-types'
 
-export function guilds (events: InternalEvents, worker: Worker) {
+export function guilds (events: CacheManager, worker: Worker) {
   worker.guilds = new Collection()
 
   events.add('GUILD_CREATE', (guild) => {
@@ -15,6 +15,7 @@ export function guilds (events: InternalEvents, worker: Worker) {
     delete guild.members
 
     guild.channels.forEach(channel => {
+      channel.guild_id = guild.id
       events.run('CHANNEL_CREATE', channel)
     })
     delete guild.channels

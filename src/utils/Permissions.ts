@@ -1,6 +1,6 @@
 import Collection from "@discordjs/collection"
 import { APIGuildMember, Snowflake } from "discord-api-types"
-import { DiscordEventMap } from "../typings/DiscordEventMap"
+import { CachedGuild, DiscordEventMap } from "../typings/Discord"
 
 export const bits = {
   createInvites: 0x00000001,
@@ -48,7 +48,7 @@ export class PermissionsUtils {
     return this.hasPerms(bit, bits[perm])
   }
 
-  static calculate (member: APIGuildMember, guild: DiscordEventMap['GUILD_CREATE'], roleList: Collection<Snowflake, DiscordEventMap['GUILD_ROLE_CREATE']['role']>, required: keyof typeof bits) {
+  static calculate (member: APIGuildMember, guild: CachedGuild, roleList: Collection<Snowflake, DiscordEventMap['GUILD_ROLE_CREATE']['role']>, required: keyof typeof bits) {
     if (guild.owner_id === member.user.id) return true
     return this.has(
       member.roles.reduce(
