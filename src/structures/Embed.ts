@@ -86,6 +86,22 @@ export class Embed {
   }
 
   /**
+   * Sets the image
+   * @param url URL of image
+   * @param width Optional fixed width
+   * @param height Optional fixed height
+   */
+  image (url: string, width?: number, height?: number) {
+    this.obj.image = {
+      url,
+      width,
+      height
+    }
+
+    return this
+  }
+
+  /**
    * Sets the footer
    * @param text Text for footer
    * @param icon Small icon on the bottom left
