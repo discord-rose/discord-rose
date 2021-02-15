@@ -4,7 +4,7 @@
   "description": "Advanced Discord Library",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "npm ci && rm -rf ./dist && tsc",
+    "build": "npm i && rm -rf ./dist && tsc",
     "prepublishOnly": "npm run build"
   },
   "repository": {
