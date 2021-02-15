@@ -16,6 +16,8 @@ Run `npm i --save discord-rose`
 
 ## Links
 
+[Support Server](https://discord.gg/EdpA6qRHhs)
+
 [NPM](https://npmjs.com/package/discord-rose), [GitHub](https://github.com/discord-rose/discord-rose)
 
 # Creating a bot
