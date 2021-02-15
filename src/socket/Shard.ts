@@ -1,5 +1,6 @@
 import Collection from "@discordjs/collection"
-import { GatewayGuildCreateDispatchData, GatewayReadyDispatchData, Snowflake } from "discord-api-types"
+import { GatewayGuildCreateDispatchData, GatewayOPCodes, GatewayPresenceUpdateData, GatewayReadyDispatchData, Snowflake } from "discord-api-types"
+import { OPEN } from "ws"
 import { Worker } from "../typings/lib"
 import { DiscordSocket } from './WebSocket'
 
@@ -45,6 +46,10 @@ export class Shard {
     })
   }
 
+  get ready () {
+    return this.ws.ws.readyState === OPEN && !this.unavailableGuilds
+  }
+
   async start (): Promise<void> {
     return new Promise(resolve => {
       this.ws.spawn(resolve)
@@ -68,5 +73,12 @@ export class Shard {
       this.ws.resuming = true
     }
     this.ws.ws.close(code, reason)
+  }
+
+  setPresence (presence: GatewayPresenceUpdateData) {
+    this.ws._send({
+      op: GatewayOPCodes.PresenceUpdate,
+      d: presence
+    })
   }
 }

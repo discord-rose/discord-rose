@@ -66,6 +66,16 @@ worker.on('MESSAGE_CREATE', (message) => {
 | log                    | function(string)    | console.log        | Log function supplied with debug messages, set to false to disable internal logging
 | ws                     | string              | Default            | Forcefully set WS URL, defaults to one gotten from gateway endpoint
 
+## Extra worker functions
+
+### `Worker.setStatus(type: string, name: string, status?: string, url?: string)`
+
+Sets the status easily, for example
+```js
+worker.setStatus('playing', 'Rocket League', 'online')
+```
+*Note: running this at the start of the file is possible, it waits until READY before executing*
+
 # Caching
 Discord-Rose comes with caching fully customizable. There is a .cache option in your MasterOptions
 ```js

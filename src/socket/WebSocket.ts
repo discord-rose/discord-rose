@@ -39,7 +39,7 @@ export class DiscordSocket extends EventEmitter {
     this.ws.once('close', (code, reason) => this.close(code, reason))
   }
 
-  private _send (data: GatewaySendPayload) {
+  public _send (data: GatewaySendPayload) {
     this.ws.send(JSON.stringify(data))
   }
 
@@ -66,7 +66,9 @@ export class DiscordSocket extends EventEmitter {
     } else if (msg.op === GatewayOPCodes.Reconnect) {
       this.shard.restart(false, 1012, 'Opcode 7 Restart')
     } else if (msg.op === GatewayOPCodes.InvalidSession) {
-      this.shard.restart(!msg.d, 1002, 'Invalid Session')
+      setTimeout(() => {
+        this.shard.restart(!msg.d, 1002, 'Invalid Session')
+      }, Math.ceil(Math.random() * 5) * 1000)
     } else if (msg.op === GatewayOPCodes.Hello) {
       if (this.resuming) {
         this._send({

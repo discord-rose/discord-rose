@@ -8,7 +8,7 @@ import Collection from '@discordjs/collection'
 import { Shard } from '../../socket/Shard'
 import { CacheManager } from '../../socket/CacheManager'
 
-import { APIUser, Snowflake } from 'discord-api-types'
+import { ActivityType, APIUser, PresenceUpdateStatus, Snowflake } from 'discord-api-types'
 
 import { CommandHandler } from '../../structures/CommandHandler'
 
@@ -51,6 +51,44 @@ export default class Worker extends EventEmitter {
       this.shards.set(shardNumbers[i], shard)
       await shard.register()
     }
+  }
+
+  /**
+   * Sets the status of the client
+   * @param type Type of status, e.g "playing" is "Playing Game!"
+   * @param name Name of status, in this case Game
+   * @param status Status type
+   * @param url Optional url for twitch stream
+   * @example
+   * worker.setStatus('playing', 'Rocket League', 'online') // Playing Rocket League
+   * // Twitch streams
+   * worker.setStatus('streaming', 'Rocket League', 'online', 'https://twitch.com/jpbberry')
+   */
+  setStatus (type: 'playing' | 'streaming' | 'listening' | 'competing', name: string, status: 'idle' | 'online' | 'dnd' | 'offline' | 'invisible' = 'online', url?: string) {
+    if (!this.ready) this.once('READY', () => { this.setStatus(type, name, status) })
+    this.shards.forEach(shard => {
+      shard.setPresence({
+        afk: false,
+        since: Date.now(),
+        status: status as PresenceUpdateStatus,
+        activities: [
+          {
+            name,
+            type: ({
+              playing: 0,
+              streaming: 1,
+              listening: 2,
+              competing: 5
+            })[type],
+            url
+          }
+        ]
+      })
+    })
+  }
+
+  get ready () {
+    return this.api && this.shards.every(x => x.ready)
   }
 
   log (data: string) {
