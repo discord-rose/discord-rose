@@ -44,7 +44,7 @@ export class Thread extends ThreadComms {
       const worker = this.worker
       try {
         let ev = eval(code)
-        if (ev.then) ev = await ev
+        if (ev.then) ev = await ev.catch(err => { error: err.message })
         respond(ev)
       } catch (err) {
         respond({ error: err.message })

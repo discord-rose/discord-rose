@@ -107,9 +107,9 @@ export class ThreadComms extends EventEmitter {
         case ThreadMethod.RESPONSE: {
           const command = this.commands.get(msg.i)
           if (!command) return
-          command(msg.d)
-
           this.commands.delete(msg.i)
+
+          command(msg.d)
           break
         }
         case ThreadMethod.TELL: {
@@ -135,7 +135,7 @@ export class ThreadComms extends EventEmitter {
     return new Promise((resolve, reject) => {
       const id = generateID(this.commands.keyArray())
       this.commands.set(id, (dat) => {
-        if (dat.error) reject(new Error(dat.error))
+        if (dat.error) resolve(new Error(dat.error))
 
         resolve(dat)
       })
