@@ -8,7 +8,9 @@ import Collection from '@discordjs/collection'
 import { Shard } from '../../socket/Shard'
 import { CacheManager } from '../../socket/CacheManager'
 
-import { ActivityType, APIUser, PresenceUpdateStatus, Snowflake } from 'discord-api-types'
+import { APIUser, PresenceUpdateStatus, Snowflake } from 'discord-api-types'
+
+import { guildShard } from '../../utils/UtilityFunctions'
 
 import { CommandHandler } from '../../structures/CommandHandler'
 
@@ -85,6 +87,16 @@ export default class Worker extends EventEmitter {
         ]
       })
     })
+  }
+
+  /**
+   * Gets shard in charge of specific guild
+   * @param id ID of guild
+   */
+  guildShard (id: Snowflake) {
+    const shard = this.shards.get(guildShard(id, this.options.shards as number))
+    if (!shard) throw new Error('Guild not on this cluster.')
+    return shard
   }
 
   get ready () {

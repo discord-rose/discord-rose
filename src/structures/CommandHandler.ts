@@ -3,6 +3,7 @@ import { APIMessage, MessageType } from "discord-api-types"
 import { CommandContext } from './CommandContext'
 
 import { CommandOptions, CommandType, CommandContext as ctx, Worker } from '../typings/lib'
+import Collection from "@discordjs/collection"
 
 type MiddlewareFunction = (ctx: ctx) => boolean | Promise<boolean>
 
@@ -10,7 +11,7 @@ export class CommandHandler {
   private added: boolean = false
 
   public middlewares: MiddlewareFunction[] = []
-  public commands: CommandOptions[]
+  public commands: Collection<CommandType, CommandOptions>
 
   constructor (private worker: Worker) {}
 
@@ -47,11 +48,11 @@ export class CommandHandler {
   add (command: CommandOptions): this {
     if (!this.added) {
       this.added = true
-      this.commands = []
+      this.commands = new Collection()
 
       this.worker.on('MESSAGE_CREATE', (data) => this._exec(data))
     }
-    this.commands.push(command)
+    this.commands.set(command.command, command)
 
     return this
   }

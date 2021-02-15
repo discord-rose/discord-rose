@@ -26,11 +26,21 @@ export class CommandContext {
     return this.worker.channels.get(this.message.channel_id)
   }
 
+  /**
+   * Member who sent the message
+   */
   get member (): APIGuildMember {
     return {
       ...this.message.member,
       user: this.message.author
     }
+  }
+  
+  /**
+   * Bot's memeber within the guild
+   */
+  get me () {
+    return this.worker.selfMember.get(this.message.guild_id)
   }
 
   /**
@@ -88,6 +98,6 @@ export class CommandContext {
   }
 
   myPerms (perms: keyof typeof bits): boolean {
-    return PermissionsUtils.calculate(this.worker.selfMember.get(this.message.guild_id), this.guild, this.worker.guildRoles.get(this.guild.id), perms)
+    return PermissionsUtils.calculate(this.me, this.guild, this.worker.guildRoles.get(this.guild.id), perms)
   }
 }

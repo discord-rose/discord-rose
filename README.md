@@ -76,6 +76,10 @@ worker.setStatus('playing', 'Rocket League', 'online')
 ```
 *Note: running this at the start of the file is possible, it waits until READY before executing*
 
+### `Worker.guildShard(id: Snowflake)` Returns Shard
+
+Gets the shard in charge of the guild via it's ID
+
 # Caching
 Discord-Rose comes with caching fully customizable. There is a .cache option in your MasterOptions
 ```js
@@ -238,6 +242,8 @@ Here are some in-house made middlewares made by the same people making this libr
 | `.args`           | Array of arguments after the initial command
 | `.guild`          | Guild (if in cache) where the message was ran
 | `.channel`        | Channel (if in cache) where the message was ran
+| `.member`         | Member who ran the command
+| `.me`             | Bot's member within the executing guild
 | `.prefix`         | The prefix the command was ran with
 | `.reply(msg)`     | Replies inline to the messaege
 | `.send(msg)`      | Sends a message to the same channel
