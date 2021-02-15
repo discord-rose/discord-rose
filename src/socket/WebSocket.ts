@@ -57,6 +57,8 @@ export class DiscordSocket extends EventEmitter {
 
       if ([GatewayDispatchEvents.GuildCreate, GatewayDispatchEvents.Ready].includes(msg.t)) return this.emit(msg.t, msg.d)
 
+      this.shard.worker.emit('*', msg)
+
       if (msg.t === 'READY') return // To satisfy typings
       this.shard.worker.emit(msg.t, msg.d)
     } else if (msg.op === GatewayOPCodes.Heartbeat) {
