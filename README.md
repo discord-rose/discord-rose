@@ -289,6 +289,10 @@ const guild = await worker.comms.getGuild('399688888739692552')
 console.log(guild.name) // JPBBots
 ```
 
+### `comms.broadcastEval(code: string)`
+
+Runs code on every bot cluster, returns an array of responses or errors
+
 ## Management Functions
 
 ### `comms.destroy()`
