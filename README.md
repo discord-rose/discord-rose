@@ -63,8 +63,6 @@ worker.on('MESSAGE_CREATE', (message) => {
 | cache                  | CacheOptions        | Default            | [CacheOptions](#caching)
 | log                    | function(string)    | console.log        | Log function supplied with debug messages, set to false to disable internal logging
 | ws                     | string              | Default            | Forcefully set WS URL, defaults to one gotten from gateway endpoint
-| warnings               | object              | all                | Warnings options
-| warnings.cachedIntents | boolean             | true               | Whether to warn when a cache is enabled but it's required intent is not
 
 # Caching
 Discord-Rose comes with caching fully customizable. There is a .cache option in your MasterOptions
@@ -75,7 +73,6 @@ Discord-Rose comes with caching fully customizable. There is a .cache option in 
   channels: true,
   self: true, // caches own member object, good for permissions
   members: false, // be warned, these two options
-  presences: false, // require special intents
   messages: false
 }
 ```
@@ -86,8 +83,29 @@ If you want to disable cache entirely, you can set `MasterOptions.cache` to `fal
 - `.channels` defines Worker.channels which is key'd by Channel ID and value'd by said channel's data
 - `.self` defines Worker.selfMember which is key'd by Guild ID and value'd by the clients subsequent member data in that server
 - `.members` defines Worker.members which is key'd by Guild ID and value'd by a collection, this collection is key'd by user ID and their member's data within the guild
-- `.presences` defines Worker.presences which is key'd by User ID and value'd by said user's presence data
 - `.messages` defines Worker.messages which is key'd by Channel ID and value'd by a collection, this collection is key'd by message ID and said message's data
+
+## Cache Control
+
+In order to optimize performance, the library offers the ability to only cache properties you really truly need.
+
+We absolutely recommend you do this, because most of the times, you rarely need more than 10% of the properties Discord provides you.
+
+Current the possible to control caches are `.guilds` `.roles` `.channels` and `.members` They can be changed via the MasterOptions.`cacheControl` option
+
+For example, only letting through some cache properties for guilds:
+
+```js
+const master = new Master('file.js', {
+  // ... rest of MasterOptions
+  cacheControl: {
+    guilds: ['name', 'owner_id', 'region'] // only will cache these properties
+  }
+})
+```
+*Note: all vital information, like ID's and things like role.guild_id, will be maintained no matter what*
+
+Properties that aren't kept that you might want to keep but aren't enabled by default: `role.permissions`, ...
 
 # Using the API
 
@@ -259,7 +277,7 @@ As the bot is clustered, there comes some challenges, like managing things that 
 
 Introducing Worker`.comms`, .comms is the entry point for all things cluster communication
 
-## Cache flow functions
+## Information Functions
 
 ### `comms.getGuild(id: Snowflake)`
 

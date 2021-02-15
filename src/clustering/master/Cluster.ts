@@ -26,13 +26,16 @@ export class Cluster extends ThreadComms {
       this.master.log(data)
     })
     this.on('RESTART_CLUSTER', ({ id }) => {
-      this.master.clusters.get(id)?.restart()
+      this.master.clusters.get(String(id))?.restart()
     })
     this.on('RESTART_SHARD', ({ id }) => {
       this.master.shardToCluster(id)?.restartShard(id)
     })
     this.on('GET_GUILD', async ({ id }, respond) => {
       respond(await this.master.guildToCluster(id)?.getGuild(id))
+    })
+    this.on('BROADCAST_EVAL', async (code, respond) => {
+      respond(await this.master.broadcastEval(code))
     })
   }
 
@@ -100,5 +103,13 @@ export class Cluster extends ThreadComms {
    */
   getGuild (id: Snowflake) {
     return this.sendCommand('GET_GUILD', { id })
+  }
+
+  /**
+   * Evals code on the cluster
+   * @param code Code to eval
+   */
+  eval (code: string) {
+    return this.sendCommand('EVAL', code)
   }
 }

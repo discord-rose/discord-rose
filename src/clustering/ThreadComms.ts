@@ -19,7 +19,7 @@ interface ThreadEvent {
   d: any
 }
 
-interface ThreadEvents {
+export interface ThreadEvents {
   START: {
     send: {
       shards: number[]
@@ -71,6 +71,14 @@ interface ThreadEvents {
     }
     receive: APIGuild
   }
+  EVAL: {
+    send: string
+    receive: any
+  }
+  BROADCAST_EVAL: {
+    send: string
+    receive: any[]
+  }
 }
 
 export class ThreadComms extends EventEmitter {
@@ -78,7 +86,7 @@ export class ThreadComms extends EventEmitter {
   private commands: Collection<string, (value?: any) => void> = new Collection()
 
   
-  on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve?: (data: ThreadEvents[K]['receive']) => void) => void) => this
+  on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve?: (data: ThreadEvents[K]['receive'] | { error: string }) => void) => void) => this
 
   emit<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], resolve?: (data: ThreadEvents[K]['receive']) => void): boolean {
     super.emit('*', event, data, resolve)
@@ -126,7 +134,11 @@ export class ThreadComms extends EventEmitter {
   public async sendCommand<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): Promise<ThreadEvents[K]['receive']> {
     return new Promise((resolve, reject) => {
       const id = generateID(this.commands.keyArray())
-      this.commands.set(id, resolve)
+      this.commands.set(id, (dat) => {
+        if (dat.error) reject(new Error(dat.error))
+
+        resolve(dat)
+      })
 
       this._send(ThreadMethod.COMMAND, event, id, data)
 

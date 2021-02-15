@@ -2,7 +2,7 @@ import Collection from '@discordjs/collection';
 import Worker from '../../clustering/worker/Worker';
 import { CacheManager } from '../CacheManager';
 
-import { GatewayGuildMemberAddDispatchData } from 'discord-api-types'
+import { APIGuild, GatewayGuildMemberAddDispatchData } from 'discord-api-types'
 
 export function guilds (events: CacheManager, worker: Worker) {
   worker.guilds = new Collection()
@@ -24,12 +24,22 @@ export function guilds (events: CacheManager, worker: Worker) {
       events.run('GUILD_ROLE_CREATE', { guild_id: guild.id, role })
     })
     delete guild.roles
+    delete guild.presences
+    
+    if (worker.options.cacheControl.guilds) {
+      const newGuild = {} as APIGuild
+      worker.options.cacheControl.guilds.forEach(key => {
+        newGuild[key] = guild[key] as never
+      })
+      newGuild.id = guild.id
+      guild = newGuild
+    }
 
     worker.guilds.set(guild.id, guild)
   })
 
   events.add('GUILD_UPDATE', (guild) => {
-    const currentGuild = worker.guilds.get(guild.id)
+    let currentGuild = worker.guilds.get(guild.id)
     if (!currentGuild) return
 
     currentGuild.name = guild.name
@@ -47,6 +57,15 @@ export function guilds (events: CacheManager, worker: Worker) {
     currentGuild.rules_channel_id = guild.rules_channel_id
     currentGuild.public_updates_channel_id = guild.public_updates_channel_id
     currentGuild.preferred_locale = guild.preferred_locale
+
+    if (worker.options.cacheControl.guilds) {
+      const newGuild = {} as APIGuild
+      worker.options.cacheControl.guilds.forEach(key => {
+        currentGuild[key] = guild[key] as never
+      })
+      newGuild.id = guild.id
+      currentGuild = newGuild
+    }
 
     worker.guilds.set(guild.id, currentGuild)
   })

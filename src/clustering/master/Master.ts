@@ -1,6 +1,10 @@
 import { RestManager } from '../../rest/Manager'
 import { Snowflake } from 'discord-api-types'
+import { DiscordEventMap, CachedGuild } from '../../typings/Discord'
+
 import { chunkShards, guildShard } from '../../utils/UtilityFunctions'
+
+import { ThreadEvents } from '../ThreadComms'
 
 import Collection from '@discordjs/collection'
 
@@ -46,9 +50,9 @@ export default class Master {
         channels: options.cache?.channels ?? true,
         self: options.cache?.self ?? true,
         members: options.cache?.members ?? false,
-        presences: options.cache?.presences ?? false,
         messages: options.cache?.messages ?? false
       },
+      cacheControl: options.cacheControl ?? {},
       ws: options.ws || null,
       intents: Array.isArray(options.intents)
         ? options.intents.reduce((a, b) => a | Intents[b], 0)
@@ -123,6 +127,23 @@ export default class Master {
     this.spawned = true
   }
 
+  /**
+   * Sends an event to all clusters
+   * @param event Event name
+   * @param data Event data
+   */
+  sendToAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): Promise<ThreadEvents[K]['receive'][]> {
+    return Promise.all(this.clusters.map(x => x.sendCommand(event, data)))
+  }
+
+  /**
+   * Evals code on every cluster
+   * @param code Code to eval
+   */
+  broadcastEval (code: string) {
+    return this.sendToAll('EVAL', code)
+  }
+
   shardToCluster (id: number) {
     for (let i = 0; i < this.chunks.length; i++) {
       if (this.chunks[i].includes(id)) return this.clusters.get(`${i}`)
@@ -144,9 +165,14 @@ interface CacheOptions {
   channels?: boolean
   self?: boolean
   members?: boolean
-  presences?: boolean
   messages?: boolean
-  reactions?: boolean
+}
+
+interface CacheControlOptions {
+  guilds?: (keyof CachedGuild)[]
+  roles?: (keyof DiscordEventMap['GUILD_ROLE_CREATE'])[]
+  channels?: (keyof DiscordEventMap['CHANNEL_CREATE'])[]
+  members?: (keyof DiscordEventMap['GUILD_MEMBER_ADD'])[]
 }
 
 const Intents = {
@@ -193,6 +219,10 @@ export interface BotOptions {
    * Cache options, this also sets your intents.
    */
   cache?: CacheOptions
+  /**
+   * Cache control option, to control what properties are cached
+   */
+  cacheControl?: CacheControlOptions
   /**
    * Custom logging function (false to disable)
    * @default console.log

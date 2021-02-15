@@ -29,6 +29,7 @@ export class Thread extends ThreadComms {
     })
     this.on('GET_GUILD', ({ id }, respond) => {
       const guild = this.worker.guilds.get(id) as APIGuild
+      if (!guild) respond({ error: 'Not in guild' })
 
       if (this.worker.guildRoles) {
         guild.roles = this.worker.guildRoles.get(guild.id).array()
@@ -38,6 +39,16 @@ export class Thread extends ThreadComms {
       }
 
       respond(guild)
+    })
+    this.on('EVAL', async (code, respond) => {
+      const worker = this.worker
+      try {
+        let ev = eval(code)
+        if (ev.then) ev = await ev
+        respond(ev)
+      } catch (err) {
+        respond({ error: err.message })
+      }
     })
   }
 
@@ -82,5 +93,13 @@ export class Thread extends ThreadComms {
    */
   getGuild (id: Snowflake) {
     return this.sendCommand('GET_GUILD', { id })
+  }
+
+  /**
+   * Eval code on every cluster
+   * @param code Code to eval
+   */
+  broadcastEval (code: string) {
+    return this.sendCommand('BROADCAST_EVAL', code)
   }
 }
