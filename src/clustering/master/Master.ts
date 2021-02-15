@@ -69,7 +69,7 @@ export default class Master {
     this.log = typeof options.log === 'undefined' ? console.log : options.log
     if (!this.log) this.log = () => {}
 
-    if (this.options.warnings) {
+    if (this.options.warnings && this.options.warnings.cachedIntents) {
       const cacheDeps = {
         guilds: 'GUILDS',
         roles: 'GUILDS',
@@ -210,7 +210,7 @@ export interface BotOptions {
   /**
    * Array of intents to enable if true, enables all, if undefined enables all non-priveleged intents.
    */
-  intents?: true | number | keyof typeof Intents
+  intents?: true | number | (keyof typeof Intents)[]
   /**
    * Amount of shards to add after requesting shards
    */
