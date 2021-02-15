@@ -293,6 +293,10 @@ console.log(guild.name) // JPBBots
 
 Runs code on every bot cluster, returns an array of responses or errors
 
+### `comms.masterEval(code: string)`
+
+Runs code on the master process
+
 ## Management Functions
 
 ### `comms.destroy()`

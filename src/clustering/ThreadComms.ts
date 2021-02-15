@@ -79,6 +79,10 @@ export interface ThreadEvents {
     send: string
     receive: any[]
   }
+  MASTER_EVAL: {
+    send: string
+    receive: any
+  }
 }
 
 export class ThreadComms extends EventEmitter {

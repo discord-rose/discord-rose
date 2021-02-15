@@ -37,6 +37,16 @@ export class Cluster extends ThreadComms {
     this.on('BROADCAST_EVAL', async (code, respond) => {
       respond(await this.master.broadcastEval(code))
     })
+    this.on('MASTER_EVAL', async (code, respond) => {
+      const master = this.master
+      try {
+        let ev = eval(code)
+        if (ev.then) ev = await ev.catch(err => { error: err.message })
+        respond(ev)
+      } catch (err) {
+        respond({ error: err.message })
+      }
+    })
   }
 
   public spawn (): Promise<void> {

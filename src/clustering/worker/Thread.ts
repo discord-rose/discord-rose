@@ -102,4 +102,8 @@ export class Thread extends ThreadComms {
   broadcastEval (code: string) {
     return this.sendCommand('BROADCAST_EVAL', code)
   }
+
+  masterEval (code: string) {
+    return this.sendCommand('MASTER_EVAL', code)
+  }
 }
