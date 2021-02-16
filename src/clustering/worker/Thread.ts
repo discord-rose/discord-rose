@@ -74,26 +74,26 @@ export class Thread extends ThreadComms {
 
   /**
    * Restarts a specific cluster
-   * @param id ID of cluster
+   * @param clusterId ID of cluster
    */
-  restartCluster (id: any) {
-    return this.sendCommand('RESTART_CLUSTER', { id })
+  restartCluster (clusterId: any) {
+    return this.sendCommand('RESTART_CLUSTER', { id: clusterId })
   }
 
   /**
    * Restarts a specific shard
-   * @param id ID of shard
+   * @param shardId ID of shard
    */
-  restartShard (id: any) {
-    return this.tell('RESTART_SHARD', { id })
+  restartShard (shardId: any) {
+    return this.tell('RESTART_SHARD', { id: shardId })
   }
 
   /**
    * Gets a cached guild across clusters
-   * @param id ID of guild
+   * @param guildId ID of guild
    */
-  getGuild (id: Snowflake) {
-    return this.sendCommand('GET_GUILD', { id })
+  getGuild (guildId: Snowflake) {
+    return this.sendCommand('GET_GUILD', { id: guildId })
   }
 
   /**
@@ -114,11 +114,11 @@ export class Thread extends ThreadComms {
 
   /**
    * Sends a webhook using the master process, useful for respecting ratelimits
-   * @param id ID of webhook
+   * @param webhookId ID of webhook
    * @param token Token of webhook
    * @param data Data for message
    */
-  sendWebhook (id: Snowflake, token: string, data: MessageTypes) {
-    return this.sendCommand('SEND_WEBHOOK', { id, token, data })
+  sendWebhook (webhookId: Snowflake, token: string, data: MessageTypes) {
+    return this.sendCommand('SEND_WEBHOOK', { id: webhookId, token, data })
   }
 }

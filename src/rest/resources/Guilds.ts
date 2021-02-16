@@ -6,11 +6,11 @@ export class GuildsResource {
 
   /**
    * Gets a guild
-   * @param id ID of guild
+   * @param guildId ID of guild
    * @param withCount Whether or not to add approximation counts
    */
-  get (id: Snowflake, withCount: boolean = false): Promise<RESTGetAPIGuildQuery> {
-    return this.rest.request('GET', `/guilds/${id}`, {
+  get (guildId: Snowflake, withCount: boolean = false): Promise<RESTGetAPIGuildQuery> {
+    return this.rest.request('GET', `/guilds/${guildId}`, {
       query: {
         with_counts: withCount
       }
@@ -19,60 +19,60 @@ export class GuildsResource {
 
   /**
    * Edit a guild
-   * @param id ID of guild
+   * @param guildId ID of guild
    * @param data Data to edit with
    */
-  edit (id: Snowflake, data: RESTPatchAPIGuildJSONBody): Promise<RESTPatchAPIGuildJSONBody> {
-    return this.rest.request('PATCH', `/guilds/${id}`, {
+  edit (guildId: Snowflake, data: RESTPatchAPIGuildJSONBody): Promise<RESTPatchAPIGuildJSONBody> {
+    return this.rest.request('PATCH', `/guilds/${guildId}`, {
       body: data
     })
   }
 
   /**
    * Leaves a guild
-   * @param id ID of guild
+   * @param guildId ID of guild
    */
-  leave (id: Snowflake): Promise<never> {
-    return this.rest.request('DELETE', `/users/@me/guilds/${id}`) as never
+  leave (guildId: Snowflake): Promise<never> {
+    return this.rest.request('DELETE', `/users/@me/guilds/${guildId}`) as never
   }
 
   /**
    * Gets a list of guilds
-   * @param id ID of guild
+   * @param guildId ID of guild
    */
-  getRoles (id: Snowflake): Promise<RESTGetAPIGuildRolesResult> {
-    return this.rest.request('GET', `/guilds/${id}/roles`)
+  getRoles (guildId: Snowflake): Promise<RESTGetAPIGuildRolesResult> {
+    return this.rest.request('GET', `/guilds/${guildId}/roles`)
   }
 
   /**
    * Creates a new role
-   * @param id ID of guild
+   * @param guildId ID of guild
    * @param data Data for new role
    */
-  createRole (id: Snowflake, data: RESTPostAPIGuildRoleJSONBody): Promise<RESTPostAPIGuildRoleResult> {
-    return this.rest.request('POST', `/guilds/${id}/roles`, {
+  createRole (guildId: Snowflake, data: RESTPostAPIGuildRoleJSONBody): Promise<RESTPostAPIGuildRoleResult> {
+    return this.rest.request('POST', `/guilds/${guildId}/roles`, {
       body: data
     })
   }
 
   /**
    * Edits an existing role
-   * @param id ID of guild
-   * @param role ID of role
+   * @param guildId ID of guild
+   * @param roleId ID of role
    * @param data New data for role
    */
-  editRole (id: Snowflake, role: Snowflake, data: RESTPatchAPIGuildRoleJSONBody): Promise<RESTPatchAPIGuildRoleResult> {
-    return this.rest.request('PATCH', `/guilds/${id}/roles/${role}`, {
+  editRole (guildId: Snowflake, roleId: Snowflake, data: RESTPatchAPIGuildRoleJSONBody): Promise<RESTPatchAPIGuildRoleResult> {
+    return this.rest.request('PATCH', `/guilds/${guildId}/roles/${roleId}`, {
       body: data
     })
   }
 
   /**
    * Deletes a role
-   * @param id ID of guild
-   * @param role ID of role
+   * @param guildId ID of guild
+   * @param roleId ID of role
    */
-  deleteRole (id: Snowflake, role: Snowflake): Promise<never> {
-    return this.rest.request('DELETE', `/guilds/${id}/roles/${role}`) as never
+  deleteRole (guildId: Snowflake, roleId: Snowflake): Promise<never> {
+    return this.rest.request('DELETE', `/guilds/${guildId}/roles/${roleId}`) as never
   }
 }

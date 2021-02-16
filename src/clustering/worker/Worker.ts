@@ -91,10 +91,10 @@ export default class Worker extends EventEmitter {
 
   /**
    * Gets shard in charge of specific guild
-   * @param id ID of guild
+   * @param guildId ID of guild
    */
-  guildShard (id: Snowflake) {
-    const shard = this.shards.get(guildShard(id, this.options.shards as number))
+  guildShard (guildId: Snowflake) {
+    const shard = this.shards.get(guildShard(guildId, this.options.shards as number))
     if (!shard) throw new Error('Guild not on this cluster.')
     return shard
   }

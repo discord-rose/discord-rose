@@ -9,35 +9,35 @@ export class UsersResource {
 
   /**
    * Get user
-   * @param id User ID or defaults to own user
+   * @param userId User ID or defaults to own user
    */
-  get (id: Snowflake|'@me' = '@me'): Promise<RESTGetAPIUserResult> {
-    return this.rest.request('GET', `/users/${id}`)
+  get (userId: Snowflake|'@me' = '@me'): Promise<RESTGetAPIUserResult> {
+    return this.rest.request('GET', `/users/${userId}`)
   }
 
   /**
    * Creates a DM channel
-   * @param id ID of user
+   * @param userId ID of user
    */
-  async createDM (id: Snowflake): Promise<RESTPostAPICurrentUserCreateDMChannelResult> {
-    if (this.dmCache.has(id)) return this.dmCache.get(id)
+  async createDM (userId: Snowflake): Promise<RESTPostAPICurrentUserCreateDMChannelResult> {
+    if (this.dmCache.has(userId)) return this.dmCache.get(userId)
     const channel = await this.rest.request('POST', '/users/@me/channels', {
       body: {
-        recipient_id: id
+        recipient_id: userId
       }
     })
-    this.dmCache.set(id, channel)
+    this.dmCache.set(userId, channel)
 
     return channel
   }
 
   /**
    * Send a DM to user (create's DM channel for you)
-   * @param id ID of user
+   * @param userId ID of user
    * @param message Message data
    */
-  async dm (id: Snowflake, message: MessageTypes) {
-    const channel = await this.createDM(id)
+  async dm (userId: Snowflake, message: MessageTypes) {
+    const channel = await this.createDM(userId)
     return this.rest.messages.send(channel.id, message)
   }
 }

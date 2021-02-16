@@ -144,18 +144,18 @@ export default class Master {
     return this.sendToAll('EVAL', code)
   }
 
-  shardToCluster (id: number) {
+  shardToCluster (shardId: number) {
     for (let i = 0; i < this.chunks.length; i++) {
-      if (this.chunks[i].includes(id)) return this.clusters.get(`${i}`)
+      if (this.chunks[i].includes(shardId)) return this.clusters.get(`${i}`)
     }
   }
 
-  guildToShard (id: Snowflake) {
-    return guildShard(id, this.options.shards as number)
+  guildToShard (guildId: Snowflake) {
+    return guildShard(guildId, this.options.shards as number)
   }
 
-  guildToCluster (id: Snowflake) {
-    return this.shardToCluster(this.guildToShard(id))
+  guildToCluster (guildId: Snowflake) {
+    return this.shardToCluster(this.guildToShard(guildId))
   }
 }
 

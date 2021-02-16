@@ -6,11 +6,11 @@ export class MembersResource {
 
   /**
    * Gets a member
-   * @param guild ID of guild
-   * @param id ID of member
+   * @param guildId ID of guild
+   * @param roleId ID of member
    */
-  get (guild: Snowflake, id: Snowflake): Promise<RESTGetAPIGuildMemberResult> {
-    return this.rest.request('GET', `/guilds/${guild}/members/${id}`)
+  get (guildId: Snowflake, memberId: Snowflake): Promise<RESTGetAPIGuildMemberResult> {
+    return this.rest.request('GET', `/guilds/${guildId}/members/${memberId}`)
   }
 
   /**
@@ -18,32 +18,32 @@ export class MembersResource {
    * @param guild ID of guild
    * @param query Query for search
    */
-  getMany (guild: Snowflake, query: RESTGetAPIGuildMembersSearchQuery): Promise<RESTGetAPIGuildMembersSearchResult> {
-    return this.rest.request('GET', `/guilds/${guild}/members`, {
+  getMany (guildId: Snowflake, query: RESTGetAPIGuildMembersSearchQuery): Promise<RESTGetAPIGuildMembersSearchResult> {
+    return this.rest.request('GET', `/guilds/${guildId}/members`, {
       query
     })
   }
 
   /**
    * Edits a member
-   * @param guild ID of guild
-   * @param id ID of member
+   * @param guildId ID of guild
+   * @param memberId ID of member
    * @param data New data for member
    */
-  edit (guild: Snowflake, id: Snowflake, data: RESTPatchAPIGuildMemberJSONBody): Promise<RESTPatchAPIGuildMemberResult> {
-    return this.rest.request('PATCH', `/guilds/${guild}/members/${id}`, {
+  edit (guildId: Snowflake, memberId: Snowflake, data: RESTPatchAPIGuildMemberJSONBody): Promise<RESTPatchAPIGuildMemberResult> {
+    return this.rest.request('PATCH', `/guilds/${guildId}/members/${memberId}`, {
       body: data
     })
   }
 
   /**
    * Sets a members nickname
-   * @param guild ID of guild
+   * @param guildId ID of guild
    * @param id ID of member (or leave blank for self)
    * @param nick New nickname (null to reset)
    */
-  setNickname (guild: Snowflake, id: Snowflake | '@me' = '@me', nick?: string): Promise<RESTPatchAPICurrentGuildMemberNicknameResult> {
-    return this.rest.request('PATCH', `/guilds/${guild}/members/${id}/nick`, {
+  setNickname (guildId: Snowflake, memberId: Snowflake | '@me' = '@me', nick?: string): Promise<RESTPatchAPICurrentGuildMemberNicknameResult> {
+    return this.rest.request('PATCH', `/guilds/${guildId}/members/${memberId}/nick`, {
       body: {
         nick
       }
@@ -52,54 +52,54 @@ export class MembersResource {
 
   /**
    * Adds a role to member
-   * @param guild ID of guild
-   * @param id ID of member
-   * @param role ID of role to add
+   * @param guildId ID of guild
+   * @param memberId ID of member
+   * @param roleId ID of role to add
    */
-  addRole (guild: Snowflake, id: Snowflake, role: Snowflake): Promise<never> {
-    return this.rest.request('PUT', `/guilds/${guild}/members/${id}/roles/${role}`) as never
+  addRole (guildId: Snowflake, memberId: Snowflake, roleId: Snowflake): Promise<never> {
+    return this.rest.request('PUT', `/guilds/${guildId}/members/${memberId}/roles/${roleId}`) as never
   }
 
   /**
    * Removes a role from the member
-   * @param guild ID of guild
-   * @param id ID of member
-   * @param role ID of role
+   * @param guildId ID of guild
+   * @param memberId ID of member
+   * @param roleId ID of role
    */
-  removeRole (guild: Snowflake, id: Snowflake, role: Snowflake): Promise<never> {
-    return this.rest.request('DELETE', `/guilds/${guild}/members/${id}/roles/${role}`) as never
+  removeRole (guildId: Snowflake, memberId: Snowflake, roleId: Snowflake): Promise<never> {
+    return this.rest.request('DELETE', `/guilds/${guildId}/members/${memberId}/roles/${roleId}`) as never
   }
 
   /**
    * Kicks a member
-   * @param guild ID of guild
-   * @param id ID of member
+   * @param guildId ID of guild
+   * @param memberId ID of member
    * @param reason Reason for kick
    */
-  kick (guild: Snowflake, id: Snowflake, reason: string): Promise<never> {
-    return this.rest.request('DELETE', `/guilds/${guild}/members/${id}`, {
+  kick (guildId: Snowflake, memberId: Snowflake, reason: string): Promise<never> {
+    return this.rest.request('DELETE', `/guilds/${guildId}/members/${memberId}`, {
       reason
     }) as never
   }
 
   /**
    * Bans a member
-   * @param guild ID of guild
-   * @param id ID of member
+   * @param guildId ID of guild
+   * @param memberId ID of member
    * @param extra Extra, reason for ban and since days of messages to remove
    */
-  ban (guild: Snowflake, id: Snowflake, extra?: RESTPutAPIGuildBanJSONBody): Promise<never> {
-    return this.rest.request('PUT', `/guilds/${guild}/bans/${id}`, {
+  ban (guildId: Snowflake, memberId: Snowflake, extra?: RESTPutAPIGuildBanJSONBody): Promise<never> {
+    return this.rest.request('PUT', `/guilds/${guildId}/bans/${memberId}`, {
       body: extra
     }) as never
   }
 
   /**
    * Unbans a member
-   * @param guild ID of guild
-   * @param id ID of member
+   * @param guildId ID of guild
+   * @param memberId ID of member
    */
-  unban (guild: Snowflake, id: Snowflake): Promise<never> {
-    return this.rest.request('DELETE', `/guilds/${guild}/bans/${id}`) as never
+  unban (guildId: Snowflake, memberId: Snowflake): Promise<never> {
+    return this.rest.request('DELETE', `/guilds/${guildId}/bans/${memberId}`) as never
   }
 }

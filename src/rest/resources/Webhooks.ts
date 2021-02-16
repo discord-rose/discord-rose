@@ -18,15 +18,15 @@ export class WebhooksResource {
 
   /**
    * 
-   * @param id ID of 
+   * @param webhookId ID of 
    * @param token 
    */
-  get (id: Snowflake, token: string): Promise<RESTGetAPIWebhookResult> {
-    return this.rest.request('GET', `/webhooks/${id}/${token}`)
+  get (webhookId: Snowflake, token: string): Promise<RESTGetAPIWebhookResult> {
+    return this.rest.request('GET', `/webhooks/${webhookId}/${token}`)
   }
 
-  send (id: Snowflake, token: string, data: MessageTypes): Promise<APIMessage> {
-    return this.rest.request('POST', `/webhooks/${id}/${token}`, {
+  send (webhookId: Snowflake, token: string, data: MessageTypes): Promise<APIMessage> {
+    return this.rest.request('POST', `/webhooks/${webhookId}/${token}`, {
       query: {
         wait: 'true'
       },

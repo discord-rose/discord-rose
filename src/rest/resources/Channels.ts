@@ -6,29 +6,29 @@ export class ChannelsResource {
 
   /**
    * Gets a channel
-   * @param id ID of channel
+   * @param channelId ID of channel
    */
-  get (id: Snowflake): Promise<APIChannel> {
-    return this.rest.request('GET', `/channels/${id}`) as Promise<APIChannel>
+  get (channelId: Snowflake): Promise<APIChannel> {
+    return this.rest.request('GET', `/channels/${channelId}`) as Promise<APIChannel>
   }
 
   /**
    * Edits a channel
-   * @param id ID of channel
+   * @param channelId ID of channel
    * @param patch Data to edit with
    */
-  edit (id: Snowflake, patch: RESTPatchAPIChannelJSONBody): Promise<RESTPatchAPIChannelResult> {
-    return this.rest.request('PATCH', `/channels/${id}`, {
+  edit (channelId: Snowflake, patch: RESTPatchAPIChannelJSONBody): Promise<RESTPatchAPIChannelResult> {
+    return this.rest.request('PATCH', `/channels/${channelId}`, {
       body: patch
     }) as Promise<RESTPatchAPIChannelResult>
   }
 
   /**
    * Delete a channel
-   * @param id ID of channel
+   * @param channelId ID of channel
    */
-  delete (id: Snowflake): Promise<RESTDeleteAPIChannelResult> {
-    return this.rest.request('DELETE', `/channels/${id}`) as Promise<RESTDeleteAPIChannelResult>
+  delete (channelId: Snowflake): Promise<RESTDeleteAPIChannelResult> {
+    return this.rest.request('DELETE', `/channels/${channelId}`) as Promise<RESTDeleteAPIChannelResult>
   }
 
   private _setPermission (channelId: Snowflake, id: Snowflake, data: RESTPutAPIChannelPermissionJSONBody): Promise<RESTPutAPIChannelPermissionResult> {
@@ -39,13 +39,13 @@ export class ChannelsResource {
 
   /**
    * Sets permissions for a specific role
-   * @param id ID of channel
-   * @param role Role to set permissions for
+   * @param channelId ID of channel
+   * @param roleId Role to set permissions for
    * @param allow BitWise permissions to allow
    * @param deny BitWise permissions to deny
    */
-  setRolePermission (id: Snowflake, role: Snowflake, allow?: Permissions, deny?: Permissions): Promise<RESTPutAPIChannelPermissionResult> {
-    return this._setPermission(id, role, {
+  setRolePermission (channelId: Snowflake, roleId: Snowflake, allow?: Permissions, deny?: Permissions): Promise<RESTPutAPIChannelPermissionResult> {
+    return this._setPermission(channelId, roleId, {
       allow,
       deny,
       type: OverwriteType.Role
@@ -54,13 +54,13 @@ export class ChannelsResource {
 
   /**
    * Sets permissions for a specific member
-   * @param id ID of channel
-   * @param member Member to set permissions for
+   * @param channelId ID of channel
+   * @param memberId Member to set permissions for
    * @param allow BitWise permissions to allow
    * @param deny BitWise permissions to deny
    */
-  setMemberPermission (id: Snowflake, member: Snowflake, allow?: Permissions, deny?: Permissions): Promise<RESTPutAPIChannelPermissionResult> {
-    return this._setPermission(id, member, {
+  setMemberPermission (channelId: Snowflake, memberId: Snowflake, allow?: Permissions, deny?: Permissions): Promise<RESTPutAPIChannelPermissionResult> {
+    return this._setPermission(channelId, memberId, {
       allow,
       deny,
       type: OverwriteType.Member
@@ -69,68 +69,73 @@ export class ChannelsResource {
 
   /**
    * Remove permissions for a certain overwrite
-   * @param id ID of channel
+   * @param channelId ID of channel
    * @param overwriteId Member or Role ID
    */
-  deletePermission (id: Snowflake, overwriteId: Snowflake): Promise<RESTDeleteAPIChannelPermissionResult> {
-    return this.rest.request('DELETE', `/channels/${id}/permissions/${overwriteId}`) as Promise<RESTDeleteAPIChannelPermissionResult >
+  deletePermission (channelId: Snowflake, overwriteId: Snowflake): Promise<RESTDeleteAPIChannelPermissionResult> {
+    return this.rest.request('DELETE', `/channels/${channelId}/permissions/${overwriteId}`) as Promise<RESTDeleteAPIChannelPermissionResult >
   }
 
   /**
    * Gets invites in channel
-   * @param id ID of channel
+   * @param channelId ID of channel
    */
-  getInvites (id: Snowflake): Promise<RESTGetAPIChannelInvitesResult> {
-    return this.rest.request('GET', `/channels/${id}/invites`) as Promise<RESTGetAPIChannelInvitesResult>
+  getInvites (channelId: Snowflake): Promise<RESTGetAPIChannelInvitesResult> {
+    return this.rest.request('GET', `/channels/${channelId}/invites`) as Promise<RESTGetAPIChannelInvitesResult>
   }
 
   /**
    * Creates an invite for the channel
-   * @param id ID of channel
+   * @param channelId ID of channel
    * @param invite Invite settings
    */
-  createInvite (id: Snowflake, invite: RESTPostAPIChannelInviteJSONBody = {} ): Promise<RESTPostAPIChannelInviteResult> {
-    return this.rest.request('POST', `/channels/${id}/invites`, {
+  createInvite (channelId: Snowflake, invite: RESTPostAPIChannelInviteJSONBody = {} ): Promise<RESTPostAPIChannelInviteResult> {
+    return this.rest.request('POST', `/channels/${channelId}/invites`, {
       body: invite
     })
   }
 
   /**
    * Gets pins in a channel
-   * @param id ID of channel
+   * @param channelId ID of channel
    */
-  getPins (id: Snowflake): Promise<RESTGetAPIChannelPinsResult> {
-    return this.rest.request('GET', `/channels/${id}/pins`)
+  getPins (channelId: Snowflake): Promise<RESTGetAPIChannelPinsResult> {
+    return this.rest.request('GET', `/channels/${channelId}/pins`)
   }
 
   /**
    * Pins a message
-   * @param id ID of channel
+   * @param channelId ID of channel
    * @param message ID of message to pin
    */
-  addPin (id: Snowflake, message: Snowflake): Promise<RESTPutAPIChannelPinResult> {
-    return this.rest.request('PUT', `/channels/${id}/pins/${message}`) as RESTPutAPIChannelPinResult
+  addPin (channelId: Snowflake, message: Snowflake): Promise<RESTPutAPIChannelPinResult> {
+    return this.rest.request('PUT', `/channels/${channelId}/pins/${message}`) as RESTPutAPIChannelPinResult
   }
 
   /**
    * Removes a pin
-   * @param id ID of channel
+   * @param channelId ID of channel
    * @param message ID of message to unpin
    */
-  deletePin (id: Snowflake, message: Snowflake): Promise<RESTDeleteAPIChannelPinResult> {
-    return this.rest.request('DELETE', `/channels/${id}/pins/${message}`) as RESTDeleteAPIChannelPinResult
+  deletePin (channelId: Snowflake, message: Snowflake): Promise<RESTDeleteAPIChannelPinResult> {
+    return this.rest.request('DELETE', `/channels/${channelId}/pins/${message}`) as RESTDeleteAPIChannelPinResult
   }
 
   /**
    * Starts typing in channel
-   * @param id ID of channel
+   * @param channelId ID of channel
    */
-  typing (id: Snowflake): Promise<RESTPostAPIChannelTypingResult> {
-    return this.rest.request('POST', `/channels/${id}/typing`) as RESTPostAPIChannelTypingResult 
+  typing (channelId: Snowflake): Promise<RESTPostAPIChannelTypingResult> {
+    return this.rest.request('POST', `/channels/${channelId}/typing`) as RESTPostAPIChannelTypingResult 
   }
 
-  getMessages (id: Snowflake, query: RESTGetAPIChannelMessagesQuery): Promise<RESTGetAPIChannelMessagesResult> {
-    return this.rest.request(`GET`, `/channels/${id}/messages`, {
+  /**
+   * Gets message from a channel
+   * @param channelId ID of channel
+   * @param query Query for request
+   */
+  getMessages (channelId: Snowflake, query: RESTGetAPIChannelMessagesQuery): Promise<RESTGetAPIChannelMessagesResult> {
+    return this.rest.request(`GET`, `/channels/${channelId}/messages`, {
       query: query
     })
   }
