@@ -9,6 +9,10 @@ type MiddlewareFunction = (ctx: ctx) => boolean | Promise<boolean>
 
 export class CommandHandler {
   private added: boolean = false
+  private _options: CommandHandlerOptions = {
+    default: {},
+    bots: false
+  }
 
   public middlewares: MiddlewareFunction[] = []
   public commands: Collection<CommandType, CommandOptions>
@@ -17,6 +21,15 @@ export class CommandHandler {
 
   public prefixFunction?: (message: APIMessage) => Promise<string> | string
 
+  /**
+   * Sets Command Handler options
+   * @param opts Options
+   */
+  options (opts: CommandHandlerOptions) {
+    this._options = opts
+
+    return this
+  }
   /**
    * Sets a prefix fetcher
    * @param fn String of prefix or Function to choose prefix with
@@ -52,7 +65,10 @@ export class CommandHandler {
 
       this.worker.on('MESSAGE_CREATE', (data) => this._exec(data))
     }
-    this.commands.set(command.command, command)
+    this.commands.set(command.command, {
+      ...this._options.default,
+      ...command
+    })
 
     return this
   }
@@ -65,7 +81,7 @@ export class CommandHandler {
   }
 
   private async _exec (data: APIMessage) {
-    if (!data.content) return
+    if (!data.content || (!this._options.bots && data.author.bot)) return
     if (![MessageType.DEFAULT, MessageType.REPLY].includes(data.type)) return
 
     let prefix: string
@@ -107,4 +123,16 @@ export class CommandHandler {
       console.error(err)
     }
   }
+}
+
+interface CommandHandlerOptions {
+  /**
+   * Default CommandOptions ('command', 'exec', and 'aliases' cannot be defaulted)
+   */
+  default?: Pick<CommandOptions, Exclude<keyof CommandOptions, 'command' | 'exec' | 'aliases'>>
+  /**
+   * Allow commands from bots
+   * @default false
+   */
+  bots?: boolean
 }

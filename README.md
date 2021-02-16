@@ -161,6 +161,7 @@ worker.commands
   .setPrefix('!')
   .add({
     command: 'hello',
+    aliases: ['h'] // you can also add aliases!
     exec: (ctx) => {
       ctx.reply('World!') // replies inline
     }
@@ -176,19 +177,19 @@ worker.commands
 
 *`.command` and .`aliases`[] can also be RegExp statements*
 
-## Other properties
+## Command Handler Options
 
-### aliases
-Aliases allow for other commands to register with the same command, CommandOptions`.aliases` is an array of alternative command checks.
-```js
-.add({
-  command: 'help',
-  aliases: ['h'],
-  exec: () => // ...
-})
-```
+Command handler options can be set via the CommandHandler.options(opts) method *which can be daisy chained*
 
-## Middleware
+The options are
+
+| Option           | Type                               | Default | Description
+|------------------|------------------------------------|---------|----------
+| `.default`       | [CommandOptions](#command-handler) | none    | Sets the default properties, other than .exec, .command, .aliases, useful for [middlewares](#middlewares)
+| `.bots`          | boolean                            | false   | Whether bots can run commands
+| `.mentionPrefix` | boolean                            | true    | Whether or not to use @Bot as a default additional prefix
+
+## Middlewares
 
 CommandHandler comes with the .middleware() function which can be daisy chained as well.
 This will make this function run everytime before a command is executed, which should return a boolean about whether or not the command should run.
