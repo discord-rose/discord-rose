@@ -64,6 +64,14 @@ export class CommandContext {
   }
 
   /**
+   * Sends a message to the user who ran the command
+   * @param data Data for message
+   */
+  dm (data: MessageTypes) {
+    return this.worker.api.users.dm(this.message.author.id, data)
+  }
+
+  /**
    * Sends a file to the same channel
    * @param file File buffer
    * @param extra Extra message options

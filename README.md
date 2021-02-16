@@ -262,6 +262,7 @@ Here are some in-house made middlewares made by the same people making this libr
 | `.prefix`         | The prefix the command was ran with
 | `.reply(msg)`     | Replies inline to the messaege
 | `.send(msg)`      | Sends a message to the same channel
+| `.dm(msg)`        | DM's the user who ran the command
 | `.sendFile(file)` | Sends a file to the channel, file being `{ name: 'name.ext', buffer: Buffer }`
 | `.delete()`       | Deletes the invoking command
 | `.hasPerms(perm)` | Whether or not the invoking user has `perm` (doesn't work well if role/guild cache is off)
