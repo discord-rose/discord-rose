@@ -63,6 +63,7 @@ worker.on('MESSAGE_CREATE', (message) => {
 | intents                | number or Intents[] | undefined          | What intents to use, set to `undefined` to use non-priveleged intents and `true` to enable all
 | shardOffset            | number              | 0                  | Amount of shards to add after requesting shards
 | cache                  | CacheOptions        | Default            | [CacheOptions](#caching)
+| cacheControl           | CacheControlOptions | None               | [Cache Control](#cache-control)
 | log                    | function(string)    | console.log        | Log function supplied with debug messages, set to false to disable internal logging
 | ws                     | string              | Default            | Forcefully set WS URL, defaults to one gotten from gateway endpoint
 
