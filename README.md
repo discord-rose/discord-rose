@@ -177,6 +177,8 @@ worker.commands
 
 *`.command` and .`aliases`[] can also be RegExp statements*
 
+*`.setPrefix()` can also take an array of prefixes*
+
 ## Command Handler Options
 
 Command handler options can be set via the CommandHandler.options(opts) method *which can be daisy chained*
