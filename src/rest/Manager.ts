@@ -9,6 +9,7 @@ import { ChannelsResource } from './resources/Channels'
 import { MessagesResource } from './resources/Messages'
 import { GuildsResource } from './resources/Guilds'
 import { MembersResource } from './resources/Members'
+import { UsersResource } from './resources/Users'
 import { MiscResource } from './resources/Misc'
 
 export class RestManager {
@@ -19,6 +20,7 @@ export class RestManager {
   public messages = new MessagesResource(this)
   public guilds = new GuildsResource(this)
   public members = new MembersResource(this)
+  public users = new UsersResource(this)
   public misc = new MiscResource(this)
 
   constructor (private token: string) {

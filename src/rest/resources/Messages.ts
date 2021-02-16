@@ -14,7 +14,7 @@ export type MessageTypes = RESTPostAPIChannelMessageJSONBody | string | Embed
 export class MessagesResource {
   constructor (private rest: RestManager) {}
 
-  private _formMessage (message: MessageTypes): RESTPostAPIChannelMessageJSONBody {
+  static _formMessage (message: MessageTypes): RESTPostAPIChannelMessageJSONBody {
     if (message instanceof Embed) return {
       embed: message.render()
     }
@@ -30,7 +30,7 @@ export class MessagesResource {
    * @param data Message data
    */
   send (channel: Snowflake, data: MessageTypes, reply?: APIMessageReferenceSend): Promise<RESTPostAPIChannelMessageResult> {
-    const msg = this._formMessage(data)
+    const msg = MessagesResource._formMessage(data)
     if (reply) msg.message_reference = reply
 
     return this.rest.request('POST', `/channels/${channel}/messages`, {
@@ -47,7 +47,7 @@ export class MessagesResource {
   sendFile (channel: Snowflake, data: { name: string, buffer: Buffer }, extra?: MessageTypes): Promise<RESTPostAPIChannelMessageResult> {
     const formData = new FormData()
     formData.append('file', data.buffer, data.name || 'file')
-    if (extra) formData.append('payload_json', JSON.stringify(this._formMessage(extra)))
+    if (extra) formData.append('payload_json', JSON.stringify(MessagesResource._formMessage(extra)))
 
     return this.rest.request('POST', `/channels/${channel}/messages`, {
       body: formData,
@@ -82,7 +82,7 @@ export class MessagesResource {
    */
   edit (channel: Snowflake, id: Snowflake, data: MessageTypes): Promise<RESTPatchAPIChannelMessageResult> {
     return this.rest.request('PATCH', `/channels/${channel}/messages/${id}`, {
-      body: this._formMessage(data)
+      body: MessagesResource._formMessage(data)
     })
   }
 
