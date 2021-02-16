@@ -4,7 +4,8 @@ import { Worker, MessagePort } from 'worker_threads'
 import { generateID } from '../utils/UtilityFunctions'
 import { BotOptions } from "./master/Master";
 import Collection from '@discordjs/collection'
-import { APIGuild, Snowflake } from "discord-api-types";
+import { APIGuild, APIMessage, Snowflake } from "discord-api-types";
+import { MessageTypes } from "../rest/resources/Messages";
 
 enum ThreadMethod {
   COMMAND,
@@ -82,6 +83,14 @@ export interface ThreadEvents {
   MASTER_EVAL: {
     send: string
     receive: any
+  }
+  SEND_WEBHOOK: {
+    send: {
+      id: Snowflake
+      token: string
+      data: MessageTypes
+    }
+    receive: APIMessage
   }
 }
 

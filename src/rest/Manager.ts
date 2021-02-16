@@ -11,6 +11,7 @@ import { GuildsResource } from './resources/Guilds'
 import { MembersResource } from './resources/Members'
 import { UsersResource } from './resources/Users'
 import { MiscResource } from './resources/Misc'
+import { WebhooksResource } from './resources/Webhooks'
 
 export class RestManager {
   public buckets: Cache<string, Bucket>
@@ -22,6 +23,7 @@ export class RestManager {
   public members = new MembersResource(this)
   public users = new UsersResource(this)
   public misc = new MiscResource(this)
+  public webhooks = new WebhooksResource(this)
 
   constructor (private token: string) {
     this.token = token

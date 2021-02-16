@@ -1,5 +1,6 @@
 import { APIGuild, Snowflake } from 'discord-api-types';
 import { workerData, parentPort } from 'worker_threads'
+import { MessageTypes } from '../../rest/resources/Messages';
 import { Worker } from "../../typings/lib"
 
 import { ThreadComms } from "../ThreadComms";
@@ -103,7 +104,21 @@ export class Thread extends ThreadComms {
     return this.sendCommand('BROADCAST_EVAL', code)
   }
 
+  /**
+   * Evals code on the master process
+   * @param code Code to eval
+   */
   masterEval (code: string) {
     return this.sendCommand('MASTER_EVAL', code)
+  }
+
+  /**
+   * Sends a webhook using the master process, useful for respecting ratelimits
+   * @param id ID of webhook
+   * @param token Token of webhook
+   * @param data Data for message
+   */
+  sendWebhook (id: Snowflake, token: string, data: MessageTypes) {
+    return this.sendCommand('SEND_WEBHOOK', { id, token, data })
   }
 }

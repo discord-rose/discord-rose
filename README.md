@@ -135,6 +135,7 @@ Current resources:
 - `api.messages`
 - `api.members`
 - `api.guilds`
+- `api.users`
 - `api.misc`
 
 These all have typings so type them out to see what functions there are, for example, here's how to send a message.
@@ -331,6 +332,12 @@ Runs code on every bot cluster, returns an array of responses or errors
 ### `comms.masterEval(code: string)` *Note: master = Master*
 
 Runs code on the master process
+
+## Utility Functions
+
+### `comms.sendWebhook(id: Snowflake, token: string, data: Message)`
+
+Sends a webhook via the master process, immensely useful if you use webhooks a lot, useful to avoid hitting ratelimits and getting in trouble for it.
 
 ## Management Functions
 

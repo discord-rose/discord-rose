@@ -18,7 +18,7 @@ import path from 'path'
  */
 export default class Master {
   public options: BotOptions
-  private rest: RestManager
+  public rest: RestManager
 
   public sharder = new Sharder(this)
   public chunks: number[][]
