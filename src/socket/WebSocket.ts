@@ -5,7 +5,7 @@ import { GatewayDispatchEvents, GatewayDispatchPayload, GatewayHelloData, Gatewa
 
 export class DiscordSocket extends EventEmitter {
   private connectTimeout: NodeJS.Timeout
-  private sequence: number
+  private sequence: number = null
   private sessionID: string
   private hbInterval: NodeJS.Timeout
   private waitingHeartbeat: false | number
@@ -98,6 +98,7 @@ export class DiscordSocket extends EventEmitter {
       this.hbInterval = setInterval(this._heartbeat.bind(this), (msg.d as unknown as GatewayHelloData).heartbeat_interval)
       this.waitingHeartbeat = false
       this.heartbeatRetention = 0
+      this._heartbeat()
     } else if (msg.op === GatewayOPCodes.HeartbeatAck) {
       this.heartbeatRetention = 0
       this.shard.ping = Date.now() - (this.waitingHeartbeat as number)
