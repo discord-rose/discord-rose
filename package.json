@@ -1,6 +1,6 @@
 {
   "name": "discord-rose",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Advanced Discord Library",
   "main": "./dist/index.js",
   "scripts": {
