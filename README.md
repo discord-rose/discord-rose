@@ -191,6 +191,17 @@ The options are
 | `.bots`          | boolean                            | false   | Whether bots can run commands
 | `.mentionPrefix` | boolean                            | true    | Whether or not to use @Bot as a default additional prefix
 
+For example
+
+```js
+worker.commands
+  .options({
+    bots: true
+  })
+  .add({...})
+```
+Will allow for bots run commands
+
 ## Middlewares
 
 CommandHandler comes with the .middleware() function which can be daisy chained as well.
