@@ -13,15 +13,25 @@ import { Sharder } from './Sharder'
 
 import path from 'path'
 
+type Complete<T> = {
+  [P in keyof Required<T>]: Pick<T, P> extends Required<Pick<T, P>> ? T[P] : (T[P] | undefined);
+}
+
+export interface CompleteBotOptions extends Complete<BotOptions> {
+  cache: Complete<CacheOptions>,
+  cacheControl: Complete<CacheControlOptions>
+  ws: string
+}
+
 /**
  * Master process controller
  */
 export default class Master {
-  public options: BotOptions
-  public rest: RestManager
+  public options: CompleteBotOptions = {} as CompleteBotOptions
+  public rest = {} as RestManager
 
   public sharder = new Sharder(this)
-  public chunks: number[][]
+  public chunks: number[][] = [[]]
   public clusters: Collection<string, Cluster> = new Collection()
   public fileName: string
   public spawned: boolean = false
@@ -41,10 +51,17 @@ export default class Master {
 
     this.options = {
       token: options.token,
-      shards: options.shards || 'auto',
+      shards: options.shards,
       shardsPerCluster: options.shardsPerCluster || 5,
       shardOffset: options.shardOffset || 0,
-      cache: options.cache === false ? {} : {
+      cache: options.cache === false ? {
+        guilds: false,
+        roles: false,
+        channels: false,
+        self: false,
+        members: false,
+        messages: false
+      } : {
         guilds: options.cache?.guilds ?? true,
         roles: options.cache?.roles ?? true,
         channels: options.cache?.channels ?? true,
@@ -52,8 +69,13 @@ export default class Master {
         members: options.cache?.members ?? false,
         messages: options.cache?.messages ?? false
       },
-      cacheControl: options.cacheControl ?? {},
-      ws: options.ws || null,
+      cacheControl: options.cacheControl as Complete<CacheControlOptions> ?? {
+        channels: false,
+        guilds: false,
+        members: false,
+        roles: false
+      },
+      ws: options.ws || '',
       intents: Array.isArray(options.intents)
         ? options.intents.reduce((a, b) => a | Intents[b], 0)
         : options.intents === true
@@ -63,27 +85,21 @@ export default class Master {
             : Object.values(Intents).reduce((a, b) => a | b) &~ Intents['GUILD_MEMBERS'] &~ Intents['GUILD_PRESENCES'],
       warnings: {
         cachedIntents: options.warnings?.cachedIntents ?? true
-      }
+      },
+      log: options.log
     }
 
     this.log = typeof options.log === 'undefined' ? console.log : options.log
     if (!this.log) this.log = () => {}
 
     if (this.options.warnings && this.options.warnings.cachedIntents) {
-      const cacheDeps = {
-        guilds: 'GUILDS',
-        roles: 'GUILDS',
-        channels: 'GUILDS',
-        members: 'GUILD_MEMBERS',
-        presences: 'GUILD_PRESENCES',
-        messages: 'GUILD_MESSAGES'
-      }
+      const warn = (key: string, intent: string) => console.warn(`WARNING: CacheOptions.${key} was turned on, but is missing the ${intent} intent. Meaning your cache with be empty. Either turn this on, or if it's intentional set Options.warnings.cachedIntents to false.`)
 
-      Object.keys(cacheDeps).forEach(key => {
-        if (this.options.cache[key] && ((this.options.intents as number) & Intents[cacheDeps[key]]) === 0) {
-          console.warn(`WARNING: CacheOptions.${key} was turned on, but is missing the ${cacheDeps[key]} intent. Meaning your cache with be empty. Either turn this on, or if it's intentional set Options.warnings.cachedIntents to false.`)
-        }
-      })
+      if (this.options.cache.guilds && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('guilds', 'GUILDS')
+      if (this.options.cache.roles && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('roles', 'GUILDS')
+      if (this.options.cache.channels && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('channels', 'GUILDS')
+      if (this.options.cache.members && (((this.options.intents as number) & Intents.GUILD_MEMBERS) === 0)) warn('members', 'GUILD_MEMBERS')
+      if (this.options.cache.messages && (((this.options.intents as number) & Intents.GUILD_MESSAGES) === 0)) warn('messages', 'GUILD_MESSAGES')
     }
 
     this.log('Starting Master.')
@@ -100,10 +116,11 @@ export default class Master {
     if (!this.options.ws) this.options.ws = gatewayRequest.url
 
     if (this.options.shards === 'auto') this.options.shards = gatewayRequest.shards
-    this.options.shards += this.options.shardOffset
+    if (typeof this.options.shards !== 'number') this.options.shards = 1
+    this.options.shards += this.options?.shardOffset || 0
     this.log(`Spawning ${this.options.shards} shards.`)
 
-    this.chunks = chunkShards(this.options.shards, this.options.shardsPerCluster)
+    this.chunks = chunkShards(this.options?.shards || 1, this.options.shardsPerCluster || 5)
 
     const promises = []
 
@@ -169,10 +186,10 @@ interface CacheOptions {
 }
 
 interface CacheControlOptions {
-  guilds?: (keyof CachedGuild)[]
-  roles?: (keyof DiscordEventMap['GUILD_ROLE_CREATE'])[]
-  channels?: (keyof DiscordEventMap['CHANNEL_CREATE'])[]
-  members?: (keyof DiscordEventMap['GUILD_MEMBER_ADD'])[]
+  guilds?: (keyof CachedGuild)[] | false
+  roles?: (keyof DiscordEventMap['GUILD_ROLE_CREATE']['role'])[] | false
+  channels?: (keyof DiscordEventMap['CHANNEL_CREATE'])[] | false
+  members?: (keyof DiscordEventMap['GUILD_MEMBER_ADD'])[] | false
 }
 
 const Intents = {

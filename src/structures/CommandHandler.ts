@@ -16,7 +16,7 @@ export class CommandHandler {
   }
 
   public middlewares: MiddlewareFunction[] = []
-  public commands: Collection<CommandType, CommandOptions>
+  public commands = {} as Collection<CommandType, CommandOptions>
 
   constructor (private worker: Worker) {}
 
@@ -66,7 +66,7 @@ export class CommandHandler {
 
       this.worker.on('MESSAGE_CREATE', (data) => this._exec(data))
     }
-    this.commands.set(command.command, {
+    this.commands?.set(command.command, {
       ...this._options.default,
       ...command
     })
@@ -85,7 +85,7 @@ export class CommandHandler {
     if (!data.content || (!this._options.bots && data.author.bot)) return
     if (![MessageType.DEFAULT, MessageType.REPLY].includes(data.type)) return
 
-    let prefix: string | string[]
+    let prefix: string | string[] | undefined
     if (this.prefixFunction) {
       prefix = await this.prefixFunction(data)
       if (!Array.isArray(prefix)) prefix = [prefix]
@@ -96,9 +96,9 @@ export class CommandHandler {
 
     const args = data.content.slice(prefix ? prefix.length : 0).split(/\s/)
     if (args[0] === '') args.shift()
-    const command = args.shift()
+    const command = args.shift() as string
 
-    const cmd = this.commands.find(x => this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)))
+    const cmd = this.commands.find(x => (this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)) as boolean))
     if (!cmd) return
 
     const ctx = new CommandContext(this.worker, data, cmd, prefix as string)

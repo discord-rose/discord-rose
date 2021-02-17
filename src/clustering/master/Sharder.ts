@@ -3,7 +3,7 @@ import Master from "./Master"
 import { wait } from '../../utils/UtilityFunctions'
 
 export class Sharder {
-  public shards = []
+  public shards: number[] = []
   private looping: boolean = false
 
   constructor (public master: Master) {}
@@ -14,7 +14,7 @@ export class Sharder {
     if (!this.looping && this.master.spawned) this.loop()
   }
 
-  async loop () {
+  async loop (): Promise<void> {
     this.looping = true
     const next = this.shards.shift()
     if (typeof next === 'undefined') {
@@ -22,7 +22,7 @@ export class Sharder {
       return
     }
 
-    await this.master.shardToCluster(next).sendCommand('START_SHARD', { id: next })
+    await this.master.shardToCluster(next)?.sendCommand('START_SHARD', { id: next })
       .catch(() => {
         this.master.log(`Shard ${next} failed to start in time. Continuing and will try again later.`)
 

@@ -107,10 +107,9 @@ export class Embed {
    * @param icon Small icon on the bottom left
    */
   footer (text?: string, icon?: string) {
-    this.obj.footer = {
-      text,
-      icon_url: icon
-    }
+    if (!this.obj.footer) this.obj.footer = { text: '' }
+    if (text) this.obj.footer.text = text
+    if (icon) this.obj.footer.icon_url = icon
 
     return this
   }
@@ -130,6 +129,7 @@ export class Embed {
    * @param reply Whether or not to do so in an inline reply (defaults to true)
    */
   send (reply: boolean = true) {
+    if (!this.sendback) return
     return this.sendback(this, reply)
   }
 

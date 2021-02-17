@@ -1,4 +1,4 @@
-import { RESTGetAPIUserResult, RESTPostAPICurrentUserCreateDMChannelResult, Snowflake } from 'discord-api-types';
+import { APIChannel, RESTGetAPIUserResult, RESTPostAPICurrentUserCreateDMChannelResult, Snowflake } from 'discord-api-types';
 import { Cache } from '../../utils/Cache';
 import { RestManager } from '../Manager'
 import { MessageTypes } from './Messages'
@@ -20,7 +20,7 @@ export class UsersResource {
    * @param userId ID of user
    */
   async createDM (userId: Snowflake): Promise<RESTPostAPICurrentUserCreateDMChannelResult> {
-    if (this.dmCache.has(userId)) return this.dmCache.get(userId)
+    if (this.dmCache.has(userId)) return this.dmCache.get(userId) as APIChannel
     const channel = await this.rest.request('POST', '/users/@me/channels', {
       body: {
         recipient_id: userId

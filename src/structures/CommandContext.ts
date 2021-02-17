@@ -1,4 +1,4 @@
-import { APIGuildMember, APIMessage } from "discord-api-types";
+import { APIGuildMember, APIMessage, APIGuild, APIChannel, APIRole, Snowflake } from "discord-api-types";
 
 import { Embed } from './Embed'
 import { MessageTypes } from "../rest/resources/Messages";
@@ -6,6 +6,8 @@ import { MessageTypes } from "../rest/resources/Messages";
 import { CommandOptions, Worker } from '../typings/lib'
 
 import { PermissionsUtils, bits } from '../utils/Permissions'
+import { DiscordEventMap } from "../typings/Discord";
+import Collection from "@discordjs/collection";
 
 export class CommandContext {
   public args: string[] = []
@@ -16,14 +18,14 @@ export class CommandContext {
    * Guild where the message was sent
    */
   get guild () {
-    return this.worker.guilds.get(this.message.guild_id)
+    return this.worker.guilds.get(this.message.guild_id as Snowflake) as APIGuild
   }
 
   /**
    * Channel where the message was sent
    */
   get channel () {
-    return this.worker.channels.get(this.message.channel_id)
+    return this.worker.channels.get(this.message.channel_id as Snowflake) as APIChannel
   }
 
   /**
@@ -33,14 +35,14 @@ export class CommandContext {
     return {
       ...this.message.member,
       user: this.message.author
-    }
+    } as APIGuildMember
   }
   
   /**
    * Bot's memeber within the guild
    */
-  get me () {
-    return this.worker.selfMember.get(this.message.guild_id)
+  get me (): APIGuildMember {
+    return this.worker.selfMember.get(this.message.guild_id as Snowflake) as APIGuildMember
   }
 
   /**
@@ -102,10 +104,10 @@ export class CommandContext {
   }
 
   hasPerms (perms: keyof typeof bits): boolean {
-    return PermissionsUtils.calculate(this.member, this.guild, this.worker.guildRoles.get(this.guild.id), perms)
+    return PermissionsUtils.calculate(this.member, this.guild, this.worker.guildRoles.get(this.guild.id) as Collection<any, APIRole>, perms)
   }
 
   myPerms (perms: keyof typeof bits): boolean {
-    return PermissionsUtils.calculate(this.me, this.guild, this.worker.guildRoles.get(this.guild.id), perms)
+    return PermissionsUtils.calculate(this.me, this.guild, this.worker.guildRoles.get(this.guild.id) as Collection<any, APIRole>, perms)
   }
 }

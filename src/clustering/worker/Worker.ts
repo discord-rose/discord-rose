@@ -1,4 +1,4 @@
-import { BotOptions } from '../master/Master'
+import { CompleteBotOptions } from '../master/Master'
 import { Thread } from './Thread'
 
 import { DiscordEventMap, CachedGuild } from '../../typings/Discord'
@@ -17,32 +17,32 @@ import { CommandHandler } from '../../structures/CommandHandler'
 import { RestManager } from '../../rest/Manager'
 
 export default class Worker extends EventEmitter {
-  on: <K extends keyof DiscordEventMap>(event: K, listener?: (data:  DiscordEventMap[K]) => void) => this
+  on: <K extends keyof DiscordEventMap>(event: K, listener?: (data:  DiscordEventMap[K]) => void) => this = this.on
 
-  once: <K extends keyof DiscordEventMap>(event: K, listener?: (data: DiscordEventMap[K]) => void) => this
+  once: <K extends keyof DiscordEventMap>(event: K, listener?: (data: DiscordEventMap[K]) => void) => this = this.once
 
-  emit: <K extends keyof DiscordEventMap>(event: K, data: DiscordEventMap[K]) => boolean
+  emit: <K extends keyof DiscordEventMap>(event: K, data: DiscordEventMap[K]) => boolean = this.emit
 
-  off: <K extends keyof DiscordEventMap>(event: K, listener?: (data: DiscordEventMap[K]) => void) => this
+  off: <K extends keyof DiscordEventMap>(event: K, listener?: (data: DiscordEventMap[K]) => void) => this = this.off
 
-  removeAllListeners: <K extends keyof DiscordEventMap>(event?: K) => this
+  removeAllListeners: <K extends keyof DiscordEventMap>(event?: K) => this = this.removeAllListeners
 
-  public options: BotOptions
+  public options: CompleteBotOptions = {} as CompleteBotOptions
   public shards: Collection<number, Shard> = new Collection()
 
-  public api: RestManager
+  public api = {} as RestManager
   public commands = new CommandHandler(this)
   public comms: Thread = new Thread(this)
 
-  public guilds: Collection<Snowflake, CachedGuild>
-  public guildRoles: Collection<Snowflake, Collection<Snowflake, DiscordEventMap['GUILD_ROLE_CREATE']['role']>>
-  public channels: Collection<Snowflake, DiscordEventMap['CHANNEL_CREATE']>
-  public selfMember: Collection<Snowflake, DiscordEventMap['GUILD_MEMBER_ADD']>
-  public members: Collection<Snowflake, Collection<Snowflake, DiscordEventMap['GUILD_MEMBER_ADD']>>
+  public guilds: Collection<Snowflake, CachedGuild> = new Collection()
+  public guildRoles: Collection<Snowflake, Collection<Snowflake, DiscordEventMap['GUILD_ROLE_CREATE']['role']>> = new Collection()
+  public channels: Collection<Snowflake, DiscordEventMap['CHANNEL_CREATE']> = new Collection()
+  public selfMember: Collection<Snowflake, DiscordEventMap['GUILD_MEMBER_ADD']> = new Collection()
+  public members: Collection<Snowflake, Collection<Snowflake, DiscordEventMap['GUILD_MEMBER_ADD']>> = new Collection()
 
-  public user: APIUser
+  public user = {} as APIUser
 
-  public cacheManager: CacheManager
+  public cacheManager = {} as CacheManager
 
   async start (shardNumbers: number[]) {
     this.api = new RestManager(this.options.token)

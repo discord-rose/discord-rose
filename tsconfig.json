@@ -4,6 +4,7 @@
     "target": "ES2017",
     "moduleResolution": "node",
     "declaration": true,
+    "strict": true,
     "lib": ["ES6"],
     "module": "commonjs",
     "outDir": "dist",

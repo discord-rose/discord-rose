@@ -4,7 +4,7 @@ import { ThreadComms } from "../ThreadComms";
 import { Snowflake } from "discord-api-types";
 
 export class Cluster extends ThreadComms {
-  private thread: Worker
+  private thread?: Worker
   private started = false
 
   public dying = false
@@ -32,7 +32,7 @@ export class Cluster extends ThreadComms {
       this.master.shardToCluster(id)?.restartShard(id)
     })
     this.on('GET_GUILD', async ({ id }, respond) => {
-      respond(await this.master.guildToCluster(id)?.getGuild(id))
+      respond(await this.master.guildToCluster(id)?.getGuild(id) || { error: 'Not In Guild' })
     })
     this.on('BROADCAST_EVAL', async (code, respond) => {
       respond(await this.master.broadcastEval(code))
@@ -41,9 +41,11 @@ export class Cluster extends ThreadComms {
       const master = this.master
       try {
         let ev = eval(code)
-        if (ev.then) ev = await ev.catch(err => { error: err.message })
+        if (ev.then) ev = await ev.catch((err: Error) => { error: err.message })
+        // @ts-ignore eval can be any
         respond(ev)
       } catch (err) {
+        // @ts-ignore eval can be any
         respond({ error: err.message })
       }
     })
@@ -79,7 +81,7 @@ export class Cluster extends ThreadComms {
   start () {
     this.started = true
     return this.sendCommand('START', {
-      shards: this.master.chunks[this.id],
+      shards: this.master.chunks[Number(this.id)],
       options: this.master.options
     })
   }

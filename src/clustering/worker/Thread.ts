@@ -1,5 +1,5 @@
 import { APIGuild, Snowflake } from 'discord-api-types';
-import { workerData, parentPort } from 'worker_threads'
+import { workerData, parentPort, MessagePort } from 'worker_threads'
 import { MessageTypes } from '../../rest/resources/Messages';
 import { Worker } from "../../typings/lib"
 
@@ -10,7 +10,7 @@ export class Thread extends ThreadComms {
 
   constructor (private worker: Worker) {
     super()
-    super.register(parentPort)
+    super.register(parentPort as MessagePort)
 
     this.on('START', async (event, respond) => {
       this.worker.options = event.options
@@ -21,7 +21,10 @@ export class Thread extends ThreadComms {
     })
     this.on('START_SHARD', async (event, respond) => {
       const shard = this.worker.shards.get(event.id)
-      if (!shard) console.error('Shard doesn\'t exist.')
+      if (!shard) {
+        respond({ error: 'Shard doesn\'t exist' })
+        return
+      }
       await shard.start()
       respond({})
     })
@@ -33,7 +36,7 @@ export class Thread extends ThreadComms {
       if (!guild) respond({ error: 'Not in guild' })
 
       if (this.worker.guildRoles) {
-        guild.roles = this.worker.guildRoles.get(guild.id).array()
+        guild.roles = this.worker.guildRoles.get(guild.id)?.array() || []
       }
       if (this.worker.channels) {
         guild.channels = this.worker.channels.filter(x => x.guild_id === guild.id).array()
@@ -45,9 +48,11 @@ export class Thread extends ThreadComms {
       const worker = this.worker
       try {
         let ev = eval(code)
-        if (ev.then) ev = await ev.catch(err => { error: err.message })
+        if (ev.then) ev = await ev.catch((err: Error) => { error: err.message })
+        // @ts-ignore eval can be any
         respond(ev)
       } catch (err) {
+        // @ts-ignore eval can be any
         respond({ error: err.message })
       }
     })

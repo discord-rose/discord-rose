@@ -49,7 +49,7 @@ export class PermissionsUtils {
   }
 
   static calculate (member: APIGuildMember, guild: CachedGuild, roleList: Collection<Snowflake, DiscordEventMap['GUILD_ROLE_CREATE']['role']>, required: keyof typeof bits) {
-    if (guild.owner_id === member.user.id) return true
+    if (guild.owner_id === member.user?.id) return true
     return this.has(
       member.roles.reduce(
         (a, b) => a | Number(roleList.get(b)?.permissions),

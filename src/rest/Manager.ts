@@ -14,8 +14,8 @@ import { MiscResource } from './resources/Misc'
 import { WebhooksResource } from './resources/Webhooks'
 
 export class RestManager {
-  public buckets: Cache<string, Bucket>
-  public global?: Promise<void>
+  public buckets: Cache<string, Bucket> = new Cache(60000)
+  public global: Promise<void> | null = null
 
   public channels = new ChannelsResource(this)
   public messages = new MessagesResource(this)
@@ -25,12 +25,7 @@ export class RestManager {
   public misc = new MiscResource(this)
   public webhooks = new WebhooksResource(this)
 
-  constructor (private token: string) {
-    this.token = token
-    this.buckets = new Cache(60000)
-
-    this.global = null
-  }
+  constructor (private token: string) {}
 
   private _key (route: string): string {
     const bucket = []
@@ -75,11 +70,11 @@ export class RestManager {
     headers.set('User-Agent', 'DiscordBot (Discord-Rose, v0)')
     
     if (options.headers) Object.keys(options.headers).forEach(key => {
-      headers.set(key, options.headers[key])
+      headers.set(key, options.headers?.[key] as string)
     })
 
     const res = await fetch(`https://discord.com/api/v7${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
-      method, headers, body: options.body ? (options.parser || JSON.stringify)(options.body) : null
+      method, headers, body: options.body ? (options.parser || JSON.stringify)(options.body) : undefined
     })
 
     const json = res.status === 204 ? { success: true } : await res.json()

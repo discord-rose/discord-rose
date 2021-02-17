@@ -26,19 +26,19 @@ export class CacheManager {
     const cache = this.worker.options.cache
 
     if (cache.guilds) guilds(this, this.worker)
-    else worker.guilds = createNulledCollection('guilds') as unknown as Collection<null, null>
+    else worker.guilds = createNulledCollection('guilds') as unknown as typeof worker.guilds
 
     if (cache.roles) roles(this, this.worker)
-    else worker.guildRoles = createNulledCollection('roles') as unknown as Collection<null, null>
+    else worker.guildRoles = createNulledCollection('roles') as unknown as typeof worker.guildRoles
 
     if (cache.channels) channels(this, this.worker)
-    else worker.channels = createNulledCollection('channels') as unknown as Collection<null, null>
+    else worker.channels = createNulledCollection('channels') as unknown as typeof worker.channels
 
     if (cache.self) self(this, this.worker)
-    else worker.selfMember = createNulledCollection('self') as unknown as Collection<null, null>
+    else worker.selfMember = createNulledCollection('self') as unknown as typeof worker.selfMember
 
     if (cache.members) members(this, this.worker)
-    else worker.members = createNulledCollection('member') as unknown as Collection<null, null>
+    else worker.members = createNulledCollection('member') as unknown as typeof worker.members
   }
 
   add <K extends keyof DiscordEventMap> (event: K, fn: (data: DiscordEventMap[K]) => void) {

@@ -4,15 +4,15 @@ import { EventEmitter } from 'events'
 import { GatewayDispatchEvents, GatewayDispatchPayload, GatewayHelloData, GatewayIdentifyData, GatewayOPCodes, GatewayResumeData, GatewaySendPayload } from "discord-api-types"
 
 export class DiscordSocket extends EventEmitter {
-  private connectTimeout: NodeJS.Timeout
-  private sequence: number = null
-  private sessionID: string
-  private hbInterval: NodeJS.Timeout
-  private waitingHeartbeat: false | number
-  private heartbeatRetention: number
+  private connectTimeout?: NodeJS.Timeout
+  private sequence: number | null = null
+  private sessionID: string | null = null
+  private hbInterval: NodeJS.Timeout | null = null
+  private waitingHeartbeat: false | number = false
+  private heartbeatRetention: number = 0
 
-  public ws: WebSocket
-  public connected: boolean
+  public ws: WebSocket | null = null
+  public connected: boolean = false
   public resuming: boolean = false
   public dying: boolean = false
 
@@ -40,7 +40,7 @@ export class DiscordSocket extends EventEmitter {
   }
 
   public _send (data: GatewaySendPayload) {
-    this.ws.send(JSON.stringify(data))
+    this.ws?.send(JSON.stringify(data))
   }
 
   private _handleMessage (data: WebSocket.Data) {
@@ -51,7 +51,7 @@ export class DiscordSocket extends EventEmitter {
     if (msg.op === GatewayOPCodes.Dispatch) {
       if ([GatewayDispatchEvents.Ready, GatewayDispatchEvents.Resumed].includes(msg.t)) {
         this.connected = true
-        clearTimeout(this.connectTimeout)
+        clearTimeout(this.connectTimeout as NodeJS.Timeout)
       }
       if (msg.t === GatewayDispatchEvents.Ready) this.sessionID = msg.d.session_id
 
@@ -75,8 +75,8 @@ export class DiscordSocket extends EventEmitter {
           op: GatewayOPCodes.Resume,
           d: {
             token: this.shard.worker.options.token,
-            session_id: this.sessionID,
-            seq: this.sequence
+            session_id: this.sessionID as string,
+            seq: this.sequence as number
           }
         })
         this.shard.worker.log(`Shard ${this.shard.id} resuming.`)

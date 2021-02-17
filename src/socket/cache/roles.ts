@@ -41,7 +41,7 @@ export function roles (events: CacheManager, worker: Worker) {
     if (worker.options.cacheControl.roles) {
       const newRole = {} as APIRole
       worker.options.cacheControl.roles.forEach(key => {
-        newRole[key] = currentRole[key] as never
+        newRole[key] = (currentRole as APIRole)[key] as never
       })
       newRole.id = currentRole.id
       currentRole = newRole
@@ -53,7 +53,7 @@ export function roles (events: CacheManager, worker: Worker) {
   events.add('GUILD_ROLE_DELETE', (role) => {
     const guildRoles = worker.guildRoles.get(role.guild_id)
 
-    guildRoles.delete(role.role_id)
+    guildRoles?.delete(role.role_id)
   })
 
   events.add('GUILD_DELETE', (guild) => {

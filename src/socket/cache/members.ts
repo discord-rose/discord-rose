@@ -1,5 +1,5 @@
 import Collection from '@discordjs/collection';
-import { GatewayGuildMemberAddDispatchData } from 'discord-api-types';
+import { GatewayGuildMemberAddDispatchData, Snowflake } from 'discord-api-types';
 import Worker from '../../clustering/worker/Worker';
 import { CacheManager } from '../CacheManager';
 
@@ -23,13 +23,13 @@ export function members (events: CacheManager, worker: Worker) {
       member = newMember
     }
 
-    guildMembers.set(member.user.id, member)
+    guildMembers.set(member.user?.id as Snowflake, member)
   })
 
   events.add('GUILD_MEMBER_UPDATE', (member) => {
     let guildMembers = worker.members.get(member.guild_id)
     if (!guildMembers) return
-    let currentMember = guildMembers.get(member.user.id)
+    let currentMember = guildMembers.get(member.user?.id as Snowflake)
     if (!currentMember) return
 
     currentMember.nick = member.nick
@@ -38,14 +38,14 @@ export function members (events: CacheManager, worker: Worker) {
     if (worker.options.cacheControl.members) {
       const newMember = {} as GatewayGuildMemberAddDispatchData
       worker.options.cacheControl.members.forEach(key => {
-        newMember[key] = currentMember[key] as never
+        newMember[key] = (currentMember as GatewayGuildMemberAddDispatchData)[key] as never
       })
       newMember.guild_id = member.guild_id
       newMember.user = member.user
       currentMember = newMember
     }
 
-    guildMembers.set(member.user.id, currentMember)
+    guildMembers.set(member.user?.id as Snowflake, currentMember)
   })
 
   events.add('GUILD_MEMBER_REMOVE', (member) => {

@@ -16,8 +16,8 @@ export class Cache<K, V> extends Collection<K, V> {
    * Get
    * @param {*} key Get key
    */
-  public get (key: K): V {
-    if (!super.has(key)) return null
+  public get (key: K): V | undefined {
+    if (!super.has(key)) return undefined
 
     this._resetTimer(key)
 
@@ -37,7 +37,7 @@ export class Cache<K, V> extends Collection<K, V> {
   }
 
   public _resetTimer (key: K, cb?: () => {}): any {
-    if (this.timeouts.has(key)) return this.timeouts.get(key).refresh()
+    if (this.timeouts.has(key)) return this.timeouts.get(key)?.refresh()
     this.timeouts.set(key, setTimeout(() => {
       super.delete(key)
       this.timeouts.delete(key)

@@ -1,4 +1,4 @@
-import { RESTGetAPIGuildPreviewResult, RESTGetAPIGuildQuery, RESTGetAPIGuildRolesResult, RESTPatchAPIGuildJSONBody, RESTPatchAPIGuildRoleJSONBody, RESTPatchAPIGuildRoleResult, RESTPostAPIGuildRoleJSONBody, RESTPostAPIGuildRoleResult, RESTPostAPIGuildsJSONBody, RESTPostAPIGuildsResult, Snowflake } from "discord-api-types";
+import { RESTGetAPIGuildQuery, RESTGetAPIGuildRolesResult, RESTPatchAPIGuildJSONBody, RESTPatchAPIGuildRoleJSONBody, RESTPatchAPIGuildRoleResult, RESTPostAPIGuildRoleJSONBody, RESTPostAPIGuildRoleResult, RESTPostAPIGuildsJSONBody, RESTPostAPIGuildsResult, Snowflake } from "discord-api-types";
 import { RestManager } from "../Manager";
 
 export class GuildsResource {

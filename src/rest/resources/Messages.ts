@@ -130,7 +130,7 @@ export class MessagesResource {
    * @param emoji ID or unicode for emoji
    * @param user Users or leave blank to remove your own
    */
-  deleteReaction (channelId: Snowflake, messageId: Snowflake, emoji?: Emoji, user: Snowflake | '@me' = '@me'): Promise<never> {
+  deleteReaction (channelId: Snowflake, messageId: Snowflake, emoji: Emoji, user: Snowflake | '@me' = '@me'): Promise<never> {
     return this.rest.request('DELETE', `/channels/${channelId}/messages/${messageId}/reactions/${this._parseEmoji(emoji)}/${user}`) as never
   }
 

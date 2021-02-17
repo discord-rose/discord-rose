@@ -5,10 +5,10 @@ import { Worker } from "../typings/lib"
 import { DiscordSocket } from './WebSocket'
 
 export class Shard {
-  public ping: number
+  public ping: number = 0
 
   private ws = new DiscordSocket(this)
-  private unavailableGuilds: Collection<Snowflake, {}>
+  private unavailableGuilds: Collection<Snowflake, {}> | null = null
 
   constructor (public id: number, public worker: Worker) {
     this.ws.on('READY', (data: GatewayReadyDispatchData) => {
@@ -20,7 +20,7 @@ export class Shard {
 
       if (data.guilds.length < 1 || !this.worker.options.cache.guilds) return this._ready()
 
-      data.guilds.forEach(guild => this.unavailableGuilds.set(guild.id, guild))
+      data.guilds.forEach(guild => this.unavailableGuilds?.set(guild.id, guild))
     })
 
     let checkTimeout: NodeJS.Timeout
@@ -32,7 +32,7 @@ export class Shard {
 
       if (!checkTimeout) {
         checkTimeout = setTimeout(() => {
-          this.worker.log(`Shard ${this.id} reported ${this.unavailableGuilds.size} unavailable guilds. Continuing startup.`)
+          this.worker.log(`Shard ${this.id} reported ${this.unavailableGuilds?.size} unavailable guilds. Continuing startup.`)
           this._ready()
         }, 15e3)
       } else checkTimeout.refresh()
@@ -47,7 +47,7 @@ export class Shard {
   }
 
   get ready () {
-    return this.ws.ws.readyState === OPEN && !this.unavailableGuilds
+    return this.ws.ws?.readyState === OPEN && !this.unavailableGuilds
   }
 
   async start (): Promise<void> {
@@ -72,7 +72,7 @@ export class Shard {
     else {
       this.ws.resuming = true
     }
-    this.ws.ws.close(code, reason)
+    this.ws.ws?.close(code, reason)
   }
 
   setPresence (presence: GatewayPresenceUpdateData) {

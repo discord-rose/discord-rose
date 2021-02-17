@@ -46,8 +46,8 @@ export class ChannelsResource {
    */
   setRolePermission (channelId: Snowflake, roleId: Snowflake, allow?: Permissions, deny?: Permissions): Promise<RESTPutAPIChannelPermissionResult> {
     return this._setPermission(channelId, roleId, {
-      allow,
-      deny,
+      allow: allow as Permissions,
+      deny: deny as Permissions,
       type: OverwriteType.Role
     })
   }
@@ -61,8 +61,8 @@ export class ChannelsResource {
    */
   setMemberPermission (channelId: Snowflake, memberId: Snowflake, allow?: Permissions, deny?: Permissions): Promise<RESTPutAPIChannelPermissionResult> {
     return this._setPermission(channelId, memberId, {
-      allow,
-      deny,
+      allow: allow as Permissions,
+      deny: deny as Permissions,
       type: OverwriteType.Member
     })
   }

@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import { Worker, MessagePort } from 'worker_threads'
 
 import { generateID } from '../utils/UtilityFunctions'
-import { BotOptions } from "./master/Master";
+import { CompleteBotOptions } from "./master/Master";
 import Collection from '@discordjs/collection'
 import { APIGuild, APIMessage, Snowflake } from "discord-api-types";
 import { MessageTypes } from "../rest/resources/Messages";
@@ -24,7 +24,7 @@ export interface ThreadEvents {
   START: {
     send: {
       shards: number[]
-      options: BotOptions
+      options: CompleteBotOptions
     }
     receive: {}
   }
@@ -95,13 +95,12 @@ export interface ThreadEvents {
 }
 
 export class ThreadComms extends EventEmitter {
-  private comms?: Worker | MessagePort = null
+  private comms?: Worker | MessagePort | null = null
   private commands: Collection<string, (value?: any) => void> = new Collection()
 
-  
-  on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve?: (data: ThreadEvents[K]['receive'] | { error: string }) => void) => void) => this
+  on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve: ThreadEvents[K]['receive'] extends null ? null : (data: ThreadEvents[K]['receive'] | { error: string }) => void) => void) => this = this.on
 
-  emit<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], resolve?: (data: ThreadEvents[K]['receive']) => void): boolean {
+  emit<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], resolve: ThreadEvents[K]['receive'] extends null ? null : (data: ThreadEvents[K]['receive']) => void): boolean {
     super.emit('*', event, data, resolve)
     return super.emit(event, data, resolve)
   }
@@ -126,7 +125,7 @@ export class ThreadComms extends EventEmitter {
           break
         }
         case ThreadMethod.TELL: {
-          this.emit(msg.e, msg.d)
+          this.emit(msg.e, msg.d, null)
           break
         }
       }
@@ -135,8 +134,8 @@ export class ThreadComms extends EventEmitter {
     this.on('KILL', () => process.exit(5))
   }
 
-  private _send (op, e, i, d) {
-    this.comms.postMessage({
+  private _send (op: number, e: string | null, i: string | null, d?: any) {
+    this.comms?.postMessage({
       op,
       e,
       i,
