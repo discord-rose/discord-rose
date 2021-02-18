@@ -1,5 +1,5 @@
 import Collection from "@discordjs/collection"
-import { GatewayGuildCreateDispatchData, GatewayOPCodes, GatewayPresenceUpdateData, GatewayReadyDispatchData, Snowflake } from "discord-api-types"
+import { APIGuildMember, GatewayGuildCreateDispatchData, GatewayGuildMemberAddDispatchData, GatewayGuildMembersChunkDispatchData, GatewayOPCodes, GatewayPresenceUpdateData, GatewayReadyDispatchData, GatewayRequestGuildMembersData, Snowflake } from "discord-api-types"
 import { OPEN } from "ws"
 import { State } from "../clustering/ThreadComms"
 import { Worker } from "../typings/lib"
@@ -96,6 +96,33 @@ export class Shard {
     this.ws._send({
       op: GatewayOPCodes.PresenceUpdate,
       d: presence
+    })
+  }
+
+  getGuildMembers (opts: GatewayRequestGuildMembersData): Promise<Collection<Snowflake, APIGuildMember>> {
+    return new Promise(resolve => {
+      const members: Collection<Snowflake, APIGuildMember> = new Collection()
+      const listener = (data: GatewayGuildMembersChunkDispatchData) => {
+        if (data.guild_id !== opts.guild_id) return
+
+        data.members.forEach(member => {
+          if (!member.user) return
+          members.set(member.user.id, member);
+          (member as GatewayGuildMemberAddDispatchData).guild_id = opts.guild_id
+          this.worker.cacheManager.run('GUILD_MEMBER_ADD', member as GatewayGuildMemberAddDispatchData)
+        })
+
+        if (data.chunk_index === (data.chunk_count || 0) - 1) {
+          this.worker.off('GUILD_MEMBERS_CHUNK', listener)
+
+          resolve(members)
+        }
+      }
+      this.worker.on('GUILD_MEMBERS_CHUNK', listener)
+      this.ws._send({
+        op: GatewayOPCodes.RequestGuildMembers,
+        d: opts
+      })
     })
   }
 }

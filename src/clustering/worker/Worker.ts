@@ -99,6 +99,18 @@ export default class Worker extends EventEmitter {
     return shard
   }
 
+  /**
+   * Gets ALL members in a guild (via ws)
+   * @param guildId ID of guild
+   */
+  getMembers (guildId: Snowflake) {
+    return this.guildShard(guildId).getGuildMembers({
+      guild_id: guildId,
+      query: '',
+      limit: 0
+    })
+  }
+
   get ready () {
     return this.api && this.shards.every(x => x.ready)
   }

@@ -81,6 +81,10 @@ worker.setStatus('playing', 'Rocket League', 'online')
 
 Gets the shard in charge of the guild via it's ID
 
+### `Worker.getMembers(id: Snowflake)` Returns a collection of guild members mapped by user ID
+
+Gets every member in the guild via the websocket, needs GUILD_MEMBERS intent.
+
 # Caching
 Discord-Rose comes with caching fully customizable. There is a .cache option in your MasterOptions
 ```js
