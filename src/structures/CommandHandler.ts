@@ -27,7 +27,10 @@ export class CommandHandler {
    * @param opts Options
    */
   options (opts: CommandHandlerOptions) {
-    this._options = opts
+    this._options = {
+      ...this._options,
+      ...opts
+    }
 
     return this
   }
