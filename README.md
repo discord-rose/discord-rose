@@ -269,6 +269,7 @@ Here are some in-house made middlewares made by the same people making this libr
 | `.send(msg)`      | Sends a message to the same channel
 | `.dm(msg)`        | DM's the user who ran the command
 | `.sendFile(file)` | Sends a file to the channel, file being `{ name: 'name.ext', buffer: Buffer }`
+| `.typing()`       | Starts typing in the executing channel
 | `.delete()`       | Deletes the invoking command
 | `.hasPerms(perm)` | Whether or not the invoking user has `perm` (doesn't work well if role/guild cache is off)
 | `.myPerms(perm)`  | Whether or not the bot has `perm` (doesn't work well if role/guild cache is off)

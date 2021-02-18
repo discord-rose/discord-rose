@@ -83,6 +83,13 @@ export class CommandContext {
   }
 
   /**
+   * Starts typing in the channel
+   */
+  typing () {
+    return this.worker.api.channels.typing(this.message.channel_id)
+  }
+
+  /**
    * Deletes the invoking message
    */
   delete () {
