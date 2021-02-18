@@ -20,6 +20,28 @@ interface ThreadEvent {
   d: any
 }
 
+export enum State {
+  DISCONNECTED = 0,
+  CONNECTING,
+  CONNECTED
+}
+
+interface ShardStats {
+  id: number
+  ping: number
+  state: State
+  guilds: number
+}
+
+export interface ClusterStats {
+  cluster: {
+    memory: number
+    uptime: number
+    id: string
+  }
+  shards: ShardStats[]
+}
+
 export interface ThreadEvents {
   START: {
     send: {
@@ -91,6 +113,14 @@ export interface ThreadEvents {
       data: MessageTypes
     }
     receive: APIMessage
+  }
+  GET_STATS: {
+    send: null
+    receive: ClusterStats
+  }
+  STATS: {
+    send: null
+    receive: ClusterStats[]
   }
 }
 

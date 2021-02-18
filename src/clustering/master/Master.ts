@@ -161,6 +161,13 @@ export default class Master {
     return this.sendToAll('EVAL', code)
   }
 
+  /**
+   * Gets each clusters stats
+   */
+  getStats () {
+    return this.sendToAll('GET_STATS', null)
+  }
+
   shardToCluster (shardId: number) {
     for (let i = 0; i < this.chunks.length; i++) {
       if (this.chunks[i].includes(shardId)) return this.clusters.get(`${i}`)

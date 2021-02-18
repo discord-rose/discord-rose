@@ -56,6 +56,21 @@ export class Thread extends ThreadComms {
         respond({ error: err.message })
       }
     })
+    this.on('GET_STATS', (_, respond) => {
+      respond({
+        cluster: {
+          id: this.id,
+          memory: process.memoryUsage().heapTotal,
+          uptime: process.uptime()
+        },
+        shards: this.worker.shards.map(x => ({
+          id: x.id,
+          ping: x.ping,
+          guilds: this.worker.guilds.filter?.(guild => this.worker.guildShard(guild.id).id === x.id).size,
+          state: x.state
+        }))
+      })
+    })
   }
 
   async registerShard (id: number) {
@@ -125,5 +140,12 @@ export class Thread extends ThreadComms {
    */
   sendWebhook (webhookId: Snowflake, token: string, data: MessageTypes) {
     return this.sendCommand('SEND_WEBHOOK', { id: webhookId, token, data })
+  }
+
+  /**
+   * Gets an array of each clusters stats
+   */
+  getStats () {
+    return this.sendCommand('STATS', null)  
   }
 }

@@ -52,6 +52,9 @@ export class Cluster extends ThreadComms {
     this.on('SEND_WEBHOOK', async ({ id, token, data }, respond) => {
       respond(await this.master.rest.webhooks.send(id, token, data))
     })
+    this.on('STATS', async (_, respond) => {
+      respond(await this.master.getStats())
+    })
   }
 
   public spawn (): Promise<void> {

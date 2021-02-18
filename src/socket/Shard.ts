@@ -1,6 +1,7 @@
 import Collection from "@discordjs/collection"
 import { GatewayGuildCreateDispatchData, GatewayOPCodes, GatewayPresenceUpdateData, GatewayReadyDispatchData, Snowflake } from "discord-api-types"
 import { OPEN } from "ws"
+import { State } from "../clustering/ThreadComms"
 import { Worker } from "../typings/lib"
 import { DiscordSocket } from './WebSocket'
 
@@ -9,6 +10,7 @@ export class Shard {
 
   private ws = new DiscordSocket(this)
   private unavailableGuilds: Collection<Snowflake, {}> | null = null
+  private registered = false
 
   constructor (public id: number, public worker: Worker) {
     this.ws.on('READY', (data: GatewayReadyDispatchData) => {
@@ -46,11 +48,25 @@ export class Shard {
     })
   }
 
+  /**
+   * Current shard state, 0 = Disconnected, 1 = Connecting, 2 = Connected
+   */
+  get state (): State {
+    if (this.ready) return State.CONNECTED
+    if (this.registered || this.unavailableGuilds) return State.CONNECTING
+
+    return State.DISCONNECTED
+  }
+
+  /**
+   * Whether or not the shard is READY
+   */
   get ready () {
     return this.ws.ws?.readyState === OPEN && !this.unavailableGuilds
   }
 
   async start (): Promise<void> {
+    this.registered = false
     return new Promise(resolve => {
       this.ws.spawn(resolve)
     })
@@ -64,6 +80,7 @@ export class Shard {
   }
 
   register () {
+    this.registered = true
     return this.worker.comms.registerShard(this.id)
   }
 
