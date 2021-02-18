@@ -31,7 +31,7 @@ export const bits = {
   useVoiceActivity: 0x02000000,
   nickname: 0x04000000,
   manageNicknames: 0x08000000,
-  roles: 0x10000000,
+  manageRoles: 0x10000000,
   webhooks: 0x20000000,
   emojis: 0x40000000
 }
