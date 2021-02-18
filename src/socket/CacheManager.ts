@@ -1,9 +1,9 @@
 import { DiscordEventMap } from '../typings/Discord'
 import Worker from '../clustering/worker/Worker'
-import Collection from '@discordjs/collection'
 
 // caches
 import { guilds } from './cache/guilds'
+import { defaults } from './cache/defaults'
 import { roles } from './cache/roles'
 import { channels } from './cache/channels'
 import { self } from './cache/self'
@@ -24,6 +24,8 @@ export class CacheManager {
 
   constructor (private worker: Worker) {
     const cache = this.worker.options.cache
+
+    defaults(this, this.worker)
 
     if (cache.guilds) guilds(this, this.worker)
     else worker.guilds = createNulledCollection('guilds') as unknown as typeof worker.guilds
