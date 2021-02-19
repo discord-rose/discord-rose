@@ -362,6 +362,8 @@ Restarts cluster by it's ID
 
 Restarts a shard by it's ID
 
+## Creating custom events
+
 # In TypeScript
 
 Using the bot in TypeScript is relatively simple.

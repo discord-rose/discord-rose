@@ -1,7 +1,9 @@
 import Master from "./Master";
 import { Worker } from 'worker_threads'
-import { ThreadComms } from "../ThreadComms";
+import { ThreadComms, ThreadEvents, ResolveFunction } from "../ThreadComms";
 import { Snowflake } from "discord-api-types";
+
+import handlers from './handlers'
 
 export class Cluster extends ThreadComms {
   private thread?: Worker
@@ -9,52 +11,15 @@ export class Cluster extends ThreadComms {
 
   public dying = false
 
-  constructor (public id: string, private master: Master) {
+  constructor (public id: string, public master: Master) {
     super()
 
-    this.on('REGISTER_SHARD', ({ id }, respond) => {
-      this.master.sharder.register(id)
+    const keys = Object.keys(handlers)
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i] as keyof ThreadEvents
 
-      this.master.log(`Cluster ${this.id} registered shard ${id}`)
-
-      respond({})
-    })
-    this.on('SHARD_READY', ({ id }) => {
-      this.master.log(`Shard ${id} connected to Discord.`)
-    })
-    this.on('LOG', (data) => {
-      this.master.log(data)
-    })
-    this.on('RESTART_CLUSTER', ({ id }) => {
-      this.master.clusters.get(String(id))?.restart()
-    })
-    this.on('RESTART_SHARD', ({ id }) => {
-      this.master.shardToCluster(id)?.restartShard(id)
-    })
-    this.on('GET_GUILD', async ({ id }, respond) => {
-      respond(await this.master.guildToCluster(id)?.getGuild(id) || { error: 'Not In Guild' })
-    })
-    this.on('BROADCAST_EVAL', async (code, respond) => {
-      respond(await this.master.broadcastEval(code))
-    })
-    this.on('MASTER_EVAL', async (code, respond) => {
-      const master = this.master
-      try {
-        let ev = eval(code)
-        if (ev.then) ev = await ev.catch((err: Error) => { error: err.message })
-        // @ts-ignore eval can be any
-        respond(ev)
-      } catch (err) {
-        // @ts-ignore eval can be any
-        respond({ error: err.message })
-      }
-    })
-    this.on('SEND_WEBHOOK', async ({ id, token, data }, respond) => {
-      respond(await this.master.rest.webhooks.send(id, token, data))
-    })
-    this.on('STATS', async (_, respond) => {
-      respond(await this.master.getStats())
-    })
+      this.on(key, handlers[key].bind(this) as (data: ThreadEvents[typeof key]['send'], resolve: ResolveFunction<typeof key>) => void)
+    }
   }
 
   public spawn (): Promise<void> {

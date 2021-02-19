@@ -124,13 +124,15 @@ export interface ThreadEvents {
   }
 }
 
+export type ResolveFunction<K extends keyof ThreadEvents> = ThreadEvents[K]['receive'] extends null ? null : (data: ThreadEvents[K]['receive'] | { error: string }) => void
+
 export class ThreadComms extends EventEmitter {
   private comms?: Worker | MessagePort | null = null
   private commands: Collection<string, (value?: any) => void> = new Collection()
 
-  on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve: ThreadEvents[K]['receive'] extends null ? null : (data: ThreadEvents[K]['receive'] | { error: string }) => void) => void) => this = this.on
+  on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => this = this.on
 
-  emit<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], resolve: ThreadEvents[K]['receive'] extends null ? null : (data: ThreadEvents[K]['receive']) => void): boolean {
+  emit<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>): boolean {
     super.emit('*', event, data, resolve)
     return super.emit(event, data, resolve)
   }

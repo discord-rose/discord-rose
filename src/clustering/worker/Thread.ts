@@ -1,76 +1,25 @@
-import { APIGuild, Snowflake } from 'discord-api-types';
+import { Snowflake } from 'discord-api-types';
 import { workerData, parentPort, MessagePort } from 'worker_threads'
 import { MessageTypes } from '../../rest/resources/Messages';
 import { Worker } from "../../typings/lib"
 
-import { ThreadComms } from "../ThreadComms";
+import { ResolveFunction, ThreadComms, ThreadEvents } from "../ThreadComms";
+
+import handlers from './handlers'
 
 export class Thread extends ThreadComms {
   public id: string = workerData.id
 
-  constructor (private worker: Worker) {
+  constructor (public worker: Worker) {
     super()
     super.register(parentPort as MessagePort)
 
-    this.on('START', async (event, respond) => {
-      this.worker.options = event.options
+    const keys = Object.keys(handlers)
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i] as keyof ThreadEvents
 
-      await this.worker.start(event.shards)
-
-      respond({})
-    })
-    this.on('START_SHARD', async (event, respond) => {
-      const shard = this.worker.shards.get(event.id)
-      if (!shard) {
-        respond({ error: 'Shard doesn\'t exist' })
-        return
-      }
-      await shard.start()
-      respond({})
-    })
-    this.on('RESTART_SHARD', ({ id }) => {
-      this.worker.shards.get(id)?.restart(true, 1000, 'Internally restarted')
-    })
-    this.on('GET_GUILD', ({ id }, respond) => {
-      const guild = this.worker.guilds.get(id) as APIGuild
-      if (!guild) respond({ error: 'Not in guild' })
-
-      if (this.worker.guildRoles) {
-        guild.roles = this.worker.guildRoles.get(guild.id)?.array() || []
-      }
-      if (this.worker.channels) {
-        guild.channels = this.worker.channels.filter(x => x.guild_id === guild.id).array()
-      }
-
-      respond(guild)
-    })
-    this.on('EVAL', async (code, respond) => {
-      const worker = this.worker
-      try {
-        let ev = eval(code)
-        if (ev.then) ev = await ev.catch((err: Error) => { error: err.message })
-        // @ts-ignore eval can be any
-        respond(ev)
-      } catch (err) {
-        // @ts-ignore eval can be any
-        respond({ error: err.message })
-      }
-    })
-    this.on('GET_STATS', (_, respond) => {
-      respond({
-        cluster: {
-          id: this.id,
-          memory: process.memoryUsage().heapTotal,
-          uptime: process.uptime()
-        },
-        shards: this.worker.shards.map(x => ({
-          id: x.id,
-          ping: x.ping,
-          guilds: this.worker.guilds.filter?.(guild => this.worker.guildShard(guild.id).id === x.id).size,
-          state: x.state
-        }))
-      })
-    })
+      this.on(key, handlers[key].bind(this) as (data: ThreadEvents[typeof key]['send'], resolve: ResolveFunction<typeof key>) => void)
+    }
   }
 
   async registerShard (id: number) {
