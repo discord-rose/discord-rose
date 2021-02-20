@@ -66,7 +66,7 @@ export default class Worker extends EventEmitter {
    * // Twitch streams
    * worker.setStatus('streaming', 'Rocket League', 'online', 'https://twitch.com/jpbberry')
    */
-  setStatus (type: 'playing' | 'streaming' | 'listening' | 'competing', name: string, status: 'idle' | 'online' | 'dnd' | 'offline' | 'invisible' = 'online', url?: string) {
+  setStatus (type: 'playing' | 'streaming' | 'listening' | 'watching' | 'competing', name: string, status: 'idle' | 'online' | 'dnd' | 'offline' | 'invisible' = 'online', url?: string) {
     if (!this.ready) this.once('READY', () => { this.setStatus(type, name, status) })
     this.shards.forEach(shard => {
       shard.setPresence({
@@ -80,6 +80,7 @@ export default class Worker extends EventEmitter {
               playing: 0,
               streaming: 1,
               listening: 2,
+              watching: 3,
               competing: 5
             })[type],
             url
