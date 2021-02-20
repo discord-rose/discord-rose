@@ -50,7 +50,7 @@ export class Cluster extends ThreadComms {
     this.started = true
     return this.sendCommand('START', {
       shards: this.master.chunks[Number(this.id)],
-      options: this.master.options
+      options: JSON.parse(JSON.stringify(this.master.options)) // normalize options
     })
   }
 

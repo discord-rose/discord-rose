@@ -126,7 +126,7 @@ const master = new Master('file.js', {
 ```
 *Note: all vital information, like ID's and things like role.guild_id, will be maintained no matter what*
 
-Properties that aren't kept that you might want to keep but aren't enabled by default: `role.permissions`, ...
+Properties that aren't kept that you might want to keep but aren't enabled by default: `role.permissions`, `guild.owner_id`
 
 # Using the API
 
