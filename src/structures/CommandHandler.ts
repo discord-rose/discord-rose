@@ -78,7 +78,7 @@ export class CommandHandler {
   }
 
   private _test (command: string, cmd: CommandType): boolean {
-    if (typeof cmd === 'string') return command.toLocaleLowerCase() === cmd.toLocaleLowerCase()
+    if (typeof cmd === 'string') return command.toLowerCase() === cmd.toLowerCase()
     if (cmd instanceof RegExp) return !!command.match(cmd)
 
     return false
@@ -99,7 +99,7 @@ export class CommandHandler {
 
     const args = data.content.slice(prefix ? prefix.length : 0).split(/\s/)
     if (args[0] === '') args.shift()
-    const command = args.shift() as string
+    const command = args.shift() || ''
 
     const cmd = this.commands.find(x => (this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)) as boolean))
     if (!cmd) return
