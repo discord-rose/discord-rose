@@ -70,7 +70,7 @@ export class MessagesResource {
    * @param channelId ID of channel
    * @param messageId ID of message
    */
-  delete (channelId: Snowflake, messageId: Snowflake): never {
+  delete (channelId: Snowflake, messageId: Snowflake): Promise<never> {
     return this.rest.request('DELETE', `/channels/${channelId}/messages/${messageId}`) as never
   }
 
