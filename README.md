@@ -20,7 +20,7 @@ Run `npm i --save discord-rose`
 
 **./master.js**
 ```js
-const Master = require('discord-rose/master')
+const { Master } = require('discord-rose')
 const path = require('path')
 
 const master = new Master(path.resolve(__dirname, './worker.js'), {
@@ -32,7 +32,7 @@ master.start()
 
 **./worker.js**
 ```js
-const Worker = require('discord-rose/worker')
+const { Worker } = require('discord-rose')
 
 const worker = new Worker()
 
