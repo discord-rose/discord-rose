@@ -14,12 +14,9 @@ export class Cluster extends ThreadComms {
   constructor (public id: string, public master: Master) {
     super()
 
-    const keys = Object.keys(handlers)
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i] as keyof ThreadEvents
-
-      this.on(key, handlers[key].bind(this) as (data: ThreadEvents[typeof key]['send'], resolve: ResolveFunction<typeof key>) => void)
-    }
+    this.on('*', (data, respond) => {
+      this.master.handlers.emit(data.event, this, data.d, respond)
+    })
   }
 
   public spawn (): Promise<void> {

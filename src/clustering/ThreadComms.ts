@@ -43,6 +43,13 @@ export interface ClusterStats {
 }
 
 export interface ThreadEvents {
+  '*': {
+    send: {
+      event: keyof ThreadEvents,
+      d: any
+    }
+    receive: any
+  }
   START: {
     send: {
       shards: number[]
@@ -133,7 +140,7 @@ export class ThreadComms extends EventEmitter {
   on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => this = this.on
 
   emit<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>): boolean {
-    super.emit('*', event, data, resolve)
+    super.emit('*', { event, d: data }, resolve)
     return super.emit(event, data, resolve)
   }
 

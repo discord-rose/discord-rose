@@ -4,12 +4,15 @@ import { DiscordEventMap, CachedGuild } from '../../typings/Discord'
 
 import { chunkShards, guildShard } from '../../utils/UtilityFunctions'
 
-import { ThreadEvents } from '../ThreadComms'
+import { ThreadEvents, ResolveFunction } from '../ThreadComms'
 
 import Collection from '@discordjs/collection'
 
 import { Cluster } from './Cluster'
 import { Sharder } from './Sharder'
+import handlers from './handlers'
+
+import { EventEmitter } from 'events'
 
 import path from 'path'
 
@@ -29,6 +32,11 @@ export interface CompleteBotOptions extends Complete<BotOptions> {
 export default class Master {
   public options: CompleteBotOptions = {} as CompleteBotOptions
   public rest = {} as RestManager
+  public handlers = new EventEmitter() as {
+    on: <K extends keyof ThreadEvents>(event: K, listener: (cluster: Cluster, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => any
+  
+    emit<K extends keyof ThreadEvents>(event: K, cluster: Cluster, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>): boolean
+  }
 
   public sharder = new Sharder(this)
   public chunks: number[][] = [[]]
@@ -100,6 +108,13 @@ export default class Master {
       if (this.options.cache.channels && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('channels', 'GUILDS')
       if (this.options.cache.members && (((this.options.intents as number) & Intents.GUILD_MEMBERS) === 0)) warn('members', 'GUILD_MEMBERS')
       if (this.options.cache.messages && (((this.options.intents as number) & Intents.GUILD_MESSAGES) === 0)) warn('messages', 'GUILD_MESSAGES')
+    }
+
+    const keys = Object.keys(handlers)
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i] as keyof ThreadEvents
+
+      this.handlers.on(key, (shard, ...data) => handlers[key].bind(shard)(...data))
     }
 
     this.log('Starting Master.')
