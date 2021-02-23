@@ -169,6 +169,15 @@ export default class Master {
   }
 
   /**
+   * Sends a TELL event to all clusters
+   * @param event Event name
+   * @param data Event data
+   */
+  tellAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): void[] {
+    return this.clusters.map(x => x.tell(event, data))
+  }
+
+  /**
    * Evals code on every cluster
    * @param code Code to eval
    */
