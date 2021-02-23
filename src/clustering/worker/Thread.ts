@@ -1,6 +1,6 @@
 import { Snowflake } from 'discord-api-types';
 import { workerData, parentPort, MessagePort } from 'worker_threads'
-import { MessageTypes } from '../../rest/resources/Messages';
+import { MessageTypes, MessagesResource } from '../../rest/resources/Messages';
 import { Worker } from "../../typings/lib"
 
 import { ResolveFunction, ThreadComms, ThreadEvents } from "../ThreadComms";
@@ -88,7 +88,7 @@ export class Thread extends ThreadComms {
    * @param data Data for message
    */
   sendWebhook (webhookId: Snowflake, token: string, data: MessageTypes) {
-    return this.sendCommand('SEND_WEBHOOK', { id: webhookId, token, data })
+    return this.sendCommand('SEND_WEBHOOK', { id: webhookId, token, data: MessagesResource._formMessage(data, true) })
   }
 
   /**

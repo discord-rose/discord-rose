@@ -1,4 +1,4 @@
-import { APIMessageReferenceSend, RESTGetAPIChannelMessageReactionUsersQuery, RESTGetAPIChannelMessageReactionUsersResult, RESTGetAPIChannelMessageResult, RESTPatchAPIChannelMessageResult, RESTPostAPIChannelMessageCrosspostResult, RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult, RESTPutAPIChannelMessageReactionResult, Snowflake } from 'discord-api-types';
+import { APIMessageReferenceSend, RESTGetAPIChannelMessageReactionUsersQuery, RESTGetAPIChannelMessageReactionUsersResult, RESTGetAPIChannelMessageResult, RESTPatchAPIChannelMessageResult, RESTPostAPIChannelMessageCrosspostResult, RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult, RESTPostAPIChannelWebhookJSONBody, RESTPostAPIWebhookWithTokenJSONBody, RESTPutAPIChannelMessageReactionResult, Snowflake } from 'discord-api-types';
 import { Embed } from '../../structures/Embed';
 import { RestManager } from '../Manager'
 
@@ -9,18 +9,21 @@ import FormData from 'form-data'
  */
 type Emoji = string
 
-export type MessageTypes = RESTPostAPIChannelMessageJSONBody | string | Embed
+export type MessageTypes = RESTPostAPIChannelMessageJSONBody | RESTPostAPIWebhookWithTokenJSONBody | string | Embed
 
 export class MessagesResource {
   constructor (private rest: RestManager) {}
 
-  static _formMessage (message: MessageTypes): RESTPostAPIChannelMessageJSONBody {
-    if (message instanceof Embed) return {
+  static _formMessage (message: MessageTypes, webhook?: boolean): RESTPostAPIWebhookWithTokenJSONBody | RESTPostAPIChannelMessageJSONBody {
+    if (message instanceof Embed) message = webhook ? {
+      embeds: [message.render()]
+    } : {
       embed: message.render()
     }
-    if (typeof message === 'string') return {
+    if (typeof message === 'string') message = {
       content: message
     }
+
     return message
   }
 
@@ -30,7 +33,7 @@ export class MessagesResource {
    * @param data Message data
    */
   send (channelId: Snowflake, data: MessageTypes, reply?: APIMessageReferenceSend): Promise<RESTPostAPIChannelMessageResult> {
-    const msg = MessagesResource._formMessage(data)
+    const msg = MessagesResource._formMessage(data) as RESTPostAPIChannelMessageJSONBody
     if (reply) msg.message_reference = reply
 
     return this.rest.request('POST', `/channels/${channelId}/messages`, {

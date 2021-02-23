@@ -30,7 +30,7 @@ export class WebhooksResource {
       query: {
         wait: 'true'
       },
-      body: MessagesResource._formMessage(data)
+      body: MessagesResource._formMessage(data, true)
     })
   }
 }
