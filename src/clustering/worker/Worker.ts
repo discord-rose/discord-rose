@@ -67,7 +67,7 @@ export default class Worker extends EventEmitter {
    * worker.setStatus('streaming', 'Rocket League', 'online', 'https://twitch.com/jpbberry')
    */
   setStatus (type: 'playing' | 'streaming' | 'listening' | 'watching' | 'competing', name: string, status: 'idle' | 'online' | 'dnd' | 'offline' | 'invisible' = 'online', url?: string) {
-    if (!this.ready) this.once('READY', () => { this.setStatus(type, name, status) })
+    if (!this.ready) return this.once('READY', () => { this.setStatus(type, name, status) })
     this.shards.forEach(shard => {
       shard.setPresence({
         afk: false,
@@ -112,8 +112,11 @@ export default class Worker extends EventEmitter {
     })
   }
 
+  /**
+   * Whether or not all shards are online and ready
+   */
   get ready () {
-    return this.api && this.shards.every(x => x.ready)
+    return this.api instanceof RestManager && this.shards.every(x => x.ready)
   }
 
   log (data: string) {
