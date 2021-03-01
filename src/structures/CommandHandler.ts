@@ -53,6 +53,15 @@ export class CommandHandler {
   /**
    * Sets a prefix fetcher
    * @param fn String of prefix or Function to choose prefix with
+   * @example
+   * worker.commands
+   *   .setPrefix('!')
+   * // or
+   *   .setPrefix(['!', '+'])
+   * // or
+   *   .setPrefix((message) => {
+   *     return db.getPrefix(message.guild_id)
+   *   })
    */
   setPrefix (fn: string|string[] | ((message: APIMessage) => Promise<string|string[]> | string|string[])): this {
     if (Array.isArray(fn) || typeof fn === 'string') {
@@ -67,6 +76,11 @@ export class CommandHandler {
   /**
    * Defines an error handler replacing the default one
    * @param fn Function to handle error
+   * @example
+   * worker.commands
+   *  .error((ctx, error) => {
+   *    ctx.send(`Error: ${error.message}`)
+   *  })
    */
   error (fn: (ctx: CommandContext, error: CommandError) => void) {
     this.errorFunction = fn
@@ -87,6 +101,14 @@ export class CommandHandler {
   /**
    * Adds a command to the command handler
    * @param command Command data, be sure to add exec() and command:
+   * @example
+   * worker.commands
+   *   .add({
+   *     command: 'hello',
+   *     exec: (ctx) => {
+   *       ctx.reply('World!')
+   *     }
+   *   })
    */
   add (command: CommandOptions): this {
     if (!this.added) {
@@ -148,6 +170,7 @@ export class CommandHandler {
       }
       await cmd.exec(ctx)
     } catch (err) {
+      this.errorFunction(ctx, err)
     }
   }
 }
