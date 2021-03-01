@@ -98,7 +98,10 @@ export class CommandHandler {
     }
 
     const args = data.content.slice(prefix ? prefix.length : 0).split(/\s/)
-    if (args[0] === '') args.shift()
+    if (args[0] === '') {
+      args.shift()
+      prefix += ' '
+    }
     const command = args.shift() || ''
 
     const cmd = this.commands.find(x => (this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)) as boolean))
