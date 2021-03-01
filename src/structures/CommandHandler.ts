@@ -7,6 +7,10 @@ import Collection from "@discordjs/collection"
 
 type MiddlewareFunction = (ctx: ctx) => boolean | Promise<boolean>
 
+interface CommandError extends Error {
+  nonFatal: boolean
+}
+
 export class CommandHandler {
   private added: boolean = false
   private _options: CommandHandlerOptions = {
@@ -21,6 +25,18 @@ export class CommandHandler {
   constructor (private worker: Worker) {}
 
   public prefixFunction?: ((message: APIMessage) => Promise<string|string[]> | string|string[])
+  public errorFunction = (ctx: CommandContext, err: CommandError): void => {
+    ctx.embed
+      .color(0xFF0000)
+      .title('An Error Occured')
+      .description(`\`\`\`xl\n${err.message}\`\`\``)
+      .send()
+
+    if (err.nonFatal) return
+
+    err.message += ` (While Running Command: ${ctx.command.command})`
+    console.error(err)
+  }
 
   /**
    * Sets Command Handler options
@@ -44,6 +60,16 @@ export class CommandHandler {
     } else {
       this.prefixFunction = fn
     }
+
+    return this
+  }
+
+  /**
+   * Defines an error handler replacing the default one
+   * @param fn Function to handle error
+   */
+  error (fn: (ctx: CommandContext, error: CommandError) => void) {
+    this.errorFunction = fn
 
     return this
   }
@@ -122,16 +148,6 @@ export class CommandHandler {
       }
       await cmd.exec(ctx)
     } catch (err) {
-      ctx.embed
-        .color(0xFF0000)
-        .title('Error')
-        .description(err.message)
-        .send()
-
-      if (err.nonFatal) return
-
-      err.message += ` (While Running Command: ${command})`
-      console.error(err)
     }
   }
 }
