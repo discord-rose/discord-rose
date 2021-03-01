@@ -1,12 +1,11 @@
 import { APIGuildMember, APIMessage, APIGuild, APIChannel, APIRole, Snowflake } from "discord-api-types";
 
 import { Embed } from './Embed'
-import { MessageTypes } from "../rest/resources/Messages";
+import { MessageTypes, MessagesResource } from "../rest/resources/Messages";
 
 import { CommandOptions, Worker } from '../typings/lib'
 
 import { PermissionsUtils, bits } from '../utils/Permissions'
-import { DiscordEventMap } from "../typings/Discord";
 import Collection from "@discordjs/collection";
 
 export class CommandContext {
@@ -48,8 +47,15 @@ export class CommandContext {
   /**
    * Replies to the invoking message
    * @param data Data for message
+   * @param mention Whether or not to mention the user in the reply (defaults to false)
    */
-  reply (data: MessageTypes) {
+  reply (data: MessageTypes, mention = false) {
+    if (!mention) {
+      data = MessagesResource._formMessage(data)
+      if (!data.allowed_mentions) data.allowed_mentions = {}
+      data.allowed_mentions.replied_user = false
+    }
+
     return this.worker.api.messages.send(this.message.channel_id, data, {
       message_id: this.message.id,
       channel_id: this.message.channel_id,
@@ -104,8 +110,8 @@ export class CommandContext {
    *   .send()
    */
   get embed () {
-    return new Embed((embed, reply) => {
-      if (reply) return this.reply(embed)
+    return new Embed((embed, reply, mention) => {
+      if (reply) return this.reply(embed, mention)
       else return this.send(embed)
     })
   }

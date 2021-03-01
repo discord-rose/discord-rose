@@ -2,7 +2,7 @@ import { APIEmbed, APIMessage } from "discord-api-types";
 
 export class Embed {
   public obj: APIEmbed = {}
-  constructor (private sendback?: (embed: Embed, reply: boolean) => Promise<APIMessage>) {}
+  constructor (private sendback?: (embed: Embed, reply: boolean, mention: boolean) => Promise<APIMessage>) {}
 
   /**
    * Sets the color
@@ -127,10 +127,11 @@ export class Embed {
   /**
    * Sends embed to channel
    * @param reply Whether or not to do so in an inline reply (defaults to true)
+   * @param mention Whether or not to mention the user in the reply (defaults to false)
    */
-  send (reply: boolean = true) {
+  send (reply: boolean = true, mention = false) {
     if (!this.sendback) return
-    return this.sendback(this, reply)
+    return this.sendback(this, reply, mention)
   }
 
   render () {
