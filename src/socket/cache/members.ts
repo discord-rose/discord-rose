@@ -1,6 +1,6 @@
 import Collection from '@discordjs/collection';
 import { GatewayGuildMemberAddDispatchData, Snowflake } from 'discord-api-types';
-import Worker from '../../clustering/worker/Worker';
+import { Worker } from '../../clustering/worker/Worker';
 import { CacheManager } from '../CacheManager';
 
 export function members (events: CacheManager, worker: Worker) {

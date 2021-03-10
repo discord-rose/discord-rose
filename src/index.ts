@@ -1,9 +1,4 @@
-import Master from './clustering/master/Master'
-import Worker from './clustering/worker/Worker'
-import { Embed } from './structures/Embed'
-
-export = {
-  Master,
-  Worker,
-  Embed
-}
+export * from './clustering/master/Master'
+export * from './clustering/worker/Worker'
+export * from './structures/Embed'
+export * from './clustering/worker/Thread'

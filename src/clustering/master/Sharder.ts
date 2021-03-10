@@ -1,4 +1,4 @@
-import Master from "./Master"
+import { Master } from "./Master"
 
 import { wait } from '../../utils/UtilityFunctions'
 

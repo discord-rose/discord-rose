@@ -1,6 +1,6 @@
 import Collection from '@discordjs/collection';
 import { APIChannel } from 'discord-api-types';
-import Worker from '../../clustering/worker/Worker';
+import { Worker } from '../../clustering/worker/Worker';
 import { CacheManager } from '../CacheManager';
 
 export function channels (events: CacheManager, worker: Worker) {

@@ -1,9 +1,7 @@
-import Master from "./Master";
+import { Master } from "./Master";
 import { Worker } from 'worker_threads'
-import { ThreadComms, ThreadEvents, ResolveFunction } from "../ThreadComms";
+import { ThreadComms } from "../ThreadComms";
 import { Snowflake } from "discord-api-types";
-
-import handlers from './handlers'
 
 export class Cluster extends ThreadComms {
   private thread?: Worker
@@ -11,7 +9,7 @@ export class Cluster extends ThreadComms {
 
   public dying = false
 
-  constructor (public id: string, public master: Master) {
+  constructor (public id: string, public master: Master, public fileName = master.fileName, public custom: boolean = false) {
     super()
 
     this.on('*', (data, respond) => {
@@ -20,11 +18,15 @@ export class Cluster extends ThreadComms {
   }
 
   public spawn (): Promise<void> {
+    if (this.custom) {
+      this.started = true
+    }
     return new Promise(resolve => {
       this.master.log(`Starting cluster ${this.id}`)
-      this.thread = new Worker(this.master.fileName, {
+      this.thread = new Worker(this.fileName, {
         workerData: {
-          id: this.id
+          id: this.id,
+          custom: this.custom
         }
       })
 
@@ -44,6 +46,7 @@ export class Cluster extends ThreadComms {
   }
 
   start () {
+    if (this.custom) return
     this.started = true
     return this.sendCommand('START', {
       shards: this.master.chunks[Number(this.id)],

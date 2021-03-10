@@ -29,7 +29,7 @@ export interface CompleteBotOptions extends Complete<BotOptions> {
 /**
  * Master process controller
  */
-export default class Master {
+export class Master {
   public options: CompleteBotOptions = {} as CompleteBotOptions
   public rest = {} as RestManager
   public handlers = new EventEmitter() as {
@@ -118,6 +118,17 @@ export default class Master {
     }
 
     this.log('Starting Master.')
+  }
+
+  /**
+   * Spawns a custom process
+   * @param name Name of the process (especially for logging)
+   * @param fileName Direct path for process
+   */
+  spawnProcess (name: string, fileName: string) {
+    const cluster = new Cluster(name, this, fileName, true)
+    cluster.spawn()
+    return cluster
   }
 
   /**

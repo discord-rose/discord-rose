@@ -1,5 +1,5 @@
 import { CommandContext as ctx } from '../structures/CommandContext'
-import worker from '../clustering/worker/Worker'
+import { Worker as worker } from '../clustering/worker/Worker'
 
 namespace DiscordRose {
   export type CommandType = string | RegExp

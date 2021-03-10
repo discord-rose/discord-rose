@@ -16,7 +16,7 @@ import { CommandHandler } from '../../structures/CommandHandler'
 
 import { RestManager } from '../../rest/Manager'
 
-export default class Worker extends EventEmitter {
+export class Worker extends EventEmitter {
   on: <K extends keyof DiscordEventMap>(event: K, listener?: (data:  DiscordEventMap[K]) => void) => this = this.on
 
   once: <K extends keyof DiscordEventMap>(event: K, listener?: (data: DiscordEventMap[K]) => void) => this = this.once
@@ -43,6 +43,10 @@ export default class Worker extends EventEmitter {
   public user = {} as APIUser
 
   public cacheManager = {} as CacheManager
+
+  constructor () {
+    super()
+  }
 
   async start (shardNumbers: number[]) {
     this.api = new RestManager(this.options.token)

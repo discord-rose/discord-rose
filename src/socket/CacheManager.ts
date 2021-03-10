@@ -1,5 +1,5 @@
 import { DiscordEventMap } from '../typings/Discord'
-import Worker from '../clustering/worker/Worker'
+import { Worker } from '../clustering/worker/Worker'
 
 // caches
 import { guilds } from './cache/guilds'

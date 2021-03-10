@@ -1,6 +1,6 @@
 import Collection from '@discordjs/collection';
 import { APIRole } from 'discord-api-types';
-import Worker from '../../clustering/worker/Worker';
+import { Worker } from '../../clustering/worker/Worker';
 import { CacheManager } from '../CacheManager';
 
 export function roles (events: CacheManager, worker: Worker) {
