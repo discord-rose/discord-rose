@@ -135,6 +135,10 @@ export class CommandHandler {
     return false
   }
 
+  public findCommand (command: string) {
+    return this.commands.find(x => (this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)) as boolean))
+  }
+
   private async _exec (data: APIMessage) {
     if (!data.content || (!this._options.bots && data.author.bot)) return
     if (![MessageType.DEFAULT, MessageType.REPLY].includes(data.type)) return
@@ -161,7 +165,7 @@ export class CommandHandler {
 
     const command = args.shift() || ''
 
-    const cmd = this.commands.find(x => (this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)) as boolean))
+    const cmd = this.findCommand(command)
     if (!cmd) return
 
     const ctx = new CommandContext(this.worker, data, cmd, prefix as string)
