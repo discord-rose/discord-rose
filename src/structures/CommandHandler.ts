@@ -16,7 +16,9 @@ export class CommandHandler {
   private _options: CommandHandlerOptions = {
     default: {},
     bots: false,
-    mentionPrefix: true
+    mentionPrefix: true,
+    caseInsensitivePrefix: true,
+    caseInsensitiveCommand: true
   }
 
   public middlewares: MiddlewareFunction[] = []
@@ -126,7 +128,8 @@ export class CommandHandler {
   }
 
   private _test (command: string, cmd: CommandType): boolean {
-    if (typeof cmd === 'string') return command.toLowerCase() === cmd.toLowerCase()
+    if (this._options.caseInsensitiveCommand) command = command.toLowerCase()
+    if (typeof cmd === 'string') return command === cmd
     if (cmd instanceof RegExp) return !!command.match(cmd)
 
     return false
@@ -140,16 +143,22 @@ export class CommandHandler {
     if (this.prefixFunction) {
       prefix = await this.prefixFunction(data)
       if (!Array.isArray(prefix)) prefix = [prefix]
+
       if (this._options.mentionPrefix) prefix.push(`<@${this.worker.user.id}>`, `<@!${this.worker.user.id}>`)
-      prefix = prefix.find(x => data.content.startsWith(x))
+
+      const content = this._options.caseInsensitivePrefix ? data.content.toLowerCase() : data.content
+
+      prefix = prefix.find(x => content.startsWith(x))
       if (!prefix) return
     }
 
     const args = data.content.slice(prefix ? prefix.length : 0).split(/\s/)
     if (args[0] === '') {
       args.shift()
+
       prefix += ' '
     }
+
     const command = args.shift() || ''
 
     const cmd = this.commands.find(x => (this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)) as boolean))
@@ -190,4 +199,14 @@ interface CommandHandlerOptions {
    * @default true
    */
   mentionPrefix?: boolean
+  /**
+   * Whether or not the prefix is case insensitive
+   * @default true
+   */
+  caseInsensitivePrefix?: boolean
+  /**
+   * Whether or not the command is case insensitive
+   * @default true
+   */
+  caseInsensitiveCommand?: boolean
 }
