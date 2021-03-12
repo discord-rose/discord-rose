@@ -1,5 +1,5 @@
 import { RestManager } from '../../rest/Manager'
-import { Snowflake } from 'discord-api-types'
+import { APIGatewaySessionStartLimit, Snowflake } from 'discord-api-types'
 import { DiscordEventMap, CachedGuild } from '../../typings/Discord'
 
 import { chunkShards, guildShard } from '../../utils/UtilityFunctions'
@@ -43,6 +43,8 @@ export class Master {
   public clusters: Collection<string, Cluster> = new Collection()
   public fileName: string
   public spawned: boolean = false
+
+  public session: APIGatewaySessionStartLimit
   
   public log: (msg: string) => void
 
@@ -140,6 +142,7 @@ export class Master {
     this.rest = new RestManager(this.options.token)
 
     const gatewayRequest = await this.rest.misc.getGateway()
+    this.session = gatewayRequest.session_start_limit
 
     if (!this.options.ws) this.options.ws = gatewayRequest.url
 
