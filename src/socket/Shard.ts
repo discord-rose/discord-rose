@@ -1,5 +1,5 @@
 import Collection from "@discordjs/collection"
-import { APIGuildMember, GatewayGuildCreateDispatchData, GatewayGuildMemberAddDispatchData, GatewayGuildMembersChunkDispatchData, GatewayOPCodes, GatewayPresenceUpdateData, GatewayReadyDispatchData, GatewayRequestGuildMembersData, Snowflake } from "discord-api-types"
+import { APIGuildMember, GatewayGuildMemberAddDispatchData, GatewayGuildMembersChunkDispatchData, GatewayOPCodes, GatewayPresenceUpdateData, GatewayRequestGuildMembersData, Snowflake } from "discord-api-types"
 import { OPEN } from "ws"
 import { State } from "../clustering/ThreadComms"
 import { Worker } from "../typings/lib"
@@ -13,7 +13,7 @@ export class Shard {
   private registered = false
 
   constructor (public id: number, public worker: Worker) {
-    this.ws.on('READY', (data: GatewayReadyDispatchData) => {
+    this.ws.on('READY', (data) => {
       this.worker.comms.tell('SHARD_READY', { id })
 
       this.worker.user = data.user
@@ -27,7 +27,7 @@ export class Shard {
 
     let checkTimeout: NodeJS.Timeout
 
-    this.ws.on('GUILD_CREATE', (data: GatewayGuildCreateDispatchData) => {
+    this.ws.on('GUILD_CREATE', (data) => {
       if (!this.unavailableGuilds) return this.worker.emit('GUILD_CREATE', data)
       
       this.worker.cacheManager.emit('GUILD_CREATE', data)

@@ -1,9 +1,10 @@
 import { Shard } from "./Shard"
 import WebSocket from 'ws'
-import { EventEmitter } from 'events'
-import { GatewayDispatchEvents, GatewayDispatchPayload, GatewayHelloData, GatewayIdentifyData, GatewayOPCodes, GatewayResumeData, GatewaySendPayload } from "discord-api-types"
+import { Emitter } from '../utils/Emitter'
+import { GatewayDispatchEvents, GatewayDispatchPayload, GatewayHelloData, GatewayOPCodes, GatewaySendPayload } from "discord-api-types"
+import { DiscordDefaultEventMap } from "../typings/Discord"
 
-export class DiscordSocket extends EventEmitter {
+export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' | 'GUILD_CREATE'>> {
   private connectTimeout?: NodeJS.Timeout
   private sequence: number | null = null
   private sessionID: string | null = null
@@ -55,7 +56,7 @@ export class DiscordSocket extends EventEmitter {
       }
       if (msg.t === GatewayDispatchEvents.Ready) this.sessionID = msg.d.session_id
 
-      if ([GatewayDispatchEvents.GuildCreate, GatewayDispatchEvents.Ready].includes(msg.t)) return this.emit(msg.t, msg.d)
+      if ([GatewayDispatchEvents.GuildCreate, GatewayDispatchEvents.Ready].includes(msg.t)) return this.emit(msg.t as any, msg.d)
 
       this.shard.worker.emit('*', msg)
 
