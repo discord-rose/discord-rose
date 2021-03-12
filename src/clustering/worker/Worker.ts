@@ -39,6 +39,7 @@ export class Worker extends EventEmitter {
   public channels: Collection<Snowflake, DiscordEventMap['CHANNEL_CREATE']> = new Collection()
   public selfMember: Collection<Snowflake, DiscordEventMap['GUILD_MEMBER_ADD']> = new Collection()
   public members: Collection<Snowflake, Collection<Snowflake, DiscordEventMap['GUILD_MEMBER_ADD']>> = new Collection()
+  public users: Collection<Snowflake, DiscordEventMap['USER_UPDATE']> = new Collection()
 
   public user = {} as APIUser
 

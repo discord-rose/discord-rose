@@ -68,14 +68,16 @@ export class Master {
         channels: false,
         self: false,
         members: false,
-        messages: false
+        messages: false,
+        users: false
       } : {
         guilds: options.cache?.guilds ?? true,
         roles: options.cache?.roles ?? true,
         channels: options.cache?.channels ?? true,
         self: options.cache?.self ?? true,
         members: options.cache?.members ?? false,
-        messages: options.cache?.messages ?? false
+        messages: options.cache?.messages ?? false,
+        users: options.cache.users ?? false
       },
       cacheControl: options.cacheControl as Complete<CacheControlOptions> ?? {
         channels: false,
@@ -225,6 +227,7 @@ interface CacheOptions {
   self?: boolean
   members?: boolean
   messages?: boolean
+  users?: boolean
 }
 
 interface CacheControlOptions {
