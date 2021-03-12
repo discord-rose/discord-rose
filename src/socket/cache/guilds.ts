@@ -8,22 +8,22 @@ import { CachedGuild } from '../../typings/Discord';
 export function guilds (events: CacheManager, worker: Worker) {
   worker.guilds = new Collection()
 
-  events.add('GUILD_CREATE', (guild) => {
+  events.on('GUILD_CREATE', (guild) => {
     guild.members?.forEach(member => {
       // @ts-ignore For proper cache formatting
       member.guild_id = guild.id
-      events.run('GUILD_MEMBER_ADD', member as GatewayGuildMemberAddDispatchData)
+      events.emit('GUILD_MEMBER_ADD', member as GatewayGuildMemberAddDispatchData)
     })
     delete guild.members
 
     guild.channels?.forEach(channel => {
       channel.guild_id = guild.id
-      events.run('CHANNEL_CREATE', channel)
+      events.emit('CHANNEL_CREATE', channel)
     })
     delete guild.channels
 
     guild.roles.forEach(role => {
-      events.run('GUILD_ROLE_CREATE', { guild_id: guild.id, role })
+      events.emit('GUILD_ROLE_CREATE', { guild_id: guild.id, role })
     })
     guild.roles = []
     delete guild.presences
@@ -40,7 +40,7 @@ export function guilds (events: CacheManager, worker: Worker) {
     worker.guilds.set(guild.id, guild)
   })
 
-  events.add('GUILD_UPDATE', (guild) => {
+  events.on('GUILD_UPDATE', (guild) => {
     let currentGuild = worker.guilds.get(guild.id)
     if (!currentGuild) return
 
@@ -72,7 +72,7 @@ export function guilds (events: CacheManager, worker: Worker) {
     worker.guilds.set(guild.id, currentGuild)
   })
 
-  events.add('GUILD_DELETE', (guild) => {
+  events.on('GUILD_DELETE', (guild) => {
     if (guild.unavailable) return worker.emit('GUILD_UNAVAILABLE', worker.guilds.get(guild.id) as CachedGuild)
 
     worker.guilds.delete(guild.id)

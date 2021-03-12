@@ -6,7 +6,7 @@ import { CacheManager } from '../CacheManager';
 export function channels (events: CacheManager, worker: Worker) {
   worker.channels = new Collection()
 
-  events.add('CHANNEL_CREATE', (channel) => {
+  events.on('CHANNEL_CREATE', (channel) => {
     if (worker.options.cacheControl.channels) {
       const newChannel = {} as APIChannel
       worker.options.cacheControl.channels.forEach(key => {
@@ -19,7 +19,7 @@ export function channels (events: CacheManager, worker: Worker) {
     worker.channels.set(channel.id, channel)
   })
 
-  events.add('CHANNEL_UPDATE', (channel) => {
+  events.on('CHANNEL_UPDATE', (channel) => {
     let currentChannel = worker.channels.get(channel.id)
     if (!currentChannel) return
 
@@ -47,11 +47,11 @@ export function channels (events: CacheManager, worker: Worker) {
     worker.channels.set(channel.id, currentChannel)
   })
 
-  events.add('CHANNEL_DELETE', (channel) => {
+  events.on('CHANNEL_DELETE', (channel) => {
     worker.channels.delete(channel.id)
   })
 
-  events.add('GUILD_DELETE', (guild) => {
+  events.on('GUILD_DELETE', (guild) => {
     if (guild.unavailable) return
 
     worker.channels.filter(x => x.guild_id === guild.id)

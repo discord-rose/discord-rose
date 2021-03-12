@@ -6,7 +6,7 @@ import { CacheManager } from '../CacheManager';
 export function roles (events: CacheManager, worker: Worker) {
   worker.guildRoles = new Collection()
 
-  events.add('GUILD_ROLE_CREATE', (role) => {
+  events.on('GUILD_ROLE_CREATE', (role) => {
     let guildRoles = worker.guildRoles.get(role.guild_id)
     if (!guildRoles) {
       guildRoles = new Collection()
@@ -25,7 +25,7 @@ export function roles (events: CacheManager, worker: Worker) {
     guildRoles.set(role.role.id, role.role)
   })
 
-  events.add('GUILD_ROLE_UPDATE', (role) => {
+  events.on('GUILD_ROLE_UPDATE', (role) => {
     const guildRoles = worker.guildRoles.get(role.guild_id)
     if (!guildRoles) return
     let currentRole = guildRoles.get(role.role.id)
@@ -50,13 +50,13 @@ export function roles (events: CacheManager, worker: Worker) {
     guildRoles.set(currentRole.id, currentRole)
   })
 
-  events.add('GUILD_ROLE_DELETE', (role) => {
+  events.on('GUILD_ROLE_DELETE', (role) => {
     const guildRoles = worker.guildRoles.get(role.guild_id)
 
     guildRoles?.delete(role.role_id)
   })
 
-  events.add('GUILD_DELETE', (guild) => {
+  events.on('GUILD_DELETE', (guild) => {
     if (guild.unavailable) return
 
     worker.guildRoles.delete(guild.id)

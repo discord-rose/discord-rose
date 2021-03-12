@@ -10,7 +10,7 @@ import { self } from './cache/self'
 import { members } from './cache/members'
 import { users } from './cache/users'
 
-import { EventEmitter } from 'events'
+import { Emitter } from '../utils/Emitter'
 import Collection from '@discordjs/collection'
 
 const createNulledCollection = (cache: string) => {
@@ -20,10 +20,14 @@ const createNulledCollection = (cache: string) => {
   } as unknown as Collection<any, any>
 }
 
-export class CacheManager {
-  public events = new EventEmitter()
-
+export class CacheManager extends Emitter<DiscordEventMap> {
   constructor (private worker: Worker) {
+    super()
+
+    this.worker.on('*', (data) => {
+      this.emit(data.t, data.d as any)
+    })
+
     const cache = this.worker.options.cache
 
     defaults(this, this.worker)
@@ -45,15 +49,5 @@ export class CacheManager {
 
     if (cache.users) users(this, this.worker)
     else worker.users = createNulledCollection('users')
-  }
-
-  add <K extends keyof DiscordEventMap> (event: K, fn: (data: DiscordEventMap[K]) => void) {
-    this.events.on(event, fn)
-
-    this.worker.on(event, fn)
-  }
-
-  run <K extends keyof DiscordEventMap> (event: K, data: DiscordEventMap[K]) {
-    this.events.emit(event, data)
   }
 }

@@ -2,7 +2,7 @@ import { CompleteBotOptions } from '../master/Master'
 import { Thread } from './Thread'
 
 import { DiscordEventMap, CachedGuild } from '../../typings/Discord'
-import { EventEmitter } from 'events'
+import { Emitter } from '../../utils/Emitter'
 import Collection from '@discordjs/collection'
 
 import { Shard } from '../../socket/Shard'
@@ -16,17 +16,7 @@ import { CommandHandler } from '../../structures/CommandHandler'
 
 import { RestManager } from '../../rest/Manager'
 
-export class Worker extends EventEmitter {
-  on: <K extends keyof DiscordEventMap>(event: K, listener?: (data:  DiscordEventMap[K]) => void) => this = this.on
-
-  once: <K extends keyof DiscordEventMap>(event: K, listener?: (data: DiscordEventMap[K]) => void) => this = this.once
-
-  emit: <K extends keyof DiscordEventMap>(event: K, data: DiscordEventMap[K]) => boolean = this.emit
-
-  off: <K extends keyof DiscordEventMap>(event: K, listener?: (data: DiscordEventMap[K]) => void) => this = this.off
-
-  removeAllListeners: <K extends keyof DiscordEventMap>(event?: K) => this = this.removeAllListeners
-
+export class Worker extends Emitter<DiscordEventMap> {
   public options: CompleteBotOptions = {} as CompleteBotOptions
   public shards: Collection<number, Shard> = new Collection()
 

@@ -6,7 +6,7 @@ import { CacheManager } from '../CacheManager';
 export function members (events: CacheManager, worker: Worker) {
   worker.members = new Collection()
 
-  events.add('GUILD_MEMBER_ADD', (member) => {
+  events.on('GUILD_MEMBER_ADD', (member) => {
     let guildMembers = worker.members.get(member.guild_id)
     if (!guildMembers) {
       guildMembers = new Collection()
@@ -26,7 +26,7 @@ export function members (events: CacheManager, worker: Worker) {
     guildMembers.set(member.user?.id as Snowflake, member)
   })
 
-  events.add('GUILD_MEMBER_UPDATE', (member) => {
+  events.on('GUILD_MEMBER_UPDATE', (member) => {
     let guildMembers = worker.members.get(member.guild_id)
     if (!guildMembers) return
     let currentMember = guildMembers.get(member.user?.id as Snowflake)
@@ -48,14 +48,14 @@ export function members (events: CacheManager, worker: Worker) {
     guildMembers.set(member.user?.id as Snowflake, currentMember)
   })
 
-  events.add('GUILD_MEMBER_REMOVE', (member) => {
+  events.on('GUILD_MEMBER_REMOVE', (member) => {
     let guildMembers = worker.members.get(member.guild_id)
     if (!guildMembers) return
 
     guildMembers.delete(member.user.id)
   })
 
-  events.add('GUILD_DELETE', (guild) => {
+  events.on('GUILD_DELETE', (guild) => {
     if (guild.unavailable) return
 
     worker.members.delete(guild.id)

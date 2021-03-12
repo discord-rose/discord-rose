@@ -30,7 +30,7 @@ export class Shard {
     this.ws.on('GUILD_CREATE', (data: GatewayGuildCreateDispatchData) => {
       if (!this.unavailableGuilds) return this.worker.emit('GUILD_CREATE', data)
       
-      this.worker.cacheManager.run('GUILD_CREATE', data)
+      this.worker.cacheManager.emit('GUILD_CREATE', data)
 
       if (!checkTimeout) {
         checkTimeout = setTimeout(() => {
@@ -109,7 +109,7 @@ export class Shard {
           if (!member.user) return
           members.set(member.user.id, member);
           (member as GatewayGuildMemberAddDispatchData).guild_id = opts.guild_id
-          this.worker.cacheManager.run('GUILD_MEMBER_ADD', member as GatewayGuildMemberAddDispatchData)
+          this.worker.cacheManager.emit('GUILD_MEMBER_ADD', member as GatewayGuildMemberAddDispatchData)
         })
 
         if (data.chunk_index === (data.chunk_count || 0) - 1) {
