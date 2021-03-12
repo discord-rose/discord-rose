@@ -8,7 +8,7 @@ import Collection from '@discordjs/collection'
 import { Shard } from '../../socket/Shard'
 import { CacheManager } from '../../socket/CacheManager'
 
-import { APIUser, PresenceUpdateStatus, Snowflake } from 'discord-api-types'
+import { APIUser, PresenceUpdateStatus, Snowflake, ActivityType } from 'discord-api-types'
 
 import { guildShard } from '../../utils/UtilityFunctions'
 
@@ -82,11 +82,11 @@ export class Worker extends EventEmitter {
           {
             name,
             type: ({
-              playing: 0,
-              streaming: 1,
-              listening: 2,
-              watching: 3,
-              competing: 5
+              playing: ActivityType.Game,
+              streaming: ActivityType.Streaming,
+              listening: ActivityType.Listening,
+              watching: ActivityType.Watching,
+              competing: ActivityType.Competing
             })[type],
             url
           }
