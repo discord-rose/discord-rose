@@ -14,10 +14,14 @@ import { Emitter } from '../utils/Emitter'
 import Collection from '@discordjs/collection'
 
 const createNulledCollection = (cache: string) => {
-  return {
-    get: () => { throw new Error(`CachingOptions.${cache} is disabled so this cache cannot be accessed`) },
-    set: () => { throw new Error(`CachingOptions.${cache} is disabled so this cache cannot be accessed`) }
-  } as unknown as Collection<any, any>
+  return new Proxy(() => {}, {
+    get () {
+      throw new Error(`CachingOptions.${cache} is disabled so this cache cannot be accessed`)
+    },
+    apply () {
+      throw new Error(`CachingOptions.${cache} is disabled so this cache cannot be accessed`)
+    }
+  }) as unknown as Collection<any, any>
 }
 
 export class CacheManager extends Emitter<DiscordEventMap> {
