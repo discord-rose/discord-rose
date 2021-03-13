@@ -29,12 +29,10 @@ export class Bucket {
   add (req: Request) {
     this.queue.push(req)
 
-    this.run()
+    if (!this.working || this.queue.length === 1) this.run()
   }
 
-  async run (next?: boolean) {
-    if (!next && this.working) return
-
+  async run () {
     const req = this.queue.shift()
 
     if (!req) {
@@ -82,6 +80,6 @@ export class Bucket {
       req.reject(new RestError(json))
     }
 
-    this.run(true) // run next item
+    this.run() // run next item
   }
 }

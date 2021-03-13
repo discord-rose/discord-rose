@@ -20,10 +20,10 @@ export class Sharder {
 
     for (var i = 0; i < this.master.session.max_concurrency; i++) {
       const n = this.shards.shift()
-      if (typeof n !== 'undefined') next.push(n)
+      if (!isNaN(n)) next.push(n)
     }
 
-    if (typeof next[0] === 'undefined') {
+    if (next.length < 1) {
       this.looping = false
       return
     }
