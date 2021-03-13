@@ -2,8 +2,6 @@
 
 ## The simple Discord library for advanced users.
 
-# Discord-Rose is not yet fully released, breaking changes can and will be introduced at a moments notice. We do not recommend creating a production bot with the library just yet.
-
 # Installation
 
 Run `npm i --save discord-rose`

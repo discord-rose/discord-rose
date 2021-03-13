@@ -1,7 +1,7 @@
 {
   "name": "discord-rose",
-  "version": "0.2.0",
-  "description": "The Simple Discord Library for Advanced Users",
+  "version": "1.0.0",
+  "description": "The simple Discord library for advanced users.",
   "main": "./dist/index.js",
   "scripts": {
     "build": "npm i && rm -rf ./dist && tsc",
