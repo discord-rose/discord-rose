@@ -89,7 +89,7 @@ export class Master extends Emitter<{
         self: options.cache?.self ?? true,
         members: options.cache?.members ?? false,
         messages: options.cache?.messages ?? false,
-        users: options.cache.users ?? false
+        users: options.cache?.users ?? false
       },
       cacheControl: options.cacheControl as Complete<CacheControlOptions> ?? {
         channels: false,
