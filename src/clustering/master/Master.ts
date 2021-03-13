@@ -46,7 +46,10 @@ export class Master {
 
   public session: APIGatewaySessionStartLimit
   
-  public log: (msg: string) => void
+  public log: (msg: string, cluster?: Cluster) => void
+
+  private _clusterNames = [] as string[]
+  private longestName = 1 as number
 
   /**
    * Creates a new Master instance
@@ -101,7 +104,9 @@ export class Master {
       log: options.log
     }
 
-    this.log = typeof options.log === 'undefined' ? console.log : options.log
+    this.log = typeof options.log === 'undefined' ? (msg, cluster) => {
+      console.log(`${cluster ? `Cluster ${cluster.id}${' '.repeat(this.longestName - cluster.id.length)}` : `Master ${' '.repeat(this.longestName + 1)}`} | ${msg}`)
+    } : options.log
     if (!this.log) this.log = () => {}
 
     if (this.options.warnings && this.options.warnings.cachedIntents) {
@@ -120,8 +125,6 @@ export class Master {
 
       this.handlers.on(key, (shard, ...data) => handlers[key].bind(shard)(...data))
     }
-
-    this.log('Starting Master.')
   }
 
   /**
@@ -130,8 +133,12 @@ export class Master {
    * @param fileName Direct path for process
    */
   spawnProcess (name: string, fileName: string) {
+    this._clusterNames.push(name)
+    this.longestName = this._clusterNames.reduce((a, b) => a.length > b.length ? a : b, '').length
+
     const cluster = new Cluster(name, this, fileName, true)
     cluster.spawn()
+
     return cluster
   }
 
@@ -158,6 +165,9 @@ export class Master {
     for (let i = 0; i < this.chunks.length; i++) {
       const cluster = new Cluster(`${i}`, this)
       this.clusters.set(`${i}`, cluster)
+
+      this._clusterNames.push(`${i}`)
+      this.longestName = this._clusterNames.reduce((a, b) => a.length > b.length ? a : b, '').length
 
       promises.push(cluster.spawn())
     }

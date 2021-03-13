@@ -5,15 +5,15 @@ export default {
   REGISTER_SHARD: function ({ id }, respond) {
     this.master.sharder.register(id)
   
-    this.master.log(`Cluster ${this.id} registered shard ${id}`)
+    this.logAs(`Registered shard ${id}`)
   
     respond({})
   },
   SHARD_READY: function ({ id }, _) {
-    this.master.log(`Shard ${id} connected to Discord.`)
+    this.logAs(`Shard ${id} connected to Discord.`)
   },
   LOG: function (data, _) {
-    this.master.log(data)
+    this.logAs(data)
   },
   RESTART_CLUSTER: function ({ id }, _) {
     this.master.clusters.get(String(id))?.restart()

@@ -22,7 +22,7 @@ export class Cluster extends ThreadComms {
       this.started = true
     }
     return new Promise(resolve => {
-      this.master.log(`Starting cluster ${this.id}`)
+      this.logAs(`Starting`)
       this.thread = new Worker(this.fileName, {
         workerData: {
           id: this.id,
@@ -33,11 +33,11 @@ export class Cluster extends ThreadComms {
       super.register(this.thread)
     
       this.thread.on('exit', (code) => {
-        this.master.log(`Cluster ${this.id} closed with code ${code}`)
+        this.logAs(`Closed with code ${code}`)
         if (!this.dying) this.spawn()
       })
       this.thread.on('online', () => {
-        this.master.log(`Cluster ${this.id} started.`)
+        this.logAs(`Started.`)
         resolve()
 
         if (this.started) this.start()
@@ -52,6 +52,10 @@ export class Cluster extends ThreadComms {
       shards: this.master.chunks[Number(this.id)],
       options: JSON.parse(JSON.stringify(this.master.options)) // normalize options
     })
+  }
+
+  public logAs (msg: string) {
+    this.master.log(msg, this)
   }
 
   /**
