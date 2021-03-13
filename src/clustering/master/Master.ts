@@ -15,6 +15,7 @@ import handlers from './handlers'
 import { EventEmitter } from 'events'
 
 import path from 'path'
+import { Emitter } from '../../utils/Emitter'
 
 type Complete<T> = {
   [P in keyof Required<T>]: Pick<T, P> extends Required<Pick<T, P>> ? T[P] : (T[P] | undefined);
@@ -29,7 +30,11 @@ export interface CompleteBotOptions extends Complete<BotOptions> {
 /**
  * Master process controller
  */
-export class Master {
+export class Master extends Emitter<{
+  READY: Master
+  CLUSTER_STARTED: Cluster
+  CLUSTER_STOPPED: Cluster
+}> {
   public options: CompleteBotOptions = {} as CompleteBotOptions
   public rest = {} as RestManager
   public handlers = new EventEmitter() as {
@@ -57,6 +62,8 @@ export class Master {
    * @param options Options
    */
   constructor (fileName: string, options: BotOptions) {
+    super()
+
     if (!fileName) throw new Error('Please provide the file name for the Worker')
     if (!options.token) throw new TypeError('Expected options.token')
 
@@ -183,6 +190,7 @@ export class Master {
     this.log('Finished spawning')
 
     this.spawned = true
+    this.emit('READY', this)
   }
 
   /**

@@ -33,10 +33,12 @@ export class Cluster extends ThreadComms {
     
       this.thread.on('exit', (code) => {
         this.logAs(`Closed with code ${code}`)
+        this.master.emit('CLUSTER_STOPPED', this)
         if (!this.dying) this.spawn()
       })
       this.thread.on('online', () => {
         this.logAs(`Started.`)
+        this.master.emit('CLUSTER_STARTED', this)
         resolve()
 
         if (this.started) this.start()
