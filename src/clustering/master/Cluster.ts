@@ -22,7 +22,6 @@ export class Cluster extends ThreadComms {
       this.started = true
     }
     return new Promise(resolve => {
-      this.logAs(`Starting`)
       this.thread = new Worker(this.fileName, {
         workerData: {
           id: this.id,

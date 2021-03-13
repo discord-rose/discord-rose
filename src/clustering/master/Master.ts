@@ -173,11 +173,11 @@ export class Master {
     }
 
     await Promise.all(promises)
-    this.log('All clusters have been spawned, registering shards.')
+    this.log('Registering shards.')
 
     await Promise.all(this.clusters.map(x => x.start()))
 
-    this.log('All shards registered, spawning.')
+    this.log('Spawning.')
     await this.sharder.loop()
 
     this.log('Finished spawning')
