@@ -10,7 +10,7 @@ export default {
     respond({})
   },
   SHARD_READY: function ({ id }, _) {
-    this.logAs(`Shard ${id} connected to Discord.`)
+    this.logAs(`Shard ${id} connected to Discord`)
   },
   LOG: function (data, _) {
     this.logAs(data)

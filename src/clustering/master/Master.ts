@@ -180,11 +180,11 @@ export class Master extends Emitter<{
     }
 
     await Promise.all(promises)
-    this.log('Registering shards.')
+    this.log('Registering shards')
 
     await Promise.all(this.clusters.map(x => x.start()))
 
-    this.log('Spawning.')
+    this.log('Spawning')
     await this.sharder.loop()
 
     this.log('Finished spawning')
