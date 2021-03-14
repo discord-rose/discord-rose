@@ -65,7 +65,7 @@ export class CommandHandler {
    *     return db.getPrefix(message.guild_id)
    *   })
    */
-  setPrefix (fn: string|string[] | ((message: APIMessage) => Promise<string|string[]> | string|string[])): this {
+  prefix (fn: string|string[] | ((message: APIMessage) => Promise<string|string[]> | string|string[])): this {
     if (Array.isArray(fn) || typeof fn === 'string') {
       this.prefixFunction = () => fn
     } else {
@@ -73,6 +73,12 @@ export class CommandHandler {
     }
 
     return this
+  }
+
+  get setPrefix () {
+    console.warn('.setPrefix is deprecated, please use .prefix() instead.')
+
+    return this.prefix
   }
 
   /**
@@ -135,8 +141,14 @@ export class CommandHandler {
     return false
   }
 
-  public findCommand (command: string) {
+  public find (command: string) {
     return this.commands.find(x => (this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)) as boolean))
+  }
+
+  get findCommand () {
+    console.warn('.findCommand is deprecated, please use .find() instead.')
+
+    return this.find
   }
 
   private async _exec (data: APIMessage) {
@@ -165,7 +177,7 @@ export class CommandHandler {
 
     const command = args.shift() || ''
 
-    const cmd = this.findCommand(command)
+    const cmd = this.find(command)
     if (!cmd) return
 
     const ctx = new CommandContext(this.worker, data, cmd, prefix as string)
