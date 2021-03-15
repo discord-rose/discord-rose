@@ -43,11 +43,7 @@ export class MembersResource {
    * @param nick New nickname (null to reset)
    */
   setNickname (guildId: Snowflake, memberId: Snowflake | '@me' = '@me', nick?: string): Promise<RESTPatchAPICurrentGuildMemberNicknameResult> {
-    return this.rest.request('PATCH', `/guilds/${guildId}/members/${memberId}/nick`, {
-      body: {
-        nick
-      }
-    })
+    return this.edit(guildId, memberId, { nick })
   }
 
   /**
