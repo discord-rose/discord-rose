@@ -5,6 +5,8 @@ import { DiscordEventMap, CachedGuild } from '../../typings/Discord'
 import { Emitter } from '../../utils/Emitter'
 import Collection from '@discordjs/collection'
 
+import { inspect } from "util"
+
 import { Shard } from '../../socket/Shard'
 import { CacheManager } from '../../socket/CacheManager'
 
