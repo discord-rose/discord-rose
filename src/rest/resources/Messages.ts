@@ -78,6 +78,21 @@ export class MessagesResource {
   }
 
   /**
+   * Deletes multiple messages
+   * @param channelId ID of channel
+   * @param messageIds ID of message
+   */
+  bulkDelete (channelId: Snowflake, messageIds: Snowflake[]): Promise<never> {
+    if (messageIds.length < 2) return this.delete(channelId, messageIds[0])
+
+    return this.rest.request('POST', `/channels/${channelId}/messages/bulk-delete`, {
+      body: {
+        messages: messageIds
+      }
+    }) as never
+  }
+
+  /**
    * Edits a message
    * @param channelId ID of channel
    * @param messageId ID of message
