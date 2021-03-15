@@ -116,7 +116,7 @@ export class Worker extends Emitter<DiscordEventMap> {
     return this.api instanceof RestManager && this.shards.every(x => x.ready)
   }
 
-  log (...data: any[]) {
-    this.comms.tell('LOG', data.map(d => typeof d === 'string' ? d : inspect(d)).join(' '))
+  log (...data) {
+    this.comms.log(...data)
   }
 }
