@@ -37,6 +37,8 @@ export const bits = {
 }
 
 export class PermissionsUtils {
+  static bits = bits
+
   static hasPerms (perms: number, bit: number): boolean {
     if ((perms & bits.administrator) !== 0) return true // administrator
     if ((perms & bit) !== 0) return true
