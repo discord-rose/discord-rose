@@ -15,7 +15,7 @@ import { WebhooksResource } from './resources/Webhooks'
 
 export class RestManager {
   public buckets: Cache<string, Bucket> = new Cache(60000)
-  public global: Promise<void> | null = null
+  public global: Promise<true> | null = null
 
   public channels = new ChannelsResource(this)
   public messages = new MessagesResource(this)
@@ -28,7 +28,7 @@ export class RestManager {
   constructor (private token: string) {}
 
   private _key (route: string): string {
-    const bucket = []
+    const bucket: string[] = []
     const split = route.split('/')
 
     for (let i = 0; i < split.length; i++) {

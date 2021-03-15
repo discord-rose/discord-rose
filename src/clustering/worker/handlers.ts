@@ -47,7 +47,7 @@ export default {
       respond({ error: err.message })
     }
   },
-  GET_STATS: function ( _, respond) {
+  GET_STATS: function (_, respond) {
     respond({
       cluster: {
         id: this.id,

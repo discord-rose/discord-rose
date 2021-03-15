@@ -12,7 +12,7 @@ import handlers from './handlers'
 export class Thread extends ThreadComms {
   public id: string = workerData.id
 
-  constructor (public worker?: Worker) {
+  constructor (public worker: Worker = {} as Worker) {
     super()
     super.register(parentPort as MessagePort)
 

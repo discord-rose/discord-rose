@@ -167,7 +167,7 @@ export class Master extends Emitter<{
 
     this.chunks = chunkShards(this.options?.shards || 1, this.options.shardsPerCluster || 5)
 
-    const promises = []
+    const promises: Promise<void>[] = []
 
     for (let i = 0; i < this.chunks.length; i++) {
       const cluster = new Cluster(`${i}`, this)

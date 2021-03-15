@@ -40,7 +40,7 @@ export interface DiscordDefaultEventMap {
   "VOICE_SERVER_UPDATE": GatewayVoiceServerUpdateDispatchData,
   "VOICE_STATE_UPDATE": GatewayVoiceState,
   "WEBHOOKS_UPDATE": GatewayWebhooksUpdateDispatchData,
-  "READY": GatewayReadyDispatchData
+  "READY": GatewayReadyDispatchData | null
 }
 
 export interface DiscordEventMap extends DiscordDefaultEventMap {

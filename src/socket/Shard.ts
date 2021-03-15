@@ -14,6 +14,7 @@ export class Shard {
 
   constructor (public id: number, public worker: Worker) {
     this.ws.on('READY', (data) => {
+      if (!data) return
       this.worker.comms.tell('SHARD_READY', { id })
 
       this.worker.user = data.user

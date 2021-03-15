@@ -1,10 +1,10 @@
-import { Snowflake } from "discord-api-types"
+import { Snowflake } from 'discord-api-types'
 
 /**
  * Promisify a waiting time
  * @param time Time to wait
  */
-export function wait(time: number): Promise<any> {
+export async function wait (time: number): Promise<true> {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve(true)
@@ -17,11 +17,11 @@ export function wait(time: number): Promise<any> {
  * @param total Total amount of shards
  * @param perCluster Amount of shards per cluster
  */
-export function chunkShards(total: number, perCluster: number): number[][] {
-  const entries = Array(total).fill(null).reduce((a, _, i) => a.concat([i]), [])
+export function chunkShards (total: number, perCluster: number): number[][] {
+  const entries: number[] = Array(total).fill(null).reduce((a, _, i) => a.concat([i]), [])
   const chunkSize = (Math.ceil(total / perCluster))
 
-  const result = []
+  const result: number[][] = []
   const amount = Math.floor(entries.length / chunkSize)
   const mod = entries.length % chunkSize
 
@@ -42,6 +42,6 @@ export function generateID (currently: string[]): string {
   return current
 }
 
-export function guildShard (id: Snowflake, totalShards: number) {
+export function guildShard (id: Snowflake, totalShards: number): number {
   return Number((BigInt(id) >> BigInt(22)) % BigInt(totalShards))
 }

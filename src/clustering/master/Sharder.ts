@@ -16,11 +16,11 @@ export class Sharder {
 
   async loop (): Promise<void> {
     this.looping = true
-    const next = []
+    const next: number[] = []
 
     for (var i = 0; i < this.master.session.max_concurrency; i++) {
       const n = this.shards.shift()
-      if (!isNaN(n)) next.push(n)
+      if (Number.isInteger(n)) next.push(n as number)
     }
 
     if (next.length < 1) {
