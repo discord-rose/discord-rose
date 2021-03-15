@@ -5,6 +5,8 @@ import { Worker } from "../../typings/lib"
 
 import { ResolveFunction, ThreadComms, ThreadEvents } from "../ThreadComms";
 
+import { inspect } from "util";
+
 import handlers from './handlers'
 
 export class Thread extends ThreadComms {
@@ -35,10 +37,10 @@ export class Thread extends ThreadComms {
 
   /**
    * Logs data to master's MasterOptions.log
-   * @param message Message string
+   * @param message Message args
    */
-  log (message: string) {
-    this.tell('LOG', message)
+  log (messages: ...any) {
+    this.tell('LOG', messages.map(m => typeof m === 'string' ? m : inspect(m)).join(' '))
   }
 
   /**

@@ -5,6 +5,8 @@ import { DiscordEventMap, CachedGuild } from '../../typings/Discord'
 import { Emitter } from '../../utils/Emitter'
 import Collection from '@discordjs/collection'
 
+import { inspect } from "util"
+
 import { Shard } from '../../socket/Shard'
 import { CacheManager } from '../../socket/CacheManager'
 
@@ -114,7 +116,7 @@ export class Worker extends Emitter<DiscordEventMap> {
     return this.api instanceof RestManager && this.shards.every(x => x.ready)
   }
 
-  log (data: string) {
-    this.comms.tell('LOG', data)
+  log (...data: any) {
+    this.comms.tell('LOG', data.map(d => typeof d === 'string' ? d : inspect(d)).join(' '))
   }
 }
