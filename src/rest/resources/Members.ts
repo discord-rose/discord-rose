@@ -39,11 +39,24 @@ export class MembersResource {
   /**
    * Sets a members nickname
    * @param guildId ID of guild
-   * @param id ID of member (or leave blank for self)
-   * @param nick New nickname (null to reset)
+   * @param memberId ID of member
+   * @param nick New nickname (blank or null to reset)
    */
-  setNickname (guildId: Snowflake, memberId: Snowflake | '@me' = '@me', nick?: string): Promise<RESTPatchAPICurrentGuildMemberNicknameResult> {
+  setNickname(guildId: Snowflake, memberId: Snowflake, nick: string | null = null): Promise<RESTPatchAPIGuildMemberResult> {
     return this.edit(guildId, memberId, { nick })
+  }
+
+  /**
+   * Sets the bot's nickname
+   * @param guildId ID of guild
+   * @param nick New nickname (blank or null to reset)
+   */
+  setSelfNickname(guildId: Snowflake, nick: string | null = null): Promise<RESTPatchAPIGuildMemberResult> {
+    return this.rest.request('PATCH', `/guilds/${guildId}/members/@me/nick`, {
+      body: {
+        nick
+      }
+    })
   }
 
   /**
