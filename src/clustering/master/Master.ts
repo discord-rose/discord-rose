@@ -1,16 +1,17 @@
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import { RestManager } from '../../rest/Manager'
 import { APIGatewaySessionStartLimit, Snowflake } from 'discord-api-types'
 import { DiscordEventMap, CachedGuild } from '../../typings/Discord'
 
 import { chunkShards, guildShard } from '../../utils/UtilityFunctions'
 
-import { ThreadEvents, ResolveFunction } from '../ThreadComms'
+import { ThreadEvents, ResolveFunction, ClusterStats } from '../ThreadComms'
 
 import Collection from '@discordjs/collection'
 
 import { Cluster } from './Cluster'
 import { Sharder } from './Sharder'
-import handlers from './handlers'
+import { handlers } from './handlers'
 
 import { EventEmitter } from 'events'
 
@@ -22,7 +23,7 @@ type Complete<T> = {
 }
 
 export interface CompleteBotOptions extends Complete<BotOptions> {
-  cache: Complete<CacheOptions>,
+  cache: Complete<CacheOptions>
   cacheControl: Complete<CacheControlOptions>
   ws: string
 }
@@ -39,8 +40,8 @@ export class Master extends Emitter<{
   public rest = {} as RestManager
   public handlers = new EventEmitter() as {
     on: <K extends keyof ThreadEvents>(event: K, listener: (cluster: Cluster, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => any
-  
-    emit<K extends keyof ThreadEvents>(event: K, cluster: Cluster, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>): boolean
+
+    emit: <K extends keyof ThreadEvents>(event: K, cluster: Cluster, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => boolean
   }
 
   public sharder = new Sharder(this)
@@ -50,10 +51,10 @@ export class Master extends Emitter<{
   public spawned: boolean = false
 
   public session: APIGatewaySessionStartLimit
-  
+
   public log: (msg: string, cluster?: Cluster) => void
 
-  private _clusterNames = [] as string[]
+  private readonly _clusterNames = [] as string[]
   private longestName = 1 as number
 
   /**
@@ -72,52 +73,56 @@ export class Master extends Emitter<{
     this.options = {
       token: options.token,
       shards: options.shards,
-      shardsPerCluster: options.shardsPerCluster || 5,
-      shardOffset: options.shardOffset || 0,
-      cache: options.cache === false ? {
-        guilds: false,
-        roles: false,
-        channels: false,
-        self: false,
-        members: false,
-        messages: false,
-        users: false
-      } : {
-        guilds: options.cache?.guilds ?? true,
-        roles: options.cache?.roles ?? true,
-        channels: options.cache?.channels ?? true,
-        self: options.cache?.self ?? true,
-        members: options.cache?.members ?? false,
-        messages: options.cache?.messages ?? false,
-        users: options.cache?.users ?? false
-      },
+      shardsPerCluster: options.shardsPerCluster ?? 5,
+      shardOffset: options.shardOffset ?? 0,
+      cache: options.cache === false
+        ? {
+            guilds: false,
+            roles: false,
+            channels: false,
+            self: false,
+            members: false,
+            messages: false,
+            users: false
+          }
+        : {
+            guilds: options.cache?.guilds ?? true,
+            roles: options.cache?.roles ?? true,
+            channels: options.cache?.channels ?? true,
+            self: options.cache?.self ?? true,
+            members: options.cache?.members ?? false,
+            messages: options.cache?.messages ?? false,
+            users: options.cache?.users ?? false
+          },
       cacheControl: options.cacheControl as Complete<CacheControlOptions> ?? {
         channels: false,
         guilds: false,
         members: false,
         roles: false
       },
-      ws: options.ws || '',
+      ws: options.ws ?? '',
       intents: Array.isArray(options.intents)
         ? options.intents.reduce((a, b) => a | Intents[b], 0)
         : options.intents === true
           ? Object.values(Intents).reduce((a, b) => a | b, 0)
           : options.intents
             ? options.intents
-            : Object.values(Intents).reduce((a, b) => a | b) &~ Intents['GUILD_MEMBERS'] &~ Intents['GUILD_PRESENCES'],
+            : Object.values(Intents).reduce((a, b) => a | b) & ~Intents.GUILD_MEMBERS & ~Intents.GUILD_PRESENCES,
       warnings: {
         cachedIntents: options.warnings?.cachedIntents ?? true
       },
       log: options.log
     }
 
-    this.log = typeof options.log === 'undefined' ? (msg, cluster) => {
-      console.log(`${cluster ? `Cluster ${cluster.id}${' '.repeat(this.longestName - cluster.id.length)}` : `Master ${' '.repeat(this.longestName + 1)}`} | ${msg}`)
-    } : options.log
+    this.log = typeof options.log === 'undefined'
+      ? (msg, cluster) => {
+          console.log(`${cluster ? `Cluster ${cluster.id}${' '.repeat(this.longestName - cluster.id.length)}` : `Master ${' '.repeat(this.longestName + 1)}`} | ${msg}`)
+        }
+      : options.log
     if (!this.log) this.log = () => {}
 
-    if (this.options.warnings && this.options.warnings.cachedIntents) {
-      const warn = (key: string, intent: string) => console.warn(`WARNING: CacheOptions.${key} was turned on, but is missing the ${intent} intent. Meaning your cache with be empty. Either turn this on, or if it's intentional set Options.warnings.cachedIntents to false.`)
+    if (this.options.warnings?.cachedIntents) {
+      const warn = (key: string, intent: string): void => console.warn(`WARNING: CacheOptions.${key} was turned on, but is missing the ${intent} intent. Meaning your cache with be empty. Either turn this on, or if it's intentional set Options.warnings.cachedIntents to false.`)
 
       if (this.options.cache.guilds && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('guilds', 'GUILDS')
       if (this.options.cache.roles && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('roles', 'GUILDS')
@@ -130,7 +135,7 @@ export class Master extends Emitter<{
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i] as keyof ThreadEvents
 
-      this.handlers.on(key, (shard, ...data) => handlers[key].bind(shard)(...data))
+      this.handlers.on(key, (shard, ...data) => handlers[key]?.bind(shard)(...data))
     }
   }
 
@@ -139,12 +144,12 @@ export class Master extends Emitter<{
    * @param name Name of the process (especially for logging)
    * @param fileName Direct path for process
    */
-  spawnProcess (name: string, fileName: string) {
+  spawnProcess (name: string, fileName: string): Cluster {
     this._clusterNames.push(name)
     this.longestName = this._clusterNames.reduce((a, b) => a.length > b.length ? a : b, '').length
 
     const cluster = new Cluster(name, this, fileName, true)
-    cluster.spawn()
+    cluster.spawn().catch(err => console.error(`Could not spawn ${name}: ${String(err)}`))
 
     return cluster
   }
@@ -152,7 +157,7 @@ export class Master extends Emitter<{
   /**
    * Starts the bot and spawns workers
    */
-  async start () {
+  async start (): Promise<void> {
     this.rest = new RestManager(this.options.token)
 
     const gatewayRequest = await this.rest.misc.getGateway()
@@ -162,12 +167,12 @@ export class Master extends Emitter<{
 
     if (this.options.shards === 'auto') this.options.shards = gatewayRequest.shards
     if (typeof this.options.shards !== 'number') this.options.shards = 1
-    this.options.shards += this.options?.shardOffset || 0
+    this.options.shards += this.options?.shardOffset ?? 0
     this.log(`Spawning ${this.options.shards} shards.`)
 
-    this.chunks = chunkShards(this.options?.shards || 1, this.options.shardsPerCluster || 5)
+    this.chunks = chunkShards(this.options?.shards || 1, this.options.shardsPerCluster ?? 5)
 
-    const promises: Promise<void>[] = []
+    const promises: Array<Promise<void>> = []
 
     for (let i = 0; i < this.chunks.length; i++) {
       const cluster = new Cluster(`${i}`, this)
@@ -182,7 +187,7 @@ export class Master extends Emitter<{
     await Promise.all(promises)
     this.log('Registering shards')
 
-    await Promise.all(this.clusters.map(x => x.start()))
+    await Promise.all(this.clusters.map(async x => await x.start()))
 
     this.log('Spawning')
     await this.sharder.loop()
@@ -198,8 +203,8 @@ export class Master extends Emitter<{
    * @param event Event name
    * @param data Event data
    */
-  sendToAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): Promise<ThreadEvents[K]['receive'][]> {
-    return Promise.all(this.clusters.map(x => x.sendCommand(event, data)))
+  async sendToAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): Promise<Array<ThreadEvents[K]['receive']>> {
+    return await Promise.all(this.clusters.map(async x => await x.sendCommand(event, data)))
   }
 
   /**
@@ -207,7 +212,7 @@ export class Master extends Emitter<{
    * @param event Event name
    * @param data Event data
    */
-  tellAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): void[] {
+  tellAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): any[] {
     return this.clusters.map(x => x.tell(event, data))
   }
 
@@ -215,28 +220,29 @@ export class Master extends Emitter<{
    * Evals code on every cluster
    * @param code Code to eval
    */
-  broadcastEval (code: string) {
-    return this.sendToAll('EVAL', code)
+  async broadcastEval (code: string): Promise<any[]> {
+    return await this.sendToAll('EVAL', code)
   }
 
   /**
    * Gets each clusters stats
    */
-  getStats () {
-    return this.sendToAll('GET_STATS', null)
+  async getStats (): Promise<ClusterStats[]> {
+    return await this.sendToAll('GET_STATS', null)
   }
 
-  shardToCluster (shardId: number) {
+  shardToCluster (shardId: number): Cluster {
     for (let i = 0; i < this.chunks.length; i++) {
-      if (this.chunks[i].includes(shardId)) return this.clusters.get(`${i}`)
+      if (this.chunks[i].includes(shardId)) return this.clusters.get(`${i}`) as Cluster
     }
+    throw new Error('Doesn\'t have a cluster')
   }
 
-  guildToShard (guildId: Snowflake) {
+  guildToShard (guildId: Snowflake): number {
     return guildShard(guildId, this.options.shards as number)
   }
 
-  guildToCluster (guildId: Snowflake) {
+  guildToCluster (guildId: Snowflake): Cluster {
     return this.shardToCluster(this.guildToShard(guildId))
   }
 }
@@ -252,28 +258,28 @@ interface CacheOptions {
 }
 
 interface CacheControlOptions {
-  guilds?: (keyof CachedGuild)[] | false
-  roles?: (keyof DiscordEventMap['GUILD_ROLE_CREATE']['role'])[] | false
-  channels?: (keyof DiscordEventMap['CHANNEL_CREATE'])[] | false
-  members?: (keyof DiscordEventMap['GUILD_MEMBER_ADD'])[] | false
+  guilds?: Array<keyof CachedGuild> | false
+  roles?: Array<keyof DiscordEventMap['GUILD_ROLE_CREATE']['role']> | false
+  channels?: Array<keyof DiscordEventMap['CHANNEL_CREATE']> | false
+  members?: Array<keyof DiscordEventMap['GUILD_MEMBER_ADD']> | false
 }
 
 const Intents = {
-  'GUILDS': 1 << 0,
-  'GUILD_MEMBERS': 1 << 1,
-  'GUILD_BANS': 1 << 2,
-  'GUILD_EMOJIS': 1 << 3,
-  'GUILD_INTEGRATIONS': 1 << 4,
-  'GUILD_WEBHOOKS': 1 << 5,
-  'GUILD_INVITES': 1 << 6,
-  'GUILD_VOICE_STATES': 1 <<  7,
-  'GUILD_PRESENCES': 1 << 8,
-  'GUILD_MESSAGES': 1 << 9,
-  'GUILD_MESSAGE_REACTIONS': 1 << 10,
-  'GUILD_MESSAGE_TYPING': 1 << 11,
-  'DIRECT_MESSAGES': 1 << 12,
-  'DIRECT_MESSAGE_REACTIONS': 1 << 13,
-  'DIRECT_MESSAGE_TYPING': 1 << 14
+  GUILDS: 1 << 0,
+  GUILD_MEMBERS: 1 << 1,
+  GUILD_BANS: 1 << 2,
+  GUILD_EMOJIS: 1 << 3,
+  GUILD_INTEGRATIONS: 1 << 4,
+  GUILD_WEBHOOKS: 1 << 5,
+  GUILD_INVITES: 1 << 6,
+  GUILD_VOICE_STATES: 1 << 7,
+  GUILD_PRESENCES: 1 << 8,
+  GUILD_MESSAGES: 1 << 9,
+  GUILD_MESSAGE_REACTIONS: 1 << 10,
+  GUILD_MESSAGE_TYPING: 1 << 11,
+  DIRECT_MESSAGES: 1 << 12,
+  DIRECT_MESSAGE_REACTIONS: 1 << 13,
+  DIRECT_MESSAGE_TYPING: 1 << 14
 }
 
 export interface BotOptions {
@@ -293,7 +299,7 @@ export interface BotOptions {
   /**
    * Array of intents to enable if true, enables all, if undefined enables all non-priveleged intents.
    */
-  intents?: true | number | (keyof typeof Intents)[]
+  intents?: true | number | Array<keyof typeof Intents>
   /**
    * Amount of shards to add after requesting shards
    */

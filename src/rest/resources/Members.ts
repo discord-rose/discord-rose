@@ -1,16 +1,16 @@
-import { RESTGetAPIGuildMemberResult, RESTGetAPIGuildMembersSearchQuery, RESTGetAPIGuildMembersSearchResult, RESTPatchAPICurrentGuildMemberNicknameResult, RESTPatchAPIGuildMemberJSONBody, RESTPatchAPIGuildMemberResult, RESTPutAPIGuildBanJSONBody, Snowflake } from "discord-api-types";
-import { RestManager } from "../Manager";
+import { RESTGetAPIGuildMemberResult, RESTGetAPIGuildMembersSearchQuery, RESTGetAPIGuildMembersSearchResult, RESTPatchAPICurrentGuildMemberNicknameResult, RESTPatchAPIGuildMemberJSONBody, RESTPatchAPIGuildMemberResult, RESTPutAPIGuildBanJSONBody, Snowflake } from 'discord-api-types'
+import { RestManager } from '../Manager'
 
 export class MembersResource {
-  constructor (private rest: RestManager) {}
+  constructor (private readonly rest: RestManager) {}
 
   /**
    * Gets a member
    * @param guildId ID of guild
    * @param roleId ID of member
    */
-  get (guildId: Snowflake, memberId: Snowflake): Promise<RESTGetAPIGuildMemberResult> {
-    return this.rest.request('GET', `/guilds/${guildId}/members/${memberId}`)
+  async get (guildId: Snowflake, memberId: Snowflake): Promise<RESTGetAPIGuildMemberResult> {
+    return await this.rest.request('GET', `/guilds/${guildId}/members/${memberId}`)
   }
 
   /**
@@ -18,8 +18,8 @@ export class MembersResource {
    * @param guild ID of guild
    * @param query Query for search
    */
-  getMany (guildId: Snowflake, query: RESTGetAPIGuildMembersSearchQuery): Promise<RESTGetAPIGuildMembersSearchResult> {
-    return this.rest.request('GET', `/guilds/${guildId}/members`, {
+  async getMany (guildId: Snowflake, query: RESTGetAPIGuildMembersSearchQuery): Promise<RESTGetAPIGuildMembersSearchResult> {
+    return await this.rest.request('GET', `/guilds/${guildId}/members`, {
       query
     })
   }
@@ -30,8 +30,9 @@ export class MembersResource {
    * @param memberId ID of member
    * @param data New data for member
    */
-  edit (guildId: Snowflake, memberId: Snowflake, data: RESTPatchAPIGuildMemberJSONBody): Promise<RESTPatchAPIGuildMemberResult> {
-    return this.rest.request('PATCH', `/guilds/${guildId}/members/${memberId}`, {
+  // eslint-disable-next-line @typescript-eslint/default-param-last
+  async edit (guildId: Snowflake, memberId: Snowflake | '@me' = '@me', data: RESTPatchAPIGuildMemberJSONBody): Promise<RESTPatchAPIGuildMemberResult> {
+    return await this.rest.request('PATCH', `/guilds/${guildId}/members/${memberId}`, {
       body: data
     })
   }
@@ -42,8 +43,9 @@ export class MembersResource {
    * @param id ID of member (or leave blank for self)
    * @param nick New nickname (null to reset)
    */
-  setNickname (guildId: Snowflake, memberId: Snowflake | '@me' = '@me', nick?: string): Promise<RESTPatchAPICurrentGuildMemberNicknameResult> {
-    return this.rest.request('PATCH', `/guilds/${guildId}/members/${memberId}/nick`, {
+  async setNickname (guildId: Snowflake, memberId: Snowflake | '@me' = '@me', nick?: string): Promise<RESTPatchAPICurrentGuildMemberNicknameResult> {
+    if (memberId !== '@me') return await this.edit(guildId, memberId, { nick }) as RESTPatchAPICurrentGuildMemberNicknameResult
+    return await this.rest.request('PATCH', `/guilds/${guildId}/members/${memberId}/nick`, {
       body: {
         nick
       }
@@ -56,7 +58,7 @@ export class MembersResource {
    * @param memberId ID of member
    * @param roleId ID of role to add
    */
-  addRole (guildId: Snowflake, memberId: Snowflake, roleId: Snowflake): Promise<never> {
+  async addRole (guildId: Snowflake, memberId: Snowflake, roleId: Snowflake): Promise<never> {
     return this.rest.request('PUT', `/guilds/${guildId}/members/${memberId}/roles/${roleId}`) as never
   }
 
@@ -66,7 +68,7 @@ export class MembersResource {
    * @param memberId ID of member
    * @param roleId ID of role
    */
-  removeRole (guildId: Snowflake, memberId: Snowflake, roleId: Snowflake): Promise<never> {
+  async removeRole (guildId: Snowflake, memberId: Snowflake, roleId: Snowflake): Promise<never> {
     return this.rest.request('DELETE', `/guilds/${guildId}/members/${memberId}/roles/${roleId}`) as never
   }
 
@@ -76,7 +78,7 @@ export class MembersResource {
    * @param memberId ID of member
    * @param reason Reason for kick
    */
-  kick (guildId: Snowflake, memberId: Snowflake, reason: string): Promise<never> {
+  async kick (guildId: Snowflake, memberId: Snowflake, reason: string): Promise<never> {
     return this.rest.request('DELETE', `/guilds/${guildId}/members/${memberId}`, {
       reason
     }) as never
@@ -88,7 +90,7 @@ export class MembersResource {
    * @param memberId ID of member
    * @param extra Extra, reason for ban and since days of messages to remove
    */
-  ban (guildId: Snowflake, memberId: Snowflake, extra?: RESTPutAPIGuildBanJSONBody): Promise<never> {
+  async ban (guildId: Snowflake, memberId: Snowflake, extra?: RESTPutAPIGuildBanJSONBody): Promise<never> {
     return this.rest.request('PUT', `/guilds/${guildId}/bans/${memberId}`, {
       body: extra
     }) as never
@@ -99,7 +101,7 @@ export class MembersResource {
    * @param guildId ID of guild
    * @param memberId ID of member
    */
-  unban (guildId: Snowflake, memberId: Snowflake): Promise<never> {
+  async unban (guildId: Snowflake, memberId: Snowflake): Promise<never> {
     return this.rest.request('DELETE', `/guilds/${guildId}/bans/${memberId}`) as never
   }
 }

@@ -13,7 +13,7 @@ import { users } from './cache/users'
 import { Emitter } from '../utils/Emitter'
 import Collection from '@discordjs/collection'
 
-const createNulledCollection = (cache: string) => {
+const createNulledCollection = (cache: string): Collection<any, any> => {
   return new Proxy(() => {}, {
     get () {
       throw new Error(`CachingOptions.${cache} is disabled so this cache cannot be accessed`)
@@ -25,7 +25,7 @@ const createNulledCollection = (cache: string) => {
 }
 
 export class CacheManager extends Emitter<DiscordEventMap> {
-  constructor (private worker: Worker) {
+  constructor (private readonly worker: Worker) {
     super()
 
     this.worker.on('*', (data) => {

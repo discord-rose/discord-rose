@@ -1,5 +1,5 @@
-import { APIMessageReferenceSend, RESTGetAPIChannelMessageReactionUsersQuery, RESTGetAPIChannelMessageReactionUsersResult, RESTGetAPIChannelMessageResult, RESTPatchAPIChannelMessageResult, RESTPostAPIChannelMessageCrosspostResult, RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult, RESTPostAPIChannelWebhookJSONBody, RESTPostAPIWebhookWithTokenJSONBody, RESTPutAPIChannelMessageReactionResult, Snowflake } from 'discord-api-types';
-import { Embed } from '../../structures/Embed';
+import { APIMessageReferenceSend, RESTGetAPIChannelMessageReactionUsersQuery, RESTGetAPIChannelMessageReactionUsersResult, RESTGetAPIChannelMessageResult, RESTPatchAPIChannelMessageResult, RESTPostAPIChannelMessageCrosspostResult, RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult, RESTPostAPIWebhookWithTokenJSONBody, RESTPutAPIChannelMessageReactionResult, Snowflake } from 'discord-api-types'
+import { Embed } from '../../structures/Embed'
 import { RestManager } from '../Manager'
 
 import FormData from 'form-data'
@@ -12,16 +12,22 @@ type Emoji = string
 export type MessageTypes = RESTPostAPIChannelMessageJSONBody | RESTPostAPIWebhookWithTokenJSONBody | string | Embed
 
 export class MessagesResource {
-  constructor (private rest: RestManager) {}
+  constructor (private readonly rest: RestManager) {}
 
   static _formMessage (message: MessageTypes, webhook?: boolean): RESTPostAPIWebhookWithTokenJSONBody | RESTPostAPIChannelMessageJSONBody {
-    if (message instanceof Embed) message = webhook ? {
-      embeds: [message.render()]
-    } : {
-      embed: message.render()
+    if (message instanceof Embed) {
+      message = webhook
+        ? {
+            embeds: [message.render()]
+          }
+        : {
+            embed: message.render()
+          }
     }
-    if (typeof message === 'string') message = {
-      content: message
+    if (typeof message === 'string') {
+      message = {
+        content: message
+      }
     }
 
     return message
@@ -32,11 +38,11 @@ export class MessagesResource {
    * @param channelId ID of channel
    * @param data Message data
    */
-  send (channelId: Snowflake, data: MessageTypes, reply?: APIMessageReferenceSend): Promise<RESTPostAPIChannelMessageResult> {
+  async send (channelId: Snowflake, data: MessageTypes, reply?: APIMessageReferenceSend): Promise<RESTPostAPIChannelMessageResult> {
     const msg = MessagesResource._formMessage(data) as RESTPostAPIChannelMessageJSONBody
     if (reply) msg.message_reference = reply
 
-    return this.rest.request('POST', `/channels/${channelId}/messages`, {
+    return await this.rest.request('POST', `/channels/${channelId}/messages`, {
       body: msg
     })
   }
@@ -47,12 +53,12 @@ export class MessagesResource {
    * @param data File Buffer
    * @param extra Extra message data
    */
-  sendFile (channelId: Snowflake, data: { name: string, buffer: Buffer }, extra?: MessageTypes): Promise<RESTPostAPIChannelMessageResult> {
+  async sendFile (channelId: Snowflake, data: { name: string, buffer: Buffer }, extra?: MessageTypes): Promise<RESTPostAPIChannelMessageResult> {
     const formData = new FormData()
     formData.append('file', data.buffer, data.name || 'file')
     if (extra) formData.append('payload_json', JSON.stringify(MessagesResource._formMessage(extra)))
 
-    return this.rest.request('POST', `/channels/${channelId}/messages`, {
+    return await this.rest.request('POST', `/channels/${channelId}/messages`, {
       body: formData,
       headers: formData.getHeaders(),
       parser: (_) => _
@@ -64,16 +70,16 @@ export class MessagesResource {
    * @param channelId ID of channel
    * @param messageId ID of message
    */
-  get (channelId: Snowflake, messageId: Snowflake): Promise<RESTGetAPIChannelMessageResult> {
-    return this.rest.request('GET', `/channels/${channelId}/messages/${messageId}`)
+  async get (channelId: Snowflake, messageId: Snowflake): Promise<RESTGetAPIChannelMessageResult> {
+    return await this.rest.request('GET', `/channels/${channelId}/messages/${messageId}`)
   }
-  
+
   /**
    * Deletes a message
    * @param channelId ID of channel
    * @param messageId ID of message
    */
-  delete (channelId: Snowflake, messageId: Snowflake): Promise<never> {
+  async delete (channelId: Snowflake, messageId: Snowflake): Promise<never> {
     return this.rest.request('DELETE', `/channels/${channelId}/messages/${messageId}`) as never
   }
 
@@ -82,8 +88,8 @@ export class MessagesResource {
    * @param channelId ID of channel
    * @param messageIds ID of message
    */
-  bulkDelete (channelId: Snowflake, messageIds: Snowflake[]): Promise<never> {
-    if (messageIds.length < 2) return this.delete(channelId, messageIds[0])
+  async bulkDelete (channelId: Snowflake, messageIds: Snowflake[]): Promise<never> {
+    if (messageIds.length < 2) return await this.delete(channelId, messageIds[0])
 
     return this.rest.request('POST', `/channels/${channelId}/messages/bulk-delete`, {
       body: {
@@ -98,8 +104,8 @@ export class MessagesResource {
    * @param messageId ID of message
    * @param data New message data
    */
-  edit (channelId: Snowflake, messageId: Snowflake, data: MessageTypes): Promise<RESTPatchAPIChannelMessageResult> {
-    return this.rest.request('PATCH', `/channels/${channelId}/messages/${messageId}`, {
+  async edit (channelId: Snowflake, messageId: Snowflake, data: MessageTypes): Promise<RESTPatchAPIChannelMessageResult> {
+    return await this.rest.request('PATCH', `/channels/${channelId}/messages/${messageId}`, {
       body: MessagesResource._formMessage(data)
     })
   }
@@ -109,11 +115,11 @@ export class MessagesResource {
    * @param channelId ID of channel
    * @param messageId ID of message
    */
-  crosspost (channelId: Snowflake, messageId: Snowflake): Promise<RESTPostAPIChannelMessageCrosspostResult> {
-    return this.rest.request('POST', `/channels/${channelId}/messages/${messageId}/crosspost`)
+  async crosspost (channelId: Snowflake, messageId: Snowflake): Promise<RESTPostAPIChannelMessageCrosspostResult> {
+    return await this.rest.request('POST', `/channels/${channelId}/messages/${messageId}/crosspost`)
   }
 
-  private _parseEmoji (emoji: Emoji) {
+  private _parseEmoji (emoji: Emoji): string {
     if (emoji.match(/^[0-9]+$/)) return `<:unknown:${emoji}>`
     return encodeURIComponent(emoji)
   }
@@ -125,10 +131,10 @@ export class MessagesResource {
    * @param emoji ID or unicode for emoji
    * @param query Query for fetching
    */
-  getReactions (channelId: Snowflake, messageId: Snowflake, emoji: Emoji, query?: RESTGetAPIChannelMessageReactionUsersQuery): Promise<RESTGetAPIChannelMessageReactionUsersResult> {
-    return this.rest.request('GET', `/channels/${channelId}/messages/${messageId}/reactions/${this._parseEmoji(emoji)}`, {
+  async getReactions (channelId: Snowflake, messageId: Snowflake, emoji: Emoji, query?: RESTGetAPIChannelMessageReactionUsersQuery): Promise<RESTGetAPIChannelMessageReactionUsersResult> {
+    return await this.rest.request('GET', `/channels/${channelId}/messages/${messageId}/reactions/${this._parseEmoji(emoji)}`, {
       query
-    }) as Promise<RESTGetAPIChannelMessageReactionUsersResult>
+    }) as RESTGetAPIChannelMessageReactionUsersResult
   }
 
   /**
@@ -137,7 +143,7 @@ export class MessagesResource {
    * @param messageId ID of message
    * @param emoji ID or unicode for emoji
    */
-  react (channelId: Snowflake, messageId: Snowflake, emoji: Emoji): Promise<RESTPutAPIChannelMessageReactionResult> {
+  async react (channelId: Snowflake, messageId: Snowflake, emoji: Emoji): Promise<RESTPutAPIChannelMessageReactionResult> {
     return this.rest.request('PUT', `/channels/${channelId}/messages/${messageId}/reactions/${this._parseEmoji(emoji)}/@me`) as RESTPutAPIChannelMessageReactionResult
   }
 
@@ -148,7 +154,7 @@ export class MessagesResource {
    * @param emoji ID or unicode for emoji
    * @param user Users or leave blank to remove your own
    */
-  deleteReaction (channelId: Snowflake, messageId: Snowflake, emoji: Emoji, user: Snowflake | '@me' = '@me'): Promise<never> {
+  async deleteReaction (channelId: Snowflake, messageId: Snowflake, emoji: Emoji, user: Snowflake | '@me' = '@me'): Promise<never> {
     return this.rest.request('DELETE', `/channels/${channelId}/messages/${messageId}/reactions/${this._parseEmoji(emoji)}/${user}`) as never
   }
 
@@ -158,7 +164,7 @@ export class MessagesResource {
    * @param messageId ID of message
    * @param emoji Emoji ID or unicode, or leave blank to remove all reactions
    */
-  deleteAllReactions (channelId: Snowflake, messageId: Snowflake, emoji?: Emoji): Promise<never> {
+  async deleteAllReactions (channelId: Snowflake, messageId: Snowflake, emoji?: Emoji): Promise<never> {
     return this.rest.request('DELETE', `/channels/${channelId}/messages/${messageId}/reactions${emoji ? `/${this._parseEmoji(emoji)}` : ''}`) as never
   }
 }

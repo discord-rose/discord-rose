@@ -1,6 +1,5 @@
-import { RestManager } from "./Manager"
+import { RestManager, Request } from './Manager'
 import { wait } from '../utils/UtilityFunctions'
-import { Request } from './Manager'
 
 import { RestError } from './Error'
 
@@ -8,8 +7,8 @@ export class Bucket {
   public working: Boolean
   public remaining: number
   public reset: number
-  
-  private queue: Request[]
+
+  private readonly queue: Request[]
 
   constructor (public id: string, private manager: RestManager) {
     this.id = id
@@ -22,17 +21,17 @@ export class Bucket {
     this.reset = -1
   }
 
-  _resetTimer () {
+  _resetTimer (): void {
     this.manager.buckets._resetTimer(this.id)
   }
 
-  add (req: Request) {
+  add (req: Request): void {
     this.queue.push(req)
 
-    if (!this.working || this.queue.length === 1) this.run()
+    if (!this.working || this.queue.length === 1) void this.run()
   }
 
-  async run () {
+  async run (): Promise<void> {
     const req = this.queue.shift()
 
     if (!req) {
@@ -80,6 +79,6 @@ export class Bucket {
       req.reject(new RestError(json))
     }
 
-    this.run() // run next item
+    void this.run() // run next item
   }
 }

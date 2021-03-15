@@ -1,9 +1,9 @@
-import Collection from '@discordjs/collection';
-import { APIUser } from 'discord-api-types';
-import { Worker } from '../../clustering/worker/Worker';
-import { CacheManager } from '../CacheManager';
+import Collection from '@discordjs/collection'
+import { APIUser } from 'discord-api-types'
+import { Worker } from '../../clustering/worker/Worker'
+import { CacheManager } from '../CacheManager'
 
-export function users (events: CacheManager, worker: Worker) {
+export function users (events: CacheManager, worker: Worker): void {
   worker.users = new Collection()
 
   events.on('GUILD_MEMBER_ADD', (member) => {
@@ -29,7 +29,7 @@ export function users (events: CacheManager, worker: Worker) {
     if (!voice.member?.user) return
     worker.users.set(voice.member.user.id, voice.member.user)
   })
-  
+
   events.on('USER_UPDATE', (user) => {
     worker.users.set(user.id, user)
   })

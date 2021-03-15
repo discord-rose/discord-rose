@@ -1,7 +1,7 @@
-import { Master } from "./Master";
+import { Master } from './Master'
 import { Worker } from 'worker_threads'
-import { ThreadComms } from "../ThreadComms";
-import { Snowflake } from "discord-api-types";
+import { ThreadComms } from '../ThreadComms'
+import { APIGuild, Snowflake } from 'discord-api-types'
 
 export class Cluster extends ThreadComms {
   private thread?: Worker
@@ -17,11 +17,11 @@ export class Cluster extends ThreadComms {
     })
   }
 
-  public spawn (): Promise<void> {
+  public async spawn (): Promise<void> {
     if (this.custom) {
       this.started = true
     }
-    return new Promise(resolve => {
+    return void new Promise(resolve => {
       this.thread = new Worker(this.fileName, {
         workerData: {
           id: this.id,
@@ -30,39 +30,39 @@ export class Cluster extends ThreadComms {
       })
 
       super.register(this.thread)
-    
+
       this.thread.on('exit', (code) => {
         this.logAs(`Closed with code ${code}`)
         this.master.emit('CLUSTER_STOPPED', this)
-        if (!this.dying) this.spawn()
+        if (!this.dying) void this.spawn()
       })
       this.thread.on('online', () => {
-        this.logAs(`Started`)
+        this.logAs('Started')
         this.master.emit('CLUSTER_STARTED', this)
-        resolve()
+        resolve(true)
 
-        if (this.started) this.start()
+        if (this.started) void this.start()
       })
     })
   }
 
-  start () {
+  async start (): Promise<{}|undefined> {
     if (this.custom) return
     this.started = true
-    return this.sendCommand('START', {
+    return await this.sendCommand('START', {
       shards: this.master.chunks[Number(this.id)],
       options: JSON.parse(JSON.stringify(this.master.options)) // normalize options
     })
   }
 
-  public logAs (msg: string) {
+  public logAs (msg: string): void {
     this.master.log(msg, this)
   }
 
   /**
    * Restarts the cluster
    */
-  restart () {
+  restart (): void {
     this.dying = false
 
     this.tell('KILL', null)
@@ -71,7 +71,7 @@ export class Cluster extends ThreadComms {
   /**
    * Kills cluster without restarting
    */
-  kill () {
+  kill (): void {
     this.dying = true
 
     this.tell('KILL', null)
@@ -81,7 +81,7 @@ export class Cluster extends ThreadComms {
    * Restarts a shard
    * @param id ID of shard to restart
    */
-  restartShard (id: number) {
+  restartShard (id: number): void {
     this.tell('RESTART_SHARD', { id })
   }
 
@@ -89,15 +89,15 @@ export class Cluster extends ThreadComms {
    * Gets a guild from the clusters cache
    * @param id ID of guild
    */
-  getGuild (id: Snowflake) {
-    return this.sendCommand('GET_GUILD', { id })
+  async getGuild (id: Snowflake): Promise<APIGuild> {
+    return await this.sendCommand('GET_GUILD', { id })
   }
 
   /**
    * Evals code on the cluster
    * @param code Code to eval
    */
-  eval (code: string) {
-    return this.sendCommand('EVAL', code)
+  async eval (code: string): Promise<any[]> {
+    return await this.sendCommand('EVAL', code)
   }
 }

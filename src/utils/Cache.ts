@@ -8,9 +8,9 @@ export class Cache<K, V> extends Collection<K, V> {
   /**
    * Timeout store
    */
-  private timeouts: Collection<any, NodeJS.Timeout> = new Collection()
+  private readonly timeouts: Collection<any, NodeJS.Timeout> = new Collection()
 
-  constructor (private time: number) { super() }
+  constructor (private readonly time: number) { super() }
 
   /**
    * Get
@@ -36,7 +36,7 @@ export class Cache<K, V> extends Collection<K, V> {
     this._resetTimer(key, cb)
   }
 
-  public _resetTimer (key: K, cb?: () => {}): any {
+  public _resetTimer (key: K, cb?: () => void): any {
     if (this.timeouts.has(key)) return this.timeouts.get(key)?.refresh()
     this.timeouts.set(key, setTimeout(() => {
       super.delete(key)

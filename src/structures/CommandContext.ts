@@ -1,12 +1,13 @@
-import { APIGuildMember, APIMessage, APIGuild, APIChannel, APIRole, Snowflake } from "discord-api-types";
+import { APIGuildMember, APIMessage, APIChannel, APIRole, Snowflake } from 'discord-api-types'
 
 import { Embed } from './Embed'
-import { MessageTypes, MessagesResource } from "../rest/resources/Messages";
+import { MessageTypes, MessagesResource } from '../rest/resources/Messages'
 
 import { CommandOptions, Worker } from '../typings/lib'
 
 import { PermissionsUtils, bits } from '../utils/Permissions'
-import Collection from "@discordjs/collection";
+import Collection from '@discordjs/collection'
+import { CachedGuild } from '../typings/Discord'
 
 export class CommandContext {
   public args: string[] = []
@@ -16,27 +17,26 @@ export class CommandContext {
   /**
    * Guild where the message was sent
    */
-  get guild () {
-    return this.worker.guilds.get(this.message.guild_id as Snowflake) as APIGuild
+  get guild (): CachedGuild | undefined {
+    return this.worker.guilds.get(this.message.guild_id as Snowflake)
   }
 
   /**
    * Channel where the message was sent
    */
-  get channel () {
-    return this.worker.channels.get(this.message.channel_id as Snowflake) as APIChannel
+  get channel (): APIChannel | undefined {
+    return this.worker.channels.get(this.message.channel_id)
   }
 
   /**
    * Member who sent the message
    */
   get member (): APIGuildMember {
-    return {
-      ...this.message.member,
-      user: this.message.author
-    } as APIGuildMember
+    const mem = Object.assign({ user: this.message.author }, this.message.member)
+
+    return mem
   }
-  
+
   /**
    * Bot's memeber within the guild
    */
@@ -49,14 +49,14 @@ export class CommandContext {
    * @param data Data for message
    * @param mention Whether or not to mention the user in the reply (defaults to false)
    */
-  reply (data: MessageTypes, mention = false) {
+  async reply (data: MessageTypes, mention = false): Promise<APIMessage> {
     if (!mention) {
       data = MessagesResource._formMessage(data)
       if (!data.allowed_mentions) data.allowed_mentions = {}
       data.allowed_mentions.replied_user = false
     }
 
-    return this.worker.api.messages.send(this.message.channel_id, data, {
+    return await this.worker.api.messages.send(this.message.channel_id, data, {
       message_id: this.message.id,
       channel_id: this.message.channel_id,
       guild_id: this.message.guild_id
@@ -67,16 +67,16 @@ export class CommandContext {
    * Sends a message in the same channel as invoking message
    * @param data Data for message
    */
-  send (data: MessageTypes) {
-    return this.worker.api.messages.send(this.message.channel_id, data)
+  async send (data: MessageTypes): Promise<APIMessage> {
+    return await this.worker.api.messages.send(this.message.channel_id, data)
   }
 
   /**
    * Sends a message to the user who ran the command
    * @param data Data for message
    */
-  dm (data: MessageTypes) {
-    return this.worker.api.users.dm(this.message.author.id, data)
+  async dm (data: MessageTypes): Promise<APIMessage> {
+    return await this.worker.api.users.dm(this.message.author.id, data)
   }
 
   /**
@@ -84,22 +84,22 @@ export class CommandContext {
    * @param file File buffer
    * @param extra Extra message options
    */
-  sendFile (file: { name: string, buffer: Buffer }, extra?: MessageTypes) {
-    return this.worker.api.messages.sendFile(this.message.channel_id, file, extra)
+  async sendFile (file: { name: string, buffer: Buffer }, extra?: MessageTypes): Promise<APIMessage> {
+    return await this.worker.api.messages.sendFile(this.message.channel_id, file, extra)
   }
 
   /**
    * Starts typing in the channel
    */
-  typing () {
-    return this.worker.api.channels.typing(this.message.channel_id)
+  async typing (): Promise<never> {
+    return await this.worker.api.channels.typing(this.message.channel_id)
   }
 
   /**
    * Deletes the invoking message
    */
-  delete () {
-    return this.worker.api.messages.delete(this.message.channel_id, this.message.id)
+  async delete (): Promise<never> {
+    return await this.worker.api.messages.delete(this.message.channel_id, this.message.id)
   }
 
   /**
@@ -109,18 +109,20 @@ export class CommandContext {
    *   .title('Hello')
    *   .send()
    */
-  get embed () {
-    return new Embed((embed, reply, mention) => {
-      if (reply) return this.reply(embed, mention)
-      else return this.send(embed)
+  get embed (): Embed {
+    return new Embed(async (embed, reply, mention) => {
+      if (reply) return await this.reply(embed, mention)
+      else return await this.send(embed)
     })
   }
 
   hasPerms (perms: keyof typeof bits): boolean {
+    if (!this.guild) throw new Error()
     return PermissionsUtils.calculate(this.member, this.guild, this.worker.guildRoles.get(this.guild.id) as Collection<any, APIRole>, perms)
   }
 
   myPerms (perms: keyof typeof bits): boolean {
+    if (!this.guild) throw new Error()
     return PermissionsUtils.calculate(this.me, this.guild, this.worker.guildRoles.get(this.guild.id) as Collection<any, APIRole>, perms)
   }
 }

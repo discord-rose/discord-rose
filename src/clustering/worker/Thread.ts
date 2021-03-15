@@ -1,17 +1,18 @@
-import { Snowflake } from 'discord-api-types';
+import { APIGuild, APIMessage, Snowflake } from 'discord-api-types'
 import { workerData, parentPort, MessagePort } from 'worker_threads'
-import { MessageTypes, MessagesResource } from '../../rest/resources/Messages';
-import { Worker } from "../../typings/lib"
+import { MessageTypes, MessagesResource } from '../../rest/resources/Messages'
+import { Worker } from '../../typings/lib'
 
-import { ResolveFunction, ThreadComms, ThreadEvents } from "../ThreadComms";
+import { ClusterStats, ThreadComms, ThreadEvents } from '../ThreadComms'
 
-import { inspect } from "util";
+import { inspect } from 'util'
 
-import handlers from './handlers'
+import { handlers } from './handlers'
 
 export class Thread extends ThreadComms {
   public id: string = workerData.id
 
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   constructor (public worker: Worker = {} as Worker) {
     super()
     super.register(parentPort as MessagePort)
@@ -20,26 +21,28 @@ export class Thread extends ThreadComms {
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i] as keyof ThreadEvents
 
-      this.on(key, handlers[key].bind(this) as (data: ThreadEvents[typeof key]['send'], resolve: ResolveFunction<typeof key>) => void)
+      this.on(key, (data, resolve) => {
+        handlers[key]?.bind(this)(data, resolve)
+      })
     }
   }
 
-  async registerShard (id: number) {
-    return this.sendCommand('REGISTER_SHARD', { id })
+  async registerShard (id: number): Promise<{}> {
+    return await this.sendCommand('REGISTER_SHARD', { id })
   }
 
   /**
    * Destroys entire master.
    */
-  destroy () {
-    this.sendCommand('KILL', null)
+  destroy (): void {
+    void this.sendCommand('KILL', null)
   }
 
   /**
    * Logs data to master's MasterOptions.log
    * @param message Message args
    */
-  log (...messages: any[]) {
+  log (...messages: any[]): void {
     this.tell('LOG', messages.map(m => typeof m === 'string' ? m : inspect(m)).join(' '))
   }
 
@@ -47,15 +50,15 @@ export class Thread extends ThreadComms {
    * Restarts a specific cluster
    * @param clusterId ID of cluster
    */
-  restartCluster (clusterId: any) {
-    return this.sendCommand('RESTART_CLUSTER', { id: clusterId })
+  async restartCluster (clusterId: any): Promise<null> {
+    return await this.sendCommand('RESTART_CLUSTER', { id: clusterId })
   }
 
   /**
    * Restarts a specific shard
    * @param shardId ID of shard
    */
-  restartShard (shardId: any) {
+  restartShard (shardId: any): void {
     return this.tell('RESTART_SHARD', { id: shardId })
   }
 
@@ -63,24 +66,24 @@ export class Thread extends ThreadComms {
    * Gets a cached guild across clusters
    * @param guildId ID of guild
    */
-  getGuild (guildId: Snowflake) {
-    return this.sendCommand('GET_GUILD', { id: guildId })
+  async getGuild (guildId: Snowflake): Promise<APIGuild> {
+    return await this.sendCommand('GET_GUILD', { id: guildId })
   }
 
   /**
    * Eval code on every cluster
    * @param code Code to eval
    */
-  broadcastEval (code: string) {
-    return this.sendCommand('BROADCAST_EVAL', code)
+  async broadcastEval (code: string): Promise<any[]> {
+    return await this.sendCommand('BROADCAST_EVAL', code)
   }
 
   /**
    * Evals code on the master process
    * @param code Code to eval
    */
-  masterEval (code: string) {
-    return this.sendCommand('MASTER_EVAL', code)
+  async masterEval (code: string): Promise<any> {
+    return await this.sendCommand('MASTER_EVAL', code)
   }
 
   /**
@@ -89,14 +92,14 @@ export class Thread extends ThreadComms {
    * @param token Token of webhook
    * @param data Data for message
    */
-  sendWebhook (webhookId: Snowflake, token: string, data: MessageTypes) {
-    return this.sendCommand('SEND_WEBHOOK', { id: webhookId, token, data: MessagesResource._formMessage(data, true) })
+  async sendWebhook (webhookId: Snowflake, token: string, data: MessageTypes): Promise<APIMessage> {
+    return await this.sendCommand('SEND_WEBHOOK', { id: webhookId, token, data: MessagesResource._formMessage(data, true) })
   }
 
   /**
    * Gets an array of each clusters stats
    */
-  getStats () {
-    return this.sendCommand('STATS', null)  
+  async getStats (): Promise<ClusterStats[]> {
+    return await this.sendCommand('STATS', null)
   }
 }

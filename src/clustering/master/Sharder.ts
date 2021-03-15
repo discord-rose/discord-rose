@@ -1,4 +1,4 @@
-import { Master } from "./Master"
+import { Master } from './Master'
 
 import { wait } from '../../utils/UtilityFunctions'
 
@@ -8,17 +8,17 @@ export class Sharder {
 
   constructor (public master: Master) {}
 
-  register (id: number) {
+  register (id: number): void {
     if (!this.shards.includes(id)) this.shards.push(id)
 
-    if (!this.looping && this.master.spawned) this.loop()
+    if (!this.looping && this.master.spawned) void this.loop()
   }
 
   async loop (): Promise<void> {
     this.looping = true
     const next: number[] = []
 
-    for (var i = 0; i < this.master.session.max_concurrency; i++) {
+    for (let i = 0; i < this.master.session.max_concurrency; i++) {
       const n = this.shards.shift()
       if (Number.isInteger(n)) next.push(n as number)
     }
@@ -28,9 +28,9 @@ export class Sharder {
       return
     }
 
-    await Promise.all(next.map(x => this.master.shardToCluster(x)?.sendCommand('START_SHARD', { id: x })
+    await Promise.all(next.map(async (x) => await this.master.shardToCluster(x)?.sendCommand('START_SHARD', { id: x })
       .catch(() => {
-        this.master.log(`Shard ${next} failed to start in time. Continuing and will try again later.`)
+        this.master.log(`Shard(s) ${next.join(', ')} failed to start in time. Continuing and will try again later.`)
 
         this.shards.push(x)
       })))

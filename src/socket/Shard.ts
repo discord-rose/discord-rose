@@ -1,8 +1,8 @@
-import Collection from "@discordjs/collection"
-import { APIGuildMember, GatewayGuildMemberAddDispatchData, GatewayGuildMembersChunkDispatchData, GatewayOPCodes, GatewayPresenceUpdateData, GatewayRequestGuildMembersData, Snowflake } from "discord-api-types"
-import { OPEN } from "ws"
-import { State } from "../clustering/ThreadComms"
-import { Worker } from "../typings/lib"
+import Collection from '@discordjs/collection'
+import { APIGuildMember, GatewayGuildMemberAddDispatchData, GatewayGuildMembersChunkDispatchData, GatewayOPCodes, GatewayPresenceUpdateData, GatewayRequestGuildMembersData, Snowflake } from 'discord-api-types'
+import { OPEN } from 'ws'
+import { State } from '../clustering/ThreadComms'
+import { Worker } from '../typings/lib'
 import { DiscordSocket } from './WebSocket'
 
 export class Shard {
@@ -30,11 +30,12 @@ export class Shard {
 
     this.ws.on('GUILD_CREATE', (data) => {
       if (!this.unavailableGuilds) return this.worker.emit('GUILD_CREATE', data)
-      
+
       this.worker.cacheManager.emit('GUILD_CREATE', data)
 
       if (!checkTimeout) {
         checkTimeout = setTimeout(() => {
+          if (!this.unavailableGuilds) return
           this.worker.log(`Shard ${this.id} reported ${this.unavailableGuilds?.size} unavailable guilds. Continuing startup.`)
           this._ready()
         }, 15e3)
@@ -62,30 +63,30 @@ export class Shard {
   /**
    * Whether or not the shard is READY
    */
-  get ready () {
+  get ready (): boolean {
     return this.ws.ws?.readyState === OPEN && !this.unavailableGuilds
   }
 
   async start (): Promise<void> {
     this.registered = false
-    return new Promise(resolve => {
-      this.ws.spawn(resolve)
+    return await new Promise(resolve => {
+      void this.ws.spawn(resolve)
     })
   }
-  
-  private _ready () {
+
+  private _ready (): void {
     this.worker.emit('SHARD_READY', this)
     this.unavailableGuilds = null
 
     if (this.worker.shards.every(x => x.unavailableGuilds === null)) this.worker.emit('READY', null)
   }
 
-  register () {
+  async register (): Promise<{}> {
     this.registered = true
-    return this.worker.comms.registerShard(this.id)
+    return await this.worker.comms.registerShard(this.id)
   }
 
-  restart (kill: boolean, code: number = 1000, reason: string = 'Manually Stopped') {
+  restart (kill: boolean, code: number = 1000, reason: string = 'Manually Stopped'): void {
     if (kill) this.ws.kill()
     else {
       this.ws.resuming = true
@@ -93,17 +94,17 @@ export class Shard {
     this.ws.ws?.close(code, reason)
   }
 
-  setPresence (presence: GatewayPresenceUpdateData) {
+  setPresence (presence: GatewayPresenceUpdateData): void {
     this.ws._send({
       op: GatewayOPCodes.PresenceUpdate,
       d: presence
     })
   }
 
-  getGuildMembers (opts: GatewayRequestGuildMembersData): Promise<Collection<Snowflake, APIGuildMember>> {
-    return new Promise(resolve => {
+  async getGuildMembers (opts: GatewayRequestGuildMembersData): Promise<Collection<Snowflake, APIGuildMember>> {
+    return await new Promise(resolve => {
       const members: Collection<Snowflake, APIGuildMember> = new Collection()
-      const listener = (data: GatewayGuildMembersChunkDispatchData) => {
+      const listener = (data: GatewayGuildMembersChunkDispatchData): void => {
         if (data.guild_id !== opts.guild_id) return
 
         data.members.forEach(member => {
@@ -113,7 +114,7 @@ export class Shard {
           this.worker.cacheManager.emit('GUILD_MEMBER_ADD', member as GatewayGuildMemberAddDispatchData)
         })
 
-        if (data.chunk_index === (data.chunk_count || 0) - 1) {
+        if (data.chunk_index === (data.chunk_count ?? 0) - 1) {
           this.worker.off('GUILD_MEMBERS_CHUNK', listener)
 
           resolve(members)

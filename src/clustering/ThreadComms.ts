@@ -1,11 +1,11 @@
-import { EventEmitter } from "events";
+import { EventEmitter } from 'events'
 import { Worker, MessagePort } from 'worker_threads'
 
 import { generateID } from '../utils/UtilityFunctions'
-import { CompleteBotOptions } from "./master/Master";
+import { CompleteBotOptions } from './master/Master'
 import Collection from '@discordjs/collection'
-import { APIGuild, APIMessage, Snowflake } from "discord-api-types";
-import { MessageTypes } from "../rest/resources/Messages";
+import { APIGuild, APIMessage, Snowflake } from 'discord-api-types'
+import { MessageTypes } from '../rest/resources/Messages'
 
 enum ThreadMethod {
   COMMAND,
@@ -45,7 +45,7 @@ export interface ClusterStats {
 export interface ThreadEvents {
   '*': {
     send: {
-      event: keyof ThreadEvents,
+      event: keyof ThreadEvents
       d: any
     }
     receive: any
@@ -58,7 +58,7 @@ export interface ThreadEvents {
     receive: {}
   }
   KILL: {
-    send: null,
+    send: null
     receive: null
   }
   REGISTER_SHARD: {
@@ -70,7 +70,7 @@ export interface ThreadEvents {
   START_SHARD: {
     send: {
       id: number
-    },
+    }
     receive: {}
   }
   SHARD_READY: {
@@ -86,14 +86,14 @@ export interface ThreadEvents {
   RESTART_CLUSTER: {
     send: {
       id: any
-    },
-    receive: void
+    }
+    receive: null
   }
   RESTART_SHARD: {
     send: {
       id: number
     }
-    receive: void
+    receive: null
   }
   GET_GUILD: {
     send: {
@@ -135,7 +135,7 @@ export type ResolveFunction<K extends keyof ThreadEvents> = ThreadEvents[K]['rec
 
 export class ThreadComms extends EventEmitter {
   private comms?: Worker | MessagePort | null = null
-  private commands: Collection<string, (value?: any) => void> = new Collection()
+  private readonly commands: Collection<string, (value?: any) => void> = new Collection()
 
   on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => this = this.on
 
@@ -144,7 +144,7 @@ export class ThreadComms extends EventEmitter {
     return super.emit(event, data, resolve)
   }
 
-  register (comms: Worker | MessagePort) {
+  register (comms: Worker | MessagePort): void {
     this.comms = comms
 
     this.comms.on('message', (msg: ThreadEvent) => {
@@ -173,7 +173,7 @@ export class ThreadComms extends EventEmitter {
     this.on('KILL', () => process.exit(5))
   }
 
-  private _send (op: number, e: string | null, i: string | null, d?: any) {
+  private _send (op: number, e: string | null, i: string | null, d?: any): void {
     this.comms?.postMessage({
       op,
       e,
@@ -183,7 +183,7 @@ export class ThreadComms extends EventEmitter {
   }
 
   public async sendCommand<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): Promise<ThreadEvents[K]['receive']> {
-    return new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
       const id = generateID(this.commands.keyArray())
       this.commands.set(id, (dat) => {
         if (dat.error) resolve(new Error(dat.error))
@@ -202,7 +202,7 @@ export class ThreadComms extends EventEmitter {
     })
   }
 
-  private _respond (id: string, data: any) {
+  private _respond (id: string, data: any): void {
     this._send(ThreadMethod.RESPONSE, null, id, data)
   }
 

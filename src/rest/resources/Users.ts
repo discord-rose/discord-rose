@@ -1,18 +1,18 @@
-import { APIChannel, RESTGetAPIUserResult, RESTPostAPICurrentUserCreateDMChannelResult, Snowflake } from 'discord-api-types';
-import { Cache } from '../../utils/Cache';
+import { APIChannel, APIMessage, RESTGetAPIUserResult, RESTPostAPICurrentUserCreateDMChannelResult, Snowflake } from 'discord-api-types'
+import { Cache } from '../../utils/Cache'
 import { RestManager } from '../Manager'
 import { MessageTypes } from './Messages'
 
 export class UsersResource {
   public dmCache: Cache<Snowflake, RESTPostAPICurrentUserCreateDMChannelResult> = new Cache(60e3)
-  constructor (private rest: RestManager) {}
+  constructor (private readonly rest: RestManager) {}
 
   /**
    * Get user
    * @param userId User ID or defaults to own user
    */
-  get (userId: Snowflake|'@me' = '@me'): Promise<RESTGetAPIUserResult> {
-    return this.rest.request('GET', `/users/${userId}`)
+  async get (userId: Snowflake|'@me' = '@me'): Promise<RESTGetAPIUserResult> {
+    return await this.rest.request('GET', `/users/${userId}`)
   }
 
   /**
@@ -36,8 +36,8 @@ export class UsersResource {
    * @param userId ID of user
    * @param message Message data
    */
-  async dm (userId: Snowflake, message: MessageTypes) {
+  async dm (userId: Snowflake, message: MessageTypes): Promise<APIMessage> {
     const channel = await this.createDM(userId)
-    return this.rest.messages.send(channel.id, message)
+    return await this.rest.messages.send(channel.id, message)
   }
 }

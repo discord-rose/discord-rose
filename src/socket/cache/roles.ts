@@ -1,9 +1,9 @@
-import Collection from '@discordjs/collection';
-import { APIRole } from 'discord-api-types';
-import { Worker } from '../../clustering/worker/Worker';
-import { CacheManager } from '../CacheManager';
+import Collection from '@discordjs/collection'
+import { APIRole } from 'discord-api-types'
+import { Worker } from '../../clustering/worker/Worker'
+import { CacheManager } from '../CacheManager'
 
-export function roles (events: CacheManager, worker: Worker) {
+export function roles (events: CacheManager, worker: Worker): void {
   worker.guildRoles = new Collection()
 
   events.on('GUILD_ROLE_CREATE', (role) => {
@@ -30,7 +30,7 @@ export function roles (events: CacheManager, worker: Worker) {
     if (!guildRoles) return
     let currentRole = guildRoles.get(role.role.id)
     if (!currentRole) return
-    
+
     currentRole.name = role.role.name
     currentRole.permissions = role.role.permissions
     currentRole.color = role.role.color

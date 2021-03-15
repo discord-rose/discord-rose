@@ -1,9 +1,9 @@
-import Collection from '@discordjs/collection';
-import { APIChannel } from 'discord-api-types';
-import { Worker } from '../../clustering/worker/Worker';
-import { CacheManager } from '../CacheManager';
+import Collection from '@discordjs/collection'
+import { APIChannel } from 'discord-api-types'
+import { Worker } from '../../clustering/worker/Worker'
+import { CacheManager } from '../CacheManager'
 
-export function channels (events: CacheManager, worker: Worker) {
+export function channels (events: CacheManager, worker: Worker): void {
   worker.channels = new Collection()
 
   events.on('CHANNEL_CREATE', (channel) => {
@@ -33,7 +33,7 @@ export function channels (events: CacheManager, worker: Worker) {
     currentChannel.user_limit = channel.user_limit
     currentChannel.permission_overwrites = channel.permission_overwrites
     currentChannel.parent_id = channel.parent_id
-    
+
     if (worker.options.cacheControl.channels) {
       const newChannel = {} as APIChannel
       worker.options.cacheControl.channels.forEach(key => {
@@ -43,7 +43,7 @@ export function channels (events: CacheManager, worker: Worker) {
       newChannel.id = channel.id
       currentChannel = newChannel
     }
-    
+
     worker.channels.set(channel.id, currentChannel)
   })
 

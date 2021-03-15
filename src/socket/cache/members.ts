@@ -1,9 +1,9 @@
-import Collection from '@discordjs/collection';
-import { GatewayGuildMemberAddDispatchData, Snowflake } from 'discord-api-types';
-import { Worker } from '../../clustering/worker/Worker';
-import { CacheManager } from '../CacheManager';
+import Collection from '@discordjs/collection'
+import { GatewayGuildMemberAddDispatchData, Snowflake } from 'discord-api-types'
+import { Worker } from '../../clustering/worker/Worker'
+import { CacheManager } from '../CacheManager'
 
-export function members (events: CacheManager, worker: Worker) {
+export function members (events: CacheManager, worker: Worker): void {
   worker.members = new Collection()
 
   events.on('GUILD_MEMBER_ADD', (member) => {
@@ -27,7 +27,7 @@ export function members (events: CacheManager, worker: Worker) {
   })
 
   events.on('GUILD_MEMBER_UPDATE', (member) => {
-    let guildMembers = worker.members.get(member.guild_id)
+    const guildMembers = worker.members.get(member.guild_id)
     if (!guildMembers) return
     let currentMember = guildMembers.get(member.user?.id as Snowflake)
     if (!currentMember) return
@@ -49,7 +49,7 @@ export function members (events: CacheManager, worker: Worker) {
   })
 
   events.on('GUILD_MEMBER_REMOVE', (member) => {
-    let guildMembers = worker.members.get(member.guild_id)
+    const guildMembers = worker.members.get(member.guild_id)
     if (!guildMembers) return
 
     guildMembers.delete(member.user.id)

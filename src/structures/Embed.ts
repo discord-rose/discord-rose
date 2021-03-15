@@ -1,14 +1,14 @@
-import { APIEmbed, APIMessage } from "discord-api-types";
+import { APIEmbed, APIMessage } from 'discord-api-types'
 
 export class Embed {
   public obj: APIEmbed = {}
-  constructor (private sendback?: (embed: Embed, reply: boolean, mention: boolean) => Promise<APIMessage>) {}
+  constructor (private readonly sendback?: (embed: Embed, reply: boolean, mention: boolean) => Promise<APIMessage>) {}
 
   /**
    * Sets the color
    * @param color Color hex code
    */
-  color (color: number) {
+  color (color: number): this {
     this.obj.color = color
 
     return this
@@ -20,7 +20,7 @@ export class Embed {
    * @param icon Author avatar icon
    * @param url URL anchored to the author name
    */
-  author (name?: string, icon?: string, url?: string) {
+  author (name?: string, icon?: string, url?: string): this {
     this.obj.author = {
       name,
       icon_url: icon,
@@ -35,18 +35,18 @@ export class Embed {
    * @param title Title name
    * @param url URL anchored to title name
    */
-  title (title?: string, url?: string) {
+  title (title?: string, url?: string): this {
     if (title) this.obj.title = title
     if (url) this.obj.url = url
 
     return this
   }
-  
+
   /**
    * Sets description
    * @param desc Description
    */
-  description (desc: string) {
+  description (desc: string): this {
     this.obj.description = desc
 
     return this
@@ -58,7 +58,7 @@ export class Embed {
    * @param value Fields value
    * @param inline Whether the field is inline
    */
-  field (name: string, value: string, inline?: boolean) {
+  field (name: string, value: string, inline?: boolean): this {
     if (!this.obj.fields) this.obj.fields = []
     this.obj.fields.push({
       name,
@@ -75,7 +75,7 @@ export class Embed {
    * @param width Optional fixed width
    * @param height Optional fixed height
    */
-  thumbnail (url: string, width?: number, height?: number) {
+  thumbnail (url: string, width?: number, height?: number): this {
     this.obj.thumbnail = {
       url,
       width,
@@ -91,7 +91,7 @@ export class Embed {
    * @param width Optional fixed width
    * @param height Optional fixed height
    */
-  image (url: string, width?: number, height?: number) {
+  image (url: string, width?: number, height?: number): this {
     this.obj.image = {
       url,
       width,
@@ -106,7 +106,7 @@ export class Embed {
    * @param text Text for footer
    * @param icon Small icon on the bottom left
    */
-  footer (text?: string, icon?: string) {
+  footer (text?: string, icon?: string): this {
     if (!this.obj.footer) this.obj.footer = { text: '' }
     if (text) this.obj.footer.text = text
     if (icon) this.obj.footer.icon_url = icon
@@ -118,7 +118,7 @@ export class Embed {
    * Sets the timestamp
    * @param date Date to set, leave blank for current time
    */
-  timestamp (date: Date = new Date()) {
+  timestamp (date: Date = new Date()): this {
     this.obj.timestamp = date.toISOString()
 
     return this
@@ -129,12 +129,12 @@ export class Embed {
    * @param reply Whether or not to do so in an inline reply (defaults to true)
    * @param mention Whether or not to mention the user in the reply (defaults to false)
    */
-  send (reply: boolean = true, mention = false) {
-    if (!this.sendback) return
-    return this.sendback(this, reply, mention)
+  async send (reply: boolean = true, mention = false): Promise<APIMessage> {
+    if (!this.sendback) throw new Error('No sendback function, so could not run Embed.send()')
+    return await this.sendback(this, reply, mention)
   }
 
-  render () {
+  render (): APIEmbed {
     return this.obj
   }
 }

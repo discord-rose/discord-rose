@@ -5,7 +5,7 @@ import { Snowflake } from 'discord-api-types'
  * @param time Time to wait
  */
 export async function wait (time: number): Promise<true> {
-  return new Promise(resolve => {
+  return await new Promise(resolve => {
     setTimeout(() => {
       resolve(true)
     }, time)

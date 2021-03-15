@@ -1,9 +1,9 @@
-import { APIMessage, MessageType } from "discord-api-types"
+import { APIMessage, MessageType } from 'discord-api-types'
 
 import { CommandContext } from './CommandContext'
 
 import { CommandOptions, CommandType, CommandContext as ctx, Worker } from '../typings/lib'
-import Collection from "@discordjs/collection"
+import Collection from '@discordjs/collection'
 
 type MiddlewareFunction = (ctx: ctx) => boolean | Promise<boolean>
 
@@ -22,9 +22,9 @@ export class CommandHandler {
   }
 
   public middlewares: MiddlewareFunction[] = []
-  public commands = {} as Collection<CommandType, CommandOptions>
+  public commands?: Collection<CommandType, CommandOptions>
 
-  constructor (private worker: Worker) {}
+  constructor (private readonly worker: Worker) {}
 
   public prefixFunction?: ((message: APIMessage) => Promise<string|string[]> | string|string[])
   public errorFunction = (ctx: CommandContext, err: CommandError): void => {
@@ -32,11 +32,11 @@ export class CommandHandler {
       .color(0xFF0000)
       .title('An Error Occured')
       .description(`\`\`\`xl\n${err.message}\`\`\``)
-      .send()
+      .send().catch(() => {})
 
     if (err.nonFatal) return
 
-    err.message += ` (While Running Command: ${ctx.command.command})`
+    err.message += ` (While Running Command: ${String(ctx.command.command)})`
     console.error(err)
   }
 
@@ -44,7 +44,7 @@ export class CommandHandler {
    * Sets Command Handler options
    * @param opts Options
    */
-  options (opts: CommandHandlerOptions) {
+  options (opts: CommandHandlerOptions): this {
     this._options = {
       ...this._options,
       ...opts
@@ -52,6 +52,7 @@ export class CommandHandler {
 
     return this
   }
+
   /**
    * Sets a prefix fetcher
    * @param fn String of prefix or Function to choose prefix with
@@ -75,6 +76,7 @@ export class CommandHandler {
     return this
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   get setPrefix () {
     console.warn('.setPrefix is deprecated, please use .prefix() instead.')
 
@@ -90,7 +92,7 @@ export class CommandHandler {
    *    ctx.send(`Error: ${error.message}`)
    *  })
    */
-  error (fn: (ctx: CommandContext, error: CommandError) => void) {
+  error (fn: (ctx: CommandContext, error: CommandError) => void): this {
     this.errorFunction = fn
 
     return this
@@ -123,7 +125,9 @@ export class CommandHandler {
       this.added = true
       this.commands = new Collection()
 
-      this.worker.on('MESSAGE_CREATE', (data) => this._exec(data))
+      this.worker.on('MESSAGE_CREATE', (data) => {
+        this._exec(data).catch(() => {})
+      })
     }
     this.commands?.set(command.command, {
       ...this._options.default,
@@ -141,21 +145,22 @@ export class CommandHandler {
     return false
   }
 
-  public find (command: string) {
-    return this.commands.find(x => (this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)) as boolean))
+  public find (command: string): CommandOptions | undefined {
+    return this.commands?.find(x => (this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)) as boolean))
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   get findCommand () {
     console.warn('.findCommand is deprecated, please use .find() instead.')
 
     return this.find
   }
 
-  private async _exec (data: APIMessage) {
+  private async _exec (data: APIMessage): Promise<void> {
     if (!data.content || (!this._options.bots && data.author.bot)) return
     if (![MessageType.DEFAULT, MessageType.REPLY].includes(data.type)) return
 
-    let prefix: string | string[] | undefined
+    let prefix: string | string[] | undefined = ''
     if (this.prefixFunction) {
       prefix = await this.prefixFunction(data)
       if (!Array.isArray(prefix)) prefix = [prefix]
@@ -175,17 +180,18 @@ export class CommandHandler {
       prefix += ' '
     }
 
-    const command = args.shift() || ''
+    const command = args.shift() ?? ''
 
     const cmd = this.find(command)
     if (!cmd) return
 
-    const ctx = new CommandContext(this.worker, data, cmd, prefix as string)
+    const ctx = new CommandContext(this.worker, data, cmd, prefix)
     ctx.args = args
 
     try {
       for (const midFn of this.middlewares) {
         try {
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
           if (await midFn(ctx) !== true) return
         } catch (err) {
           err.nonFatal = true

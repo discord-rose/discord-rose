@@ -1,11 +1,11 @@
-import { EventEmitter } from "events"
+import { EventEmitter } from 'events'
 
 interface MapType {
   [key: string]: any
 }
 
 export class Emitter<MAP extends MapType> extends EventEmitter {
-  on: <K extends keyof MAP>(event: K | symbol, listener?: (data:  MAP[K]) => void) => this
+  on: <K extends keyof MAP>(event: K | symbol, listener?: (data: MAP[K]) => void) => this
 
   once: <K extends keyof MAP>(event: K | symbol, listener?: (data: MAP[K]) => void) => this
 

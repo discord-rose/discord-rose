@@ -1,9 +1,9 @@
-import Collection from '@discordjs/collection';
-import { GatewayGuildMemberAddDispatchData } from 'discord-api-types';
-import { Worker } from '../../clustering/worker/Worker';
-import { CacheManager } from '../CacheManager';
+import Collection from '@discordjs/collection'
+import { GatewayGuildMemberAddDispatchData } from 'discord-api-types'
+import { Worker } from '../../clustering/worker/Worker'
+import { CacheManager } from '../CacheManager'
 
-export function self (events: CacheManager, worker: Worker) {
+export function self (events: CacheManager, worker: Worker): void {
   worker.selfMember = new Collection()
 
   events.on('GUILD_MEMBER_ADD', (member) => {
@@ -17,7 +17,7 @@ export function self (events: CacheManager, worker: Worker) {
 
     const currentMember = worker.selfMember.get(member.guild_id) as typeof member
     if (!currentMember) return worker.selfMember.set(member.guild_id, member as unknown as GatewayGuildMemberAddDispatchData)
-    
+
     currentMember.nick = member.nick
     currentMember.roles = member.roles
 
@@ -26,7 +26,7 @@ export function self (events: CacheManager, worker: Worker) {
 
   events.on('GUILD_DELETE', (guild) => {
     if (guild.unavailable) return
-    
+
     worker.selfMember.delete(guild.id)
   })
 }

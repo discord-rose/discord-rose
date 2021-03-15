@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import { CompleteBotOptions } from '../master/Master'
 import { Thread } from './Thread'
 
@@ -5,12 +6,10 @@ import { DiscordEventMap, CachedGuild } from '../../typings/Discord'
 import { Emitter } from '../../utils/Emitter'
 import Collection from '@discordjs/collection'
 
-import { inspect } from "util"
-
 import { Shard } from '../../socket/Shard'
 import { CacheManager } from '../../socket/CacheManager'
 
-import { APIUser, PresenceUpdateStatus, Snowflake, ActivityType } from 'discord-api-types'
+import { APIUser, PresenceUpdateStatus, Snowflake, ActivityType, APIGuildMember } from 'discord-api-types'
 
 import { guildShard } from '../../utils/UtilityFunctions'
 
@@ -37,11 +36,7 @@ export class Worker extends Emitter<DiscordEventMap> {
 
   public cacheManager = {} as CacheManager
 
-  constructor () {
-    super()
-  }
-
-  async start (shardNumbers: number[]) {
+  async start (shardNumbers: number[]): Promise<void> {
     this.api = new RestManager(this.options.token)
     this.cacheManager = new CacheManager(this)
 
@@ -63,8 +58,8 @@ export class Worker extends Emitter<DiscordEventMap> {
    * // Twitch streams
    * worker.setStatus('streaming', 'Rocket League', 'online', 'https://twitch.com/jpbberry')
    */
-  setStatus (type: 'playing' | 'streaming' | 'listening' | 'watching' | 'competing', name: string, status: 'idle' | 'online' | 'dnd' | 'offline' | 'invisible' = 'online', url?: string) {
-    if (!this.ready) return this.once('READY', () => { this.setStatus(type, name, status) })
+  setStatus (type: 'playing' | 'streaming' | 'listening' | 'watching' | 'competing', name: string, status: 'idle' | 'online' | 'dnd' | 'offline' | 'invisible' = 'online', url?: string): void {
+    if (!this.ready) return void this.once('READY', () => { this.setStatus(type, name, status) })
     this.shards.forEach(shard => {
       shard.setPresence({
         afk: false,
@@ -91,7 +86,7 @@ export class Worker extends Emitter<DiscordEventMap> {
    * Gets shard in charge of specific guild
    * @param guildId ID of guild
    */
-  guildShard (guildId: Snowflake) {
+  guildShard (guildId: Snowflake): Shard {
     const shard = this.shards.get(guildShard(guildId, this.options.shards as number))
     if (!shard) throw new Error('Guild not on this cluster.')
     return shard
@@ -101,8 +96,8 @@ export class Worker extends Emitter<DiscordEventMap> {
    * Gets ALL members in a guild (via ws)
    * @param guildId ID of guild
    */
-  getMembers (guildId: Snowflake) {
-    return this.guildShard(guildId).getGuildMembers({
+  async getMembers (guildId: Snowflake): Promise<Collection<any, APIGuildMember>> {
+    return await this.guildShard(guildId).getGuildMembers({
       guild_id: guildId,
       query: '',
       limit: 0
@@ -112,11 +107,11 @@ export class Worker extends Emitter<DiscordEventMap> {
   /**
    * Whether or not all shards are online and ready
    */
-  get ready () {
+  get ready (): boolean {
     return this.api instanceof RestManager && this.shards.every(x => x.ready)
   }
 
-  log (...data) {
+  log (...data): void {
     this.comms.log(...data)
   }
 }

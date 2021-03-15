@@ -1,8 +1,8 @@
-import { Shard } from "./Shard"
+import { Shard } from './Shard'
 import WebSocket from 'ws'
 import { Emitter } from '../utils/Emitter'
-import { GatewayDispatchEvents, GatewayDispatchPayload, GatewayHelloData, GatewayOPCodes, GatewaySendPayload } from "discord-api-types"
-import { DiscordDefaultEventMap } from "../typings/Discord"
+import { GatewayDispatchEvents, GatewayDispatchPayload, GatewayHelloData, GatewayOPCodes, GatewaySendPayload } from 'discord-api-types'
+import { DiscordDefaultEventMap } from '../typings/Discord'
 
 export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' | 'GUILD_CREATE'>> {
   private connectTimeout?: NodeJS.Timeout
@@ -19,7 +19,7 @@ export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' 
 
   constructor (private shard: Shard) { super() }
 
-  async spawn (resolve?: () => void) {
+  async spawn (resolve?: () => void): Promise<void> {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) this.ws.close(1005)
     this.ws = null
     this.connected = false
@@ -36,17 +36,17 @@ export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' 
       if (!this.connected) return this.shard.restart(true, 1013, 'Didn\'t Connect in Time')
     }, 30e3)
 
-    this.ws.on('message', (data) => this._handleMessage(data))
+    this.ws.on('message', (data) => this._handleMessage(data as Buffer))
     this.ws.once('close', (code, reason) => this.close(code, reason))
   }
 
-  public _send (data: GatewaySendPayload) {
+  public _send (data: GatewaySendPayload): void {
     this.ws?.send(JSON.stringify(data))
   }
 
-  private _handleMessage (data: WebSocket.Data) {
+  private _handleMessage (data: Buffer): void {
     const msg: GatewayDispatchPayload = JSON.parse(data.toString('utf-8'))
-    
+
     if (msg.s) this.sequence = msg.s
 
     if (msg.op === GatewayOPCodes.Dispatch) {
@@ -56,7 +56,7 @@ export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' 
       }
       if (msg.t === GatewayDispatchEvents.Ready) this.sessionID = msg.d.session_id
 
-      if ([GatewayDispatchEvents.GuildCreate, GatewayDispatchEvents.Ready].includes(msg.t)) return this.emit(msg.t as any, msg.d)
+      if ([GatewayDispatchEvents.GuildCreate, GatewayDispatchEvents.Ready].includes(msg.t)) return void this.emit(msg.t as any, msg.d)
 
       this.shard.worker.emit('*', msg)
 
@@ -83,7 +83,7 @@ export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' 
         this.shard.worker.log(`Shard ${this.shard.id} resuming.`)
       } else {
         this._send({
-          op: GatewayOPCodes.Identify, 
+          op: GatewayOPCodes.Identify,
           d: {
             shard: [this.shard.id, this.shard.worker.options.shards as number],
             intents: this.shard.worker.options.intents as number,
@@ -96,40 +96,40 @@ export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' 
           }
         })
       }
-      this.hbInterval = setInterval(this._heartbeat.bind(this), (msg.d as unknown as GatewayHelloData).heartbeat_interval)
+      this.hbInterval = setInterval(() => this._heartbeat(), (msg.d as unknown as GatewayHelloData).heartbeat_interval)
       this.waitingHeartbeat = false
       this.heartbeatRetention = 0
       this._heartbeat()
     } else if (msg.op === GatewayOPCodes.HeartbeatAck) {
       this.heartbeatRetention = 0
       this.shard.ping = Date.now() - (this.waitingHeartbeat as number)
-      
+
       this.waitingHeartbeat = false
       this.heartbeatRetention = 0
     }
   }
 
-  private _heartbeat () {
+  private _heartbeat (): void {
     if (this.waitingHeartbeat) {
       this.heartbeatRetention++
 
       if (this.heartbeatRetention > 5) return this.shard.restart(false, 1006, 'Not Receiving Heartbeats')
     }
     this._send({
-      op: GatewayOPCodes.Heartbeat, 
+      op: GatewayOPCodes.Heartbeat,
       d: this.sequence
     })
     this.waitingHeartbeat = Date.now()
   }
 
-  private close (code: number, reason: string) {
+  private close (code: number, reason: string): void {
     this.shard.worker.log(`Shard ${this.shard.id} closed with ${code} & ${reason || 'No Reason'}`)
 
-    if (this.dying) this.shard.register()
-    else this.spawn()
+    if (this.dying) void this.shard.register()
+    else void this.spawn()
   }
 
-  kill () {
+  kill (): void {
     this.dying = true
     this.resuming = false
     this.sequence = null

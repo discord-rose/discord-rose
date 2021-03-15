@@ -1,4 +1,4 @@
-import fetch, { Headers } from 'node-fetch'
+import fetch, { Headers, Response } from 'node-fetch'
 import * as qs from 'querystring'
 
 import { Cache } from '../utils/Cache'
@@ -25,7 +25,7 @@ export class RestManager {
   public misc = new MiscResource(this)
   public webhooks = new WebhooksResource(this)
 
-  constructor (private token: string) {}
+  constructor (private readonly token: string) {}
 
   private _key (route: string): string {
     const bucket: string[] = []
@@ -41,7 +41,7 @@ export class RestManager {
   }
 
   public async request (method: Methods, route: string, options: RequestOptions = {}): Promise<any> {
-    return new Promise((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
+    return await new Promise((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
       const key = this._key(route)
 
       let bucket = this.buckets.get(key)
@@ -55,7 +55,10 @@ export class RestManager {
     })
   }
 
-  public async make (opts: Request) {
+  public async make (opts: Request): Promise<{
+    res: Response
+    json: any
+  }> {
     const method: Methods = opts.method
     const route: string = opts.route
     const options: RequestOptions = opts.options
@@ -68,13 +71,15 @@ export class RestManager {
     if (options.reason) headers.set('X-Audit-Log-Reason', options.reason)
 
     headers.set('User-Agent', 'DiscordBot (Discord-Rose, v0)')
-    
-    if (options.headers) Object.keys(options.headers).forEach(key => {
-      headers.set(key, options.headers?.[key] as string)
-    })
+
+    if (options.headers) {
+      Object.keys(options.headers).forEach(key => {
+        headers.set(key, options.headers?.[key] as string)
+      })
+    }
 
     const res = await fetch(`https://discord.com/api/v7${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
-      method, headers, body: options.body ? (options.parser || JSON.stringify)(options.body) : undefined
+      method, headers, body: options.body ? (options.parser ?? JSON.stringify)(options.body) : undefined
     })
 
     const json = res.status === 204 ? { success: true } : await res.json()

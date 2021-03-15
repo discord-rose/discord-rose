@@ -1,10 +1,10 @@
-import { APIGatewayBotInfo } from 'discord-api-types';
+import { APIGatewayBotInfo } from 'discord-api-types'
 import { RestManager } from '../Manager'
 
 export class MiscResource {
-  constructor (private rest: RestManager) {}
+  constructor (private readonly rest: RestManager) {}
 
-  getGateway (): Promise<APIGatewayBotInfo> {
-    return this.rest.request('GET', '/gateway/bot')
+  async getGateway (): Promise<APIGatewayBotInfo> {
+    return await this.rest.request('GET', '/gateway/bot')
   }
 }

@@ -1,16 +1,16 @@
-import Collection from '@discordjs/collection';
-import { Worker } from '../../clustering/worker/Worker';
-import { CacheManager } from '../CacheManager';
+import Collection from '@discordjs/collection'
+import { Worker } from '../../clustering/worker/Worker'
+import { CacheManager } from '../CacheManager'
 
 import { APIGuild, GatewayGuildMemberAddDispatchData } from 'discord-api-types'
-import { CachedGuild } from '../../typings/Discord';
+import { CachedGuild } from '../../typings/Discord'
 
-export function guilds (events: CacheManager, worker: Worker) {
+export function guilds (events: CacheManager, worker: Worker): void {
   worker.guilds = new Collection()
 
   events.on('GUILD_CREATE', (guild) => {
     guild.members?.forEach(member => {
-      // @ts-ignore For proper cache formatting
+      // @ts-expect-error For proper cache formatting
       member.guild_id = guild.id
       events.emit('GUILD_MEMBER_ADD', member as GatewayGuildMemberAddDispatchData)
     })
@@ -47,7 +47,7 @@ export function guilds (events: CacheManager, worker: Worker) {
     currentGuild.name = guild.name
     currentGuild.region = guild.region
     currentGuild.verification_level = guild.verification_level
-    currentGuild.default_message_notifications= guild.default_message_notifications
+    currentGuild.default_message_notifications = guild.default_message_notifications
     currentGuild.explicit_content_filter = guild.explicit_content_filter
     currentGuild.afk_channel_id = guild.afk_channel_id
     currentGuild.afk_timeout = guild.afk_timeout
