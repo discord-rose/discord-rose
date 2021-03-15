@@ -39,7 +39,7 @@ export class Thread extends ThreadComms {
    * Logs data to master's MasterOptions.log
    * @param message Message args
    */
-  log (messages: ...any) {
+  log (...messages: any[]) {
     this.tell('LOG', messages.map(m => typeof m === 'string' ? m : inspect(m)).join(' '))
   }
 
