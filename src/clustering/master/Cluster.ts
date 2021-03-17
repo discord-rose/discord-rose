@@ -32,16 +32,18 @@ export class Cluster extends ThreadComms {
       super.register(this.thread)
 
       this.thread.on('exit', (code) => {
+        this.started = false
         this.logAs(`Closed with code ${code}`)
         this.master.emit('CLUSTER_STOPPED', this)
         if (!this.dying) void this.spawn()
       })
       this.thread.on('online', () => {
+        if (this.master.spawned) void this.start()
+
         this.logAs('Started')
         this.master.emit('CLUSTER_STARTED', this)
-        resolve(true)
 
-        if (this.started) void this.start()
+        resolve(true)
       })
     })
   }

@@ -35,7 +35,7 @@ export class Sharder {
         this.shards.push(x)
       })))
 
-    await wait(5000)
+    if (this.shards.length > 0) await wait(5000)
 
     return this.loop()
   }
