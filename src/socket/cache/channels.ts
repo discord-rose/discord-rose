@@ -6,7 +6,8 @@ import { CacheManager } from '../CacheManager'
 export function channels (events: CacheManager, worker: Worker): void {
   worker.channels = new Collection()
 
-  events.on('CHANNEL_CREATE', (channel) => {
+  events.on('CHANNEL_CREATE', (c) => {
+    let channel = Object.assign({}, c)
     if (worker.options.cacheControl.channels) {
       const newChannel = {} as APIChannel
       worker.options.cacheControl.channels.forEach(key => {
@@ -19,7 +20,8 @@ export function channels (events: CacheManager, worker: Worker): void {
     worker.channels.set(channel.id, channel)
   })
 
-  events.on('CHANNEL_UPDATE', (channel) => {
+  events.on('CHANNEL_UPDATE', (c) => {
+    const channel = Object.assign({}, c)
     let currentChannel = worker.channels.get(channel.id)
     if (!currentChannel) return
 

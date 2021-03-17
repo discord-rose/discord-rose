@@ -6,7 +6,8 @@ import { CacheManager } from '../CacheManager'
 export function roles (events: CacheManager, worker: Worker): void {
   worker.guildRoles = new Collection()
 
-  events.on('GUILD_ROLE_CREATE', (role) => {
+  events.on('GUILD_ROLE_CREATE', (r) => {
+    const role = Object.assign({}, r)
     let guildRoles = worker.guildRoles.get(role.guild_id)
     if (!guildRoles) {
       guildRoles = new Collection()
@@ -25,7 +26,8 @@ export function roles (events: CacheManager, worker: Worker): void {
     guildRoles.set(role.role.id, role.role)
   })
 
-  events.on('GUILD_ROLE_UPDATE', (role) => {
+  events.on('GUILD_ROLE_UPDATE', (r) => {
+    const role = Object.assign({}, r)
     const guildRoles = worker.guildRoles.get(role.guild_id)
     if (!guildRoles) return
     let currentRole = guildRoles.get(role.role.id)

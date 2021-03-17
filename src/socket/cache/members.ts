@@ -6,7 +6,8 @@ import { CacheManager } from '../CacheManager'
 export function members (events: CacheManager, worker: Worker): void {
   worker.members = new Collection()
 
-  events.on('GUILD_MEMBER_ADD', (member) => {
+  events.on('GUILD_MEMBER_ADD', (m) => {
+    let member = Object.assign({}, m)
     let guildMembers = worker.members.get(member.guild_id)
     if (!guildMembers) {
       guildMembers = new Collection()
@@ -26,7 +27,8 @@ export function members (events: CacheManager, worker: Worker): void {
     guildMembers.set(member.user?.id as Snowflake, member)
   })
 
-  events.on('GUILD_MEMBER_UPDATE', (member) => {
+  events.on('GUILD_MEMBER_UPDATE', (m) => {
+    const member = Object.assign({}, m)
     const guildMembers = worker.members.get(member.guild_id)
     if (!guildMembers) return
     let currentMember = guildMembers.get(member.user?.id as Snowflake)

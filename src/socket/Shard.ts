@@ -30,13 +30,12 @@ export class Shard {
 
     this.ws.on('GUILD_CREATE', (data) => {
       if (!this.unavailableGuilds) return this.worker.emit('GUILD_CREATE', data)
-
-      this.worker.cacheManager.emit('GUILD_CREATE', data)
+      else this.worker.cacheManager.emit('GUILD_CREATE', data)
 
       if (!checkTimeout) {
         checkTimeout = setTimeout(() => {
           if (!this.unavailableGuilds) return
-          this.worker.log(`Shard ${this.id} reported ${this.unavailableGuilds?.size} unavailable guilds. Continuing startup.`)
+          this.worker.log(`Shard ${this.id} reported ${this.unavailableGuilds.size} unavailable guilds. Continuing startup.`)
           this._ready()
         }, 15e3)
       } else checkTimeout.refresh()

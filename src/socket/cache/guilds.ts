@@ -8,7 +8,8 @@ import { CachedGuild } from '../../typings/Discord'
 export function guilds (events: CacheManager, worker: Worker): void {
   worker.guilds = new Collection()
 
-  events.on('GUILD_CREATE', (guild) => {
+  events.on('GUILD_CREATE', (g) => {
+    let guild = Object.assign({}, g)
     guild.members?.forEach(member => {
       // @ts-expect-error For proper cache formatting
       member.guild_id = guild.id
@@ -40,7 +41,8 @@ export function guilds (events: CacheManager, worker: Worker): void {
     worker.guilds.set(guild.id, guild)
   })
 
-  events.on('GUILD_UPDATE', (guild) => {
+  events.on('GUILD_UPDATE', (g) => {
+    const guild = Object.assign({}, g)
     let currentGuild = worker.guilds.get(guild.id)
     if (!currentGuild) return
 
