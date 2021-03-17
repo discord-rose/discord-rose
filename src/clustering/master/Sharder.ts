@@ -9,7 +9,10 @@ export class Sharder {
   constructor (public master: Master) {}
 
   register (id: number): void {
-    if (!this.shards.includes(id)) this.shards.push(id)
+    if (!this.shards.includes(id)) {
+      this.shards.push(id)
+      this.shards = this.shards.sort((a, b) => a + b)
+    }
 
     if (!this.looping && this.master.spawned) void this.loop()
   }
