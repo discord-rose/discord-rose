@@ -29,8 +29,9 @@ export class Shard {
     let checkTimeout: NodeJS.Timeout
 
     this.ws.on('GUILD_CREATE', (data) => {
+      this.worker.cacheManager.emit('GUILD_CREATE', data)
+
       if (!this.unavailableGuilds) return this.worker.emit('GUILD_CREATE', data)
-      else this.worker.cacheManager.emit('GUILD_CREATE', data)
 
       if (!checkTimeout) {
         checkTimeout = setTimeout(() => {
