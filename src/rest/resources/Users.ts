@@ -1,5 +1,5 @@
 import { APIChannel, APIMessage, RESTGetAPIUserResult, RESTPostAPICurrentUserCreateDMChannelResult, Snowflake } from 'discord-api-types'
-import { Cache } from '../../utils/Cache'
+import { Cache } from '@jpbberry/cache'
 import { RestManager } from '../Manager'
 import { MessageTypes } from './Messages'
 

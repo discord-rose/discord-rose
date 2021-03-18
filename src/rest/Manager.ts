@@ -1,7 +1,7 @@
 import fetch, { Headers, Response } from 'node-fetch'
 import * as qs from 'querystring'
 
-import { Cache } from '../utils/Cache'
+import { Cache } from '@jpbberry/cache'
 
 import { Bucket } from './Bucket'
 

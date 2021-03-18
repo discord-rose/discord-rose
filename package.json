@@ -24,6 +24,7 @@
   "homepage": "https://github.com/discord-rose/discord-rose#readme",
   "dependencies": {
     "@discordjs/collection": "^0.1.6",
+    "@jpbberry/cache": "^1.0.4",
     "discord-api-types": "^0.12.1",
     "form-data": "^3.0.0",
     "node-fetch": "^2.6.1",
