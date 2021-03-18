@@ -3,43 +3,47 @@ import { Master } from './Master'
 import { wait } from '../../utils/UtilityFunctions'
 
 export class Sharder {
-  public shards: number[] = []
-  private looping: boolean = false
+  public buckets: Array<number[]|null> = []
 
   constructor (public master: Master) {}
 
   register (id: number): void {
-    if (!this.shards.includes(id)) {
-      this.shards.push(id)
-      this.shards = this.shards.sort((a, b) => a + b)
+    const bucket = id % this.master.session.max_concurrency
+
+    let running = true
+
+    if (!this.buckets[bucket]) {
+      running = false
+      this.buckets[bucket] = []
     }
 
-    if (!this.looping && this.master.spawned) void this.loop()
+    if (!this.buckets[bucket]?.includes(id)) {
+      this.buckets[bucket]?.push(id)
+    }
+
+    this.buckets[bucket] = this.buckets[bucket]?.sort((a, b) => a - b) as number[]
+
+    if (!running && this.master.spawned) void this.loop(bucket)
   }
 
-  async loop (): Promise<void> {
-    this.looping = true
-    const next: number[] = []
+  async loop (bucket: number): Promise<void> {
+    if (!this.buckets[bucket]) return
+    const next = this.buckets[bucket]?.shift()
 
-    for (let i = 0; i < this.master.session.max_concurrency; i++) {
-      const n = this.shards.shift()
-      if (Number.isInteger(n)) next.push(n as number)
-    }
-
-    if (next.length < 1) {
-      this.looping = false
+    if (next === undefined) {
+      this.buckets[bucket] = null
       return
     }
 
-    await Promise.all(next.map(async (x) => await this.master.shardToCluster(x)?.sendCommand('START_SHARD', { id: x })
+    await this.master.shardToCluster(next)?.sendCommand('START_SHARD', { id: next })
       .catch(() => {
-        this.master.log(`Shard(s) ${next.join(', ')} failed to start in time. Continuing and will try again later.`)
+        this.master.log(`Shard ${next} failed to start in time. Continuing and will try again later.`)
 
-        this.shards.push(x)
-      })))
+        this.buckets[bucket]?.push(next)
+      })
 
-    if (this.shards.length > 0) await wait(5000)
+    if (this.buckets[bucket]?.length) await wait(5000)
 
-    return this.loop()
+    return await this.loop(bucket)
   }
 }

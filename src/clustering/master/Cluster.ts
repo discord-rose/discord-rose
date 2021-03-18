@@ -37,6 +37,9 @@ export class Cluster extends ThreadComms {
         this.master.emit('CLUSTER_STOPPED', this)
         if (!this.dying) void this.spawn()
       })
+      this.thread.on('error', (error) => {
+        console.error(error)
+      })
       this.thread.on('online', () => {
         if (this.master.spawned) void this.start()
 

@@ -72,7 +72,7 @@ export class Master extends Emitter<{
 
     this.options = {
       token: options.token,
-      shards: options.shards,
+      shards: options.shards ?? 'auto',
       shardsPerCluster: options.shardsPerCluster ?? 5,
       shardOffset: options.shardOffset ?? 0,
       cache: options.cache === false
@@ -158,6 +158,7 @@ export class Master extends Emitter<{
    * Starts the bot and spawns workers
    */
   async start (): Promise<void> {
+    const timeStart = Date.now()
     this.rest = new RestManager(this.options.token)
 
     const gatewayRequest = await this.rest.misc.getGateway()
@@ -172,7 +173,7 @@ export class Master extends Emitter<{
 
     this.chunks = chunkShards(this.options?.shards || 1, this.options.shardsPerCluster ?? 5)
 
-    const promises: Array<Promise<void>> = []
+    let promises: Array<Promise<void>> = []
 
     for (let i = 0; i < this.chunks.length; i++) {
       const cluster = new Cluster(`${i}`, this)
@@ -190,9 +191,14 @@ export class Master extends Emitter<{
     await Promise.all(this.clusters.map(async x => await x.start()))
 
     this.log('Spawning')
-    await this.sharder.loop()
+    promises = []
+    for (let i = 0; i < this.session.max_concurrency; i++) {
+      promises.push(this.sharder.loop(i))
+    }
 
-    this.log('Finished spawning')
+    await Promise.all(promises)
+
+    this.log(`Finished spawning after ${(Date.now() - timeStart).toFixed(2)}ms`)
 
     this.spawned = true
     this.emit('READY', this)
