@@ -67,11 +67,9 @@ export class Shard {
     return this.ws.ws?.readyState === OPEN && !this.unavailableGuilds
   }
 
-  async start (): Promise<void> {
+  start (): void {
     this.registered = false
-    return await new Promise(resolve => {
-      void this.ws.spawn(resolve)
-    })
+    void this.ws.spawn()
   }
 
   private _ready (): void {

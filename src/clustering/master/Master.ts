@@ -173,7 +173,7 @@ export class Master extends Emitter<{
 
     this.chunks = chunkShards(this.options?.shards || 1, this.options.shardsPerCluster ?? 5)
 
-    let promises: Array<Promise<void>> = []
+    const promises: Array<Promise<void>> = []
 
     for (let i = 0; i < this.chunks.length; i++) {
       const cluster = new Cluster(`${i}`, this)
@@ -191,17 +191,15 @@ export class Master extends Emitter<{
     await Promise.all(this.clusters.map(async x => await x.start()))
 
     this.log('Spawning')
-    promises = []
     for (let i = 0; i < this.session.max_concurrency; i++) {
-      promises.push(this.sharder.loop(i))
+      void this.sharder.loop(i)
     }
 
-    await Promise.all(promises)
+    this.once('READY', () => {
+      this.log(`Finished spawning after ${(Date.now() - timeStart).toFixed(2)}ms`)
 
-    this.log(`Finished spawning after ${(Date.now() - timeStart).toFixed(2)}ms`)
-
-    this.spawned = true
-    this.emit('READY', this)
+      this.spawned = true
+    })
   }
 
   /**

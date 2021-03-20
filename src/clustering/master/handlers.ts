@@ -13,6 +13,9 @@ export const handlers: {
   },
   SHARD_READY: function ({ id }, _) {
     this.logAs(`Shard ${id} connected to Discord`)
+    if (!this.master.spawned) {
+      if (this.master.sharder.buckets.every(x => x === null)) this.master.emit('READY', this.master)
+    }
   },
   LOG: function (data, _) {
     this.logAs(data)

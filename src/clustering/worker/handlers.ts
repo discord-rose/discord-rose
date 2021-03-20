@@ -12,17 +12,12 @@ export const handlers: {
 
     respond({})
   },
-  START_SHARD: async function (data, respond) {
+  START_SHARD: function (data) {
     const shard = this.worker.shards.get(data.id)
-    if (!shard) {
-      respond({ error: 'Shard doesn\'t exist' })
-      return
-    }
-    await shard.start()
-    respond({})
+    shard?.start()
   },
-  RESTART_SHARD: function ({ id }, respond) {
-    this.worker.shards.get(id)?.restart(true, 1000, 'Internally restarted')
+  RESTART_SHARD: function ({ id }) {
+    this.worker.shards.get(id)?.restart(true, 1002, 'Internally restarted')
   },
   GET_GUILD: function ({ id }, respond) {
     const guild = this.worker.guilds.get(id) as APIGuild

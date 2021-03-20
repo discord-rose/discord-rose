@@ -19,8 +19,8 @@ export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' 
 
   constructor (private shard: Shard) { super() }
 
-  async spawn (resolve?: () => void): Promise<void> {
-    if (this.ws && this.ws.readyState === WebSocket.OPEN) this.ws.close(1005)
+  async spawn (): Promise<void> {
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) this.ws.close(1002)
     this.ws = null
     this.connected = false
     this.heartbeatRetention = 0
@@ -28,19 +28,18 @@ export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' 
     this.dying = false
     if (this.hbInterval) clearInterval(this.hbInterval)
 
-    if (resolve) this.once('READY', () => resolve())
-
     this.ws = new WebSocket(this.shard.worker.options.ws)
 
     this.connectTimeout = setTimeout(() => {
       if (!this.connected) return this.shard.restart(true, 1013, 'Didn\'t Connect in Time')
-    }, 30e3)
+    }, 60e3)
 
     this.ws.on('message', (data) => this._handleMessage(data as Buffer))
     this.ws.once('close', (code, reason) => this.close(code, reason))
   }
 
   public _send (data: GatewaySendPayload): void {
+    if (this.ws?.readyState !== this.ws?.OPEN) return
     this.ws?.send(JSON.stringify(data))
   }
 
