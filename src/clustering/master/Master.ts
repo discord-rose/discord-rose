@@ -26,6 +26,8 @@ export interface CompleteBotOptions extends Complete<BotOptions> {
   cache: Complete<CacheOptions>
   cacheControl: Complete<CacheControlOptions>
   ws: string
+  shards: number
+  shardsPerCluster: number
 }
 
 /**
@@ -36,7 +38,7 @@ export class Master extends Emitter<{
   CLUSTER_STARTED: Cluster
   CLUSTER_STOPPED: Cluster
 }> {
-  public options: CompleteBotOptions = {} as CompleteBotOptions
+  public options: BotOptions
   public rest = {} as RestManager
   public handlers = new EventEmitter() as {
     on: <K extends keyof ThreadEvents>(event: K, listener: (cluster: Cluster, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => any
@@ -124,11 +126,11 @@ export class Master extends Emitter<{
     if (this.options.warnings?.cachedIntents) {
       const warn = (key: string, intent: string): void => console.warn(`WARNING: CacheOptions.${key} was turned on, but is missing the ${intent} intent. Meaning your cache with be empty. Either turn this on, or if it's intentional set Options.warnings.cachedIntents to false.`)
 
-      if (this.options.cache.guilds && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('guilds', 'GUILDS')
-      if (this.options.cache.roles && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('roles', 'GUILDS')
-      if (this.options.cache.channels && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('channels', 'GUILDS')
-      if (this.options.cache.members && (((this.options.intents as number) & Intents.GUILD_MEMBERS) === 0)) warn('members', 'GUILD_MEMBERS')
-      if (this.options.cache.messages && (((this.options.intents as number) & Intents.GUILD_MESSAGES) === 0)) warn('messages', 'GUILD_MESSAGES')
+      if (this.options.cache?.guilds && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('guilds', 'GUILDS')
+      if (this.options.cache?.roles && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('roles', 'GUILDS')
+      if (this.options.cache?.channels && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('channels', 'GUILDS')
+      if (this.options.cache?.members && (((this.options.intents as number) & Intents.GUILD_MEMBERS) === 0)) warn('members', 'GUILD_MEMBERS')
+      if (this.options.cache?.messages && (((this.options.intents as number) & Intents.GUILD_MESSAGES) === 0)) warn('messages', 'GUILD_MESSAGES')
     }
 
     const keys = Object.keys(handlers)

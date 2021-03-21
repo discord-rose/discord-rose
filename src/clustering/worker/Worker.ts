@@ -87,7 +87,7 @@ export class Worker extends Emitter<DiscordEventMap> {
    * @param guildId ID of guild
    */
   guildShard (guildId: Snowflake): Shard {
-    const shard = this.shards.get(guildShard(guildId, this.options.shards as number))
+    const shard = this.shards.get(guildShard(guildId, this.options.shards))
     if (!shard) throw new Error('Guild not on this cluster.')
     return shard
   }
