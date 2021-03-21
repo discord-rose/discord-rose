@@ -12,7 +12,7 @@ import { CachedGuild } from '../typings/Discord'
 export class CommandContext {
   public args: string[] = []
 
-  constructor (public worker: Worker, public message: APIMessage, public command: CommandOptions, public prefix: string) {}
+  constructor (public worker: Worker, public message: APIMessage, public command: CommandOptions, public prefix: string, public ran: string) {}
 
   /**
    * Guild where the message was sent

@@ -185,7 +185,7 @@ export class CommandHandler {
     const cmd = this.find(command)
     if (!cmd) return
 
-    const ctx = new CommandContext(this.worker, data, cmd, prefix)
+    const ctx = new CommandContext(this.worker, data, cmd, prefix, command)
     ctx.args = args
 
     try {
