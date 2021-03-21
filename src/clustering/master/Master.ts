@@ -28,6 +28,7 @@ export interface CompleteBotOptions extends Complete<BotOptions> {
   ws: string
   shards: number
   shardsPerCluster: number
+  intents: number
 }
 
 /**

@@ -85,7 +85,7 @@ export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' 
           op: GatewayOPCodes.Identify,
           d: {
             shard: [this.shard.id, this.shard.worker.options.shards],
-            intents: this.shard.worker.options.intents as number,
+            intents: this.shard.worker.options.intents,
             token: this.shard.worker.options.token,
             properties: {
               $os: 'linux',
