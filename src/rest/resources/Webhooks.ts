@@ -17,9 +17,9 @@ export class WebhooksResource {
   }
 
   /**
-   *
-   * @param webhookId ID of
-   * @param token
+   * Sends a message from the webhook
+   * @param webhookId ID of webhook
+   * @param token Token of webhook
    */
   async get (webhookId: Snowflake, token: string): Promise<RESTGetAPIWebhookResult> {
     return await this.rest.request('GET', `/webhooks/${webhookId}/${token}`)
@@ -32,5 +32,14 @@ export class WebhooksResource {
       },
       body: MessagesResource._formMessage(data, true)
     })
+  }
+
+  /**
+   * Deletes a webhook
+   * @param webhookId ID of webhook
+   * @param token Token (if none provided, uses bot permission)
+   */
+  async delete (webhookId: Snowflake, token?: string): Promise<never> {
+    return await this.rest.request('DELETE', `/webhooks/${webhookId}${token ? `/${token}` : ''}`) as never
   }
 }
