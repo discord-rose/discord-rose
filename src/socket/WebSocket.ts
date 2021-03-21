@@ -79,7 +79,7 @@ export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' 
             seq: this.sequence as number
           }
         })
-        this.shard.worker.log(`Shard ${this.shard.id} resuming.`)
+        this.shard.worker.log(`Shard ${this.shard.id} resuming`)
       } else {
         this._send({
           op: GatewayOPCodes.Identify,

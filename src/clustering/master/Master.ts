@@ -55,7 +55,7 @@ export class Master extends Emitter<{
   public log: (msg: string, cluster?: Cluster) => void
 
   private readonly _clusterNames = [] as string[]
-  private longestName = 1 as number
+  private longestName = 1
 
   /**
    * Creates a new Master instance
@@ -196,7 +196,7 @@ export class Master extends Emitter<{
     }
 
     this.once('READY', () => {
-      this.log(`Finished spawning after ${(Date.now() - timeStart).toFixed(2)}ms`)
+      this.log(`Finished spawning after ${((Date.now() - timeStart) / 1000).toFixed(2)}s`)
 
       this.spawned = true
     })
