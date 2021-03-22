@@ -7,8 +7,8 @@ import Collection from '@discordjs/collection'
 
 type MiddlewareFunction = (ctx: ctx) => boolean | Promise<boolean>
 
-interface CommandError extends Error {
-  nonFatal: boolean
+export class CommandError extends Error {
+  nonFatal?: boolean
 }
 
 export class CommandHandler {

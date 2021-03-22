@@ -8,6 +8,7 @@ import { CommandOptions, Worker } from '../typings/lib'
 import { PermissionsUtils, bits } from '../utils/Permissions'
 import Collection from '@discordjs/collection'
 import { CachedGuild } from '../typings/Discord'
+import { CommandError } from './CommandHandler'
 
 export class CommandContext {
   public args: string[] = []
@@ -69,6 +70,18 @@ export class CommandContext {
    */
   async send (data: MessageTypes): Promise<APIMessage> {
     return await this.worker.api.messages.send(this.message.channel_id, data)
+  }
+
+  /**
+   * Runs an error through sendback of commands.error
+   * @param message Message of error
+   */
+  error (message: string): void {
+    const error = new CommandError(message)
+
+    error.nonFatal = true
+
+    this.worker.commands.errorFunction(this, error)
   }
 
   /**
