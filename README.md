@@ -35,7 +35,7 @@ const { Worker } = require('discord-rose')
 const worker = new Worker()
 
 worker.commands
-  .setPrefix('!'),
+  .setPrefix('!')
   .add({
     command: 'hello',
     exec: (ctx) => {
