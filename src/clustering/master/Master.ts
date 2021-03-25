@@ -215,6 +215,7 @@ export class Master extends Emitter<{
    * Sends an event to all clusters
    * @param event Event name
    * @param data Event data
+   * @param all Whether or not to send to all processes, including custom ones
    */
   async sendToAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], all: boolean = false): Promise<Array<ThreadEvents[K]['receive']>> {
     return await Promise.all(this[all ? 'processes' : 'clusters'].map(async x => await x.sendCommand(event, data)))
