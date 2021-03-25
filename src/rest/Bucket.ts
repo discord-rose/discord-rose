@@ -53,7 +53,7 @@ export class Bucket {
     const { res, json } = await this.manager.make(req)
 
     const date = new Date(res.headers.get('Date') as string)
-    const retryAfter = Number(res.headers.get('Retry-After'))
+    const retryAfter = Number(res.headers.get('Retry-After')) * 1000
 
     const remaining = res.headers.get('X-RateLimit-Remaining')
     const reset = Number(res.headers.get('X-RateLimit-Reset'))
