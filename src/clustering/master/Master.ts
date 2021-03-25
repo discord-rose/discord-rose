@@ -186,7 +186,7 @@ export class Master extends Emitter<{
 
     for (let i = 0; i < this.chunks.length; i++) {
       const cluster = new Cluster(`${i}`, this)
-      this.clusters.set(`${i}`, cluster)
+      this.processes.set(`${i}`, cluster)
 
       this._clusterNames.push(`${i}`)
       this.longestName = this._clusterNames.reduce((a, b) => a.length > b.length ? a : b, '').length
