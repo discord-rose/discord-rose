@@ -49,7 +49,7 @@ export class Master extends Emitter<{
 
   public sharder = new Sharder(this)
   public chunks: number[][] = [[]]
-  public clusters: Collection<string, Cluster> = new Collection()
+  public processes: Collection<string, Cluster> = new Collection()
   public fileName: string
   public spawned: boolean = false
 
@@ -142,16 +142,22 @@ export class Master extends Emitter<{
     }
   }
 
+  get clusters (): Collection<string, Cluster> {
+    return this.processes.filter(x => !x.custom)
+  }
+
   /**
    * Spawns a custom process
    * @param name Name of the process (especially for logging)
    * @param fileName Direct path for process
    */
   spawnProcess (name: string, fileName: string): Cluster {
+    if (this.processes.has(name)) throw new Error(`Process ${name} is already spawned`)
     this._clusterNames.push(name)
     this.longestName = this._clusterNames.reduce((a, b) => a.length > b.length ? a : b, '').length
 
     const cluster = new Cluster(name, this, fileName, true)
+    this.processes.set(name, cluster)
     cluster.spawn().catch(err => console.error(`Could not spawn ${name}: ${String(err)}`))
 
     return cluster
@@ -210,17 +216,18 @@ export class Master extends Emitter<{
    * @param event Event name
    * @param data Event data
    */
-  async sendToAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): Promise<Array<ThreadEvents[K]['receive']>> {
-    return await Promise.all(this.clusters.map(async x => await x.sendCommand(event, data)))
+  async sendToAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], all: boolean = false): Promise<Array<ThreadEvents[K]['receive']>> {
+    return await Promise.all(this[all ? 'processes' : 'clusters'].map(async x => await x.sendCommand(event, data)))
   }
 
   /**
    * Sends a TELL event to all clusters
    * @param event Event name
    * @param data Event data
+   * @param all Whether or not to send to all processes, including custom ones
    */
-  tellAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): any[] {
-    return this.clusters.map(x => x.tell(event, data))
+  tellAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], all: boolean = false): any[] {
+    return this[all ? 'processes' : 'clusters'].map(x => x.tell(event, data))
   }
 
   /**
