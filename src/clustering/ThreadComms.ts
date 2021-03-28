@@ -186,7 +186,7 @@ export class ThreadComms extends EventEmitter {
     return await new Promise((resolve, reject) => {
       const id = generateID(this.commands.keyArray())
       this.commands.set(id, (dat) => {
-        if (dat.error) resolve(new Error(dat.error))
+        if (dat?.error) resolve(new Error(dat.error))
 
         resolve(dat)
       })
