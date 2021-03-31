@@ -24,10 +24,12 @@ export class CommandHandler {
   public middlewares: MiddlewareFunction[] = []
   public commands?: Collection<CommandType, CommandOptions>
 
+  public CommandContext = CommandContext
+
   constructor (private readonly worker: Worker) {}
 
   public prefixFunction?: ((message: APIMessage) => Promise<string|string[]> | string|string[])
-  public errorFunction = (ctx: CommandContext, err: CommandError): void => {
+  public errorFunction = (ctx: ctx, err: CommandError): void => {
     ctx.embed
       .color(0xFF0000)
       .title('An Error Occured')
@@ -92,7 +94,7 @@ export class CommandHandler {
    *    ctx.send(`Error: ${error.message}`)
    *  })
    */
-  error (fn: (ctx: CommandContext, error: CommandError) => void): this {
+  error (fn: (ctx: ctx, error: CommandError) => void): this {
     this.errorFunction = fn
 
     return this
@@ -185,7 +187,7 @@ export class CommandHandler {
     const cmd = this.find(command)
     if (!cmd) return
 
-    const ctx = new CommandContext(this.worker, data, cmd, prefix, command)
+    const ctx = new this.CommandContext(this.worker, data, cmd, prefix, command)
     ctx.args = args
 
     try {
