@@ -125,11 +125,9 @@ export class Master extends Emitter<{
 
     if ((this.options.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true) {
       this.options.cache.channels = [ChannelType.DM, ChannelType.GROUP_DM, ChannelType.GUILD_CATEGORY, ChannelType.GUILD_NEWS, ChannelType.GUILD_STORE, ChannelType.GUILD_TEXT, ChannelType.GUILD_VOICE]
-    } else {
+    } else if (this.options.cache.channels) {
       const channelCaches = (this.options.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true ? CachedChannelTypes : (this.options.cache.channels as unknown as typeof CachedChannelTypes[number]) ?? [] as Array<typeof CachedChannelTypes[number]>
       this.options.cache.channels = [] as ChannelType[]
-
-      console.log(channelCaches)
 
       if (channelCaches.includes('text')) this.options.cache?.channels?.push(ChannelType.GUILD_NEWS, ChannelType.GUILD_TEXT)
       if (channelCaches.includes('voice')) this.options.cache?.channels?.push(ChannelType.GUILD_VOICE)
