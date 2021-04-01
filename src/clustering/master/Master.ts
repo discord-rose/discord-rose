@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import { RestManager } from '../../rest/Manager'
-import { APIGatewaySessionStartLimit, Snowflake } from 'discord-api-types'
+import { APIGatewaySessionStartLimit, ChannelType, Snowflake } from 'discord-api-types'
 import { DiscordEventMap, CachedGuild } from '../../typings/Discord'
 
 import { chunkShards, guildShard } from '../../utils/UtilityFunctions'
@@ -18,12 +18,18 @@ import { EventEmitter } from 'events'
 import path from 'path'
 import { Emitter } from '../../utils/Emitter'
 
+const CachedChannelTypes = ['text', 'voice', 'category'] as const
+
 type Complete<T> = {
   [P in keyof Required<T>]: Pick<T, P> extends Required<Pick<T, P>> ? T[P] : (T[P] | undefined);
 }
 
+interface CompleteCacheOptions extends Complete<CacheOptions> {
+  channels: ChannelType[]
+}
+
 export interface CompleteBotOptions extends Complete<BotOptions> {
-  cache: Complete<CacheOptions>
+  cache: CompleteCacheOptions
   cacheControl: Complete<CacheControlOptions>
   ws: string
   shards: number
@@ -39,7 +45,7 @@ export class Master extends Emitter<{
   CLUSTER_STARTED: Cluster
   CLUSTER_STOPPED: Cluster
 }> {
-  public options: BotOptions
+  public options: CompleteBotOptions
   public rest = {} as RestManager
   public handlers = new EventEmitter() as {
     on: <K extends keyof ThreadEvents>(event: K, listener: (cluster: Cluster, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => any
@@ -115,6 +121,19 @@ export class Master extends Emitter<{
         cachedIntents: options.warnings?.cachedIntents ?? true
       },
       log: options.log
+    } as CompleteBotOptions
+
+    if ((this.options.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true) {
+      this.options.cache.channels = [ChannelType.DM, ChannelType.GROUP_DM, ChannelType.GUILD_CATEGORY, ChannelType.GUILD_NEWS, ChannelType.GUILD_STORE, ChannelType.GUILD_TEXT, ChannelType.GUILD_VOICE]
+    } else {
+      const channelCaches = (this.options.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true ? CachedChannelTypes : (this.options.cache.channels as unknown as typeof CachedChannelTypes[number]) ?? [] as Array<typeof CachedChannelTypes[number]>
+      this.options.cache.channels = [] as ChannelType[]
+
+      console.log(channelCaches)
+
+      if (channelCaches.includes('text')) this.options.cache?.channels?.push(ChannelType.GUILD_NEWS, ChannelType.GUILD_TEXT)
+      if (channelCaches.includes('voice')) this.options.cache?.channels?.push(ChannelType.GUILD_VOICE)
+      if (channelCaches.includes('category')) this.options.cache?.channels?.push(ChannelType.GUILD_CATEGORY)
     }
 
     this.log = typeof options.log === 'undefined'
@@ -127,11 +146,11 @@ export class Master extends Emitter<{
     if (this.options.warnings?.cachedIntents) {
       const warn = (key: string, intent: string): void => console.warn(`WARNING: CacheOptions.${key} was turned on, but is missing the ${intent} intent. Meaning your cache with be empty. Either turn this on, or if it's intentional set Options.warnings.cachedIntents to false.`)
 
-      if (this.options.cache?.guilds && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('guilds', 'GUILDS')
-      if (this.options.cache?.roles && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('roles', 'GUILDS')
-      if (this.options.cache?.channels && (((this.options.intents as number) & Intents.GUILDS) === 0)) warn('channels', 'GUILDS')
-      if (this.options.cache?.members && (((this.options.intents as number) & Intents.GUILD_MEMBERS) === 0)) warn('members', 'GUILD_MEMBERS')
-      if (this.options.cache?.messages && (((this.options.intents as number) & Intents.GUILD_MESSAGES) === 0)) warn('messages', 'GUILD_MESSAGES')
+      if (this.options.cache?.guilds && ((this.options.intents & Intents.GUILDS) === 0)) warn('guilds', 'GUILDS')
+      if (this.options.cache?.roles && ((this.options.intents & Intents.GUILDS) === 0)) warn('roles', 'GUILDS')
+      if (this.options.cache?.channels && ((this.options.intents & Intents.GUILDS) === 0)) warn('channels', 'GUILDS')
+      if (this.options.cache?.members && ((this.options.intents & Intents.GUILD_MEMBERS) === 0)) warn('members', 'GUILD_MEMBERS')
+      if (this.options.cache?.messages && ((this.options.intents & Intents.GUILD_MESSAGES) === 0)) warn('messages', 'GUILD_MESSAGES')
     }
 
     const keys = Object.keys(handlers)
@@ -175,7 +194,7 @@ export class Master extends Emitter<{
 
     if (!this.options.ws) this.options.ws = gatewayRequest.url
 
-    if (this.options.shards === 'auto') this.options.shards = gatewayRequest.shards
+    if ((this.options.shards as number | 'auto') === 'auto') this.options.shards = gatewayRequest.shards
     if (typeof this.options.shards !== 'number') this.options.shards = 1
     this.options.shards += this.options?.shardOffset ?? 0
     this.log(`Spawning ${this.options.shards} shards.`)
@@ -254,7 +273,7 @@ export class Master extends Emitter<{
   }
 
   guildToShard (guildId: Snowflake): number {
-    return guildShard(guildId, this.options.shards as number)
+    return guildShard(guildId, this.options.shards)
   }
 
   guildToCluster (guildId: Snowflake): Cluster {
@@ -265,7 +284,7 @@ export class Master extends Emitter<{
 interface CacheOptions {
   guilds?: boolean
   roles?: boolean
-  channels?: boolean
+  channels?: boolean | Array<'text' | 'voice' | 'category'> | ChannelType[]
   self?: boolean
   members?: boolean
   messages?: boolean

@@ -7,6 +7,7 @@ export function channels (events: CacheManager, worker: Worker): void {
   worker.channels = new Collection()
 
   events.on('CHANNEL_CREATE', (c) => {
+    if (!worker.options.cache.channels.includes(c.type)) return
     let channel = Object.assign({}, c)
     if (worker.options.cacheControl.channels) {
       const newChannel = {} as APIChannel
@@ -21,6 +22,7 @@ export function channels (events: CacheManager, worker: Worker): void {
   })
 
   events.on('CHANNEL_UPDATE', (c) => {
+    if (!worker.options.cache.channels.includes(c.type)) return
     const channel = Object.assign({}, c)
     let currentChannel = worker.channels.get(channel.id)
     if (!currentChannel) return
