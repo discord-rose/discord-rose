@@ -23,7 +23,7 @@ export class Sharder {
 
     this.buckets[bucket] = this.buckets[bucket]?.sort((a, b) => a - b) as number[]
 
-    if (!running) void this.loop(bucket)
+    if (!running && this.master.spawned) void this.loop(bucket)
   }
 
   async loop (bucket: number): Promise<void> {
