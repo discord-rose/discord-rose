@@ -16,6 +16,14 @@ import { CommandError } from './CommandHandler'
 export class CommandContext {
   public args: string[] = []
 
+  /**
+   * Command Context
+   * @param worker Worker
+   * @param message Message object
+   * @param command Command object
+   * @param prefix Prefix that the command was ran via
+   * @param ran The actual ran command including aliases
+   */
   constructor (public worker: Worker, public message: APIMessage, public command: CommandOptions, public prefix: string, public ran: string) {}
 
   /**

@@ -57,9 +57,9 @@ export class MembersResource {
 
   /**
    * Adds a role to member
-   * @param {Snowflake} guildId ID of guild
-   * @param {Snowflake} memberId ID of member
-   * @param {Snowflake} roleId ID of role to add
+   * @param guildId ID of guild
+   * @param memberId ID of member
+   * @param roleId ID of role to add
    */
   async addRole (guildId: Snowflake, memberId: Snowflake, roleId: Snowflake): Promise<never> {
     return this.rest.request('PUT', `/guilds/${guildId}/members/${memberId}/roles/${roleId}`) as never
