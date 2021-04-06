@@ -228,7 +228,7 @@ export class CommandHandler {
   }
 }
 
-interface CommandHandlerOptions {
+export interface CommandHandlerOptions {
   /**
    * Default CommandOptions ('command', 'exec', and 'aliases' cannot be defaulted)
    */
