@@ -1,0 +1,266 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>discord-rose</title>
+	<meta name="description" content="Documentation for discord-rose">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">discord-rose</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>discord-rose</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#discord-rose" id="discord-rose" style="color: inherit; text-decoration: none;">
+					<h1>Discord-Rose</h1>
+				</a>
+				<a href="#the-simple-discord-library-for-advanced-users" id="the-simple-discord-library-for-advanced-users" style="color: inherit; text-decoration: none;">
+					<h2>The simple Discord library for advanced users.</h2>
+				</a>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h1>Installation</h1>
+				</a>
+				<p>Run <code>npm i --save discord-rose</code></p>
+				<a href="#links" id="links" style="color: inherit; text-decoration: none;">
+					<h2>Links</h2>
+				</a>
+				<p><a href="https://github.com/discord-rose/discord-rose/wiki">Wiki</a> <strong>IMPORTANT</strong></p>
+				<p><a href="https://discord.gg/EdpA6qRHhs">Support Server</a></p>
+				<p><a href="https://npmjs.com/package/discord-rose">NPM</a>, <a href="https://github.com/discord-rose/discord-rose">GitHub</a></p>
+				<a href="#simple-bot" id="simple-bot" style="color: inherit; text-decoration: none;">
+					<h1>Simple bot</h1>
+				</a>
+				<p><strong>./master.js</strong></p>
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">Master</span><span style="color: #000000"> } = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;discord-rose&#039;</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">path</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;path&#039;</span><span style="color: #000000">)</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">master</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Master</span><span style="color: #000000">(</span><span style="color: #001080">path</span><span style="color: #000000">.</span><span style="color: #795E26">resolve</span><span style="color: #000000">(</span><span style="color: #001080">__dirname</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;./worker.js&#039;</span><span style="color: #000000">), {</span>
+<span style="color: #000000">  </span><span style="color: #001080">token:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;BOT TOKEN&#039;</span>
+<span style="color: #000000">})</span>
+
+<span style="color: #001080">master</span><span style="color: #000000">.</span><span style="color: #795E26">start</span><span style="color: #000000">()</span>
+</code></pre>
+				<p><strong>./worker.js</strong></p>
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">Worker</span><span style="color: #000000"> } = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;discord-rose&#039;</span><span style="color: #000000">)</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">worker</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Worker</span><span style="color: #000000">()</span>
+
+<span style="color: #001080">worker</span><span style="color: #000000">.</span><span style="color: #001080">commands</span>
+<span style="color: #000000">  .</span><span style="color: #795E26">prefix</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;!&#039;</span><span style="color: #000000">)</span>
+<span style="color: #000000">  .</span><span style="color: #795E26">add</span><span style="color: #000000">({</span>
+<span style="color: #000000">    </span><span style="color: #001080">command:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;hello&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #795E26">exec</span><span style="color: #001080">:</span><span style="color: #000000"> (</span><span style="color: #001080">ctx</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">      </span><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #795E26">reply</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;World!&#039;</span><span style="color: #000000">)</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">  })</span>
+</code></pre>
+				<p>Do <code>node ./master.js</code> and you&#39;re off to the races. Scaled automatically.</p>
+				<a href="#ready-to-take-it-to-the-next-level-take-a-look-out-our-wiki" id="ready-to-take-it-to-the-next-level-take-a-look-out-our-wiki" style="color: inherit; text-decoration: none;">
+					<h2>Ready to take it to the next level? Take a look out our <a href="https://github.com/discord-rose/discord-rose/wiki">Wiki</a></h2>
+				</a>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/clustering_threadcomms.html">clustering/<wbr>Thread<wbr>Comms</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/clustering_master_cluster.html">clustering/master/<wbr>Cluster</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/clustering_master_master.html">clustering/master/<wbr>Master</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/clustering_master_sharder.html">clustering/master/<wbr>Sharder</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/clustering_master_handlers.html">clustering/master/handlers</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/clustering_worker_thread.html">clustering/worker/<wbr>Thread</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/clustering_worker_worker.html">clustering/worker/<wbr>Worker</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/clustering_worker_handlers.html">clustering/worker/handlers</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/index.html">index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/rest_bucket.html">rest/<wbr>Bucket</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/rest_error.html">rest/<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/rest_manager.html">rest/<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/rest_resources_channels.html">rest/resources/<wbr>Channels</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/rest_resources_guilds.html">rest/resources/<wbr>Guilds</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/rest_resources_members.html">rest/resources/<wbr>Members</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/rest_resources_messages.html">rest/resources/<wbr>Messages</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/rest_resources_misc.html">rest/resources/<wbr>Misc</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/rest_resources_users.html">rest/resources/<wbr>Users</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/rest_resources_webhooks.html">rest/resources/<wbr>Webhooks</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/socket_cachemanager.html">socket/<wbr>Cache<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/socket_shard.html">socket/<wbr>Shard</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/socket_websocket.html">socket/<wbr>Web<wbr>Socket</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/socket_cache_channels.html">socket/cache/channels</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/socket_cache_defaults.html">socket/cache/defaults</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/socket_cache_guilds.html">socket/cache/guilds</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/socket_cache_members.html">socket/cache/members</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/socket_cache_roles.html">socket/cache/roles</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/socket_cache_self.html">socket/cache/self</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/socket_cache_users.html">socket/cache/users</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/structures_commandcontext.html">structures/<wbr>Command<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/structures_commandhandler.html">structures/<wbr>Command<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/structures_embed.html">structures/<wbr>Embed</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/typings_discord.html">typings/<wbr>Discord</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/typings_lib.html">typings/lib</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_emitter.html">utils/<wbr>Emitter</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_permissions.html">utils/<wbr>Permissions</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_utilityfunctions.html">utils/<wbr>Utility<wbr>Functions</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
