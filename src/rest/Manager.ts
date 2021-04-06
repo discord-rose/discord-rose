@@ -73,9 +73,9 @@ export class RestManager {
 
   /**
    * Make a custom request
-   * @param {string} method Method
-   * @param {string} route Route, e.g "/users/123"
-   * @param {RequestOptions} options Other options
+   * @param method Method
+   * @param route Route, e.g "/users/123"
+   * @param options Other options
    */
   public async request (method: Methods, route: string, options: RequestOptions = {}): Promise<any> {
     return await new Promise((resolve: (value?: any) => void, reject: (reason?: any) => void) => {

@@ -110,8 +110,8 @@ export class Master extends Emitter<{
 
   /**
    * Creates a new Master instance
-   * @param {string} fileName Location of Worker file
-   * @param {BotOptions} options Options
+   * @param fileName Location of Worker file
+   * @param options Options
    */
   constructor (fileName: string, options: BotOptions) {
     super()
@@ -211,9 +211,9 @@ export class Master extends Emitter<{
 
   /**
    * Spawns a custom process
-   * @param {string} name Name of the process (especially for logging)
-   * @param {string} fileName Direct path for process
-   * @returns {Cluster} The new Cluster thread created
+   * @param name Name of the process (especially for logging)
+   * @param fileName Direct path for process
+   * @returns The new Cluster thread created
    */
   spawnProcess (name: string, fileName: string): Cluster {
     if (this.processes.has(name)) throw new Error(`Process ${name} is already spawned`)
@@ -229,7 +229,6 @@ export class Master extends Emitter<{
 
   /**
    * Starts the bot and spawns workers
-   * @returns {Promise<void>}
    */
   async start (): Promise<void> {
     const timeStart = Date.now()
@@ -278,10 +277,10 @@ export class Master extends Emitter<{
 
   /**
    * Sends an event to all clusters
-   * @param {string} event Event name
-   * @param {any} data Event data
-   * @param {boolean} all Whether or not to send to all processes, including custom ones
-   * @returns {Promise<any[]>} The data sent back
+   * @param event Event name
+   * @param data Event data
+   * @param all Whether or not to send to all processes, including custom ones
+   * @returns The data sent back
    */
   async sendToAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], all: boolean = false): Promise<Array<ThreadEvents[K]['receive']>> {
     return await Promise.all(this[all ? 'processes' : 'clusters'].map(async x => await x.sendCommand(event, data)))
@@ -289,10 +288,10 @@ export class Master extends Emitter<{
 
   /**
    * Sends a TELL event to all clusters
-   * @param {string} event Event name
-   * @param {any} data Event data
-   * @param {boolean} all Whether or not to send to all processes, including custom ones
-   * @returns {void} Nothing
+   * @param event Event name
+   * @param data Event data
+   * @param all Whether or not to send to all processes, including custom ones
+   * @returns Nothing
    */
   tellAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], all: boolean = false): any[] {
     return this[all ? 'processes' : 'clusters'].map(x => x.tell(event, data))
@@ -300,8 +299,8 @@ export class Master extends Emitter<{
 
   /**
    * Evals code on every cluster
-   * @param {string} code Code to eval
-   * @returns {Promise<any[]>} An array of responses
+   * @param code Code to eval
+   * @returns An array of responses
    */
   async broadcastEval (code: string): Promise<any[]> {
     return await this.sendToAll('EVAL', code)
@@ -309,7 +308,7 @@ export class Master extends Emitter<{
 
   /**
    * Gets each clusters stats
-   * @returns {Promise<ClusterStats[]>} Stats
+   * @returns Stats
    */
   async getStats (): Promise<ClusterStats[]> {
     return await this.sendToAll('GET_STATS', null)
@@ -317,8 +316,8 @@ export class Master extends Emitter<{
 
   /**
    * Convert a shard ID into it's containing cluster
-   * @param {number} shardId Shard ID to convert to
-   * @returns {Cluster} The cluster the shard belongs to
+   * @param shardId Shard ID to convert to
+   * @returns The cluster the shard belongs to
    */
   shardToCluster (shardId: number): Cluster {
     for (let i = 0; i < this.chunks.length; i++) {
@@ -329,8 +328,8 @@ export class Master extends Emitter<{
 
   /**
    * Get the shard that has a certain guild
-   * @param {Snowflake} guildId ID of guild
-   * @returns {number} ID of shard
+   * @param guildId ID of guild
+   * @returns ID of shard
    */
   guildToShard (guildId: Snowflake): number {
     return guildShard(guildId, this.options.shards)
@@ -338,8 +337,8 @@ export class Master extends Emitter<{
 
   /**
    * Get a cluster based on the guild that should be cached there
-   * @param {Snowflake} guildId Guild ID
-   * @returns {Cluster} Cluster guild belongs to
+   * @param guildId Guild ID
+   * @returns Cluster guild belongs to
    */
   guildToCluster (guildId: Snowflake): Cluster {
     return this.shardToCluster(this.guildToShard(guildId))

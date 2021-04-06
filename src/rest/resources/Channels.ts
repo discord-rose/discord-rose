@@ -9,7 +9,7 @@ export class ChannelsResource {
 
   /**
    * Gets a channel
-   * @param {Snowflake} channelId ID of channel
+   * @param channelId ID of channel
    */
   async get (channelId: Snowflake): Promise<APIChannel> {
     return await this.rest.request('GET', `/channels/${channelId}`) as APIChannel
@@ -17,8 +17,8 @@ export class ChannelsResource {
 
   /**
    * Edits a channel
-   * @param {Snowflake} channelId ID of channel
-   * @param {*} patch Data to edit with
+   * @param channelId ID of channel
+   * @param patch Data to edit with
    */
   async edit (channelId: Snowflake, patch: RESTPatchAPIChannelJSONBody): Promise<RESTPatchAPIChannelResult> {
     return await this.rest.request('PATCH', `/channels/${channelId}`, {
@@ -28,7 +28,7 @@ export class ChannelsResource {
 
   /**
    * Delete a channel
-   * @param {Snowflake} channelId ID of channel
+   * @param channelId ID of channel
    */
   async delete (channelId: Snowflake): Promise<RESTDeleteAPIChannelResult> {
     return await this.rest.request('DELETE', `/channels/${channelId}`) as RESTDeleteAPIChannelResult
@@ -42,10 +42,10 @@ export class ChannelsResource {
 
   /**
    * Sets permissions for a specific role
-   * @param {Snowflake} channelId ID of channel
-   * @param {Snowflake} roleId Role to set permissions for
-   * @param {number} allow BitWise permissions to allow
-   * @param {number} deny BitWise permissions to deny
+   * @param channelId ID of channel
+   * @param roleId Role to set permissions for
+   * @param allow BitWise permissions to allow
+   * @param deny BitWise permissions to deny
    */
   async setRolePermission (channelId: Snowflake, roleId: Snowflake, allow?: Permissions, deny?: Permissions): Promise<RESTPutAPIChannelPermissionResult> {
     return await this._setPermission(channelId, roleId, {
@@ -57,10 +57,10 @@ export class ChannelsResource {
 
   /**
    * Sets permissions for a specific member
-   * @param {Snowflake} channelId ID of channel
-   * @param {Snowflake} memberId Member to set permissions for
-   * @param {number} allow BitWise permissions to allow
-   * @param {number} deny BitWise permissions to deny
+   * @param channelId ID of channel
+   * @param memberId Member to set permissions for
+   * @param allow BitWise permissions to allow
+   * @param deny BitWise permissions to deny
    */
   async setMemberPermission (channelId: Snowflake, memberId: Snowflake, allow?: Permissions, deny?: Permissions): Promise<RESTPutAPIChannelPermissionResult> {
     return await this._setPermission(channelId, memberId, {
@@ -72,8 +72,8 @@ export class ChannelsResource {
 
   /**
    * Remove permissions for a certain overwrite
-   * @param {Snowflake} channelId ID of channel
-   * @param {Snowflake} overwriteId Member or Role ID
+   * @param channelId ID of channel
+   * @param overwriteId Member or Role ID
    */
   async deletePermission (channelId: Snowflake, overwriteId: Snowflake): Promise<RESTDeleteAPIChannelPermissionResult> {
     return await this.rest.request('DELETE', `/channels/${channelId}/permissions/${overwriteId}`) as RESTDeleteAPIChannelPermissionResult
@@ -81,7 +81,7 @@ export class ChannelsResource {
 
   /**
    * Gets invites in channel
-   * @param {Snowflake} channelId ID of channel
+   * @param channelId ID of channel
    */
   async getInvites (channelId: Snowflake): Promise<RESTGetAPIChannelInvitesResult> {
     return await this.rest.request('GET', `/channels/${channelId}/invites`) as RESTGetAPIChannelInvitesResult
@@ -89,8 +89,8 @@ export class ChannelsResource {
 
   /**
    * Creates an invite for the channel
-   * @param {Snowflake} channelId ID of channel
-   * @param {*} invite Invite settings
+   * @param channelId ID of channel
+   * @param invite Invite settings
    */
   async createInvite (channelId: Snowflake, invite: RESTPostAPIChannelInviteJSONBody = {}): Promise<RESTPostAPIChannelInviteResult> {
     return await this.rest.request('POST', `/channels/${channelId}/invites`, {
@@ -100,7 +100,7 @@ export class ChannelsResource {
 
   /**
    * Gets pins in a channel
-   * @param {Snowflake} channelId ID of channel
+   * @param channelId ID of channel
    */
   async getPins (channelId: Snowflake): Promise<RESTGetAPIChannelPinsResult> {
     return await this.rest.request('GET', `/channels/${channelId}/pins`)
@@ -108,8 +108,8 @@ export class ChannelsResource {
 
   /**
    * Pins a message
-   * @param {Snowflake} channelId ID of channel
-   * @param {Snowflake} messageId ID of message to pin
+   * @param channelId ID of channel
+   * @param messageId ID of message to pin
    */
   async addPin (channelId: Snowflake, messageId: Snowflake): Promise<RESTPutAPIChannelPinResult> {
     return this.rest.request('PUT', `/channels/${channelId}/pins/${messageId}`) as RESTPutAPIChannelPinResult
@@ -117,8 +117,8 @@ export class ChannelsResource {
 
   /**
    * Removes a pin
-   * @param {Snowflake} channelId ID of channel
-   * @param {Snowflake} messageId ID of message to unpin
+   * @param channelId ID of channel
+   * @param messageId ID of message to unpin
    */
   async deletePin (channelId: Snowflake, messageId: Snowflake): Promise<RESTDeleteAPIChannelPinResult> {
     return this.rest.request('DELETE', `/channels/${channelId}/pins/${messageId}`) as RESTDeleteAPIChannelPinResult
@@ -126,7 +126,7 @@ export class ChannelsResource {
 
   /**
    * Starts typing in channel
-   * @param {Snowflake} channelId ID of channel
+   * @param channelId ID of channel
    */
   async typing (channelId: Snowflake): Promise<RESTPostAPIChannelTypingResult> {
     return this.rest.request('POST', `/channels/${channelId}/typing`) as RESTPostAPIChannelTypingResult
@@ -134,8 +134,8 @@ export class ChannelsResource {
 
   /**
    * Gets message from a channel
-   * @param {Snowflake} channelId ID of channel
-   * @param {*} query Query for request
+   * @param channelId ID of channel
+   * @param query Query for request
    */
   async getMessages (channelId: Snowflake, query: RESTGetAPIChannelMessagesQuery): Promise<RESTGetAPIChannelMessagesResult> {
     return await this.rest.request('GET', `/channels/${channelId}/messages`, {

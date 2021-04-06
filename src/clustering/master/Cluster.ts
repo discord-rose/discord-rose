@@ -96,7 +96,7 @@ export class Cluster extends ThreadComms {
 
   /**
    * Restarts a shard
-   * @param {number} id ID of shard to restart
+   * @param id ID of shard to restart
    */
   restartShard (id: number): void {
     this.tell('RESTART_SHARD', { id })
@@ -104,7 +104,7 @@ export class Cluster extends ThreadComms {
 
   /**
    * Gets a guild from the clusters cache
-   * @param {Snowflake} id ID of guild
+   * @param id ID of guild
    */
   async getGuild (id: Snowflake): Promise<APIGuild> {
     return await this.sendCommand('GET_GUILD', { id })
@@ -112,7 +112,7 @@ export class Cluster extends ThreadComms {
 
   /**
    * Evals code on the cluster
-   * @param {string} code Code to eval
+   * @param code Code to eval
    */
   async eval (code: string): Promise<any[]> {
     return await this.sendCommand('EVAL', code)

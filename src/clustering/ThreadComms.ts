@@ -20,19 +20,28 @@ interface ThreadEvent {
   d: any
 }
 
+/**
+ * State of a shard socket
+ */
 export enum State {
   DISCONNECTED = 0,
   CONNECTING,
   CONNECTED
 }
 
-interface ShardStats {
+/**
+ * Stats for a shard
+ */
+export interface ShardStats {
   id: number
   ping: number
   state: State
   guilds: number
 }
 
+/**
+ * Stats for a cluster
+ */
 export interface ClusterStats {
   cluster: {
     memory: number
@@ -191,9 +200,9 @@ export class ThreadComms extends EventEmitter {
 
   /**
    * Sends a command to the master
-   * @param {string} event Event to send
-   * @param {*} data Data to send along
-   * @returns {Promise<*>} Data back
+   * @param event Event to send
+   * @param data Data to send along
+   * @returns Data back
    * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
    */
   public async sendCommand<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): Promise<ThreadEvents[K]['receive']> {
@@ -222,8 +231,8 @@ export class ThreadComms extends EventEmitter {
 
   /**
    * Tells the master something
-   * @param {string} event Event to send
-   * @param {string} data Data to send
+   * @param event Event to send
+   * @param data Data to send
    * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
    */
   public tell<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): void {

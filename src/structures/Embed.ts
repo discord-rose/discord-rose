@@ -9,7 +9,7 @@ export class Embed {
 
   /**
    * Sets the color
-   * @param {number} color Color hex code
+   * @param color Color hex code
    */
   color (color: number): this {
     this.obj.color = color
@@ -19,9 +19,9 @@ export class Embed {
 
   /**
    * Sets author
-   * @param {string} name Name of author
-   * @param {string} icon Author avatar icon
-   * @param {string} url URL anchored to the author name
+   * @param name Name of author
+   * @param icon Author avatar icon
+   * @param url URL anchored to the author name
    */
   author (name?: string, icon?: string, url?: string): this {
     this.obj.author = {
@@ -35,8 +35,8 @@ export class Embed {
 
   /**
    * Sets the title
-   * @param {string} title Title name
-   * @param {string} url URL anchored to title name
+   * @param title Title name
+   * @param url URL anchored to title name
    */
   title (title?: string, url?: string): this {
     if (title) this.obj.title = title
@@ -47,7 +47,7 @@ export class Embed {
 
   /**
    * Sets description
-   * @param {string} desc Description
+   * @param desc Description
    */
   description (desc: string): this {
     this.obj.description = desc
@@ -57,9 +57,9 @@ export class Embed {
 
   /**
    * Adds a field
-   * @param {string} name Fields title
-   * @param {string} value Fields value
-   * @param {boolean} inline Whether the field is inline
+   * @param name Fields title
+   * @param value Fields value
+   * @param inline Whether the field is inline
    */
   field (name: string, value: string, inline?: boolean): this {
     if (!this.obj.fields) this.obj.fields = []
@@ -74,9 +74,9 @@ export class Embed {
 
   /**
    * Sets the thumbnail
-   * @param {string} url URL of thumbnail
-   * @param {number} width Optional fixed width
-   * @param {number} height Optional fixed height
+   * @param url URL of thumbnail
+   * @param width Optional fixed width
+   * @param height Optional fixed height
    */
   thumbnail (url: string, width?: number, height?: number): this {
     this.obj.thumbnail = {
@@ -90,9 +90,9 @@ export class Embed {
 
   /**
    * Sets the image
-   * @param {string} url URL of image
-   * @param {number} width Optional fixed width
-   * @param {number} height Optional fixed height
+   * @param url URL of image
+   * @param width Optional fixed width
+   * @param height Optional fixed height
    */
   image (url: string, width?: number, height?: number): this {
     this.obj.image = {
@@ -106,8 +106,8 @@ export class Embed {
 
   /**
    * Sets the footer
-   * @param {string} text Text for footer
-   * @param {string} icon Small icon on the bottom left
+   * @param text Text for footer
+   * @param icon Small icon on the bottom left
    */
   footer (text?: string, icon?: string): this {
     if (!this.obj.footer) this.obj.footer = { text: '' }
@@ -119,7 +119,7 @@ export class Embed {
 
   /**
    * Sets the timestamp
-   * @param {Date} date Date to set, leave blank for current time
+   * @param date Date to set, leave blank for current time
    */
   timestamp (date: Date = new Date()): this {
     this.obj.timestamp = date.toISOString()
@@ -129,8 +129,8 @@ export class Embed {
 
   /**
    * Sends embed to channel
-   * @param {boolean} reply Whether or not to do so in an inline reply (defaults to true)
-   * @param {boolean} mention Whether or not to mention the user in the reply (defaults to false)
+   * @param reply Whether or not to do so in an inline reply (defaults to true)
+   * @param mention Whether or not to mention the user in the reply (defaults to false)
    */
   async send (reply: boolean = true, mention = false): Promise<APIMessage> {
     if (!this.sendback) throw new Error('No sendback function, so could not run Embed.send()')
@@ -139,7 +139,7 @@ export class Embed {
 
   /**
    * Renders the embed
-   * @returns {APIEmbed}
+   * @returns
    */
   render (): APIEmbed {
     return this.obj

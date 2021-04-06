@@ -62,9 +62,9 @@ export class CommandContext {
 
   /**
    * Replies to the invoking message
-   * @param {MessageTypes} data Data for message
-   * @param {boolean} mention Whether or not to mention the user in the reply (defaults to false)
-   * @returns {Promise<APIMessage>} Message sent
+   * @param data Data for message
+   * @param mention Whether or not to mention the user in the reply (defaults to false)
+   * @returns Message sent
    */
   async reply (data: MessageTypes, mention = false): Promise<APIMessage> {
     if (!mention) {
@@ -82,8 +82,8 @@ export class CommandContext {
 
   /**
    * Sends a message in the same channel as invoking message
-   * @param {MessageTypes} data Data for message
-   * @returns {Promise<APIMessage>} Message sent
+   * @param data Data for message
+   * @returns Message sent
    */
   async send (data: MessageTypes): Promise<APIMessage> {
     return await this.worker.api.messages.send(this.message.channel_id, data)
@@ -91,7 +91,7 @@ export class CommandContext {
 
   /**
    * Runs an error through sendback of commands.error
-   * @param {string} message Message of error
+   * @param message Message of error
    */
   error (message: string): void {
     const error = new CommandError(message)
@@ -103,7 +103,7 @@ export class CommandContext {
 
   /**
    * Sends a message to the user who ran the command
-   * @param {MessageTypes} data Data for message
+   * @param data Data for message
    */
   async dm (data: MessageTypes): Promise<APIMessage> {
     return await this.worker.api.users.dm(this.message.author.id, data)
@@ -111,9 +111,9 @@ export class CommandContext {
 
   /**
    * Sends a file to the same channel
-   * @param {Buffer} file File buffer
-   * @param {MessageTypes} extra Extra message options
-   * @returns {Promise<APIMessage>}
+   * @param file File buffer
+   * @param extra Extra message options
+   * @returns
    */
   async sendFile (file: { name: string, buffer: Buffer }, extra?: MessageTypes): Promise<APIMessage> {
     return await this.worker.api.messages.sendFile(this.message.channel_id, file, extra)
@@ -150,8 +150,8 @@ export class CommandContext {
 
   /**
    * Whether or not the running user has a certain permission
-   * @param {PermissionName} perms Permission to test
-   * @returns {boolean}
+   * @param perms Permission to test
+   * @returns
    */
   hasPerms (perms: keyof typeof bits): boolean {
     if (!this.guild) throw new Error()
@@ -160,8 +160,8 @@ export class CommandContext {
 
   /**
    * Whether or not the bot user has a certain permission
-   * @param {PermissionName} perms Permission to test
-   * @returns {boolean}
+   * @param perms Permission to test
+   * @returns
    */
   myPerms (perms: keyof typeof bits): boolean {
     if (!this.guild) throw new Error()
