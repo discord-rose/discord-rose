@@ -7,7 +7,6 @@ jobs:
   Build:
     name: Publish Build
     runs-on: ubuntu-latest
-    needs: pre_ci
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
@@ -51,7 +50,6 @@ jobs:
   Docgen:
     name: Docgen
     runs-on: ubuntu-latest
-    needs: pre_ci
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
