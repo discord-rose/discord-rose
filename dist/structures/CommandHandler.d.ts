@@ -89,7 +89,7 @@ export declare class CommandHandler {
     get findCommand(): (command: string) => CommandOptions | undefined;
     private _exec;
 }
-interface CommandHandlerOptions {
+export interface CommandHandlerOptions {
     /**
      * Default CommandOptions ('command', 'exec', and 'aliases' cannot be defaulted)
      */
