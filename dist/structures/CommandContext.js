@@ -9,6 +9,14 @@ const CommandHandler_1 = require("./CommandHandler");
  * Context holding all information about a ran command and utility functions
  */
 class CommandContext {
+    /**
+     * Command Context
+     * @param worker Worker
+     * @param message Message object
+     * @param command Command object
+     * @param prefix Prefix that the command was ran via
+     * @param ran The actual ran command including aliases
+     */
     constructor(worker, message, command, prefix, ran) {
         this.worker = worker;
         this.message = message;

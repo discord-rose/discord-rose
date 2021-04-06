@@ -16,4 +16,6 @@ export * from './structures/Embed';
 export * from './structures/CommandHandler';
 export * from './structures/CommandContext';
 export { PermissionsUtils } from './utils/Permissions';
-export { CommandOptions } from './typings/lib';
+export { CommandOptions, CommandType } from './typings/lib';
+export * from './typings/Discord';
+export { Snowflake } from 'discord-api-types';

@@ -34,9 +34,9 @@ export declare class MembersResource {
     setNickname(guildId: Snowflake, memberId?: Snowflake | '@me', nick?: string): Promise<RESTPatchAPICurrentGuildMemberNicknameResult>;
     /**
      * Adds a role to member
-     * @param {Snowflake} guildId ID of guild
-     * @param {Snowflake} memberId ID of member
-     * @param {Snowflake} roleId ID of role to add
+     * @param guildId ID of guild
+     * @param memberId ID of member
+     * @param roleId ID of role to add
      */
     addRole(guildId: Snowflake, memberId: Snowflake, roleId: Snowflake): Promise<never>;
     /**

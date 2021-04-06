@@ -30,3 +30,4 @@ __exportStar(require("./structures/CommandHandler"), exports);
 __exportStar(require("./structures/CommandContext"), exports);
 var Permissions_1 = require("./utils/Permissions");
 Object.defineProperty(exports, "PermissionsUtils", { enumerable: true, get: function () { return Permissions_1.PermissionsUtils; } });
+__exportStar(require("./typings/Discord"), exports);
