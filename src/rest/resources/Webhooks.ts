@@ -2,6 +2,9 @@ import { APIMessage, RESTGetAPIWebhookResult, RESTPostAPIChannelWebhookJSONBody,
 import { RestManager } from '../Manager'
 import { MessageTypes, MessagesResource } from './Messages'
 
+/**
+ * Webhook resource
+ */
 export class WebhooksResource {
   constructor (private readonly rest: RestManager) {}
 

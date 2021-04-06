@@ -3,6 +3,9 @@ import { Cache } from '@jpbberry/cache'
 import { RestManager } from '../Manager'
 import { MessageTypes } from './Messages'
 
+/**
+ * Users resource
+ */
 export class UsersResource {
   public dmCache: Cache<Snowflake, RESTPostAPICurrentUserCreateDMChannelResult> = new Cache(60e3)
   constructor (private readonly rest: RestManager) {}

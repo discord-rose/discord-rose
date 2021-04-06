@@ -11,6 +11,9 @@ type Emoji = string
 
 export type MessageTypes = RESTPostAPIChannelMessageJSONBody | RESTPostAPIWebhookWithTokenJSONBody | string | Embed
 
+/**
+ * Message resource
+ */
 export class MessagesResource {
   constructor (private readonly rest: RestManager) {}
 

@@ -3,6 +3,9 @@ import { wait } from '../utils/UtilityFunctions'
 
 import { RestError } from './Error'
 
+/**
+ * In charge of handling rest RateLimits
+ */
 export class Bucket {
   public working: Boolean
   public remaining: number

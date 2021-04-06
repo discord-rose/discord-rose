@@ -1,11 +1,21 @@
+/**
+ * An error in a Discord request
+ * @extends {Error}
+ */
 export class RestError extends Error {
   /**
    * Status code for error
+   * @type {number}
    */
   public status: number
+
+  /**
+   * Error code
+   * @type {number}
+   */
   public code: number
 
-  name = 'DiscordAPIError'
+  public name = 'DiscordAPIError'
 
   constructor (response: any) {
     super()

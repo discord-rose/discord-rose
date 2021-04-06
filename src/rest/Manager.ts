@@ -13,6 +13,9 @@ import { UsersResource } from './resources/Users'
 import { MiscResource } from './resources/Misc'
 import { WebhooksResource } from './resources/Webhooks'
 
+/**
+ * The base rest handler for all things Discord rest
+ */
 export class RestManager {
   public buckets: Cache<string, Bucket> = new Cache(60000)
   public global: Promise<true> | null = null

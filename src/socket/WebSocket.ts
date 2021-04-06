@@ -4,6 +4,9 @@ import { Emitter } from '../utils/Emitter'
 import { GatewayDispatchEvents, GatewayDispatchPayload, GatewayHelloData, GatewayOPCodes, GatewaySendPayload } from 'discord-api-types'
 import { DiscordDefaultEventMap } from '../typings/Discord'
 
+/**
+ * Structure in charge of managing Discord communcation over websocket
+ */
 export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' | 'GUILD_CREATE'>> {
   private connectTimeout?: NodeJS.Timeout
   private sequence: number | null = null

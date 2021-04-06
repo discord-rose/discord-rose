@@ -45,22 +45,63 @@ export class Master extends Emitter<{
   CLUSTER_STARTED: Cluster
   CLUSTER_STOPPED: Cluster
 }> {
+  /**
+   * Options
+   * @type {BotOptions}
+   */
   public options: CompleteBotOptions
+  /**
+   * Rest Manager (only set after running .start())
+   * @type {RestManager}
+   */
   public rest = {} as RestManager
+
+  /**
+   * Handler emitter
+   * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
+   */
   public handlers = new EventEmitter() as {
     on: <K extends keyof ThreadEvents>(event: K, listener: (cluster: Cluster, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => any
 
     emit: <K extends keyof ThreadEvents>(event: K, cluster: Cluster, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => boolean
   }
 
+  /**
+   * Sharding manager for handling shard ratelimits
+   * @type {Sharder}
+   */
   public sharder = new Sharder(this)
+  /**
+   * Chunked Numbers for shards / cluster
+   * @type {number[][]}
+   */
   public chunks: number[][] = [[]]
+  /**
+   * Process list (including custom processes)
+   * @type {Collection<string, Cluster>}
+   */
   public processes: Collection<string, Cluster> = new Collection()
+  /**
+   * File name to spawn with
+   * @type {string}
+   */
   public fileName: string
+  /**
+   * Whether or not the master has been spawned
+   * @type {boolean}
+   */
   public spawned: boolean = false
 
+  /**
+   * Session data (Set after .start())
+   * @type {APIGatewaySessionStartLimit}
+   */
   public session: APIGatewaySessionStartLimit
 
+  /**
+   * Log function
+   * @type {Function}
+   */
   public log: (msg: string, cluster?: Cluster) => void
 
   private readonly _clusterNames = [] as string[]
@@ -68,8 +109,8 @@ export class Master extends Emitter<{
 
   /**
    * Creates a new Master instance
-   * @param fileName Location of Worker file
-   * @param options Options
+   * @param {string} fileName Location of Worker file
+   * @param {BotOptions} options Options
    */
   constructor (fileName: string, options: BotOptions) {
     super()
@@ -159,14 +200,19 @@ export class Master extends Emitter<{
     }
   }
 
+  /**
+   * Get all Discord Bot clusters (discludes custom processes)
+   * @type {Collection<string, Cluster>}
+   */
   get clusters (): Collection<string, Cluster> {
     return this.processes.filter(x => !x.custom)
   }
 
   /**
    * Spawns a custom process
-   * @param name Name of the process (especially for logging)
-   * @param fileName Direct path for process
+   * @param {string} name Name of the process (especially for logging)
+   * @param {string} fileName Direct path for process
+   * @returns {Cluster} The new Cluster thread created
    */
   spawnProcess (name: string, fileName: string): Cluster {
     if (this.processes.has(name)) throw new Error(`Process ${name} is already spawned`)
@@ -182,6 +228,7 @@ export class Master extends Emitter<{
 
   /**
    * Starts the bot and spawns workers
+   * @returns {Promise<void>}
    */
   async start (): Promise<void> {
     const timeStart = Date.now()
@@ -230,9 +277,10 @@ export class Master extends Emitter<{
 
   /**
    * Sends an event to all clusters
-   * @param event Event name
-   * @param data Event data
-   * @param all Whether or not to send to all processes, including custom ones
+   * @param {string} event Event name
+   * @param {any} data Event data
+   * @param {boolean} all Whether or not to send to all processes, including custom ones
+   * @returns {Promise<any[]>} The data sent back
    */
   async sendToAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], all: boolean = false): Promise<Array<ThreadEvents[K]['receive']>> {
     return await Promise.all(this[all ? 'processes' : 'clusters'].map(async x => await x.sendCommand(event, data)))
@@ -240,9 +288,10 @@ export class Master extends Emitter<{
 
   /**
    * Sends a TELL event to all clusters
-   * @param event Event name
-   * @param data Event data
-   * @param all Whether or not to send to all processes, including custom ones
+   * @param {string} event Event name
+   * @param {any} data Event data
+   * @param {boolean} all Whether or not to send to all processes, including custom ones
+   * @returns {void} Nothing
    */
   tellAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], all: boolean = false): any[] {
     return this[all ? 'processes' : 'clusters'].map(x => x.tell(event, data))
@@ -250,7 +299,8 @@ export class Master extends Emitter<{
 
   /**
    * Evals code on every cluster
-   * @param code Code to eval
+   * @param {string} code Code to eval
+   * @returns {Promise<any[]>} An array of responses
    */
   async broadcastEval (code: string): Promise<any[]> {
     return await this.sendToAll('EVAL', code)
@@ -258,11 +308,17 @@ export class Master extends Emitter<{
 
   /**
    * Gets each clusters stats
+   * @returns {Promise<ClusterStats[]>} Stats
    */
   async getStats (): Promise<ClusterStats[]> {
     return await this.sendToAll('GET_STATS', null)
   }
 
+  /**
+   * Convert a shard ID into it's containing cluster
+   * @param {number} shardId Shard ID to convert to
+   * @returns {Cluster} The cluster the shard belongs to
+   */
   shardToCluster (shardId: number): Cluster {
     for (let i = 0; i < this.chunks.length; i++) {
       if (this.chunks[i].includes(shardId)) return this.clusters.get(`${i}`) as Cluster
@@ -270,10 +326,20 @@ export class Master extends Emitter<{
     throw new Error('Doesn\'t have a cluster')
   }
 
+  /**
+   * Get the shard that has a certain guild
+   * @param {Snowflake} guildId ID of guild
+   * @returns {number} ID of shard
+   */
   guildToShard (guildId: Snowflake): number {
     return guildShard(guildId, this.options.shards)
   }
 
+  /**
+   * Get a cluster based on the guild that should be cached there
+   * @param {Snowflake} guildId Guild ID
+   * @returns {Cluster} Cluster guild belongs to
+   */
   guildToCluster (guildId: Snowflake): Cluster {
     return this.shardToCluster(this.guildToShard(guildId))
   }

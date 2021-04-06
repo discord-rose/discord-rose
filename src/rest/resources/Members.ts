@@ -1,6 +1,9 @@
 import { RESTGetAPIGuildMemberResult, RESTGetAPIGuildMembersSearchQuery, RESTGetAPIGuildMembersSearchResult, RESTPatchAPICurrentGuildMemberNicknameResult, RESTPatchAPIGuildMemberJSONBody, RESTPatchAPIGuildMemberResult, RESTPutAPIGuildBanJSONBody, Snowflake } from 'discord-api-types'
 import { RestManager } from '../Manager'
 
+/**
+ * Members resource
+ */
 export class MembersResource {
   constructor (private readonly rest: RestManager) {}
 

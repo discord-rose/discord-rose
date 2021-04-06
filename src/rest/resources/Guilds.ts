@@ -1,6 +1,9 @@
 import { RESTGetAPIGuildQuery, RESTGetAPIGuildRolesResult, RESTPatchAPIGuildJSONBody, RESTPatchAPIGuildRoleJSONBody, RESTPatchAPIGuildRoleResult, RESTPostAPIGuildRoleJSONBody, RESTPostAPIGuildRoleResult, Snowflake } from 'discord-api-types'
 import { RestManager } from '../Manager'
 
+/**
+ * Guilds resource
+ */
 export class GuildsResource {
   constructor (private readonly rest: RestManager) {}
 

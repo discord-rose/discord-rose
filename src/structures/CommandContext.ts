@@ -10,6 +10,9 @@ import Collection from '@discordjs/collection'
 import { CachedGuild } from '../typings/Discord'
 import { CommandError } from './CommandHandler'
 
+/**
+ * Context holding all information about a ran command and utility functions
+ */
 export class CommandContext {
   public args: string[] = []
 
@@ -17,6 +20,7 @@ export class CommandContext {
 
   /**
    * Guild where the message was sent
+   * @type {CachedGuild}
    */
   get guild (): CachedGuild | undefined {
     return this.worker.guilds.get(this.message.guild_id as Snowflake)
@@ -24,6 +28,7 @@ export class CommandContext {
 
   /**
    * Channel where the message was sent
+   * @type {APIChannel}
    */
   get channel (): APIChannel | undefined {
     return this.worker.channels.get(this.message.channel_id)
@@ -31,6 +36,7 @@ export class CommandContext {
 
   /**
    * Member who sent the message
+   * @type {APIGuildMember}
    */
   get member (): APIGuildMember {
     const mem = Object.assign({ user: this.message.author }, this.message.member)
@@ -40,6 +46,7 @@ export class CommandContext {
 
   /**
    * Bot's memeber within the guild
+   * @type {APIGuildMember}
    */
   get me (): APIGuildMember {
     return this.worker.selfMember.get(this.message.guild_id as Snowflake) as APIGuildMember
@@ -47,8 +54,9 @@ export class CommandContext {
 
   /**
    * Replies to the invoking message
-   * @param data Data for message
-   * @param mention Whether or not to mention the user in the reply (defaults to false)
+   * @param {MessageTypes} data Data for message
+   * @param {boolean} mention Whether or not to mention the user in the reply (defaults to false)
+   * @returns {Promise<APIMessage>} Message sent
    */
   async reply (data: MessageTypes, mention = false): Promise<APIMessage> {
     if (!mention) {
@@ -66,7 +74,8 @@ export class CommandContext {
 
   /**
    * Sends a message in the same channel as invoking message
-   * @param data Data for message
+   * @param {MessageTypes} data Data for message
+   * @returns {Promise<APIMessage>} Message sent
    */
   async send (data: MessageTypes): Promise<APIMessage> {
     return await this.worker.api.messages.send(this.message.channel_id, data)
@@ -74,7 +83,7 @@ export class CommandContext {
 
   /**
    * Runs an error through sendback of commands.error
-   * @param message Message of error
+   * @param {string} message Message of error
    */
   error (message: string): void {
     const error = new CommandError(message)
@@ -86,7 +95,7 @@ export class CommandContext {
 
   /**
    * Sends a message to the user who ran the command
-   * @param data Data for message
+   * @param {MessageTypes} data Data for message
    */
   async dm (data: MessageTypes): Promise<APIMessage> {
     return await this.worker.api.users.dm(this.message.author.id, data)
@@ -94,8 +103,9 @@ export class CommandContext {
 
   /**
    * Sends a file to the same channel
-   * @param file File buffer
-   * @param extra Extra message options
+   * @param {Buffer} file File buffer
+   * @param {MessageTypes} extra Extra message options
+   * @returns {Promise<APIMessage>}
    */
   async sendFile (file: { name: string, buffer: Buffer }, extra?: MessageTypes): Promise<APIMessage> {
     return await this.worker.api.messages.sendFile(this.message.channel_id, file, extra)
@@ -117,6 +127,7 @@ export class CommandContext {
 
   /**
    * Makes an embed to send
+   * @type {Embed}
    * @example
    * ctx.embed
    *   .title('Hello')
@@ -129,11 +140,21 @@ export class CommandContext {
     })
   }
 
+  /**
+   * Whether or not the running user has a certain permission
+   * @param {PermissionName} perms Permission to test
+   * @returns {boolean}
+   */
   hasPerms (perms: keyof typeof bits): boolean {
     if (!this.guild) throw new Error()
     return PermissionsUtils.calculate(this.member, this.guild, this.worker.guildRoles.get(this.guild.id) as Collection<any, APIRole>, perms)
   }
 
+  /**
+   * Whether or not the bot user has a certain permission
+   * @param {PermissionName} perms Permission to test
+   * @returns {boolean}
+   */
   myPerms (perms: keyof typeof bits): boolean {
     if (!this.guild) throw new Error()
     return PermissionsUtils.calculate(this.me, this.guild, this.worker.guildRoles.get(this.guild.id) as Collection<any, APIRole>, perms)
