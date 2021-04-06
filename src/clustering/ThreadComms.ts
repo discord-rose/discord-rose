@@ -133,10 +133,17 @@ export interface ThreadEvents {
 
 export type ResolveFunction<K extends keyof ThreadEvents> = ThreadEvents[K]['receive'] extends null ? null : (data: ThreadEvents[K]['receive'] | { error: string }) => void
 
+/**
+ * Middleman between all thread communications
+ */
 export class ThreadComms extends EventEmitter {
   private comms?: Worker | MessagePort | null = null
   private readonly commands: Collection<string, (value?: any) => void> = new Collection()
 
+  /**
+   * @type {function}
+   * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
+   */
   on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => this = this.on
 
   emit<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>): boolean {
@@ -182,6 +189,13 @@ export class ThreadComms extends EventEmitter {
     })
   }
 
+  /**
+   * Sends a command to the master
+   * @param {string} event Event to send
+   * @param {*} data Data to send along
+   * @returns {Promise<*>} Data back
+   * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
+   */
   public async sendCommand<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): Promise<ThreadEvents[K]['receive']> {
     return await new Promise((resolve, reject) => {
       const id = generateID(this.commands.keyArray())
@@ -206,6 +220,12 @@ export class ThreadComms extends EventEmitter {
     this._send(ThreadMethod.RESPONSE, null, id, data)
   }
 
+  /**
+   * Tells the master something
+   * @param {string} event Event to send
+   * @param {string} data Data to send
+   * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
+   */
   public tell<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): void {
     this._send(ThreadMethod.TELL, event, null, data)
   }

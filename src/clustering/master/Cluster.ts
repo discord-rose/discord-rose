@@ -3,10 +3,22 @@ import { Worker } from 'worker_threads'
 import { ThreadComms } from '../ThreadComms'
 import { APIGuild, Snowflake } from 'discord-api-types'
 
+/**
+ * Cluster utility for working with the thread from the master process
+ */
 export class Cluster extends ThreadComms {
   private thread?: Worker
-  private started = false
 
+  /**
+   * Whether or not the Cluster has started before
+   * @type {boolean}
+   */
+  public started = false
+
+  /**
+   * Whether or not the Cluster shouldn't restart
+   * @type {boolean}
+   */
   public dying = false
 
   constructor (public id: string, public master: Master, public fileName = master.fileName, public custom: boolean = false) {
@@ -84,7 +96,7 @@ export class Cluster extends ThreadComms {
 
   /**
    * Restarts a shard
-   * @param id ID of shard to restart
+   * @param {number} id ID of shard to restart
    */
   restartShard (id: number): void {
     this.tell('RESTART_SHARD', { id })
@@ -92,7 +104,7 @@ export class Cluster extends ThreadComms {
 
   /**
    * Gets a guild from the clusters cache
-   * @param id ID of guild
+   * @param {Snowflake} id ID of guild
    */
   async getGuild (id: Snowflake): Promise<APIGuild> {
     return await this.sendCommand('GET_GUILD', { id })
@@ -100,7 +112,7 @@ export class Cluster extends ThreadComms {
 
   /**
    * Evals code on the cluster
-   * @param code Code to eval
+   * @param {string} code Code to eval
    */
   async eval (code: string): Promise<any[]> {
     return await this.sendCommand('EVAL', code)

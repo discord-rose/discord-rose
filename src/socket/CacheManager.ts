@@ -24,6 +24,9 @@ const createNulledCollection = (cache: string): Collection<any, any> => {
   }) as unknown as Collection<any, any>
 }
 
+/**
+ * Utility for managing and ruling cache and it's subsequent control
+ */
 export class CacheManager extends Emitter<DiscordEventMap> {
   constructor (private readonly worker: Worker) {
     super()

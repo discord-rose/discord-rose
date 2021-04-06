@@ -9,6 +9,9 @@ import { inspect } from 'util'
 
 import { handlers } from './handlers'
 
+/**
+ * Thread interface for interacting with the master process from a worker
+ */
 export class Thread extends ThreadComms {
   public id: string = workerData.id
 
@@ -40,7 +43,7 @@ export class Thread extends ThreadComms {
 
   /**
    * Logs data to master's MasterOptions.log
-   * @param message Message args
+   * @param {string} message Message args
    */
   log (...messages: any[]): void {
     this.tell('LOG', messages.map(m => typeof m === 'string' ? m : inspect(m)).join(' '))
@@ -48,15 +51,15 @@ export class Thread extends ThreadComms {
 
   /**
    * Restarts a specific cluster
-   * @param clusterId ID of cluster
+   * @param {string} clusterId ID of cluster
    */
-  async restartCluster (clusterId: any): Promise<null> {
+  async restartCluster (clusterId: string): Promise<null> {
     return await this.sendCommand('RESTART_CLUSTER', { id: clusterId })
   }
 
   /**
    * Restarts a specific shard
-   * @param shardId ID of shard
+   * @param {number} shardId ID of shard
    */
   restartShard (shardId: any): void {
     return this.tell('RESTART_SHARD', { id: shardId })
@@ -64,7 +67,8 @@ export class Thread extends ThreadComms {
 
   /**
    * Gets a cached guild across clusters
-   * @param guildId ID of guild
+   * @param {Snowflake} guildId ID of guild
+   * @returns {Promise<APIGuild>} The guild
    */
   async getGuild (guildId: Snowflake): Promise<APIGuild> {
     return await this.sendCommand('GET_GUILD', { id: guildId })
@@ -72,7 +76,8 @@ export class Thread extends ThreadComms {
 
   /**
    * Eval code on every cluster
-   * @param code Code to eval
+   * @param {string} code Code to eval
+   * @returns {Promise<any[]>} Response
    */
   async broadcastEval (code: string): Promise<any[]> {
     return await this.sendCommand('BROADCAST_EVAL', code)
@@ -80,7 +85,8 @@ export class Thread extends ThreadComms {
 
   /**
    * Evals code on the master process
-   * @param code Code to eval
+   * @param {string} code Code to eval
+   * @returns {Promise<*>} Response
    */
   async masterEval (code: string): Promise<any> {
     return await this.sendCommand('MASTER_EVAL', code)
@@ -88,9 +94,10 @@ export class Thread extends ThreadComms {
 
   /**
    * Sends a webhook using the master process, useful for respecting ratelimits
-   * @param webhookId ID of webhook
-   * @param token Token of webhook
-   * @param data Data for message
+   * @param {Snowflake} webhookId ID of webhook
+   * @param {string} token Token of webhook
+   * @param {MessageTypes} data Data for message
+   * @returns {Promies<APIMessage>} Message sent
    */
   async sendWebhook (webhookId: Snowflake, token: string, data: MessageTypes): Promise<APIMessage> {
     return await this.sendCommand('SEND_WEBHOOK', { id: webhookId, token, data: MessagesResource._formMessage(data, true) })
@@ -98,6 +105,7 @@ export class Thread extends ThreadComms {
 
   /**
    * Gets an array of each clusters stats
+   * @returns {Promise<ClusterStats[]>} Stats
    */
   async getStats (): Promise<ClusterStats[]> {
     return await this.sendCommand('STATS', null)

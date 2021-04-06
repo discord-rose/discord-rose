@@ -13,16 +13,47 @@ import { UsersResource } from './resources/Users'
 import { MiscResource } from './resources/Misc'
 import { WebhooksResource } from './resources/Webhooks'
 
+/**
+ * The base rest handler for all things Discord rest
+ */
 export class RestManager {
   public buckets: Cache<string, Bucket> = new Cache(60000)
   public global: Promise<true> | null = null
 
+  /**
+   * Channel resource
+   * @type {ChannelsResource}
+   */
   public channels = new ChannelsResource(this)
+  /**
+   * Messages resource
+   * @type {MessagesResource}
+   */
   public messages = new MessagesResource(this)
+  /**
+   * Guilds resource
+   * @type {GuildsResource}
+   */
   public guilds = new GuildsResource(this)
+  /**
+   * Members resource
+   * @type {MembersResource}
+   */
   public members = new MembersResource(this)
+  /**
+   * Users resource
+   * @type {UsersResource}
+   */
   public users = new UsersResource(this)
+  /**
+   * Misc resource
+   * @type {MiscResource}
+   */
   public misc = new MiscResource(this)
+  /**
+   * Webhooks resource
+   * @type {WebhooksResource}
+   */
   public webhooks = new WebhooksResource(this)
 
   constructor (private readonly token: string) {}
@@ -40,6 +71,12 @@ export class RestManager {
     return bucket.join('-')
   }
 
+  /**
+   * Make a custom request
+   * @param {string} method Method
+   * @param {string} route Route, e.g "/users/123"
+   * @param {RequestOptions} options Other options
+   */
   public async request (method: Methods, route: string, options: RequestOptions = {}): Promise<any> {
     return await new Promise((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
       const key = this._key(route)
@@ -90,6 +127,9 @@ export class RestManager {
 
 type Methods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
+/**
+ * Request options
+ */
 interface RequestOptions {
   headers?: {
     [key: string]: string

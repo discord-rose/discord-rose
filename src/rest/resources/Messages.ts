@@ -11,6 +11,9 @@ type Emoji = string
 
 export type MessageTypes = RESTPostAPIChannelMessageJSONBody | RESTPostAPIWebhookWithTokenJSONBody | string | Embed
 
+/**
+ * Message resource
+ */
 export class MessagesResource {
   constructor (private readonly rest: RestManager) {}
 
@@ -35,8 +38,8 @@ export class MessagesResource {
 
   /**
    * Sends a message to a channel
-   * @param channelId ID of channel
-   * @param data Message data
+   * @param {Snowflake} channelId ID of channel
+   * @param {*} data Message data
    */
   async send (channelId: Snowflake, data: MessageTypes, reply?: APIMessageReferenceSend): Promise<RESTPostAPIChannelMessageResult> {
     const msg = MessagesResource._formMessage(data) as RESTPostAPIChannelMessageJSONBody
@@ -49,9 +52,9 @@ export class MessagesResource {
 
   /**
    * Sends a file to a channel
-   * @param channelId ID of channel
-   * @param data File Buffer
-   * @param extra Extra message data
+   * @param {Snowflake} channelId ID of channel
+   * @param {*} data File Buffer and name
+   * @param {*} extra Extra message data
    */
   async sendFile (channelId: Snowflake, data: { name: string, buffer: Buffer }, extra?: MessageTypes): Promise<RESTPostAPIChannelMessageResult> {
     const formData = new FormData()
@@ -67,8 +70,8 @@ export class MessagesResource {
 
   /**
    * Gets a message
-   * @param channelId ID of channel
-   * @param messageId ID of message
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake} messageId ID of message
    */
   async get (channelId: Snowflake, messageId: Snowflake): Promise<RESTGetAPIChannelMessageResult> {
     return await this.rest.request('GET', `/channels/${channelId}/messages/${messageId}`)
@@ -76,8 +79,8 @@ export class MessagesResource {
 
   /**
    * Deletes a message
-   * @param channelId ID of channel
-   * @param messageId ID of message
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake} messageId ID of message
    */
   async delete (channelId: Snowflake, messageId: Snowflake): Promise<never> {
     return this.rest.request('DELETE', `/channels/${channelId}/messages/${messageId}`) as never
@@ -85,8 +88,8 @@ export class MessagesResource {
 
   /**
    * Deletes multiple messages
-   * @param channelId ID of channel
-   * @param messageIds ID of message
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake[]} messageIds ID of messages
    */
   async bulkDelete (channelId: Snowflake, messageIds: Snowflake[]): Promise<never> {
     if (messageIds.length < 2) return await this.delete(channelId, messageIds[0])
@@ -100,9 +103,9 @@ export class MessagesResource {
 
   /**
    * Edits a message
-   * @param channelId ID of channel
-   * @param messageId ID of message
-   * @param data New message data
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake} messageId ID of message
+   * @param {*} data New message data
    */
   async edit (channelId: Snowflake, messageId: Snowflake, data: MessageTypes): Promise<RESTPatchAPIChannelMessageResult> {
     return await this.rest.request('PATCH', `/channels/${channelId}/messages/${messageId}`, {
@@ -112,8 +115,8 @@ export class MessagesResource {
 
   /**
    * Publishes a message in a news channel
-   * @param channelId ID of channel
-   * @param messageId ID of message
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake} messageId ID of message
    */
   async crosspost (channelId: Snowflake, messageId: Snowflake): Promise<RESTPostAPIChannelMessageCrosspostResult> {
     return await this.rest.request('POST', `/channels/${channelId}/messages/${messageId}/crosspost`)
@@ -126,10 +129,10 @@ export class MessagesResource {
 
   /**
    * Gets users who've reacted with a specific emoji
-   * @param channelId ID of channel
-   * @param messageId ID of message
-   * @param emoji ID or unicode for emoji
-   * @param query Query for fetching
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake} messageId ID of message
+   * @param {Snowflake|string} emoji ID or unicode for emoji
+   * @param {*} query Query for fetching
    */
   async getReactions (channelId: Snowflake, messageId: Snowflake, emoji: Emoji, query?: RESTGetAPIChannelMessageReactionUsersQuery): Promise<RESTGetAPIChannelMessageReactionUsersResult> {
     return await this.rest.request('GET', `/channels/${channelId}/messages/${messageId}/reactions/${this._parseEmoji(emoji)}`, {
@@ -139,9 +142,9 @@ export class MessagesResource {
 
   /**
    * Adds a reaction to a message
-   * @param channelId ID of channel
-   * @param messageId ID of message
-   * @param emoji ID or unicode for emoji
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake} messageId ID of message
+   * @param {Snowflake|string} emoji ID or unicode for emoji
    */
   async react (channelId: Snowflake, messageId: Snowflake, emoji: Emoji): Promise<RESTPutAPIChannelMessageReactionResult> {
     return this.rest.request('PUT', `/channels/${channelId}/messages/${messageId}/reactions/${this._parseEmoji(emoji)}/@me`) as RESTPutAPIChannelMessageReactionResult
@@ -149,10 +152,10 @@ export class MessagesResource {
 
   /**
    * Removes one reaction for a specific user
-   * @param chachannelIdnnel ID of channel
-   * @param messageId ID of message
-   * @param emoji ID or unicode for emoji
-   * @param user Users or leave blank to remove your own
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake} messageId ID of message
+   * @param {Snowflake|string} emoji ID or unicode for emoji
+   * @param {Snowflake} user Users or leave blank to remove your own
    */
   async deleteReaction (channelId: Snowflake, messageId: Snowflake, emoji: Emoji, user: Snowflake | '@me' = '@me'): Promise<never> {
     return this.rest.request('DELETE', `/channels/${channelId}/messages/${messageId}/reactions/${this._parseEmoji(emoji)}/${user}`) as never
@@ -160,9 +163,9 @@ export class MessagesResource {
 
   /**
    * Deletes multiple reactions from a message
-   * @param channelId ID of channel
-   * @param messageId ID of message
-   * @param emoji Emoji ID or unicode, or leave blank to remove all reactions
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake} messageId ID of message
+   * @param {Snowflake|string|null} emoji Emoji ID or unicode, or leave blank to remove all reactions
    */
   async deleteAllReactions (channelId: Snowflake, messageId: Snowflake, emoji?: Emoji): Promise<never> {
     return this.rest.request('DELETE', `/channels/${channelId}/messages/${messageId}/reactions${emoji ? `/${this._parseEmoji(emoji)}` : ''}`) as never

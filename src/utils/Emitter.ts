@@ -4,6 +4,9 @@ interface MapType {
   [key: string]: any
 }
 
+/**
+ * EventEmitter but with mapped typings
+ */
 export class Emitter<MAP extends MapType> extends EventEmitter {
   on: <K extends keyof MAP>(event: K | symbol, listener?: (data: MAP[K]) => void) => this
 

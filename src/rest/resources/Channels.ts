@@ -1,12 +1,15 @@
 import { APIChannel, OverwriteType, Permissions, RESTDeleteAPIChannelPermissionResult, RESTDeleteAPIChannelPinResult, RESTDeleteAPIChannelResult, RESTGetAPIChannelInvitesResult, RESTGetAPIChannelMessagesQuery, RESTGetAPIChannelMessagesResult, RESTGetAPIChannelPinsResult, RESTPatchAPIChannelJSONBody, RESTPatchAPIChannelResult, RESTPostAPIChannelInviteJSONBody, RESTPostAPIChannelInviteResult, RESTPostAPIChannelTypingResult, RESTPutAPIChannelPermissionJSONBody, RESTPutAPIChannelPermissionResult, RESTPutAPIChannelPinResult, Snowflake } from 'discord-api-types'
 import { RestManager } from '../Manager'
 
+/**
+ * Channels resource
+ */
 export class ChannelsResource {
   constructor (private readonly rest: RestManager) {}
 
   /**
    * Gets a channel
-   * @param channelId ID of channel
+   * @param {Snowflake} channelId ID of channel
    */
   async get (channelId: Snowflake): Promise<APIChannel> {
     return await this.rest.request('GET', `/channels/${channelId}`) as APIChannel
@@ -14,8 +17,8 @@ export class ChannelsResource {
 
   /**
    * Edits a channel
-   * @param channelId ID of channel
-   * @param patch Data to edit with
+   * @param {Snowflake} channelId ID of channel
+   * @param {*} patch Data to edit with
    */
   async edit (channelId: Snowflake, patch: RESTPatchAPIChannelJSONBody): Promise<RESTPatchAPIChannelResult> {
     return await this.rest.request('PATCH', `/channels/${channelId}`, {
@@ -25,7 +28,7 @@ export class ChannelsResource {
 
   /**
    * Delete a channel
-   * @param channelId ID of channel
+   * @param {Snowflake} channelId ID of channel
    */
   async delete (channelId: Snowflake): Promise<RESTDeleteAPIChannelResult> {
     return await this.rest.request('DELETE', `/channels/${channelId}`) as RESTDeleteAPIChannelResult
@@ -39,10 +42,10 @@ export class ChannelsResource {
 
   /**
    * Sets permissions for a specific role
-   * @param channelId ID of channel
-   * @param roleId Role to set permissions for
-   * @param allow BitWise permissions to allow
-   * @param deny BitWise permissions to deny
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake} roleId Role to set permissions for
+   * @param {number} allow BitWise permissions to allow
+   * @param {number} deny BitWise permissions to deny
    */
   async setRolePermission (channelId: Snowflake, roleId: Snowflake, allow?: Permissions, deny?: Permissions): Promise<RESTPutAPIChannelPermissionResult> {
     return await this._setPermission(channelId, roleId, {
@@ -54,10 +57,10 @@ export class ChannelsResource {
 
   /**
    * Sets permissions for a specific member
-   * @param channelId ID of channel
-   * @param memberId Member to set permissions for
-   * @param allow BitWise permissions to allow
-   * @param deny BitWise permissions to deny
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake} memberId Member to set permissions for
+   * @param {number} allow BitWise permissions to allow
+   * @param {number} deny BitWise permissions to deny
    */
   async setMemberPermission (channelId: Snowflake, memberId: Snowflake, allow?: Permissions, deny?: Permissions): Promise<RESTPutAPIChannelPermissionResult> {
     return await this._setPermission(channelId, memberId, {
@@ -69,8 +72,8 @@ export class ChannelsResource {
 
   /**
    * Remove permissions for a certain overwrite
-   * @param channelId ID of channel
-   * @param overwriteId Member or Role ID
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake} overwriteId Member or Role ID
    */
   async deletePermission (channelId: Snowflake, overwriteId: Snowflake): Promise<RESTDeleteAPIChannelPermissionResult> {
     return await this.rest.request('DELETE', `/channels/${channelId}/permissions/${overwriteId}`) as RESTDeleteAPIChannelPermissionResult
@@ -78,7 +81,7 @@ export class ChannelsResource {
 
   /**
    * Gets invites in channel
-   * @param channelId ID of channel
+   * @param {Snowflake} channelId ID of channel
    */
   async getInvites (channelId: Snowflake): Promise<RESTGetAPIChannelInvitesResult> {
     return await this.rest.request('GET', `/channels/${channelId}/invites`) as RESTGetAPIChannelInvitesResult
@@ -86,8 +89,8 @@ export class ChannelsResource {
 
   /**
    * Creates an invite for the channel
-   * @param channelId ID of channel
-   * @param invite Invite settings
+   * @param {Snowflake} channelId ID of channel
+   * @param {*} invite Invite settings
    */
   async createInvite (channelId: Snowflake, invite: RESTPostAPIChannelInviteJSONBody = {}): Promise<RESTPostAPIChannelInviteResult> {
     return await this.rest.request('POST', `/channels/${channelId}/invites`, {
@@ -97,7 +100,7 @@ export class ChannelsResource {
 
   /**
    * Gets pins in a channel
-   * @param channelId ID of channel
+   * @param {Snowflake} channelId ID of channel
    */
   async getPins (channelId: Snowflake): Promise<RESTGetAPIChannelPinsResult> {
     return await this.rest.request('GET', `/channels/${channelId}/pins`)
@@ -105,25 +108,25 @@ export class ChannelsResource {
 
   /**
    * Pins a message
-   * @param channelId ID of channel
-   * @param message ID of message to pin
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake} messageId ID of message to pin
    */
-  async addPin (channelId: Snowflake, message: Snowflake): Promise<RESTPutAPIChannelPinResult> {
-    return this.rest.request('PUT', `/channels/${channelId}/pins/${message}`) as RESTPutAPIChannelPinResult
+  async addPin (channelId: Snowflake, messageId: Snowflake): Promise<RESTPutAPIChannelPinResult> {
+    return this.rest.request('PUT', `/channels/${channelId}/pins/${messageId}`) as RESTPutAPIChannelPinResult
   }
 
   /**
    * Removes a pin
-   * @param channelId ID of channel
-   * @param message ID of message to unpin
+   * @param {Snowflake} channelId ID of channel
+   * @param {Snowflake} messageId ID of message to unpin
    */
-  async deletePin (channelId: Snowflake, message: Snowflake): Promise<RESTDeleteAPIChannelPinResult> {
-    return this.rest.request('DELETE', `/channels/${channelId}/pins/${message}`) as RESTDeleteAPIChannelPinResult
+  async deletePin (channelId: Snowflake, messageId: Snowflake): Promise<RESTDeleteAPIChannelPinResult> {
+    return this.rest.request('DELETE', `/channels/${channelId}/pins/${messageId}`) as RESTDeleteAPIChannelPinResult
   }
 
   /**
    * Starts typing in channel
-   * @param channelId ID of channel
+   * @param {Snowflake} channelId ID of channel
    */
   async typing (channelId: Snowflake): Promise<RESTPostAPIChannelTypingResult> {
     return this.rest.request('POST', `/channels/${channelId}/typing`) as RESTPostAPIChannelTypingResult
@@ -131,8 +134,8 @@ export class ChannelsResource {
 
   /**
    * Gets message from a channel
-   * @param channelId ID of channel
-   * @param query Query for request
+   * @param {Snowflake} channelId ID of channel
+   * @param {*} query Query for request
    */
   async getMessages (channelId: Snowflake, query: RESTGetAPIChannelMessagesQuery): Promise<RESTGetAPIChannelMessagesResult> {
     return await this.rest.request('GET', `/channels/${channelId}/messages`, {

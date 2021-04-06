@@ -5,7 +5,14 @@ import { State } from '../clustering/ThreadComms'
 import { Worker } from '../typings/lib'
 import { DiscordSocket } from './WebSocket'
 
+/**
+ * Utility manager for a shard
+ */
 export class Shard {
+  /**
+   * Ping in ms
+   * @type {number}
+   */
   public ping: number = 0
 
   private ws = new DiscordSocket(this)
@@ -51,7 +58,8 @@ export class Shard {
   }
 
   /**
-   * Current shard state, 0 = Disconnected, 1 = Connecting, 2 = Connected
+   * Current shard state
+   * @type {State} 0 = Disconnected, 1 = Connecting, 2 = Connected
    */
   get state (): State {
     if (this.ready) return State.CONNECTED
@@ -62,6 +70,7 @@ export class Shard {
 
   /**
    * Whether or not the shard is READY
+   * @type {boolean}
    */
   get ready (): boolean {
     return this.ws.ws?.readyState === OPEN && !this.unavailableGuilds

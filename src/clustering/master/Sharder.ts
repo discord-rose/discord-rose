@@ -2,6 +2,9 @@ import { Master } from './Master'
 
 import { wait } from '../../utils/UtilityFunctions'
 
+/**
+ * Sharder in charge of handling shard spawn ratelimtis
+ */
 export class Sharder {
   public buckets: Array<number[]|null> = []
 
