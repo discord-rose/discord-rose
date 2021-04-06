@@ -8,7 +8,7 @@ Run `npm i --save discord-rose`
 
 ## Links
 
-[Wiki](https://github.com/discord-rose/discord-rose/wiki) **IMPORTANT**
+[Wiki](https://github.com/discord-rose/discord-rose/wiki) [Docs](https://rose.bit.kiwi)
 
 [Support Server](https://discord.gg/EdpA6qRHhs)
 
