@@ -4,4 +4,4 @@ node_modules/
 test/
 package-lock.json
 
-docs/docs.json
+docs

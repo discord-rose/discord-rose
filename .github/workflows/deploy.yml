@@ -1,0 +1,90 @@
+name: Deployment
+on:
+  push:
+    branches:
+      - 'master'
+jobs:
+  Build:
+    name: Publish Build
+    runs-on: ubuntu-latest
+    needs: pre_ci
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Restore CI Cache
+        uses: actions/cache@v2.1.4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-14-${{ hashFiles('**/package-lock.json') }}
+      - name: Install Dependencies
+        run: npm i --also=dev
+      - name: Build Code
+        run: npm run build
+      - name: Push new code
+        run: |
+          REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          echo -e "\n# Checkout the repo in the target branch"
+          TARGET_BRANCH="build"
+          git clone $REPO out -b $TARGET_BRANCH
+          echo -e "\n# Remove any old files in the dist folder"
+          rm -rfv out/dist/*
+          echo -e "\n# Move the generated docs to the newly-checked-out repo, to be committed and pushed"
+          rsync -vaI package.json out/
+          rsync -vaI README.md out/
+          rsync -vaI dist/ out/dist
+          echo -e "\n# Commit and push"
+          cd out
+          git add --all .
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_EMAIL}"
+          git commit -m "build: tsc build for ${GITHUB_SHA}" || true
+          git push origin $TARGET_BRANCH
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_ACTOR: jpbberry
+          GITHUB_EMAIL: jb@jt3ch.net
+
+  Docgen:
+    name: Docgen
+    runs-on: ubuntu-latest
+    needs: pre_ci
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Restore CI Cache
+        uses: actions/cache@v2.1.4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-14-${{ hashFiles('**/package-lock.json') }}
+      - name: Install Dependencies
+        run: npm i --also=dev
+      - name: Build documentation
+        run: npm run docs
+      - name: Publish Docs
+        run: |
+          REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          echo -e "\n# Checkout the repo in the target branch"
+          TARGET_BRANCH="docs"
+          git clone $REPO out -b $TARGET_BRANCH
+          echo -e "\n# Move the generated docs to the newly-checked-out repo, to be committed and pushed"
+          rsync -vaI README.md out/
+          rsync -vaI docs/ out/
+          echo -e "\n# Commit and push"
+          cd out
+          git add --all .
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_EMAIL}"
+          git commit -m "docs: api docs build for ${GITHUB_SHA}" || true
+          git push origin $TARGET_BRANCH
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_ACTOR: jpbberry
+          GITHUB_EMAIL: jb@jt3ch.net
