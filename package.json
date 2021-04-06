@@ -33,6 +33,7 @@
     "ws": "^7.4.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.13.14",
     "@types/node-fetch": "^2.5.8",
     "@types/ws": "^7.4.0",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
