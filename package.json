@@ -1,0 +1,48 @@
+{
+  "name": "discord-rose",
+  "version": "1.2.2",
+  "description": "The simple Discord library for advanced users.",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "npm i && rm -rf ./dist && tsc",
+    "lint": "eslint ./src",
+    "prepublishOnly": "npm run build",
+    "docs": "typedoc ./src --name discord-rose --json docs/docs.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/discord-rose/discord-rose.git"
+  },
+  "keywords": [
+    "discord",
+    "discordapp"
+  ],
+  "author": "JPBBerry",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/discord-rose/discord-rose/issues"
+  },
+  "homepage": "https://github.com/discord-rose/discord-rose#readme",
+  "dependencies": {
+    "@discordjs/collection": "^0.1.6",
+    "@jpbberry/cache": "^1.0.4",
+    "discord-api-types": "^0.12.1",
+    "form-data": "^3.0.0",
+    "node-fetch": "^2.6.1",
+    "querystring": "^0.2.0",
+    "ws": "^7.4.2"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.8",
+    "@types/ws": "^7.4.0",
+    "@typescript-eslint/eslint-plugin": "^4.17.0",
+    "eslint": "^7.22.0",
+    "eslint-config-standard-with-typescript": "^20.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "typedoc": "^0.20.35",
+    "typescript": "^4.2.3"
+  },
+  "typings": "./dist/index.d.ts"
+}

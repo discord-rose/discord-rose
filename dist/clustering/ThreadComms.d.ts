@@ -1,0 +1,148 @@
+/// <reference types="node" />
+import { EventEmitter } from 'events';
+import { Worker, MessagePort } from 'worker_threads';
+import { CompleteBotOptions } from './master/Master';
+import { APIGuild, APIMessage, Snowflake } from 'discord-api-types';
+import { MessageTypes } from '../rest/resources/Messages';
+export declare enum State {
+    DISCONNECTED = 0,
+    CONNECTING = 1,
+    CONNECTED = 2
+}
+interface ShardStats {
+    id: number;
+    ping: number;
+    state: State;
+    guilds: number;
+}
+export interface ClusterStats {
+    cluster: {
+        memory: number;
+        uptime: number;
+        id: string;
+    };
+    shards: ShardStats[];
+}
+export interface ThreadEvents {
+    '*': {
+        send: {
+            event: keyof ThreadEvents;
+            d: any;
+        };
+        receive: any;
+    };
+    START: {
+        send: {
+            shards: number[];
+            options: CompleteBotOptions;
+        };
+        receive: {};
+    };
+    KILL: {
+        send: null;
+        receive: null;
+    };
+    REGISTER_SHARD: {
+        send: {
+            id: number;
+        };
+        receive: {};
+    };
+    START_SHARD: {
+        send: {
+            id: number;
+        };
+        receive: null;
+    };
+    SHARD_READY: {
+        send: {
+            id: number;
+        };
+        receive: null;
+    };
+    LOG: {
+        send: string;
+        receive: null;
+    };
+    RESTART_CLUSTER: {
+        send: {
+            id: any;
+        };
+        receive: null;
+    };
+    RESTART_SHARD: {
+        send: {
+            id: number;
+        };
+        receive: null;
+    };
+    GET_GUILD: {
+        send: {
+            id: Snowflake;
+        };
+        receive: APIGuild;
+    };
+    EVAL: {
+        send: string;
+        receive: any;
+    };
+    BROADCAST_EVAL: {
+        send: string;
+        receive: any[];
+    };
+    MASTER_EVAL: {
+        send: string;
+        receive: any;
+    };
+    SEND_WEBHOOK: {
+        send: {
+            id: Snowflake;
+            token: string;
+            data: MessageTypes;
+        };
+        receive: APIMessage;
+    };
+    GET_STATS: {
+        send: null;
+        receive: ClusterStats;
+    };
+    STATS: {
+        send: null;
+        receive: ClusterStats[];
+    };
+}
+export declare type ResolveFunction<K extends keyof ThreadEvents> = ThreadEvents[K]['receive'] extends null ? null : (data: ThreadEvents[K]['receive'] | {
+    error: string;
+}) => void;
+/**
+ * Middleman between all thread communications
+ */
+export declare class ThreadComms extends EventEmitter {
+    private comms?;
+    private readonly commands;
+    /**
+     * @type {function}
+     * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
+     */
+    on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => this;
+    emit<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>): boolean;
+    register(comms: Worker | MessagePort): void;
+    private _send;
+    /**
+     * Sends a command to the master
+     * @param {string} event Event to send
+     * @param {*} data Data to send along
+     * @returns {Promise<*>} Data back
+     * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
+     */
+    sendCommand<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): Promise<ThreadEvents[K]['receive']>;
+    private _respond;
+    /**
+     * Tells the master something
+     * @param {string} event Event to send
+     * @param {string} data Data to send
+     * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
+     */
+    tell<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): void;
+}
+export {};
