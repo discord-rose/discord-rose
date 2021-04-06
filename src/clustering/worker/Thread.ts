@@ -77,7 +77,7 @@ export class Thread extends ThreadComms {
   /**
    * Eval code on every cluster
    * @param {string} code Code to eval
-   * @returns {Promise<*[]>} Response
+   * @returns {Promise<any[]>} Response
    */
   async broadcastEval (code: string): Promise<any[]> {
     return await this.sendCommand('BROADCAST_EVAL', code)

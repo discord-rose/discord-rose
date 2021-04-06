@@ -58,6 +58,7 @@ export class Master extends Emitter<{
 
   /**
    * Handler emitter
+   * @type {EventEmitter}
    * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
    */
   public handlers = new EventEmitter() as {

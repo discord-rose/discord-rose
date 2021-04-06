@@ -7,7 +7,7 @@
     "build": "npm i && rm -rf ./dist && tsc",
     "lint": "eslint ./src",
     "prepublishOnly": "npm run build",
-    "docs": "docgen --jsdoc jsdoc.json --source src/**/**.ts --output docs/docs.json"
+    "docs": "npm run build && docgen --source dist --output docs/docs.json"
   },
   "repository": {
     "type": "git",
@@ -41,7 +41,7 @@
     "@types/ws": "^7.4.0",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "babel-plugin-replace-ts-export-assignment": "0.0.2",
-    "discord.js-docgen": "discordjs/docgen#ts-patch",
+    "discord.js-docgen": "discordjs/docgen",
     "eslint": "^7.22.0",
     "eslint-config-standard-with-typescript": "^20.0.0",
     "eslint-plugin-import": "^2.22.1",
