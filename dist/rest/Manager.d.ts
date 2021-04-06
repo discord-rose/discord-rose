@@ -54,9 +54,9 @@ export declare class RestManager {
     private _key;
     /**
      * Make a custom request
-     * @param {string} method Method
-     * @param {string} route Route, e.g "/users/123"
-     * @param {RequestOptions} options Other options
+     * @param method Method
+     * @param route Route, e.g "/users/123"
+     * @param options Other options
      */
     request(method: Methods, route: string, options?: RequestOptions): Promise<any>;
     make(opts: Request): Promise<{

@@ -1,3 +1,4 @@
+export { ClusterStats, ShardStats, State, ThreadEvents } from './clustering/ThreadComms';
 export * from './clustering/master/Master';
 export * from './clustering/master/Cluster';
 export * from './clustering/master/Sharder';

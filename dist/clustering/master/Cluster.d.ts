@@ -34,17 +34,17 @@ export declare class Cluster extends ThreadComms {
     kill(): void;
     /**
      * Restarts a shard
-     * @param {number} id ID of shard to restart
+     * @param id ID of shard to restart
      */
     restartShard(id: number): void;
     /**
      * Gets a guild from the clusters cache
-     * @param {Snowflake} id ID of guild
+     * @param id ID of guild
      */
     getGuild(id: Snowflake): Promise<APIGuild>;
     /**
      * Evals code on the cluster
-     * @param {string} code Code to eval
+     * @param code Code to eval
      */
     eval(code: string): Promise<any[]>;
 }

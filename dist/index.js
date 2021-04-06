@@ -10,7 +10,9 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PermissionsUtils = void 0;
+exports.PermissionsUtils = exports.State = void 0;
+var ThreadComms_1 = require("./clustering/ThreadComms");
+Object.defineProperty(exports, "State", { enumerable: true, get: function () { return ThreadComms_1.State; } });
 __exportStar(require("./clustering/master/Master"), exports);
 __exportStar(require("./clustering/master/Cluster"), exports);
 __exportStar(require("./clustering/master/Sharder"), exports);

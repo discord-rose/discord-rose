@@ -32,8 +32,8 @@ class MessagesResource {
     }
     /**
      * Sends a message to a channel
-     * @param {Snowflake} channelId ID of channel
-     * @param {*} data Message data
+     * @param channelId ID of channel
+     * @param data Message data
      */
     async send(channelId, data, reply) {
         const msg = MessagesResource._formMessage(data);
@@ -45,9 +45,9 @@ class MessagesResource {
     }
     /**
      * Sends a file to a channel
-     * @param {Snowflake} channelId ID of channel
-     * @param {*} data File Buffer and name
-     * @param {*} extra Extra message data
+     * @param channelId ID of channel
+     * @param data File Buffer and name
+     * @param extra Extra message data
      */
     async sendFile(channelId, data, extra) {
         const formData = new form_data_1.default();
@@ -62,24 +62,24 @@ class MessagesResource {
     }
     /**
      * Gets a message
-     * @param {Snowflake} channelId ID of channel
-     * @param {Snowflake} messageId ID of message
+     * @param channelId ID of channel
+     * @param messageId ID of message
      */
     async get(channelId, messageId) {
         return await this.rest.request('GET', `/channels/${channelId}/messages/${messageId}`);
     }
     /**
      * Deletes a message
-     * @param {Snowflake} channelId ID of channel
-     * @param {Snowflake} messageId ID of message
+     * @param channelId ID of channel
+     * @param messageId ID of message
      */
     async delete(channelId, messageId) {
         return this.rest.request('DELETE', `/channels/${channelId}/messages/${messageId}`);
     }
     /**
      * Deletes multiple messages
-     * @param {Snowflake} channelId ID of channel
-     * @param {Snowflake[]} messageIds ID of messages
+     * @param channelId ID of channel
+     * @param messageIds ID of messages
      */
     async bulkDelete(channelId, messageIds) {
         if (messageIds.length < 2)
@@ -92,9 +92,9 @@ class MessagesResource {
     }
     /**
      * Edits a message
-     * @param {Snowflake} channelId ID of channel
-     * @param {Snowflake} messageId ID of message
-     * @param {*} data New message data
+     * @param channelId ID of channel
+     * @param messageId ID of message
+     * @param data New message data
      */
     async edit(channelId, messageId, data) {
         return await this.rest.request('PATCH', `/channels/${channelId}/messages/${messageId}`, {
@@ -103,8 +103,8 @@ class MessagesResource {
     }
     /**
      * Publishes a message in a news channel
-     * @param {Snowflake} channelId ID of channel
-     * @param {Snowflake} messageId ID of message
+     * @param channelId ID of channel
+     * @param messageId ID of message
      */
     async crosspost(channelId, messageId) {
         return await this.rest.request('POST', `/channels/${channelId}/messages/${messageId}/crosspost`);
@@ -116,10 +116,10 @@ class MessagesResource {
     }
     /**
      * Gets users who've reacted with a specific emoji
-     * @param {Snowflake} channelId ID of channel
-     * @param {Snowflake} messageId ID of message
-     * @param {Snowflake|string} emoji ID or unicode for emoji
-     * @param {*} query Query for fetching
+     * @param channelId ID of channel
+     * @param messageId ID of message
+     * @param emoji ID or unicode for emoji
+     * @param query Query for fetching
      */
     async getReactions(channelId, messageId, emoji, query) {
         return await this.rest.request('GET', `/channels/${channelId}/messages/${messageId}/reactions/${this._parseEmoji(emoji)}`, {
@@ -128,28 +128,28 @@ class MessagesResource {
     }
     /**
      * Adds a reaction to a message
-     * @param {Snowflake} channelId ID of channel
-     * @param {Snowflake} messageId ID of message
-     * @param {Snowflake|string} emoji ID or unicode for emoji
+     * @param channelId ID of channel
+     * @param messageId ID of message
+     * @param emoji ID or unicode for emoji
      */
     async react(channelId, messageId, emoji) {
         return this.rest.request('PUT', `/channels/${channelId}/messages/${messageId}/reactions/${this._parseEmoji(emoji)}/@me`);
     }
     /**
      * Removes one reaction for a specific user
-     * @param {Snowflake} channelId ID of channel
-     * @param {Snowflake} messageId ID of message
-     * @param {Snowflake|string} emoji ID or unicode for emoji
-     * @param {Snowflake} user Users or leave blank to remove your own
+     * @param channelId ID of channel
+     * @param messageId ID of message
+     * @param emoji ID or unicode for emoji
+     * @param user Users or leave blank to remove your own
      */
     async deleteReaction(channelId, messageId, emoji, user = '@me') {
         return this.rest.request('DELETE', `/channels/${channelId}/messages/${messageId}/reactions/${this._parseEmoji(emoji)}/${user}`);
     }
     /**
      * Deletes multiple reactions from a message
-     * @param {Snowflake} channelId ID of channel
-     * @param {Snowflake} messageId ID of message
-     * @param {Snowflake|string|null} emoji Emoji ID or unicode, or leave blank to remove all reactions
+     * @param channelId ID of channel
+     * @param messageId ID of message
+     * @param emoji Emoji ID or unicode, or leave blank to remove all reactions
      */
     async deleteAllReactions(channelId, messageId, emoji) {
         return this.rest.request('DELETE', `/channels/${channelId}/messages/${messageId}/reactions${emoji ? `/${this._parseEmoji(emoji)}` : ''}`);

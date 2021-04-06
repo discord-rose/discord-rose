@@ -21,8 +21,8 @@ const CachedChannelTypes = ['text', 'voice', 'category'];
 class Master extends Emitter_1.Emitter {
     /**
      * Creates a new Master instance
-     * @param {string} fileName Location of Worker file
-     * @param {BotOptions} options Options
+     * @param fileName Location of Worker file
+     * @param options Options
      */
     constructor(fileName, options) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11;
@@ -156,9 +156,9 @@ class Master extends Emitter_1.Emitter {
     }
     /**
      * Spawns a custom process
-     * @param {string} name Name of the process (especially for logging)
-     * @param {string} fileName Direct path for process
-     * @returns {Cluster} The new Cluster thread created
+     * @param name Name of the process (especially for logging)
+     * @param fileName Direct path for process
+     * @returns The new Cluster thread created
      */
     spawnProcess(name, fileName) {
         if (this.processes.has(name))
@@ -172,7 +172,6 @@ class Master extends Emitter_1.Emitter {
     }
     /**
      * Starts the bot and spawns workers
-     * @returns {Promise<void>}
      */
     async start() {
         var _a, _b, _c, _d;
@@ -211,43 +210,43 @@ class Master extends Emitter_1.Emitter {
     }
     /**
      * Sends an event to all clusters
-     * @param {string} event Event name
-     * @param {any} data Event data
-     * @param {boolean} all Whether or not to send to all processes, including custom ones
-     * @returns {Promise<any[]>} The data sent back
+     * @param event Event name
+     * @param data Event data
+     * @param all Whether or not to send to all processes, including custom ones
+     * @returns The data sent back
      */
     async sendToAll(event, data, all = false) {
         return await Promise.all(this[all ? 'processes' : 'clusters'].map(async (x) => await x.sendCommand(event, data)));
     }
     /**
      * Sends a TELL event to all clusters
-     * @param {string} event Event name
-     * @param {any} data Event data
-     * @param {boolean} all Whether or not to send to all processes, including custom ones
-     * @returns {void} Nothing
+     * @param event Event name
+     * @param data Event data
+     * @param all Whether or not to send to all processes, including custom ones
+     * @returns Nothing
      */
     tellAll(event, data, all = false) {
         return this[all ? 'processes' : 'clusters'].map(x => x.tell(event, data));
     }
     /**
      * Evals code on every cluster
-     * @param {string} code Code to eval
-     * @returns {Promise<any[]>} An array of responses
+     * @param code Code to eval
+     * @returns An array of responses
      */
     async broadcastEval(code) {
         return await this.sendToAll('EVAL', code);
     }
     /**
      * Gets each clusters stats
-     * @returns {Promise<ClusterStats[]>} Stats
+     * @returns Stats
      */
     async getStats() {
         return await this.sendToAll('GET_STATS', null);
     }
     /**
      * Convert a shard ID into it's containing cluster
-     * @param {number} shardId Shard ID to convert to
-     * @returns {Cluster} The cluster the shard belongs to
+     * @param shardId Shard ID to convert to
+     * @returns The cluster the shard belongs to
      */
     shardToCluster(shardId) {
         for (let i = 0; i < this.chunks.length; i++) {
@@ -258,16 +257,16 @@ class Master extends Emitter_1.Emitter {
     }
     /**
      * Get the shard that has a certain guild
-     * @param {Snowflake} guildId ID of guild
-     * @returns {number} ID of shard
+     * @param guildId ID of guild
+     * @returns ID of shard
      */
     guildToShard(guildId) {
         return UtilityFunctions_1.guildShard(guildId, this.options.shards);
     }
     /**
      * Get a cluster based on the guild that should be cached there
-     * @param {Snowflake} guildId Guild ID
-     * @returns {Cluster} Cluster guild belongs to
+     * @param guildId Guild ID
+     * @returns Cluster guild belongs to
      */
     guildToCluster(guildId) {
         return this.shardToCluster(this.guildToShard(guildId));

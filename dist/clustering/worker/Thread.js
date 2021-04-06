@@ -36,62 +36,62 @@ class Thread extends ThreadComms_1.ThreadComms {
     }
     /**
      * Logs data to master's MasterOptions.log
-     * @param {string} message Message args
+     * @param message Message args
      */
     log(...messages) {
         this.tell('LOG', messages.map(m => typeof m === 'string' ? m : util_1.inspect(m)).join(' '));
     }
     /**
      * Restarts a specific cluster
-     * @param {string} clusterId ID of cluster
+     * @param clusterId ID of cluster
      */
     async restartCluster(clusterId) {
         return await this.sendCommand('RESTART_CLUSTER', { id: clusterId });
     }
     /**
      * Restarts a specific shard
-     * @param {number} shardId ID of shard
+     * @param shardId ID of shard
      */
     restartShard(shardId) {
         return this.tell('RESTART_SHARD', { id: shardId });
     }
     /**
      * Gets a cached guild across clusters
-     * @param {Snowflake} guildId ID of guild
-     * @returns {Promise<APIGuild>} The guild
+     * @param guildId ID of guild
+     * @returns The guild
      */
     async getGuild(guildId) {
         return await this.sendCommand('GET_GUILD', { id: guildId });
     }
     /**
      * Eval code on every cluster
-     * @param {string} code Code to eval
-     * @returns {Promise<any[]>} Response
+     * @param code Code to eval
+     * @returns Response
      */
     async broadcastEval(code) {
         return await this.sendCommand('BROADCAST_EVAL', code);
     }
     /**
      * Evals code on the master process
-     * @param {string} code Code to eval
-     * @returns {Promise<*>} Response
+     * @param code Code to eval
+     * @returns Response
      */
     async masterEval(code) {
         return await this.sendCommand('MASTER_EVAL', code);
     }
     /**
      * Sends a webhook using the master process, useful for respecting ratelimits
-     * @param {Snowflake} webhookId ID of webhook
-     * @param {string} token Token of webhook
-     * @param {MessageTypes} data Data for message
-     * @returns {Promies<APIMessage>} Message sent
+     * @param webhookId ID of webhook
+     * @param token Token of webhook
+     * @param data Data for message
+     * @returns Message sent
      */
     async sendWebhook(webhookId, token, data) {
         return await this.sendCommand('SEND_WEBHOOK', { id: webhookId, token, data: Messages_1.MessagesResource._formMessage(data, true) });
     }
     /**
      * Gets an array of each clusters stats
-     * @returns {Promise<ClusterStats[]>} Stats
+     * @returns Stats
      */
     async getStats() {
         return await this.sendCommand('STATS', null);

@@ -11,27 +11,27 @@ class WebhooksResource {
     }
     /**
      * Creates a new webhook on the channel
-     * @param {Snowflake} channelID ID of channel
-     * @param {*} data Data for new webhook
+     * @param channelId ID of channel
+     * @param data Data for new webhook
      */
-    async create(channelID, data) {
-        return await this.rest.request('POST', `/channels/${channelID}/webhooks`, {
+    async create(channelId, data) {
+        return await this.rest.request('POST', `/channels/${channelId}/webhooks`, {
             body: data
         });
     }
     /**
      * Get a webhook
-     * @param {Snowflake} webhookId ID of webhook
-     * @param {string} token Token of webhook
+     * @param webhookId ID of webhook
+     * @param token Token of webhook
      */
     async get(webhookId, token) {
         return await this.rest.request('GET', `/webhooks/${webhookId}/${token}`);
     }
     /**
      * Sends a message via webhook
-     * @param {Snowflake} webhookId ID of Webhook
-     * @param {string} token Token of Webhook
-     * @param {*} data Data for message
+     * @param webhookId ID of Webhook
+     * @param token Token of Webhook
+     * @param data Data for message
      */
     async send(webhookId, token, data) {
         return await this.rest.request('POST', `/webhooks/${webhookId}/${token}`, {
@@ -43,8 +43,8 @@ class WebhooksResource {
     }
     /**
      * Deletes a webhook
-     * @param {Snowflake} webhookId ID of webhook
-     * @param {string?} token Token (if none provided, uses bot permission)
+     * @param webhookId ID of webhook
+     * @param token Token (if none provided, uses bot permission)
      */
     async delete(webhookId, token) {
         return await this.rest.request('DELETE', `/webhooks/${webhookId}${token ? `/${token}` : ''}`);

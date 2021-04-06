@@ -86,8 +86,8 @@ export declare class Master extends Emitter<{
     private longestName;
     /**
      * Creates a new Master instance
-     * @param {string} fileName Location of Worker file
-     * @param {BotOptions} options Options
+     * @param fileName Location of Worker file
+     * @param options Options
      */
     constructor(fileName: string, options: BotOptions);
     /**
@@ -97,59 +97,58 @@ export declare class Master extends Emitter<{
     get clusters(): Collection<string, Cluster>;
     /**
      * Spawns a custom process
-     * @param {string} name Name of the process (especially for logging)
-     * @param {string} fileName Direct path for process
-     * @returns {Cluster} The new Cluster thread created
+     * @param name Name of the process (especially for logging)
+     * @param fileName Direct path for process
+     * @returns The new Cluster thread created
      */
     spawnProcess(name: string, fileName: string): Cluster;
     /**
      * Starts the bot and spawns workers
-     * @returns {Promise<void>}
      */
     start(): Promise<void>;
     /**
      * Sends an event to all clusters
-     * @param {string} event Event name
-     * @param {any} data Event data
-     * @param {boolean} all Whether or not to send to all processes, including custom ones
-     * @returns {Promise<any[]>} The data sent back
+     * @param event Event name
+     * @param data Event data
+     * @param all Whether or not to send to all processes, including custom ones
+     * @returns The data sent back
      */
     sendToAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], all?: boolean): Promise<Array<ThreadEvents[K]['receive']>>;
     /**
      * Sends a TELL event to all clusters
-     * @param {string} event Event name
-     * @param {any} data Event data
-     * @param {boolean} all Whether or not to send to all processes, including custom ones
-     * @returns {void} Nothing
+     * @param event Event name
+     * @param data Event data
+     * @param all Whether or not to send to all processes, including custom ones
+     * @returns Nothing
      */
     tellAll<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], all?: boolean): any[];
     /**
      * Evals code on every cluster
-     * @param {string} code Code to eval
-     * @returns {Promise<any[]>} An array of responses
+     * @param code Code to eval
+     * @returns An array of responses
      */
     broadcastEval(code: string): Promise<any[]>;
     /**
      * Gets each clusters stats
-     * @returns {Promise<ClusterStats[]>} Stats
+     * @returns Stats
      */
     getStats(): Promise<ClusterStats[]>;
     /**
      * Convert a shard ID into it's containing cluster
-     * @param {number} shardId Shard ID to convert to
-     * @returns {Cluster} The cluster the shard belongs to
+     * @param shardId Shard ID to convert to
+     * @returns The cluster the shard belongs to
      */
     shardToCluster(shardId: number): Cluster;
     /**
      * Get the shard that has a certain guild
-     * @param {Snowflake} guildId ID of guild
-     * @returns {number} ID of shard
+     * @param guildId ID of guild
+     * @returns ID of shard
      */
     guildToShard(guildId: Snowflake): number;
     /**
      * Get a cluster based on the guild that should be cached there
-     * @param {Snowflake} guildId Guild ID
-     * @returns {Cluster} Cluster guild belongs to
+     * @param guildId Guild ID
+     * @returns Cluster guild belongs to
      */
     guildToCluster(guildId: Snowflake): Cluster;
 }

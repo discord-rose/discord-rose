@@ -91,10 +91,10 @@ class Worker extends Emitter_1.Emitter {
     }
     /**
      * Sets the status of the client
-     * @param {string} type Type of status, e.g "playing" is "Playing Game!"
-     * @param {string} name Name of status, in this case Game
-     * @param {string} status Status type
-     * @param {string} url Optional url for twitch stream
+     * @param type Type of status, e.g "playing" is "Playing Game!"
+     * @param name Name of status, in this case Game
+     * @param status Status type
+     * @param url Optional url for twitch stream
      * @example
      * worker.setStatus('playing', 'Rocket League', 'online') // Playing Rocket League
      * // Twitch streams
@@ -126,7 +126,7 @@ class Worker extends Emitter_1.Emitter {
     }
     /**
      * Gets shard in charge of specific guild
-     * @param {Snowflake} guildId ID of guild
+     * @param guildId ID of guild
      */
     guildShard(guildId) {
         const shard = this.shards.get(UtilityFunctions_1.guildShard(guildId, this.options.shards));
@@ -136,7 +136,7 @@ class Worker extends Emitter_1.Emitter {
     }
     /**
      * Gets ALL members in a guild (via ws)
-     * @param {Snowflake} guildId ID of guild
+     * @param guildId ID of guild
      */
     async getMembers(guildId) {
         return await this.guildShard(guildId).getGuildMembers({
@@ -154,7 +154,7 @@ class Worker extends Emitter_1.Emitter {
     }
     /**
      * Log something to master
-     * @param {string} data What to log
+     * @param data What to log
      */
     log(...data) {
         this.comms.log(...data);

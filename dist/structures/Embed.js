@@ -11,7 +11,7 @@ class Embed {
     }
     /**
      * Sets the color
-     * @param {number} color Color hex code
+     * @param color Color hex code
      */
     color(color) {
         this.obj.color = color;
@@ -19,9 +19,9 @@ class Embed {
     }
     /**
      * Sets author
-     * @param {string} name Name of author
-     * @param {string} icon Author avatar icon
-     * @param {string} url URL anchored to the author name
+     * @param name Name of author
+     * @param icon Author avatar icon
+     * @param url URL anchored to the author name
      */
     author(name, icon, url) {
         this.obj.author = {
@@ -33,8 +33,8 @@ class Embed {
     }
     /**
      * Sets the title
-     * @param {string} title Title name
-     * @param {string} url URL anchored to title name
+     * @param title Title name
+     * @param url URL anchored to title name
      */
     title(title, url) {
         if (title)
@@ -45,7 +45,7 @@ class Embed {
     }
     /**
      * Sets description
-     * @param {string} desc Description
+     * @param desc Description
      */
     description(desc) {
         this.obj.description = desc;
@@ -53,9 +53,9 @@ class Embed {
     }
     /**
      * Adds a field
-     * @param {string} name Fields title
-     * @param {string} value Fields value
-     * @param {boolean} inline Whether the field is inline
+     * @param name Fields title
+     * @param value Fields value
+     * @param inline Whether the field is inline
      */
     field(name, value, inline) {
         if (!this.obj.fields)
@@ -69,9 +69,9 @@ class Embed {
     }
     /**
      * Sets the thumbnail
-     * @param {string} url URL of thumbnail
-     * @param {number} width Optional fixed width
-     * @param {number} height Optional fixed height
+     * @param url URL of thumbnail
+     * @param width Optional fixed width
+     * @param height Optional fixed height
      */
     thumbnail(url, width, height) {
         this.obj.thumbnail = {
@@ -83,9 +83,9 @@ class Embed {
     }
     /**
      * Sets the image
-     * @param {string} url URL of image
-     * @param {number} width Optional fixed width
-     * @param {number} height Optional fixed height
+     * @param url URL of image
+     * @param width Optional fixed width
+     * @param height Optional fixed height
      */
     image(url, width, height) {
         this.obj.image = {
@@ -97,8 +97,8 @@ class Embed {
     }
     /**
      * Sets the footer
-     * @param {string} text Text for footer
-     * @param {string} icon Small icon on the bottom left
+     * @param text Text for footer
+     * @param icon Small icon on the bottom left
      */
     footer(text, icon) {
         if (!this.obj.footer)
@@ -111,7 +111,7 @@ class Embed {
     }
     /**
      * Sets the timestamp
-     * @param {Date} date Date to set, leave blank for current time
+     * @param date Date to set, leave blank for current time
      */
     timestamp(date = new Date()) {
         this.obj.timestamp = date.toISOString();
@@ -119,8 +119,8 @@ class Embed {
     }
     /**
      * Sends embed to channel
-     * @param {boolean} reply Whether or not to do so in an inline reply (defaults to true)
-     * @param {boolean} mention Whether or not to mention the user in the reply (defaults to false)
+     * @param reply Whether or not to do so in an inline reply (defaults to true)
+     * @param mention Whether or not to mention the user in the reply (defaults to false)
      */
     async send(reply = true, mention = false) {
         if (!this.sendback)
@@ -129,7 +129,7 @@ class Embed {
     }
     /**
      * Renders the embed
-     * @returns {APIEmbed}
+     * @returns
      */
     render() {
         return this.obj;

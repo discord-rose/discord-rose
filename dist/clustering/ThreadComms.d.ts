@@ -4,17 +4,26 @@ import { Worker, MessagePort } from 'worker_threads';
 import { CompleteBotOptions } from './master/Master';
 import { APIGuild, APIMessage, Snowflake } from 'discord-api-types';
 import { MessageTypes } from '../rest/resources/Messages';
+/**
+ * State of a shard socket
+ */
 export declare enum State {
     DISCONNECTED = 0,
     CONNECTING = 1,
     CONNECTED = 2
 }
-interface ShardStats {
+/**
+ * Stats for a shard
+ */
+export interface ShardStats {
     id: number;
     ping: number;
     state: State;
     guilds: number;
 }
+/**
+ * Stats for a cluster
+ */
 export interface ClusterStats {
     cluster: {
         memory: number;
@@ -130,19 +139,18 @@ export declare class ThreadComms extends EventEmitter {
     private _send;
     /**
      * Sends a command to the master
-     * @param {string} event Event to send
-     * @param {*} data Data to send along
-     * @returns {Promise<*>} Data back
+     * @param event Event to send
+     * @param data Data to send along
+     * @returns Data back
      * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
      */
     sendCommand<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): Promise<ThreadEvents[K]['receive']>;
     private _respond;
     /**
      * Tells the master something
-     * @param {string} event Event to send
-     * @param {string} data Data to send
+     * @param event Event to send
+     * @param data Data to send
      * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
      */
     tell<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send']): void;
 }
-export {};

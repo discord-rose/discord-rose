@@ -12,14 +12,14 @@ class UsersResource {
     }
     /**
      * Get user
-     * @param {Snowflake} userId User ID or defaults to own user
+     * @param userId User ID or defaults to own user
      */
     async get(userId = '@me') {
         return await this.rest.request('GET', `/users/${userId}`);
     }
     /**
      * Creates a DM channel
-     * @param {Snowflake} userId ID of user
+     * @param userId ID of user
      */
     async createDM(userId) {
         if (this.dmCache.has(userId))
@@ -34,8 +34,8 @@ class UsersResource {
     }
     /**
      * Send a DM to user (create's DM channel for you)
-     * @param {Snowflake} userId ID of user
-     * @param {*} message Message data
+     * @param userId ID of user
+     * @param message Message data
      */
     async dm(userId, message) {
         const channel = await this.createDM(userId);

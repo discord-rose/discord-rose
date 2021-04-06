@@ -18,7 +18,7 @@ exports.CommandError = CommandError;
 class CommandHandler {
     /**
      * Create's new Command Handler
-     * @param {Worker} worker Worker
+     * @param worker Worker
      */
     constructor(worker) {
         this.worker = worker;
@@ -46,8 +46,8 @@ class CommandHandler {
     }
     /**
      * Sets Command Handler options
-     * @param {CommandHandlerOptions} opts Options
-     * @returns {CommandHandler} this
+     * @param opts Options
+     * @returns this
      */
     options(opts) {
         this._options = Object.assign(Object.assign({}, this._options), opts);
@@ -55,7 +55,7 @@ class CommandHandler {
     }
     /**
      * Sets a prefix fetcher
-     * @param {Function} fn String of prefix or Function to choose prefix with
+     * @param fn String of prefix or Function to choose prefix with
      * @example
      * worker.commands
      *   .setPrefix('!')
@@ -65,7 +65,7 @@ class CommandHandler {
      *   .setPrefix((message) => {
      *     return db.getPrefix(message.guild_id)
      *   })
-     * @returns {CommandHandler} this
+     * @returns this
      */
     prefix(fn) {
         if (Array.isArray(fn) || typeof fn === 'string') {
@@ -83,13 +83,13 @@ class CommandHandler {
     }
     /**
      * Defines an error handler replacing the default one
-     * @param {Function} fn Function to handle error
+     * @param fn Function to handle error
      * @example
      * worker.commands
      *  .error((ctx, error) => {
      *    ctx.send(`Error: ${error.message}`)
      *  })
-     * @returns {CommandHandler} this
+     * @returns this
      */
     error(fn) {
         this.errorFunction = fn;
@@ -97,8 +97,8 @@ class CommandHandler {
     }
     /**
      * Adds a global middleware function
-     * @param {Function} fn Middleware function
-     * @returns {CommandHandler} this
+     * @param fn Middleware function
+     * @returns this
      */
     middleware(fn) {
         this.middlewares.push(fn);
@@ -106,7 +106,7 @@ class CommandHandler {
     }
     /**
      * Adds a command to the command handler
-     * @param {CommandOptions} command Command data, be sure to add exec() and command:
+     * @param command Command data, be sure to add exec() and command:
      * @example
      * worker.commands
      *   .add({
@@ -115,7 +115,7 @@ class CommandHandler {
      *       ctx.reply('World!')
      *     }
      *   })
-     * @returns {CommandHandler} this
+     * @returns this
      */
     add(command) {
         var _a;
@@ -140,8 +140,8 @@ class CommandHandler {
     }
     /**
      * Gets a command from registry
-     * @param {string} command Command name to fetch
-     * @returns {CommandOptions} Command
+     * @param command Command name to fetch
+     * @returns Command
      */
     find(command) {
         var _a;

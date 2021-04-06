@@ -21,20 +21,20 @@ export declare class CommandHandler {
     CommandContext: typeof CommandContext;
     /**
      * Create's new Command Handler
-     * @param {Worker} worker Worker
+     * @param worker Worker
      */
     constructor(worker: Worker);
     prefixFunction?: ((message: APIMessage) => Promise<string | string[]> | string | string[]);
     errorFunction: (ctx: ctx, err: CommandError) => void;
     /**
      * Sets Command Handler options
-     * @param {CommandHandlerOptions} opts Options
-     * @returns {CommandHandler} this
+     * @param opts Options
+     * @returns this
      */
     options(opts: CommandHandlerOptions): this;
     /**
      * Sets a prefix fetcher
-     * @param {Function} fn String of prefix or Function to choose prefix with
+     * @param fn String of prefix or Function to choose prefix with
      * @example
      * worker.commands
      *   .setPrefix('!')
@@ -44,30 +44,30 @@ export declare class CommandHandler {
      *   .setPrefix((message) => {
      *     return db.getPrefix(message.guild_id)
      *   })
-     * @returns {CommandHandler} this
+     * @returns this
      */
     prefix(fn: string | string[] | ((message: APIMessage) => Promise<string | string[]> | string | string[])): this;
     get setPrefix(): (fn: string | string[] | ((message: APIMessage) => string | string[] | Promise<string | string[]>)) => this;
     /**
      * Defines an error handler replacing the default one
-     * @param {Function} fn Function to handle error
+     * @param fn Function to handle error
      * @example
      * worker.commands
      *  .error((ctx, error) => {
      *    ctx.send(`Error: ${error.message}`)
      *  })
-     * @returns {CommandHandler} this
+     * @returns this
      */
     error(fn: (ctx: ctx, error: CommandError) => void): this;
     /**
      * Adds a global middleware function
-     * @param {Function} fn Middleware function
-     * @returns {CommandHandler} this
+     * @param fn Middleware function
+     * @returns this
      */
     middleware(fn: MiddlewareFunction): this;
     /**
      * Adds a command to the command handler
-     * @param {CommandOptions} command Command data, be sure to add exec() and command:
+     * @param command Command data, be sure to add exec() and command:
      * @example
      * worker.commands
      *   .add({
@@ -76,14 +76,14 @@ export declare class CommandHandler {
      *       ctx.reply('World!')
      *     }
      *   })
-     * @returns {CommandHandler} this
+     * @returns this
      */
     add(command: CommandOptions): this;
     private _test;
     /**
      * Gets a command from registry
-     * @param {string} command Command name to fetch
-     * @returns {CommandOptions} Command
+     * @param command Command name to fetch
+     * @returns Command
      */
     find(command: string): CommandOptions | undefined;
     get findCommand(): (command: string) => CommandOptions | undefined;

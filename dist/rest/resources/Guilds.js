@@ -10,8 +10,8 @@ class GuildsResource {
     }
     /**
      * Gets a guild
-     * @param {Snowflake} guildId ID of guild
-     * @param {boolean} withCount Whether or not to add approximation counts
+     * @param guildId ID of guild
+     * @param withCount Whether or not to add approximation counts
      */
     async get(guildId, withCount = false) {
         return await this.rest.request('GET', `/guilds/${guildId}`, {
@@ -22,8 +22,8 @@ class GuildsResource {
     }
     /**
      * Edit a guild
-     * @param {Snowflake} guildId ID of guild
-     * @param {*} data Data to edit with
+     * @param guildId ID of guild
+     * @param data Data to edit with
      */
     async edit(guildId, data) {
         return await this.rest.request('PATCH', `/guilds/${guildId}`, {
@@ -32,22 +32,22 @@ class GuildsResource {
     }
     /**
      * Leaves a guild
-     * @param {Snowflake} guildId ID of guild
+     * @param guildId ID of guild
      */
     async leave(guildId) {
         return this.rest.request('DELETE', `/users/@me/guilds/${guildId}`);
     }
     /**
      * Gets a list of guilds
-     * @param {Snowflake} guildId ID of guild
+     * @param guildId ID of guild
      */
     async getRoles(guildId) {
         return await this.rest.request('GET', `/guilds/${guildId}/roles`);
     }
     /**
      * Creates a new role
-     * @param {Snowflake} guildId ID of guild
-     * @param {*} data Data for new role
+     * @param guildId ID of guild
+     * @param data Data for new role
      */
     async createRole(guildId, data) {
         return await this.rest.request('POST', `/guilds/${guildId}/roles`, {
@@ -56,9 +56,9 @@ class GuildsResource {
     }
     /**
      * Edits an existing role
-     * @param {Snowflake} guildId ID of guild
-     * @param {Snowflake} roleId ID of role
-     * @param {*} data New data for role
+     * @param guildId ID of guild
+     * @param roleId ID of role
+     * @param data New data for role
      */
     async editRole(guildId, roleId, data) {
         return await this.rest.request('PATCH', `/guilds/${guildId}/roles/${roleId}`, {
@@ -67,8 +67,8 @@ class GuildsResource {
     }
     /**
      * Deletes a role
-     * @param {Snowflake} guildId ID of guild
-     * @param {Snowflake} roleId ID of role
+     * @param guildId ID of guild
+     * @param roleId ID of role
      */
     async deleteRole(guildId, roleId) {
         return this.rest.request('DELETE', `/guilds/${guildId}/roles/${roleId}`);

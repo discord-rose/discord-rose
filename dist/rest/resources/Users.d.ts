@@ -11,18 +11,18 @@ export declare class UsersResource {
     constructor(rest: RestManager);
     /**
      * Get user
-     * @param {Snowflake} userId User ID or defaults to own user
+     * @param userId User ID or defaults to own user
      */
     get(userId?: Snowflake | '@me'): Promise<RESTGetAPIUserResult>;
     /**
      * Creates a DM channel
-     * @param {Snowflake} userId ID of user
+     * @param userId ID of user
      */
     createDM(userId: Snowflake): Promise<RESTPostAPICurrentUserCreateDMChannelResult>;
     /**
      * Send a DM to user (create's DM channel for you)
-     * @param {Snowflake} userId ID of user
-     * @param {*} message Message data
+     * @param userId ID of user
+     * @param message Message data
      */
     dm(userId: Snowflake, message: MessageTypes): Promise<APIMessage>;
 }

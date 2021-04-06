@@ -56,9 +56,9 @@ class CommandContext {
     }
     /**
      * Replies to the invoking message
-     * @param {MessageTypes} data Data for message
-     * @param {boolean} mention Whether or not to mention the user in the reply (defaults to false)
-     * @returns {Promise<APIMessage>} Message sent
+     * @param data Data for message
+     * @param mention Whether or not to mention the user in the reply (defaults to false)
+     * @returns Message sent
      */
     async reply(data, mention = false) {
         if (!mention) {
@@ -75,15 +75,15 @@ class CommandContext {
     }
     /**
      * Sends a message in the same channel as invoking message
-     * @param {MessageTypes} data Data for message
-     * @returns {Promise<APIMessage>} Message sent
+     * @param data Data for message
+     * @returns Message sent
      */
     async send(data) {
         return await this.worker.api.messages.send(this.message.channel_id, data);
     }
     /**
      * Runs an error through sendback of commands.error
-     * @param {string} message Message of error
+     * @param message Message of error
      */
     error(message) {
         const error = new CommandHandler_1.CommandError(message);
@@ -92,16 +92,16 @@ class CommandContext {
     }
     /**
      * Sends a message to the user who ran the command
-     * @param {MessageTypes} data Data for message
+     * @param data Data for message
      */
     async dm(data) {
         return await this.worker.api.users.dm(this.message.author.id, data);
     }
     /**
      * Sends a file to the same channel
-     * @param {Buffer} file File buffer
-     * @param {MessageTypes} extra Extra message options
-     * @returns {Promise<APIMessage>}
+     * @param file File buffer
+     * @param extra Extra message options
+     * @returns
      */
     async sendFile(file, extra) {
         return await this.worker.api.messages.sendFile(this.message.channel_id, file, extra);
@@ -136,8 +136,8 @@ class CommandContext {
     }
     /**
      * Whether or not the running user has a certain permission
-     * @param {PermissionName} perms Permission to test
-     * @returns {boolean}
+     * @param perms Permission to test
+     * @returns
      */
     hasPerms(perms) {
         if (!this.guild)
@@ -146,8 +146,8 @@ class CommandContext {
     }
     /**
      * Whether or not the bot user has a certain permission
-     * @param {PermissionName} perms Permission to test
-     * @returns {boolean}
+     * @param perms Permission to test
+     * @returns
      */
     myPerms(perms) {
         if (!this.guild)

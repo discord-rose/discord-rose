@@ -10,16 +10,16 @@ class MembersResource {
     }
     /**
      * Gets a member
-     * @param {Snowflake} guildId ID of guild
-     * @param {Snowflake} roleId ID of member
+     * @param guildId ID of guild
+     * @param roleId ID of member
      */
     async get(guildId, memberId) {
         return await this.rest.request('GET', `/guilds/${guildId}/members/${memberId}`);
     }
     /**
      * Gets a list of members
-     * @param {Snowflake} guild ID of guild
-     * @param {*} query Query for search
+     * @param guild ID of guild
+     * @param query Query for search
      */
     async getMany(guildId, query) {
         return await this.rest.request('GET', `/guilds/${guildId}/members`, {
@@ -28,9 +28,9 @@ class MembersResource {
     }
     /**
      * Edits a member
-     * @param {Snowflake} guildId ID of guild
-     * @param {Snowflake} memberId ID of member
-     * @param {*} data New data for member
+     * @param guildId ID of guild
+     * @param memberId ID of member
+     * @param data New data for member
      */
     // eslint-disable-next-line @typescript-eslint/default-param-last
     async edit(guildId, memberId = '@me', data) {
@@ -40,9 +40,9 @@ class MembersResource {
     }
     /**
      * Sets a members nickname
-     * @param {Snowflake} guildId ID of guild
-     * @param {Snowflake} id ID of member (or leave blank for self)
-     * @param {string?} nick New nickname (null to reset)
+     * @param guildId ID of guild
+     * @param id ID of member (or leave blank for self)
+     * @param nick New nickname (null to reset)
      */
     async setNickname(guildId, memberId = '@me', nick) {
         if (memberId !== '@me')
@@ -64,18 +64,18 @@ class MembersResource {
     }
     /**
      * Removes a role from the member
-     * @param {Snowflake} guildId ID of guild
-     * @param {Snowflake} memberId ID of member
-     * @param {Snowflake} roleId ID of role
+     * @param guildId ID of guild
+     * @param memberId ID of member
+     * @param roleId ID of role
      */
     async removeRole(guildId, memberId, roleId) {
         return this.rest.request('DELETE', `/guilds/${guildId}/members/${memberId}/roles/${roleId}`);
     }
     /**
      * Kicks a member
-     * @param {Snowflake} guildId ID of guild
-     * @param {Snowflake} memberId ID of member
-     * @param {string?} reason Reason for kick
+     * @param guildId ID of guild
+     * @param memberId ID of member
+     * @param reason Reason for kick
      */
     async kick(guildId, memberId, reason) {
         return this.rest.request('DELETE', `/guilds/${guildId}/members/${memberId}`, {
@@ -84,9 +84,9 @@ class MembersResource {
     }
     /**
      * Bans a member
-     * @param {Snowflake} guildId ID of guild
-     * @param {Snowflake} memberId ID of member
-     * @param {*} extra Extra, reason for ban and since days of messages to remove
+     * @param guildId ID of guild
+     * @param memberId ID of member
+     * @param extra Extra, reason for ban and since days of messages to remove
      */
     async ban(guildId, memberId, extra) {
         return this.rest.request('PUT', `/guilds/${guildId}/bans/${memberId}`, {
@@ -95,8 +95,8 @@ class MembersResource {
     }
     /**
      * Unbans a member
-     * @param {Snowflake} guildId ID of guild
-     * @param {Snowflake} memberId ID of member
+     * @param guildId ID of guild
+     * @param memberId ID of member
      */
     async unban(guildId, memberId) {
         return this.rest.request('DELETE', `/guilds/${guildId}/bans/${memberId}`);

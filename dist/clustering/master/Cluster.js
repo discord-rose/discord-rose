@@ -86,21 +86,21 @@ class Cluster extends ThreadComms_1.ThreadComms {
     }
     /**
      * Restarts a shard
-     * @param {number} id ID of shard to restart
+     * @param id ID of shard to restart
      */
     restartShard(id) {
         this.tell('RESTART_SHARD', { id });
     }
     /**
      * Gets a guild from the clusters cache
-     * @param {Snowflake} id ID of guild
+     * @param id ID of guild
      */
     async getGuild(id) {
         return await this.sendCommand('GET_GUILD', { id });
     }
     /**
      * Evals code on the cluster
-     * @param {string} code Code to eval
+     * @param code Code to eval
      */
     async eval(code) {
         return await this.sendCommand('EVAL', code);

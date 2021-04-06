@@ -13,6 +13,9 @@ var ThreadMethod;
     ThreadMethod[ThreadMethod["RESPONSE"] = 1] = "RESPONSE";
     ThreadMethod[ThreadMethod["TELL"] = 2] = "TELL";
 })(ThreadMethod || (ThreadMethod = {}));
+/**
+ * State of a shard socket
+ */
 var State;
 (function (State) {
     State[State["DISCONNECTED"] = 0] = "DISCONNECTED";
@@ -74,9 +77,9 @@ class ThreadComms extends events_1.EventEmitter {
     }
     /**
      * Sends a command to the master
-     * @param {string} event Event to send
-     * @param {*} data Data to send along
-     * @returns {Promise<*>} Data back
+     * @param event Event to send
+     * @param data Data to send along
+     * @returns Data back
      * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
      */
     async sendCommand(event, data) {
@@ -101,8 +104,8 @@ class ThreadComms extends events_1.EventEmitter {
     }
     /**
      * Tells the master something
-     * @param {string} event Event to send
-     * @param {string} data Data to send
+     * @param event Event to send
+     * @param data Data to send
      * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
      */
     tell(event, data) {

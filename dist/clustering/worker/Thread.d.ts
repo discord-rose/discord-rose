@@ -16,48 +16,48 @@ export declare class Thread extends ThreadComms {
     destroy(): void;
     /**
      * Logs data to master's MasterOptions.log
-     * @param {string} message Message args
+     * @param message Message args
      */
     log(...messages: any[]): void;
     /**
      * Restarts a specific cluster
-     * @param {string} clusterId ID of cluster
+     * @param clusterId ID of cluster
      */
     restartCluster(clusterId: string): Promise<null>;
     /**
      * Restarts a specific shard
-     * @param {number} shardId ID of shard
+     * @param shardId ID of shard
      */
     restartShard(shardId: any): void;
     /**
      * Gets a cached guild across clusters
-     * @param {Snowflake} guildId ID of guild
-     * @returns {Promise<APIGuild>} The guild
+     * @param guildId ID of guild
+     * @returns The guild
      */
     getGuild(guildId: Snowflake): Promise<APIGuild>;
     /**
      * Eval code on every cluster
-     * @param {string} code Code to eval
-     * @returns {Promise<any[]>} Response
+     * @param code Code to eval
+     * @returns Response
      */
     broadcastEval(code: string): Promise<any[]>;
     /**
      * Evals code on the master process
-     * @param {string} code Code to eval
-     * @returns {Promise<*>} Response
+     * @param code Code to eval
+     * @returns Response
      */
     masterEval(code: string): Promise<any>;
     /**
      * Sends a webhook using the master process, useful for respecting ratelimits
-     * @param {Snowflake} webhookId ID of webhook
-     * @param {string} token Token of webhook
-     * @param {MessageTypes} data Data for message
-     * @returns {Promies<APIMessage>} Message sent
+     * @param webhookId ID of webhook
+     * @param token Token of webhook
+     * @param data Data for message
+     * @returns Message sent
      */
     sendWebhook(webhookId: Snowflake, token: string, data: MessageTypes): Promise<APIMessage>;
     /**
      * Gets an array of each clusters stats
-     * @returns {Promise<ClusterStats[]>} Stats
+     * @returns Stats
      */
     getStats(): Promise<ClusterStats[]>;
 }
