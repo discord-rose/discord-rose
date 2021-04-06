@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>CommandHandlerOptions | discord-rose</title>
+	<title>State | discord-rose</title>
 	<meta name="description" content="Documentation for discord-rose">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,137 +55,69 @@
 					<a href="../modules.html">discord-rose</a>
 				</li>
 				<li>
-					<a href="commandhandleroptions.html">CommandHandlerOptions</a>
+					<a href="state.html">State</a>
 				</li>
 			</ul>
-			<h1>Interface CommandHandlerOptions</h1>
+			<h1>Enumeration State</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<span class="target">CommandHandlerOptions</span>
-					</li>
-				</ul>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>State of a shard socket</p>
+					</div>
+				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="commandhandleroptions.html#bots" class="tsd-kind-icon">bots</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="commandhandleroptions.html#caseinsensitivecommand" class="tsd-kind-icon">case<wbr>Insensitive<wbr>Command</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="commandhandleroptions.html#caseinsensitiveprefix" class="tsd-kind-icon">case<wbr>Insensitive<wbr>Prefix</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="commandhandleroptions.html#default" class="tsd-kind-icon">default</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="commandhandleroptions.html#mentionprefix" class="tsd-kind-icon">mention<wbr>Prefix</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="state.html#connected" class="tsd-kind-icon">CONNECTED</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="state.html#connecting" class="tsd-kind-icon">CONNECTING</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="state.html#disconnected" class="tsd-kind-icon">DISCONNECTED</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="bots" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> bots</h3>
-					<div class="tsd-signature tsd-kind-icon">bots<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<h2>Enumeration members</h2>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="connected" class="tsd-anchor"></a>
+					<h3>CONNECTED</h3>
+					<div class="tsd-signature tsd-kind-icon">CONNECTED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 2</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/598b214/src/structures/CommandHandler.ts#L240">src/structures/CommandHandler.ts:240</a></li>
+							<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/598b214/src/clustering/ThreadComms.ts#L29">src/clustering/ThreadComms.ts:29</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Allow commands from bots</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>default</dt>
-							<dd><p>false</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="caseinsensitivecommand" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> case<wbr>Insensitive<wbr>Command</h3>
-					<div class="tsd-signature tsd-kind-icon">case<wbr>Insensitive<wbr>Command<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="connecting" class="tsd-anchor"></a>
+					<h3>CONNECTING</h3>
+					<div class="tsd-signature tsd-kind-icon">CONNECTING<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/598b214/src/structures/CommandHandler.ts#L255">src/structures/CommandHandler.ts:255</a></li>
+							<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/598b214/src/clustering/ThreadComms.ts#L28">src/clustering/ThreadComms.ts:28</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether or not the command is case insensitive</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>default</dt>
-							<dd><p>true</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="caseinsensitiveprefix" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> case<wbr>Insensitive<wbr>Prefix</h3>
-					<div class="tsd-signature tsd-kind-icon">case<wbr>Insensitive<wbr>Prefix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="disconnected" class="tsd-anchor"></a>
+					<h3>DISCONNECTED</h3>
+					<div class="tsd-signature tsd-kind-icon">DISCONNECTED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/598b214/src/structures/CommandHandler.ts#L250">src/structures/CommandHandler.ts:250</a></li>
+							<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/598b214/src/clustering/ThreadComms.ts#L27">src/clustering/ThreadComms.ts:27</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether or not the prefix is case insensitive</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>default</dt>
-							<dd><p>true</p>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="default" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> default</h3>
-					<div class="tsd-signature tsd-kind-icon">default<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><a href="commandoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">CommandOptions</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/598b214/src/structures/CommandHandler.ts#L235">src/structures/CommandHandler.ts:235</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Default CommandOptions (&#39;command&#39;, &#39;exec&#39;, and &#39;aliases&#39; cannot be defaulted)</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="mentionprefix" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> mention<wbr>Prefix</h3>
-					<div class="tsd-signature tsd-kind-icon">mention<wbr>Prefix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/598b214/src/structures/CommandHandler.ts#L245">src/structures/CommandHandler.ts:245</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether or not to respond to your bot&#39;s @Mention</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>default</dt>
-							<dd><p>true</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 			</section>
 		</div>
@@ -199,9 +131,24 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum">
-						<a href="../enums/state.html" class="tsd-kind-icon">State</a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-enum">
+						<a href="state.html" class="tsd-kind-icon">State</a>
+						<ul>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="state.html#connected" class="tsd-kind-icon">CONNECTED</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="state.html#connecting" class="tsd-kind-icon">CONNECTING</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="state.html#disconnected" class="tsd-kind-icon">DISCONNECTED</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-class">
 						<a href="../classes/channelsresource.html" class="tsd-kind-icon">Channels<wbr>Resource</a>
 					</li>
@@ -257,55 +204,34 @@
 						<a href="../classes/worker.html" class="tsd-kind-icon">Worker</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="botoptions.html" class="tsd-kind-icon">Bot<wbr>Options</a>
+						<a href="../interfaces/botoptions.html" class="tsd-kind-icon">Bot<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="clusterstats.html" class="tsd-kind-icon">Cluster<wbr>Stats</a>
-					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="commandhandleroptions.html" class="tsd-kind-icon">Command<wbr>Handler<wbr>Options</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="commandhandleroptions.html#bots" class="tsd-kind-icon">bots</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="commandhandleroptions.html#caseinsensitivecommand" class="tsd-kind-icon">case<wbr>Insensitive<wbr>Command</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="commandhandleroptions.html#caseinsensitiveprefix" class="tsd-kind-icon">case<wbr>Insensitive<wbr>Prefix</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="commandhandleroptions.html#default" class="tsd-kind-icon">default</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="commandhandleroptions.html#mentionprefix" class="tsd-kind-icon">mention<wbr>Prefix</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-				<ul class="after-current">
-					<li class=" tsd-kind-interface">
-						<a href="commandoptions.html" class="tsd-kind-icon">Command<wbr>Options</a>
+						<a href="../interfaces/clusterstats.html" class="tsd-kind-icon">Cluster<wbr>Stats</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="completebotoptions.html" class="tsd-kind-icon">Complete<wbr>Bot<wbr>Options</a>
+						<a href="../interfaces/commandhandleroptions.html" class="tsd-kind-icon">Command<wbr>Handler<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="discorddefaulteventmap.html" class="tsd-kind-icon">Discord<wbr>Default<wbr>Event<wbr>Map</a>
+						<a href="../interfaces/commandoptions.html" class="tsd-kind-icon">Command<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="discordeventmap.html" class="tsd-kind-icon">Discord<wbr>Event<wbr>Map</a>
+						<a href="../interfaces/completebotoptions.html" class="tsd-kind-icon">Complete<wbr>Bot<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="request.html" class="tsd-kind-icon">Request</a>
+						<a href="../interfaces/discorddefaulteventmap.html" class="tsd-kind-icon">Discord<wbr>Default<wbr>Event<wbr>Map</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="shardstats.html" class="tsd-kind-icon">Shard<wbr>Stats</a>
+						<a href="../interfaces/discordeventmap.html" class="tsd-kind-icon">Discord<wbr>Event<wbr>Map</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="threadevents.html" class="tsd-kind-icon">Thread<wbr>Events</a>
+						<a href="../interfaces/request.html" class="tsd-kind-icon">Request</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/shardstats.html" class="tsd-kind-icon">Shard<wbr>Stats</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/threadevents.html" class="tsd-kind-icon">Thread<wbr>Events</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="../modules.html#cachedguild" class="tsd-kind-icon">Cached<wbr>Guild</a>
