@@ -7,7 +7,7 @@
     "build": "npm i && rm -rf ./dist && tsc",
     "lint": "eslint ./src",
     "prepublishOnly": "npm run build",
-    "docs": "typedoc --name discord-rose --json docs/docs.json"
+    "docs": "typedoc ./src --name discord-rose --json docs/docs.json"
   },
   "repository": {
     "type": "git",
