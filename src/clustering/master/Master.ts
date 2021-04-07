@@ -25,7 +25,7 @@ type Complete<T> = {
 }
 
 interface CompleteCacheOptions extends Complete<CacheOptions> {
-  channels: ChannelType[]
+  channels: ChannelType[] | true
 }
 
 export interface CompleteBotOptions extends Complete<BotOptions> {
@@ -166,7 +166,7 @@ export class Master extends Emitter<{
     } as CompleteBotOptions
 
     if ((this.options.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true) {
-      this.options.cache.channels = [ChannelType.DM, ChannelType.GROUP_DM, ChannelType.GUILD_CATEGORY, ChannelType.GUILD_NEWS, ChannelType.GUILD_STORE, ChannelType.GUILD_TEXT, ChannelType.GUILD_VOICE]
+      this.options.cache.channels = true
     } else if (this.options.cache.channels) {
       const channelCaches = (this.options.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true ? CachedChannelTypes : (this.options.cache.channels as unknown as typeof CachedChannelTypes[number]) ?? [] as Array<typeof CachedChannelTypes[number]>
       this.options.cache.channels = [] as ChannelType[]
@@ -348,7 +348,7 @@ export class Master extends Emitter<{
 interface CacheOptions {
   guilds?: boolean
   roles?: boolean
-  channels?: boolean | Array<'text' | 'voice' | 'category'> | ChannelType[]
+  channels?: boolean | Array<'text' | 'voice' | 'category'> | ChannelType[] | true
   self?: boolean
   members?: boolean
   messages?: boolean
@@ -403,7 +403,7 @@ export interface BotOptions {
    */
   shardOffset?: number
   /**
-   * Cache options, this also sets your intents.
+   * Cache options, decide what to cache
    */
   cache?: CacheOptions
   /**
