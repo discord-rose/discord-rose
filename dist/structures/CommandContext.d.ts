@@ -61,7 +61,7 @@ export declare class CommandContext {
      * Runs an error through sendback of commands.error
      * @param message Message of error
      */
-    error(message: string): void;
+    error(message: string | Promise<string>): Promise<void>;
     /**
      * Sends a message to the user who ran the command
      * @param data Data for message

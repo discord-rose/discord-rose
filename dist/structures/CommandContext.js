@@ -85,8 +85,8 @@ class CommandContext {
      * Runs an error through sendback of commands.error
      * @param message Message of error
      */
-    error(message) {
-        const error = new CommandHandler_1.CommandError(message);
+    async error(message) {
+        const error = new CommandHandler_1.CommandError(await message);
         error.nonFatal = true;
         this.worker.commands.errorFunction(this, error);
     }
