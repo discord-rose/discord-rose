@@ -15,4 +15,10 @@ export declare function chunkShards(total: number, perCluster: number): number[]
  * @param currently Current array of ID's (ensure's no duplicated)
  */
 export declare function generateID(currently: string[]): string;
+/**
+ * Get the shard ID for a guild
+ * @param id ID of guild
+ * @param totalShards Total shards
+ */
 export declare function guildShard(id: Snowflake, totalShards: number): number;
+export declare function resolveString(data: any): string;

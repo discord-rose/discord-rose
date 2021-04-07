@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.guildShard = exports.generateID = exports.chunkShards = exports.wait = void 0;
+exports.resolveString = exports.guildShard = exports.generateID = exports.chunkShards = exports.wait = void 0;
 /**
  * Promisify a waiting time
  * @param time Time to wait
@@ -41,7 +41,20 @@ function generateID(currently) {
     return current;
 }
 exports.generateID = generateID;
+/**
+ * Get the shard ID for a guild
+ * @param id ID of guild
+ * @param totalShards Total shards
+ */
 function guildShard(id, totalShards) {
     return Number((BigInt(id) >> BigInt(22)) % BigInt(totalShards));
 }
 exports.guildShard = guildShard;
+function resolveString(data) {
+    if (typeof data === 'string')
+        return data;
+    if (Array.isArray(data))
+        return data.join(', ');
+    return String(data);
+}
+exports.resolveString = resolveString;
