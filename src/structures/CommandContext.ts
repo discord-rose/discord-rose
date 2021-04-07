@@ -93,8 +93,8 @@ export class CommandContext {
    * Runs an error through sendback of commands.error
    * @param message Message of error
    */
-  error (message: string): void {
-    const error = new CommandError(message)
+  async error (message: string | Promise<string>): Promise<void> {
+    const error = new CommandError(await message)
 
     error.nonFatal = true
 
