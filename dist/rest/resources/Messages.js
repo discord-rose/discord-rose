@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MessagesResource = void 0;
 const Embed_1 = require("../../structures/Embed");
+const util_1 = __importDefault(require("util"));
 const form_data_1 = __importDefault(require("form-data"));
 /**
  * Message resource
@@ -23,9 +24,9 @@ class MessagesResource {
                     embed: message.render()
                 };
         }
-        if (typeof message === 'string') {
+        else if (['bigint', 'function', 'number', 'string', 'symbol', 'undefined'].includes(typeof message)) {
             message = {
-                content: message
+                content: util_1.default.inspect(message)
             };
         }
         return message;
