@@ -110,7 +110,7 @@ class Shard {
                 var _a;
                 if (data.guild_id !== opts.guild_id)
                     return;
-                data.members.forEach(member => {
+                data.members.forEach((member) => {
                     if (!member.user)
                         return;
                     members.set(member.user.id, member);
