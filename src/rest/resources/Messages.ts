@@ -2,6 +2,7 @@ import { APIMessageReferenceSend, RESTGetAPIChannelMessageReactionUsersQuery, RE
 import { Embed } from '../../structures/Embed'
 import { RestManager } from '../Manager'
 
+import Util from 'util'
 import FormData from 'form-data'
 
 /**
@@ -9,7 +10,9 @@ import FormData from 'form-data'
  */
 type Emoji = string
 
-export type MessageTypes = RESTPostAPIChannelMessageJSONBody | RESTPostAPIWebhookWithTokenJSONBody | string | Embed
+type StringifiedMessageTypes = string | Function | bigint | number | symbol | undefined
+
+export type MessageTypes = RESTPostAPIChannelMessageJSONBody | RESTPostAPIWebhookWithTokenJSONBody | StringifiedMessageTypes | Embed
 
 /**
  * Message resource
@@ -26,14 +29,13 @@ export class MessagesResource {
         : {
             embed: message.render()
           }
-    }
-    if (typeof message === 'string') {
+    } else if (['bigint', 'function', 'number', 'string', 'symbol', 'undefined'].includes(typeof message)) {
       message = {
-        content: message
+        content: Util.inspect(message as StringifiedMessageTypes)
       }
     }
 
-    return message
+    return message as RESTPostAPIWebhookWithTokenJSONBody | RESTPostAPIChannelMessageJSONBody
   }
 
   /**
