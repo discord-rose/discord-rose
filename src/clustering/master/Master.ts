@@ -21,7 +21,7 @@ import { Emitter } from '../../utils/Emitter'
 const CachedChannelTypes = ['text', 'voice', 'category'] as const
 
 type Complete<T> = {
-  [P in keyof Required<T>]: Pick<T, P> extends Required<Pick<T, P>> ? T[P] : (T[P] | undefined);
+  [P in keyof Required<T>]: Pick<T, P> extends Required<Pick<T, P>> ? T[P] : (T[P] | undefined)
 }
 
 interface CompleteCacheOptions extends Complete<CacheOptions> {

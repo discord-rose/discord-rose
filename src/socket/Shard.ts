@@ -114,11 +114,11 @@ export class Shard {
       const listener = (data: GatewayGuildMembersChunkDispatchData): void => {
         if (data.guild_id !== opts.guild_id) return
 
-        data.members.forEach(member => {
+        data.members.forEach((member: GatewayGuildMemberAddDispatchData) => {
           if (!member.user) return
-          members.set(member.user.id, member);
-          (member as GatewayGuildMemberAddDispatchData).guild_id = opts.guild_id
-          this.worker.cacheManager.emit('GUILD_MEMBER_ADD', member as GatewayGuildMemberAddDispatchData)
+          members.set(member.user.id, member)
+          member.guild_id = opts.guild_id
+          this.worker.cacheManager.emit('GUILD_MEMBER_ADD', member)
         })
 
         if (data.chunk_index === (data.chunk_count ?? 0) - 1) {
