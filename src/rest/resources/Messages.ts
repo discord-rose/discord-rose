@@ -2,7 +2,7 @@ import { APIMessageReferenceSend, RESTGetAPIChannelMessageReactionUsersQuery, RE
 import { Embed } from '../../structures/Embed'
 import { RestManager } from '../Manager'
 
-import { inspect } from 'util'
+import Util from 'util'
 import FormData from 'form-data'
 
 /**
@@ -31,9 +31,9 @@ export class MessagesResource {
       message = {
         content: message
       }
-    } else if (['number', 'undefined', 'bigint', 'function'].includes(typeof message)) {
+    } else if (['number', 'undefined', 'bigint', 'function', 'symbol'].includes(typeof message)) {
       message = {
-        content: inspect(message)
+        content: Util.inspect(message)
       }
     }
 
