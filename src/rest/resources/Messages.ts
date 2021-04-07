@@ -27,11 +27,7 @@ export class MessagesResource {
         : {
             embed: message.render()
           }
-    } else if (typeof message === 'string') {
-      message = {
-        content: message
-      }
-    } else if (['number', 'undefined', 'bigint', 'function', 'symbol'].includes(typeof message)) {
+    } else if (['bigint', 'function', 'number', 'string', 'symbol', 'undefined'].includes(typeof message)) {
       message = {
         content: Util.inspect(message)
       }
