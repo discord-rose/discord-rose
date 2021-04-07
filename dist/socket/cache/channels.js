@@ -8,7 +8,7 @@ const collection_1 = __importDefault(require("@discordjs/collection"));
 function channels(events, worker) {
     worker.channels = new collection_1.default();
     events.on('CHANNEL_CREATE', (c) => {
-        if (!worker.options.cache.channels.includes(c.type))
+        if (worker.options.cache.channels !== true && !worker.options.cache.channels.includes(c.type))
             return;
         let channel = Object.assign({}, c);
         if (worker.options.cacheControl.channels) {
@@ -23,7 +23,7 @@ function channels(events, worker) {
         worker.channels.set(channel.id, channel);
     });
     events.on('CHANNEL_UPDATE', (c) => {
-        if (!worker.options.cache.channels.includes(c.type))
+        if (worker.options.cache.channels !== true && !worker.options.cache.channels.includes(c.type))
             return;
         const channel = Object.assign({}, c);
         let currentChannel = worker.channels.get(channel.id);

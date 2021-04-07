@@ -109,7 +109,7 @@ class Master extends Emitter_1.Emitter {
             log: options.log
         };
         if (((_x = this.options.cache) === null || _x === void 0 ? void 0 : _x.channels) === true) {
-            this.options.cache.channels = [1 /* DM */, 3 /* GROUP_DM */, 4 /* GUILD_CATEGORY */, 5 /* GUILD_NEWS */, 6 /* GUILD_STORE */, 0 /* GUILD_TEXT */, 2 /* GUILD_VOICE */];
+            this.options.cache.channels = true;
         }
         else if (this.options.cache.channels) {
             const channelCaches = ((_y = this.options.cache) === null || _y === void 0 ? void 0 : _y.channels) === true ? CachedChannelTypes : (_z = this.options.cache.channels) !== null && _z !== void 0 ? _z : [];

@@ -10,7 +10,7 @@ declare type Complete<T> = {
     [P in keyof Required<T>]: Pick<T, P> extends Required<Pick<T, P>> ? T[P] : (T[P] | undefined);
 };
 interface CompleteCacheOptions extends Complete<CacheOptions> {
-    channels: ChannelType[];
+    channels: ChannelType[] | true;
 }
 export interface CompleteBotOptions extends Complete<BotOptions> {
     cache: CompleteCacheOptions;
@@ -155,7 +155,7 @@ export declare class Master extends Emitter<{
 interface CacheOptions {
     guilds?: boolean;
     roles?: boolean;
-    channels?: boolean | Array<'text' | 'voice' | 'category'> | ChannelType[];
+    channels?: boolean | Array<'text' | 'voice' | 'category'> | ChannelType[] | true;
     self?: boolean;
     members?: boolean;
     messages?: boolean;
@@ -207,7 +207,7 @@ export interface BotOptions {
      */
     shardOffset?: number;
     /**
-     * Cache options, this also sets your intents.
+     * Cache options, decide what to cache
      */
     cache?: CacheOptions;
     /**
