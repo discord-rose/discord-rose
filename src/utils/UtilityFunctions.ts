@@ -42,6 +42,18 @@ export function generateID (currently: string[]): string {
   return current
 }
 
+/**
+ * Get the shard ID for a guild
+ * @param id ID of guild
+ * @param totalShards Total shards
+ */
 export function guildShard (id: Snowflake, totalShards: number): number {
   return Number((BigInt(id) >> BigInt(22)) % BigInt(totalShards))
+}
+
+export function resolveString (data: any): string {
+  if (typeof data === 'string') return data
+  if (Array.isArray(data)) return data.join(', ')
+
+  return String(data)
 }
