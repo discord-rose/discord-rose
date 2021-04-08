@@ -105,6 +105,9 @@ class RestManager {
             bucket.add({ method, route, options, resolve, reject });
         });
     }
+    /**
+     * @internal
+     */
     async make(opts) {
         var _a;
         const method = opts.method;

@@ -10,10 +10,11 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PermissionsUtils = exports.State = void 0;
+exports.PermissionsUtils = exports.Master = exports.State = void 0;
 var ThreadComms_1 = require("./clustering/ThreadComms");
 Object.defineProperty(exports, "State", { enumerable: true, get: function () { return ThreadComms_1.State; } });
-__exportStar(require("./clustering/master/Master"), exports);
+var Master_1 = require("./clustering/master/Master");
+Object.defineProperty(exports, "Master", { enumerable: true, get: function () { return Master_1.Master; } });
 __exportStar(require("./clustering/master/Cluster"), exports);
 __exportStar(require("./clustering/master/Sharder"), exports);
 __exportStar(require("./clustering/worker/Worker"), exports);
@@ -32,4 +33,3 @@ __exportStar(require("./structures/CommandHandler"), exports);
 __exportStar(require("./structures/CommandContext"), exports);
 var Permissions_1 = require("./utils/Permissions");
 Object.defineProperty(exports, "PermissionsUtils", { enumerable: true, get: function () { return Permissions_1.PermissionsUtils; } });
-__exportStar(require("./typings/Discord"), exports);

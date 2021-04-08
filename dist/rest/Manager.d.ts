@@ -59,6 +59,9 @@ export declare class RestManager {
      * @param options Other options
      */
     request(method: Methods, route: string, options?: RequestOptions): Promise<any>;
+    /**
+     * @internal
+     */
     make(opts: Request): Promise<{
         res: Response;
         json: any;

@@ -9,21 +9,13 @@ const CommandHandler_1 = require("./CommandHandler");
  * Context holding all information about a ran command and utility functions
  */
 class CommandContext {
-    /**
-     * Command Context
-     * @param worker Worker
-     * @param message Message object
-     * @param command Command object
-     * @param prefix Prefix that the command was ran via
-     * @param ran The actual ran command including aliases
-     */
-    constructor(worker, message, command, prefix, ran) {
-        this.worker = worker;
-        this.message = message;
-        this.command = command;
-        this.prefix = prefix;
-        this.ran = ran;
-        this.args = [];
+    constructor(opts) {
+        this.worker = opts.worker;
+        this.message = opts.message;
+        this.command = opts.command;
+        this.prefix = opts.prefix;
+        this.ran = opts.ran;
+        this.args = opts.args;
     }
     /**
      * Guild where the message was sent

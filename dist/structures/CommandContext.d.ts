@@ -9,21 +9,38 @@ import { CachedGuild } from '../typings/Discord';
  * Context holding all information about a ran command and utility functions
  */
 export declare class CommandContext {
-    worker: Worker;
-    message: APIMessage;
-    command: CommandOptions;
-    prefix: string;
-    ran: string;
+    /**
+     * Command arguments
+     */
     args: string[];
     /**
-     * Command Context
-     * @param worker Worker
-     * @param message Message object
-     * @param command Command object
-     * @param prefix Prefix that the command was ran via
-     * @param ran The actual ran command including aliases
+     * Worker
      */
-    constructor(worker: Worker, message: APIMessage, command: CommandOptions, prefix: string, ran: string);
+    worker: Worker;
+    /**
+     * Message which command was ran with
+     */
+    message: APIMessage;
+    /**
+     * Command options object
+     */
+    command: CommandOptions;
+    /**
+     * Prefix command was ran with
+     */
+    prefix: string;
+    /**
+     * Actual command that was ran (including possible aliases)
+     */
+    ran: string;
+    constructor(opts: {
+        worker: Worker;
+        message: APIMessage;
+        command: CommandOptions;
+        prefix: string;
+        ran: string;
+        args: string[];
+    });
     /**
      * Guild where the message was sent
      * @type {CachedGuild}
