@@ -26,7 +26,7 @@
   "dependencies": {
     "@discordjs/collection": "^0.1.6",
     "@jpbberry/cache": "^1.0.4",
-    "discord-api-types": "^0.12.1",
+    "discord-api-types": "^0.13.3",
     "form-data": "^3.0.0",
     "node-fetch": "^2.6.1",
     "querystring": "^0.2.0",
