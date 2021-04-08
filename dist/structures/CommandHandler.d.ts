@@ -27,6 +27,11 @@ export declare class CommandHandler {
     prefixFunction?: ((message: APIMessage) => Promise<string | string[]> | string | string[]);
     errorFunction: (ctx: ctx, err: CommandError) => void;
     /**
+     * Load a directory of CommandOptions commands (will also load sub-folders)
+     * @param directory Absolute directory full of command files
+     */
+    load(directory: string): this;
+    /**
      * Sets Command Handler options
      * @param opts Options
      * @returns this

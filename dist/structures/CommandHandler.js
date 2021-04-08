@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommandHandler = exports.CommandError = void 0;
 const CommandContext_1 = require("./CommandContext");
 const collection_1 = __importDefault(require("@discordjs/collection"));
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 /**
  * Error in command
  */
@@ -43,6 +45,31 @@ class CommandHandler {
             err.message += ` (While Running Command: ${String(ctx.command.command)})`;
             console.error(err);
         };
+    }
+    /**
+     * Load a directory of CommandOptions commands (will also load sub-folders)
+     * @param directory Absolute directory full of command files
+     */
+    load(directory) {
+        if (!path_1.default.isAbsolute(directory))
+            directory = path_1.default.resolve(process.cwd(), directory);
+        const files = fs_1.default.readdirSync(directory, { withFileTypes: true });
+        files.forEach(file => {
+            if (file.isDirectory())
+                return this.load(path_1.default.resolve(directory, file.name));
+            if (!file.name.endsWith('.js'))
+                return;
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+            delete require.cache[require.resolve(path_1.default.resolve(directory, file.name))];
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            let command = require(path_1.default.resolve(directory, file.name));
+            if (!command)
+                return;
+            if (command.default)
+                command = command.default;
+            this.add(command);
+        });
+        return this;
     }
     /**
      * Sets Command Handler options
