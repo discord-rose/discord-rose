@@ -5,6 +5,9 @@ import { CommandContext } from './CommandContext'
 import { CommandOptions, CommandType, CommandContext as ctx, Worker } from '../typings/lib'
 import Collection from '@discordjs/collection'
 
+import fs from 'fs'
+import path from 'path'
+
 type MiddlewareFunction = (ctx: ctx) => boolean | Promise<boolean>
 
 /**
@@ -50,6 +53,36 @@ export class CommandHandler {
 
     err.message += ` (While Running Command: ${String(ctx.command.command)})`
     console.error(err)
+  }
+
+  /**
+   * Load a directory of CommandOptions commands (will also load sub-folders)
+   * @param directory Absolute directory full of command files
+   */
+  load (directory: string): this {
+    if (!path.isAbsolute(directory)) directory = path.resolve(process.cwd(), directory)
+
+    const files = fs.readdirSync(directory, { withFileTypes: true })
+
+    files.forEach(file => {
+      if (file.isDirectory()) return this.load(path.resolve(directory, file.name))
+
+      if (!file.name.endsWith('.js')) return
+
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      delete require.cache[require.resolve(path.resolve(directory, file.name))]
+
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      let command = require(path.resolve(directory, file.name))
+
+      if (!command) return
+
+      if (command.default) command = command.default
+
+      this.add(command)
+    })
+
+    return this
   }
 
   /**
