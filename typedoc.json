@@ -3,5 +3,8 @@
   "entryPoints": ["src/index.ts"],
   "readme": "./README.md",
   "name": "discord-rose",
-  "excludeExternals": false
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "theme": "minimal"
 }

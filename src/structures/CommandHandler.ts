@@ -240,8 +240,14 @@ export class CommandHandler {
     const cmd = this.find(command)
     if (!cmd) return
 
-    const ctx = new this.CommandContext(this.worker, data, cmd, prefix, command)
-    ctx.args = args
+    const ctx = new this.CommandContext({
+      worker: this.worker,
+      message: data,
+      command: cmd,
+      prefix,
+      ran: command,
+      args: args
+    })
 
     try {
       for (const midFn of this.middlewares) {

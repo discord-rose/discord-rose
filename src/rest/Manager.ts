@@ -92,6 +92,9 @@ export class RestManager {
     })
   }
 
+  /**
+   * @internal
+   */
   public async make (opts: Request): Promise<{
     res: Response
     json: any

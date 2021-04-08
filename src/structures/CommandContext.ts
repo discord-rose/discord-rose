@@ -14,17 +14,39 @@ import { CommandError } from './CommandHandler'
  * Context holding all information about a ran command and utility functions
  */
 export class CommandContext {
-  public args: string[] = []
-
   /**
-   * Command Context
-   * @param worker Worker
-   * @param message Message object
-   * @param command Command object
-   * @param prefix Prefix that the command was ran via
-   * @param ran The actual ran command including aliases
+   * Command arguments
    */
-  constructor (public worker: Worker, public message: APIMessage, public command: CommandOptions, public prefix: string, public ran: string) {}
+  public args: string[]
+  /**
+   * Worker
+   */
+  public worker: Worker
+  /**
+   * Message which command was ran with
+   */
+  public message: APIMessage
+  /**
+   * Command options object
+   */
+  public command: CommandOptions
+  /**
+   * Prefix command was ran with
+   */
+  public prefix: string
+  /**
+   * Actual command that was ran (including possible aliases)
+   */
+  public ran: string
+
+  constructor (opts: { worker: Worker, message: APIMessage, command: CommandOptions, prefix: string, ran: string, args: string[] }) {
+    this.worker = opts.worker
+    this.message = opts.message
+    this.command = opts.command
+    this.prefix = opts.prefix
+    this.ran = opts.ran
+    this.args = opts.args
+  }
 
   /**
    * Guild where the message was sent
