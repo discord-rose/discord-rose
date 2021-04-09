@@ -1,5 +1,5 @@
 export { ClusterStats, ShardStats, State, ThreadEvents } from './clustering/ThreadComms';
-export { BotOptions, Master } from './clustering/master/Master';
+export { BotOptions, Master, CacheOptions, CacheControlOptions } from './clustering/master/Master';
 export * from './clustering/master/Cluster';
 export * from './clustering/master/Sharder';
 export * from './clustering/worker/Worker';
@@ -18,5 +18,5 @@ export * from './structures/CommandHandler';
 export * from './structures/CommandContext';
 export { PermissionsUtils } from './utils/Permissions';
 export { CommandOptions, CommandType } from './typings/lib';
-export { DiscordEventMap, CachedGuild } from './typings/Discord';
+export { DiscordEventMap, CachedGuild, CachedVoiceState } from './typings/Discord';
 export { Snowflake } from 'discord-api-types';

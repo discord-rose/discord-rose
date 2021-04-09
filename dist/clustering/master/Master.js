@@ -25,7 +25,7 @@ class Master extends Emitter_1.Emitter {
      * @param options Options
      */
     constructor(fileName, options) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13;
         super();
         /**
          * Rest Manager (only set after running .start())
@@ -78,7 +78,8 @@ class Master extends Emitter_1.Emitter {
                     self: false,
                     members: false,
                     messages: false,
-                    users: false
+                    users: false,
+                    voiceStates: false
                 }
                 : {
                     guilds: (_e = (_d = options.cache) === null || _d === void 0 ? void 0 : _d.guilds) !== null && _e !== void 0 ? _e : true,
@@ -87,15 +88,16 @@ class Master extends Emitter_1.Emitter {
                     self: (_l = (_k = options.cache) === null || _k === void 0 ? void 0 : _k.self) !== null && _l !== void 0 ? _l : true,
                     members: (_o = (_m = options.cache) === null || _m === void 0 ? void 0 : _m.members) !== null && _o !== void 0 ? _o : false,
                     messages: (_q = (_p = options.cache) === null || _p === void 0 ? void 0 : _p.messages) !== null && _q !== void 0 ? _q : false,
-                    users: (_s = (_r = options.cache) === null || _r === void 0 ? void 0 : _r.users) !== null && _s !== void 0 ? _s : false
+                    users: (_s = (_r = options.cache) === null || _r === void 0 ? void 0 : _r.users) !== null && _s !== void 0 ? _s : false,
+                    voiceStates: (_u = (_t = options.cache) === null || _t === void 0 ? void 0 : _t.voiceStates) !== null && _u !== void 0 ? _u : false
                 },
-            cacheControl: (_t = options.cacheControl) !== null && _t !== void 0 ? _t : {
+            cacheControl: (_v = options.cacheControl) !== null && _v !== void 0 ? _v : {
                 channels: false,
                 guilds: false,
                 members: false,
                 roles: false
             },
-            ws: (_u = options.ws) !== null && _u !== void 0 ? _u : '',
+            ws: (_w = options.ws) !== null && _w !== void 0 ? _w : '',
             intents: Array.isArray(options.intents)
                 ? options.intents.reduce((a, b) => a | Intents[b], 0)
                 : options.intents === true
@@ -104,22 +106,22 @@ class Master extends Emitter_1.Emitter {
                         ? options.intents
                         : Object.values(Intents).reduce((a, b) => a | b) & ~Intents.GUILD_MEMBERS & ~Intents.GUILD_PRESENCES,
             warnings: {
-                cachedIntents: (_w = (_v = options.warnings) === null || _v === void 0 ? void 0 : _v.cachedIntents) !== null && _w !== void 0 ? _w : true
+                cachedIntents: (_y = (_x = options.warnings) === null || _x === void 0 ? void 0 : _x.cachedIntents) !== null && _y !== void 0 ? _y : true
             },
             log: options.log
         };
-        if (((_x = this.options.cache) === null || _x === void 0 ? void 0 : _x.channels) === true) {
+        if (((_z = this.options.cache) === null || _z === void 0 ? void 0 : _z.channels) === true) {
             this.options.cache.channels = true;
         }
         else if (this.options.cache.channels) {
-            const channelCaches = ((_y = this.options.cache) === null || _y === void 0 ? void 0 : _y.channels) === true ? CachedChannelTypes : (_z = this.options.cache.channels) !== null && _z !== void 0 ? _z : [];
+            const channelCaches = ((_0 = this.options.cache) === null || _0 === void 0 ? void 0 : _0.channels) === true ? CachedChannelTypes : (_1 = this.options.cache.channels) !== null && _1 !== void 0 ? _1 : [];
             this.options.cache.channels = [];
             if (channelCaches.includes('text'))
-                (_1 = (_0 = this.options.cache) === null || _0 === void 0 ? void 0 : _0.channels) === null || _1 === void 0 ? void 0 : _1.push(5 /* GUILD_NEWS */, 0 /* GUILD_TEXT */);
+                (_3 = (_2 = this.options.cache) === null || _2 === void 0 ? void 0 : _2.channels) === null || _3 === void 0 ? void 0 : _3.push(5 /* GUILD_NEWS */, 0 /* GUILD_TEXT */);
             if (channelCaches.includes('voice'))
-                (_3 = (_2 = this.options.cache) === null || _2 === void 0 ? void 0 : _2.channels) === null || _3 === void 0 ? void 0 : _3.push(2 /* GUILD_VOICE */);
+                (_5 = (_4 = this.options.cache) === null || _4 === void 0 ? void 0 : _4.channels) === null || _5 === void 0 ? void 0 : _5.push(2 /* GUILD_VOICE */);
             if (channelCaches.includes('category'))
-                (_5 = (_4 = this.options.cache) === null || _4 === void 0 ? void 0 : _4.channels) === null || _5 === void 0 ? void 0 : _5.push(4 /* GUILD_CATEGORY */);
+                (_7 = (_6 = this.options.cache) === null || _6 === void 0 ? void 0 : _6.channels) === null || _7 === void 0 ? void 0 : _7.push(4 /* GUILD_CATEGORY */);
         }
         this.log = typeof options.log === 'undefined'
             ? (msg, cluster) => {
@@ -128,17 +130,17 @@ class Master extends Emitter_1.Emitter {
             : options.log;
         if (!this.log)
             this.log = () => { };
-        if ((_6 = this.options.warnings) === null || _6 === void 0 ? void 0 : _6.cachedIntents) {
+        if ((_8 = this.options.warnings) === null || _8 === void 0 ? void 0 : _8.cachedIntents) {
             const warn = (key, intent) => console.warn(`WARNING: CacheOptions.${key} was turned on, but is missing the ${intent} intent. Meaning your cache with be empty. Either turn this on, or if it's intentional set Options.warnings.cachedIntents to false.`);
-            if (((_7 = this.options.cache) === null || _7 === void 0 ? void 0 : _7.guilds) && ((this.options.intents & Intents.GUILDS) === 0))
+            if (((_9 = this.options.cache) === null || _9 === void 0 ? void 0 : _9.guilds) && ((this.options.intents & Intents.GUILDS) === 0))
                 warn('guilds', 'GUILDS');
-            if (((_8 = this.options.cache) === null || _8 === void 0 ? void 0 : _8.roles) && ((this.options.intents & Intents.GUILDS) === 0))
+            if (((_10 = this.options.cache) === null || _10 === void 0 ? void 0 : _10.roles) && ((this.options.intents & Intents.GUILDS) === 0))
                 warn('roles', 'GUILDS');
-            if (((_9 = this.options.cache) === null || _9 === void 0 ? void 0 : _9.channels) && ((this.options.intents & Intents.GUILDS) === 0))
+            if (((_11 = this.options.cache) === null || _11 === void 0 ? void 0 : _11.channels) && ((this.options.intents & Intents.GUILDS) === 0))
                 warn('channels', 'GUILDS');
-            if (((_10 = this.options.cache) === null || _10 === void 0 ? void 0 : _10.members) && ((this.options.intents & Intents.GUILD_MEMBERS) === 0))
+            if (((_12 = this.options.cache) === null || _12 === void 0 ? void 0 : _12.members) && ((this.options.intents & Intents.GUILD_MEMBERS) === 0))
                 warn('members', 'GUILD_MEMBERS');
-            if (((_11 = this.options.cache) === null || _11 === void 0 ? void 0 : _11.messages) && ((this.options.intents & Intents.GUILD_MESSAGES) === 0))
+            if (((_13 = this.options.cache) === null || _13 === void 0 ? void 0 : _13.messages) && ((this.options.intents & Intents.GUILD_MESSAGES) === 0))
                 warn('messages', 'GUILD_MESSAGES');
         }
         const keys = Object.keys(handlers_1.handlers);

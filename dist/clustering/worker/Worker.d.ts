@@ -1,6 +1,6 @@
 import { CompleteBotOptions } from '../master/Master';
 import { Thread } from './Thread';
-import { DiscordEventMap, CachedGuild } from '../../typings/Discord';
+import { DiscordEventMap, CachedGuild, CachedVoiceState } from '../../typings/Discord';
 import { Emitter } from '../../utils/Emitter';
 import Collection from '@discordjs/collection';
 import { Shard } from '../../socket/Shard';
@@ -67,6 +67,10 @@ export declare class Worker extends Emitter<DiscordEventMap> {
      * @type {Collection<Snowflake, APIUser>}
      */
     users: Collection<Snowflake, DiscordEventMap['USER_UPDATE']>;
+    /**
+     * Cached voice states
+     */
+    voiceStates: Collection<Snowflake, CachedVoiceState>;
     /**
      * Self user
      * @type {APIUser}

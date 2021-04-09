@@ -152,16 +152,63 @@ export declare class Master extends Emitter<{
      */
     guildToCluster(guildId: Snowflake): Cluster;
 }
-interface CacheOptions {
+/**
+ * Change what to cache
+ */
+export interface CacheOptions {
+    /**
+     * Caches guilds
+     * @default true
+     * @sets Worker.guilds = Collection<Snowflake (Guild ID), APIGuild>
+     */
     guilds?: boolean;
+    /**
+     * Caches roles
+     * @default true
+     * @sets Worker.guildRoles = Collection<Snowflake (Guild ID), Collection<Snowflake (Role ID), APIRole>>
+     */
     roles?: boolean;
+    /**
+     * Caches channels, can also be an array of channel type categories
+     * @default true
+     * @sets Worker.channels = Collection<Snowflake (Channel ID), APIChannel>
+     */
     channels?: boolean | Array<'text' | 'voice' | 'category'> | ChannelType[] | true;
+    /**
+     * Caches self member
+     * @default true
+     * @sets Worker.selfMember = Collection<Snowflake (Guild ID), APIMember>
+     */
     self?: boolean;
+    /**
+     * Caches members
+     * @default false
+     * @sets Worker.members = Collection<Snowflake (Guild ID), Collection<Snowflake (User ID), APIMember>>
+     */
     members?: boolean;
+    /**
+     * Caches messages
+     * @default false
+     * @sets Worker.messages = Collection<Snowflake (Channel ID), Collection<Snowflake (Message ID), APIMessage>>
+     */
     messages?: boolean;
+    /**
+     * Caches users
+     * @default false
+     * @sets Worker.users = Collection<Snowflake (User ID), APIUser>
+     */
     users?: boolean;
+    /**
+     * Caches voices states
+     * @default false
+     * @sets Worker.voiceStates = Collection<Snowflake (Channel ID), CachedVoiceState>
+     */
+    voiceStates?: boolean;
 }
-interface CacheControlOptions {
+/**
+ * Changes what properties of a cache should be kept
+ */
+export interface CacheControlOptions {
     guilds?: Array<keyof CachedGuild> | false;
     roles?: Array<keyof DiscordEventMap['GUILD_ROLE_CREATE']['role']> | false;
     channels?: Array<keyof DiscordEventMap['CHANNEL_CREATE']> | false;

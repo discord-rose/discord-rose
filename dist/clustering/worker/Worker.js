@@ -74,6 +74,10 @@ class Worker extends Emitter_1.Emitter {
          */
         this.users = new collection_1.default();
         /**
+         * Cached voice states
+         */
+        this.voiceStates = new collection_1.default();
+        /**
          * Self user
          * @type {APIUser}
          */

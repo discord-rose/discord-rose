@@ -9,6 +9,7 @@ const channels_1 = require("./cache/channels");
 const self_1 = require("./cache/self");
 const members_1 = require("./cache/members");
 const users_1 = require("./cache/users");
+const voiceStates_1 = require("./cache/voiceStates");
 const Emitter_1 = require("../utils/Emitter");
 const createNulledCollection = (cache) => {
     return new Proxy(() => { }, {
@@ -56,6 +57,10 @@ class CacheManager extends Emitter_1.Emitter {
             users_1.users(this, this.worker);
         else
             worker.users = createNulledCollection('users');
+        if (cache.voiceStates)
+            voiceStates_1.voiceStates(this, this.worker);
+        else
+            worker.voiceStates = createNulledCollection('voiceStates');
     }
 }
 exports.CacheManager = CacheManager;
