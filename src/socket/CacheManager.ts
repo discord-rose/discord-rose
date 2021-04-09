@@ -9,6 +9,7 @@ import { channels } from './cache/channels'
 import { self } from './cache/self'
 import { members } from './cache/members'
 import { users } from './cache/users'
+import { voiceStates } from './cache/voiceStates'
 
 import { Emitter } from '../utils/Emitter'
 import Collection from '@discordjs/collection'
@@ -56,5 +57,8 @@ export class CacheManager extends Emitter<DiscordEventMap> {
 
     if (cache.users) users(this, this.worker)
     else worker.users = createNulledCollection('users')
+
+    if (cache.voiceStates) voiceStates(this, this.worker)
+    else worker.voiceStates = createNulledCollection('voiceStates')
   }
 }

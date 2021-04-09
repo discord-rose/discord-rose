@@ -2,7 +2,7 @@
 import { CompleteBotOptions } from '../master/Master'
 import { Thread } from './Thread'
 
-import { DiscordEventMap, CachedGuild } from '../../typings/Discord'
+import { DiscordEventMap, CachedGuild, CachedVoiceState } from '../../typings/Discord'
 import { Emitter } from '../../utils/Emitter'
 import Collection from '@discordjs/collection'
 
@@ -78,6 +78,10 @@ export class Worker extends Emitter<DiscordEventMap> {
    * @type {Collection<Snowflake, APIUser>}
    */
   public users: Collection<Snowflake, DiscordEventMap['USER_UPDATE']> = new Collection()
+  /**
+   * Cached voice states
+   */
+  public voiceStates: Collection<Snowflake, CachedVoiceState> = new Collection()
 
   /**
    * Self user
