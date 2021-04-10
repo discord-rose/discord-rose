@@ -27,7 +27,7 @@ var State;
  */
 class ThreadComms extends events_1.EventEmitter {
     constructor() {
-        super(...arguments);
+        super();
         this.comms = null;
         this.commands = new collection_1.default();
         /**
@@ -35,6 +35,7 @@ class ThreadComms extends events_1.EventEmitter {
          * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
          */
         this.on = this.on;
+        this.on('KILL', () => process.exit(5));
     }
     emit(event, data, resolve) {
         super.emit('*', { event, d: data }, resolve);
@@ -64,7 +65,6 @@ class ThreadComms extends events_1.EventEmitter {
                 }
             }
         });
-        this.on('KILL', () => process.exit(5));
     }
     _send(op, e, i, d) {
         var _a;

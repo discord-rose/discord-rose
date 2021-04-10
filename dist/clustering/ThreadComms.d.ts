@@ -135,6 +135,7 @@ export declare class ThreadComms extends EventEmitter {
      */
     on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => this;
     emit<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>): boolean;
+    constructor();
     register(comms: Worker | MessagePort): void;
     private _send;
     /**
