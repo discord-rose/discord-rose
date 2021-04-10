@@ -8,7 +8,7 @@ import FormData from 'form-data'
 /**
  * ID of custom emoji or unicode emoji
  */
-type Emoji = string
+export type Emoji = string | Snowflake
 
 type StringifiedMessageTypes = string | Function | bigint | number | symbol | undefined
 
@@ -125,7 +125,7 @@ export class MessagesResource {
   }
 
   private _parseEmoji (emoji: Emoji): string {
-    if (emoji.match(/^[0-9]+$/)) return `<:unknown:${emoji}>`
+    if (emoji.match(/^[0-9]+$/)) return `unknown:${emoji}`
     return encodeURIComponent(emoji)
   }
 

@@ -1,7 +1,7 @@
 import { APIGuildMember, APIMessage, APIChannel, APIRole, Snowflake } from 'discord-api-types'
 
 import { Embed } from './Embed'
-import { MessageTypes, MessagesResource } from '../rest/resources/Messages'
+import { MessageTypes, MessagesResource, Emoji } from '../rest/resources/Messages'
 
 import { CommandOptions, Worker } from '../typings/lib'
 
@@ -109,6 +109,14 @@ export class CommandContext {
    */
   async send (data: MessageTypes): Promise<APIMessage> {
     return await this.worker.api.messages.send(this.message.channel_id, data)
+  }
+
+  /**
+   * React to the invoking command message
+   * @param emoji ID of custom emoji or unicode emoji
+   */
+  async react (emoji: Emoji): Promise<never> {
+    return await this.worker.api.messages.react(this.message.channel_id, this.message.id, emoji)
   }
 
   /**

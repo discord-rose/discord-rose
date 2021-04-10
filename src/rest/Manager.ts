@@ -98,7 +98,7 @@ export class RestManager {
   public async make (opts: Request): Promise<{
     res: Response
     json: any
-  }> {
+  }|never> {
     const method: Methods = opts.method
     const route: string = opts.route
     const options: RequestOptions = opts.options
@@ -122,7 +122,7 @@ export class RestManager {
       method, headers, body: options.body ? (options.parser ?? JSON.stringify)(options.body) : undefined
     })
 
-    const json = res.status === 204 ? { success: true } : await res.json()
+    const json = res.status === 204 ? null : await res.json()
 
     return { res, json }
   }
