@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { APIGuildMember, APIMessage, APIChannel } from 'discord-api-types';
 import { Embed } from './Embed';
-import { MessageTypes } from '../rest/resources/Messages';
+import { MessageTypes, Emoji } from '../rest/resources/Messages';
 import { CommandOptions, Worker } from '../typings/lib';
 import { bits } from '../utils/Permissions';
 import { CachedGuild } from '../typings/Discord';
@@ -74,6 +74,11 @@ export declare class CommandContext {
      * @returns Message sent
      */
     send(data: MessageTypes): Promise<APIMessage>;
+    /**
+     * React to the invoking command message
+     * @param emoji ID of custom emoji or unicode emoji
+     */
+    react(emoji: Emoji): Promise<never>;
     /**
      * Runs an error through sendback of commands.error
      * @param message Message of error

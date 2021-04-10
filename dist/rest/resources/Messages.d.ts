@@ -5,7 +5,7 @@ import { RestManager } from '../Manager';
 /**
  * ID of custom emoji or unicode emoji
  */
-declare type Emoji = string;
+export declare type Emoji = string | Snowflake;
 declare type StringifiedMessageTypes = string | Function | bigint | number | symbol | undefined;
 export declare type MessageTypes = RESTPostAPIChannelMessageJSONBody | RESTPostAPIWebhookWithTokenJSONBody | StringifiedMessageTypes | Embed;
 /**

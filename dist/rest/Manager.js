@@ -131,7 +131,7 @@ class RestManager {
             method, headers,
             body: options.body ? ((_a = options.parser) !== null && _a !== void 0 ? _a : JSON.stringify)(options.body) : undefined
         });
-        const json = res.status === 204 ? { success: true } : await res.json();
+        const json = res.status === 204 ? null : await res.json();
         return { res, json };
     }
 }

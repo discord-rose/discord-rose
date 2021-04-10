@@ -74,6 +74,13 @@ class CommandContext {
         return await this.worker.api.messages.send(this.message.channel_id, data);
     }
     /**
+     * React to the invoking command message
+     * @param emoji ID of custom emoji or unicode emoji
+     */
+    async react(emoji) {
+        return await this.worker.api.messages.react(this.message.channel_id, this.message.id, emoji);
+    }
+    /**
      * Runs an error through sendback of commands.error
      * @param message Message of error
      */

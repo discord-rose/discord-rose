@@ -65,7 +65,7 @@ export declare class RestManager {
     make(opts: Request): Promise<{
         res: Response;
         json: any;
-    }>;
+    } | never>;
 }
 declare type Methods = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 /**

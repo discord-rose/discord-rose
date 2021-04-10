@@ -112,7 +112,7 @@ class MessagesResource {
     }
     _parseEmoji(emoji) {
         if (emoji.match(/^[0-9]+$/))
-            return `<:unknown:${emoji}>`;
+            return `unknown:${emoji}`;
         return encodeURIComponent(emoji);
     }
     /**
