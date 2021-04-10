@@ -160,6 +160,11 @@ export class ThreadComms extends EventEmitter {
     return super.emit(event, data, resolve)
   }
 
+  constructor () {
+    super()
+    this.on('KILL', () => process.exit(5))
+  }
+
   register (comms: Worker | MessagePort): void {
     this.comms = comms
 
@@ -185,8 +190,6 @@ export class ThreadComms extends EventEmitter {
         }
       }
     })
-
-    this.on('KILL', () => process.exit(5))
   }
 
   private _send (op: number, e: string | null, i: string | null, d?: any): void {
