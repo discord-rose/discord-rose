@@ -1,4 +1,4 @@
-import { APIGuildMember, APIMessage, APIChannel, APIRole, Snowflake } from 'discord-api-types'
+import { APIGuildMember, APIMessage, APIChannel, Snowflake } from 'discord-api-types'
 
 import { Embed } from './Embed'
 import { MessageTypes, MessagesResource, Emoji } from '../rest/resources/Messages'
@@ -6,7 +6,7 @@ import { MessageTypes, MessagesResource, Emoji } from '../rest/resources/Message
 import { CommandOptions, Worker } from '../typings/lib'
 
 import { PermissionsUtils, bits } from '../utils/Permissions'
-import Collection from '@discordjs/collection'
+
 import { CachedGuild } from '../typings/Discord'
 import { CommandError } from './CommandHandler'
 
@@ -184,8 +184,14 @@ export class CommandContext {
    * @returns
    */
   hasPerms (perms: keyof typeof bits): boolean {
-    if (!this.guild) throw new Error()
-    return PermissionsUtils.calculate(this.member, this.guild, this.worker.guildRoles.get(this.guild.id) as Collection<any, APIRole>, perms)
+    if (!this.guild) throw new Error('Missing guild')
+
+    return PermissionsUtils.has(PermissionsUtils.combine({
+      guild: this.guild,
+      member: this.member,
+      overwrites: this.channel?.permission_overwrites,
+      roleList: this.worker.guildRoles.get(this.guild.id)
+    }), perms)
   }
 
   /**
@@ -195,6 +201,12 @@ export class CommandContext {
    */
   myPerms (perms: keyof typeof bits): boolean {
     if (!this.guild) throw new Error()
-    return PermissionsUtils.calculate(this.me, this.guild, this.worker.guildRoles.get(this.guild.id) as Collection<any, APIRole>, perms)
+
+    return PermissionsUtils.has(PermissionsUtils.combine({
+      guild: this.guild,
+      member: this.me,
+      overwrites: this.channel?.permission_overwrites,
+      roleList: this.worker.guildRoles.get(this.guild.id)
+    }), perms)
   }
 }
