@@ -31,14 +31,20 @@ export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' 
     this.dying = false
     if (this.hbInterval) clearInterval(this.hbInterval)
 
-    this.ws = new WebSocket(this.shard.worker.options.ws)
+    try {
+      this.ws = new WebSocket(this.shard.worker.options.ws)
+    } catch (err) {
+      if (this.connectTimeout) clearTimeout(this.connectTimeout)
+
+      this.shard.restart(true, 1013)
+    }
 
     this.connectTimeout = setTimeout(() => {
       if (!this.connected) return this.shard.restart(true, 1013, 'Didn\'t Connect in Time')
     }, 60e3)
 
-    this.ws.on('message', (data) => this._handleMessage(data as Buffer))
-    this.ws.once('close', (code, reason) => this.close(code, reason))
+    this.ws?.on('message', (data) => this._handleMessage(data as Buffer))
+    this.ws?.once('close', (code, reason) => this.close(code, reason))
   }
 
   public _send (data: GatewaySendPayload): void {
