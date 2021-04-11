@@ -36,20 +36,77 @@ exports.bits = {
 };
 exports.PermissionsUtils = {
     bits: exports.bits,
+    /**
+     * Test a permission on a user
+     * @param bit Combined permission
+     * @param perm Permission name to test
+     * @returns Whether or not the user has permissions
+     */
+    has(bit, perm) {
+        return this.hasPerms(bit, exports.bits[perm]);
+    },
+    /**
+     * @deprecated
+     */
+    calculate(member, guild, roleList, required) {
+        var _a, _b;
+        if (guild.owner_id === ((_a = member.user) === null || _a === void 0 ? void 0 : _a.id))
+            return true;
+        return this.has(member.roles.reduce((a, b) => { var _a; return a | Number((_a = roleList.get(b)) === null || _a === void 0 ? void 0 : _a.permissions); }, Number((_b = roleList.get(guild.id)) === null || _b === void 0 ? void 0 : _b.permissions)), required);
+    },
+    /**
+     * Adds multiple permission sources together
+     * @param data Data filled with possible permission data
+     * @returns Full permission bit
+     */
+    combine(data) {
+        var _a, _b;
+        if (((_a = data.member.user) === null || _a === void 0 ? void 0 : _a.id) === data.guild.owner_id)
+            return exports.PermissionsUtils.bits.administrator;
+        let result = data.roleList ? BigInt((_b = data.roleList.get(data.guild.id)) === null || _b === void 0 ? void 0 : _b.permissions) : BigInt(0);
+        if (data.roleList) {
+            data.member.roles.forEach(role => {
+                var _a;
+                const r = (_a = data.roleList) === null || _a === void 0 ? void 0 : _a.get(role);
+                if (!r)
+                    return;
+                result |= BigInt(r.permissions);
+            });
+        }
+        if (data.overwrites) {
+            let allow = BigInt(0);
+            let deny = BigInt(0);
+            data.overwrites.filter(x => x.type === 0 /* Role */).forEach(overwrite => {
+                if (overwrite.id === data.guild.id) {
+                    result |= BigInt(overwrite.allow);
+                    result &= ~BigInt(overwrite.deny);
+                    return;
+                }
+                if (!data.member.roles.includes(overwrite.id))
+                    return;
+                allow |= BigInt(overwrite.allow);
+                deny |= BigInt(overwrite.deny);
+            });
+            result |= allow;
+            result &= ~deny;
+            data.overwrites.filter(x => { var _a; return x.type === 1 /* Member */ && ((_a = data.member.user) === null || _a === void 0 ? void 0 : _a.id) === x.id; }).forEach(overwrite => {
+                result |= BigInt(overwrite.allow);
+                result &= ~BigInt(overwrite.deny);
+            });
+        }
+        return Number(result);
+    },
+    /**
+     * Test two bits together
+     * @param perms Combined permissions
+     * @param bit Number bit ermission to test
+     * @returns Whether or not the user has permissions
+     */
     hasPerms(perms, bit) {
         if ((perms & exports.bits.administrator) !== 0)
             return true; // administrator
         if ((perms & bit) !== 0)
             return true;
         return false;
-    },
-    has(bit, perm) {
-        return this.hasPerms(bit, exports.bits[perm]);
-    },
-    calculate(member, guild, roleList, required) {
-        var _a, _b;
-        if (guild.owner_id === ((_a = member.user) === null || _a === void 0 ? void 0 : _a.id))
-            return true;
-        return this.has(member.roles.reduce((a, b) => { var _a; return a | Number((_a = roleList.get(b)) === null || _a === void 0 ? void 0 : _a.permissions); }, Number((_b = roleList.get(guild.id)) === null || _b === void 0 ? void 0 : _b.permissions)), required);
     }
 };

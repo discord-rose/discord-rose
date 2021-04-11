@@ -139,9 +139,15 @@ class CommandContext {
      * @returns
      */
     hasPerms(perms) {
+        var _a;
         if (!this.guild)
-            throw new Error();
-        return Permissions_1.PermissionsUtils.calculate(this.member, this.guild, this.worker.guildRoles.get(this.guild.id), perms);
+            throw new Error('Missing guild');
+        return Permissions_1.PermissionsUtils.has(Permissions_1.PermissionsUtils.combine({
+            guild: this.guild,
+            member: this.member,
+            overwrites: (_a = this.channel) === null || _a === void 0 ? void 0 : _a.permission_overwrites,
+            roleList: this.worker.guildRoles.get(this.guild.id)
+        }), perms);
     }
     /**
      * Whether or not the bot user has a certain permission
@@ -149,9 +155,15 @@ class CommandContext {
      * @returns
      */
     myPerms(perms) {
+        var _a;
         if (!this.guild)
             throw new Error();
-        return Permissions_1.PermissionsUtils.calculate(this.me, this.guild, this.worker.guildRoles.get(this.guild.id), perms);
+        return Permissions_1.PermissionsUtils.has(Permissions_1.PermissionsUtils.combine({
+            guild: this.guild,
+            member: this.me,
+            overwrites: (_a = this.channel) === null || _a === void 0 ? void 0 : _a.permission_overwrites,
+            roleList: this.worker.guildRoles.get(this.guild.id)
+        }), perms);
     }
 }
 exports.CommandContext = CommandContext;

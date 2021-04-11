@@ -35,7 +35,7 @@ class DiscordSocket extends Emitter_1.Emitter {
         if (this.hbInterval)
             clearInterval(this.hbInterval);
         try {
-            this.ws = new ws_1.default(this.shard.worker.options.ws);
+            this.ws = new ws_1.default(this.shard.worker.options.ws + '?v=8');
         }
         catch (err) {
             if (this.connectTimeout)

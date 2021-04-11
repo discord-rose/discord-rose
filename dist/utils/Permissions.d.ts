@@ -1,5 +1,5 @@
 import Collection from '@discordjs/collection';
-import { APIGuildMember, Snowflake } from 'discord-api-types';
+import { APIGuildMember, APIOverwrite, Snowflake } from 'discord-api-types';
 import { CachedGuild, DiscordEventMap } from '../typings/Discord';
 export declare const bits: {
     createInvites: number;
@@ -68,7 +68,33 @@ export declare const PermissionsUtils: {
         webhooks: number;
         emojis: number;
     };
-    hasPerms(perms: number, bit: number): boolean;
+    /**
+     * Test a permission on a user
+     * @param bit Combined permission
+     * @param perm Permission name to test
+     * @returns Whether or not the user has permissions
+     */
     has(bit: number, perm: keyof typeof bits): boolean;
+    /**
+     * @deprecated
+     */
     calculate(member: APIGuildMember, guild: CachedGuild, roleList: Collection<Snowflake, DiscordEventMap['GUILD_ROLE_CREATE']['role']>, required: keyof typeof bits): boolean;
+    /**
+     * Adds multiple permission sources together
+     * @param data Data filled with possible permission data
+     * @returns Full permission bit
+     */
+    combine(data: {
+        member: APIGuildMember;
+        guild: CachedGuild;
+        roleList?: Collection<Snowflake, DiscordEventMap['GUILD_ROLE_CREATE']['role']>;
+        overwrites?: APIOverwrite[];
+    }): number;
+    /**
+     * Test two bits together
+     * @param perms Combined permissions
+     * @param bit Number bit ermission to test
+     * @returns Whether or not the user has permissions
+     */
+    hasPerms(perms: number, bit: number): boolean;
 };
