@@ -24,6 +24,7 @@ class DiscordSocket extends Emitter_1.Emitter {
         this.dying = false;
     }
     async spawn() {
+        var _a, _b;
         if (this.ws && this.ws.readyState === ws_1.default.OPEN)
             this.ws.close(1002);
         this.ws = null;
@@ -33,13 +34,20 @@ class DiscordSocket extends Emitter_1.Emitter {
         this.dying = false;
         if (this.hbInterval)
             clearInterval(this.hbInterval);
-        this.ws = new ws_1.default(this.shard.worker.options.ws);
+        try {
+            this.ws = new ws_1.default(this.shard.worker.options.ws);
+        }
+        catch (err) {
+            if (this.connectTimeout)
+                clearTimeout(this.connectTimeout);
+            this.shard.restart(true, 1013);
+        }
         this.connectTimeout = setTimeout(() => {
             if (!this.connected)
                 return this.shard.restart(true, 1013, 'Didn\'t Connect in Time');
         }, 60e3);
-        this.ws.on('message', (data) => this._handleMessage(data));
-        this.ws.once('close', (code, reason) => this.close(code, reason));
+        (_a = this.ws) === null || _a === void 0 ? void 0 : _a.on('message', (data) => this._handleMessage(data));
+        (_b = this.ws) === null || _b === void 0 ? void 0 : _b.once('close', (code, reason) => this.close(code, reason));
     }
     _send(data) {
         var _a, _b, _c;
