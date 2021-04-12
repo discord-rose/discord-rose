@@ -19,7 +19,7 @@ exports.handlers = {
         var _a, _b;
         const guild = this.worker.guilds.get(id);
         if (!guild)
-            respond({ error: 'Not in guild' });
+            return respond({ error: 'Not in guild' });
         if (this.worker.guildRoles) {
             guild.roles = (_b = (_a = this.worker.guildRoles.get(guild.id)) === null || _a === void 0 ? void 0 : _a.array()) !== null && _b !== void 0 ? _b : [];
         }
