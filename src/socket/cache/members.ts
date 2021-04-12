@@ -31,7 +31,7 @@ export function members (events: CacheManager, worker: Worker): void {
     const member = Object.assign({}, m)
     const guildMembers = worker.members.get(member.guild_id)
     if (!guildMembers) return
-    let currentMember = guildMembers.get(member.user?.id as Snowflake)
+    let currentMember = guildMembers.get(member.user?.id)
     if (!currentMember) return
 
     currentMember.nick = member.nick
@@ -47,7 +47,7 @@ export function members (events: CacheManager, worker: Worker): void {
       currentMember = newMember
     }
 
-    guildMembers.set(member.user?.id as Snowflake, currentMember)
+    guildMembers.set(member.user?.id, currentMember)
   })
 
   events.on('GUILD_MEMBER_REMOVE', (member) => {
