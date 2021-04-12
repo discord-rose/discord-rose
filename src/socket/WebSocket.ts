@@ -69,7 +69,7 @@ export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' 
       this.shard.worker.emit('*', msg)
 
       if (msg.t === 'READY') return // To satisfy typings
-      this.shard.worker.emit(msg.t, msg.d)
+      this.shard.worker.emit(msg.t as any, msg.d)
     } else if (msg.op === GatewayOPCodes.Heartbeat) {
       this._heartbeat()
     } else if (msg.op === GatewayOPCodes.Reconnect) {

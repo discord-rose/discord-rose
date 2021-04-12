@@ -21,7 +21,7 @@ export const handlers: {
   },
   GET_GUILD: function ({ id }, respond) {
     const guild = this.worker.guilds.get(id) as APIGuild
-    if (!guild) respond({ error: 'Not in guild' })
+    if (!guild) return respond({ error: 'Not in guild' })
 
     if (this.worker.guildRoles) {
       guild.roles = this.worker.guildRoles.get(guild.id)?.array() ?? []

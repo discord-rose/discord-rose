@@ -33,7 +33,7 @@ export class CacheManager extends Emitter<DiscordEventMap> {
     super()
 
     this.worker.on('*', (data) => {
-      this.emit(data.t, data.d as any)
+      this.emit(data.t as any, data.d as any)
     })
 
     const cache = this.worker.options.cache
