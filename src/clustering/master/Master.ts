@@ -463,7 +463,7 @@ export interface BotOptions {
    * Custom logging function (false to disable)
    * @default console.log
    */
-  log?: (msg: string) => void
+  log?: (msg: string, cluster?: Cluster) => void
   /**
    * URL for Discord Gateway (leave null for auto)
    */
