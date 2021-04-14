@@ -53,8 +53,8 @@ export class Thread extends ThreadComms {
    * Restarts a specific cluster
    * @param clusterId ID of cluster
    */
-  async restartCluster (clusterId: string): Promise<null> {
-    return await this.sendCommand('RESTART_CLUSTER', { id: clusterId })
+  restartCluster (clusterId: string): void {
+    return this.tell('RESTART_CLUSTER', { id: clusterId })
   }
 
   /**

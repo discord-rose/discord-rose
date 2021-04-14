@@ -21,7 +21,7 @@ export const handlers: {
     this.logAs(data)
   },
   RESTART_CLUSTER: function ({ id }, _) {
-    this.master.clusters.get(String(id))?.restart()
+    this.master.processes.get(String(id))?.restart()
   },
   RESTART_SHARD: function ({ id }, _) {
     this.master.shardToCluster(id)?.restartShard(id)
