@@ -45,8 +45,8 @@ class Thread extends ThreadComms_1.ThreadComms {
      * Restarts a specific cluster
      * @param clusterId ID of cluster
      */
-    async restartCluster(clusterId) {
-        return await this.sendCommand('RESTART_CLUSTER', { id: clusterId });
+    restartCluster(clusterId) {
+        return this.tell('RESTART_CLUSTER', { id: clusterId });
     }
     /**
      * Restarts a specific shard

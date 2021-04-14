@@ -19,7 +19,7 @@ exports.handlers = {
     },
     RESTART_CLUSTER: function ({ id }, _) {
         var _a;
-        (_a = this.master.clusters.get(String(id))) === null || _a === void 0 ? void 0 : _a.restart();
+        (_a = this.master.processes.get(String(id))) === null || _a === void 0 ? void 0 : _a.restart();
     },
     RESTART_SHARD: function ({ id }, _) {
         var _a;

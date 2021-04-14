@@ -23,7 +23,7 @@ export declare class Thread extends ThreadComms {
      * Restarts a specific cluster
      * @param clusterId ID of cluster
      */
-    restartCluster(clusterId: string): Promise<null>;
+    restartCluster(clusterId: string): void;
     /**
      * Restarts a specific shard
      * @param shardId ID of shard
