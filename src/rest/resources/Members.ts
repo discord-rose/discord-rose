@@ -46,7 +46,7 @@ export class MembersResource {
    * @param id ID of member (or leave blank for self)
    * @param nick New nickname (null to reset)
    */
-  async setNickname (guildId: Snowflake, memberId: Snowflake | '@me' = '@me', nick?: string): Promise<RESTPatchAPICurrentGuildMemberNicknameResult> {
+  async setNickname (guildId: Snowflake, memberId: Snowflake | '@me' = '@me', nick: string | null = null): Promise<RESTPatchAPICurrentGuildMemberNicknameResult> {
     if (memberId !== '@me') return await this.edit(guildId, memberId, { nick }) as RESTPatchAPICurrentGuildMemberNicknameResult
     return await this.rest.request('PATCH', `/guilds/${guildId}/members/${memberId}/nick`, {
       body: {
