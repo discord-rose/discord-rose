@@ -31,7 +31,7 @@ export declare class MembersResource {
      * @param id ID of member (or leave blank for self)
      * @param nick New nickname (null to reset)
      */
-    setNickname(guildId: Snowflake, memberId?: Snowflake | '@me', nick?: string): Promise<RESTPatchAPICurrentGuildMemberNicknameResult>;
+    setNickname(guildId: Snowflake, memberId?: Snowflake | '@me', nick?: string | null): Promise<RESTPatchAPICurrentGuildMemberNicknameResult>;
     /**
      * Adds a role to member
      * @param guildId ID of guild
