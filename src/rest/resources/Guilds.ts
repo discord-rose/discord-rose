@@ -84,7 +84,7 @@ export class GuildsResource {
    * @param guildId ID of guild
    * @param data Query paramaters
    */
-  async getAuditLog(guildId: Snowflake, query: RESTGetAPIAuditLogQuery): Promise<RESTGetAPIAuditLogResult> {
+  async getAuditLog (guildId: Snowflake, query: RESTGetAPIAuditLogQuery): Promise<RESTGetAPIAuditLogResult> {
     return this.rest.request('GET', `/guilds/${guildId}/audit-logs`, {
       query: query
     })
