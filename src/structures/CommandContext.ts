@@ -1,4 +1,4 @@
-import { APIGuildMember, APIMessage, APIChannel, Snowflake } from 'discord-api-types'
+import { APIGuildMember, APIMessage, APIChannel, Snowflake, APIUser } from 'discord-api-types'
 
 import { Embed } from './Embed'
 import { MessageTypes, MessagesResource, Emoji } from '../rest/resources/Messages'
@@ -46,6 +46,13 @@ export class CommandContext {
     this.prefix = opts.prefix
     this.ran = opts.ran
     this.args = opts.args
+  }
+
+  /**
+   * Author of the message
+   */
+  get author (): APIUser {
+    return this.message.author
   }
 
   /**
