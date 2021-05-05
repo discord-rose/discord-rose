@@ -1,4 +1,4 @@
-import { RESTGetAPIGuildQuery, RESTGetAPIGuildRolesResult, RESTPatchAPIGuildJSONBody, RESTPatchAPIGuildRoleJSONBody, RESTPatchAPIGuildRoleResult, RESTPostAPIGuildRoleJSONBody, RESTPostAPIGuildRoleResult, Snowflake } from 'discord-api-types'
+import { RESTGetAPIAuditLogResult, RESTGetAPIAuditLogQuery, RESTGetAPIGuildQuery, RESTGetAPIGuildRolesResult, RESTPatchAPIGuildJSONBody, RESTPatchAPIGuildRoleJSONBody, RESTPatchAPIGuildRoleResult, RESTPostAPIGuildRoleJSONBody, RESTPostAPIGuildRoleResult, Snowflake } from 'discord-api-types'
 import { RestManager } from '../Manager'
 
 /**
@@ -77,5 +77,16 @@ export class GuildsResource {
    */
   async deleteRole (guildId: Snowflake, roleId: Snowflake): Promise<never> {
     return this.rest.request('DELETE', `/guilds/${guildId}/roles/${roleId}`) as never
+  }
+
+  /**
+   * Gets audit-log entries
+   * @param guildId ID of guild
+   * @param data Query paramaters
+   */
+  async getAuditLog(guildId: Snowflake, query: RESTGetAPIAuditLogQuery): Promise<RESTGetAPIAuditLogResult> {
+    return this.rest.request('GET', `/guilds/${guildId}/audit-logs`, {
+      query: query
+    })
   }
 }
