@@ -18,6 +18,12 @@ class CommandContext {
         this.args = opts.args;
     }
     /**
+     * Author of the message
+     */
+    get author() {
+        return this.message.author;
+    }
+    /**
      * Guild where the message was sent
      * @type {CachedGuild}
      */

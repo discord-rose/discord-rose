@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { APIGuildMember, APIMessage, APIChannel } from 'discord-api-types';
+import { APIGuildMember, APIMessage, APIChannel, APIUser } from 'discord-api-types';
 import { Embed } from './Embed';
 import { MessageTypes, Emoji } from '../rest/resources/Messages';
 import { CommandOptions, Worker } from '../typings/lib';
@@ -41,6 +41,10 @@ export declare class CommandContext {
         ran: string;
         args: string[];
     });
+    /**
+     * Author of the message
+     */
+    get author(): APIUser;
     /**
      * Guild where the message was sent
      * @type {CachedGuild}
