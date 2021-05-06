@@ -35,11 +35,20 @@ class CommandHandler {
         this.middlewares = [];
         this.CommandContext = CommandContext_1.CommandContext;
         this.errorFunction = (ctx, err) => {
-            ctx.embed
-                .color(0xFF0000)
-                .title('An Error Occured')
-                .description(`\`\`\`xl\n${err.message}\`\`\``)
-                .send().catch(() => { });
+            if (ctx.myPerms('sendMessages')) {
+                if (ctx.myPerms('embed')) {
+                    ctx.embed
+                        .color(0xFF0000)
+                        .title('An Error Occured')
+                        .description(`\`\`\`xl\n${err.message}\`\`\``)
+                        .send().catch(() => { });
+                }
+                else {
+                    ctx
+                        .send(`An Error Occured\n\`\`\`xl\n${err.message}\`\`\``)
+                        .catch(() => { });
+                }
+            }
             if (err.nonFatal)
                 return;
             err.message += ` (While Running Command: ${String(ctx.command.command)})`;
