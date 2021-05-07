@@ -52,5 +52,5 @@ export declare class GuildsResource {
      * @param guildId ID of guild
      * @param data Query paramaters
      */
-    getAuditLog(guildId: Snowflake, query: RESTGetAPIAuditLogQuery): Promise<RESTGetAPIAuditLogResult>;
+    getAuditLogs(guildId: Snowflake, query: RESTGetAPIAuditLogQuery): Promise<RESTGetAPIAuditLogResult>;
 }

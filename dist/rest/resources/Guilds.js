@@ -78,7 +78,7 @@ class GuildsResource {
      * @param guildId ID of guild
      * @param data Query paramaters
      */
-    async getAuditLog(guildId, query) {
+    async getAuditLogs(guildId, query) {
         return await this.rest.request('GET', `/guilds/${guildId}/audit-logs`, {
             query
         });
