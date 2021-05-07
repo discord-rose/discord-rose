@@ -113,7 +113,7 @@ class RestManager {
      * @internal
      */
     async make(opts) {
-        var _a;
+        var _a, _b;
         const method = opts.method;
         const route = opts.route;
         const options = opts.options;
@@ -131,9 +131,9 @@ class RestManager {
                 headers.set(key, (_a = options.headers) === null || _a === void 0 ? void 0 : _a[key]);
             });
         }
-        const res = await node_fetch_1.default(`https://discord.com/api/v${this.options.version}${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
+        const res = await node_fetch_1.default(`https://discord.com/api/v${(_a = this.options.version) !== null && _a !== void 0 ? _a : 8}${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
             method, headers,
-            body: options.body ? ((_a = options.parser) !== null && _a !== void 0 ? _a : JSON.stringify)(options.body) : undefined
+            body: options.body ? ((_b = options.parser) !== null && _b !== void 0 ? _b : JSON.stringify)(options.body) : undefined
         });
         const json = res.status === 204 ? null : await res.json();
         return { res, json };
