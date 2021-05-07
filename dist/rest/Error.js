@@ -7,10 +7,11 @@ exports.RestError = void 0;
  */
 class RestError extends Error {
     constructor(response) {
+        var _a;
         super();
         this.name = 'DiscordAPIError';
         this.message = response.message;
-        this.status = Number(response.message.split(':')[0]);
+        this.status = Number((_a = response.message) === null || _a === void 0 ? void 0 : _a.split(':')[0]);
         this.code = response.code;
     }
 }
