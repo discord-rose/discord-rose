@@ -13,6 +13,14 @@ import { UsersResource } from './resources/Users'
 import { MiscResource } from './resources/Misc'
 import { WebhooksResource } from './resources/Webhooks'
 
+export interface RestManagerOptions {
+  /**
+   * The API version number. Be careful as this can cause unexpected behavior.
+   * @default 8
+   */
+  version?: number
+}
+
 /**
  * The base rest handler for all things Discord rest
  */
@@ -56,7 +64,13 @@ export class RestManager {
    */
   public webhooks = new WebhooksResource(this)
 
-  constructor (private readonly token: string) {}
+  public options: RestManagerOptions
+
+  constructor (private readonly token: string, options: RestManagerOptions = {}) {
+    this.options = {
+      version: options.version ?? 8
+    }
+  }
 
   private _key (route: string): string {
     const bucket: string[] = []
@@ -118,7 +132,7 @@ export class RestManager {
       })
     }
 
-    const res = await fetch(`https://discord.com/api/v8${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
+    const res = await fetch(`https://discord.com/api/v${this.options.version}${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
       method, headers, body: options.body ? (options.parser ?? JSON.stringify)(options.body) : undefined
     })
 

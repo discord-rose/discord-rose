@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import { RestManager } from '../../rest/Manager'
+import { RestManager, RestManagerOptions } from '../../rest/Manager'
 import { APIGatewaySessionStartLimit, ChannelType, Snowflake } from 'discord-api-types'
 import { DiscordEventMap, CachedGuild } from '../../typings/Discord'
 
@@ -164,7 +164,8 @@ export class Master extends Emitter<{
       warnings: {
         cachedIntents: options.warnings?.cachedIntents ?? true
       },
-      log: options.log
+      log: options.log,
+      rest: options.rest
     } as CompleteBotOptions
 
     if ((this.options.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true) {
@@ -475,6 +476,10 @@ export interface BotOptions {
     /**
      * Whether or not warn when cache is enabled but it's required intents are not
      */
-    cachedIntents: boolean
+    cachedIntents?: boolean
   }
+  /**
+   * Options to be passed to the rest manager on every worker
+   */
+  rest?: RestManagerOptions
 }
