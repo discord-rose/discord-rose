@@ -108,7 +108,8 @@ class Master extends Emitter_1.Emitter {
             warnings: {
                 cachedIntents: (_y = (_x = options.warnings) === null || _x === void 0 ? void 0 : _x.cachedIntents) !== null && _y !== void 0 ? _y : true
             },
-            log: options.log
+            log: options.log,
+            rest: options.rest
         };
         if (((_z = this.options.cache) === null || _z === void 0 ? void 0 : _z.channels) === true) {
             this.options.cache.channels = true;

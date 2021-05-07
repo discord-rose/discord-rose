@@ -1,4 +1,4 @@
-import { RestManager } from '../../rest/Manager';
+import { RestManager, RestManagerOptions } from '../../rest/Manager';
 import { APIGatewaySessionStartLimit, ChannelType, Snowflake } from 'discord-api-types';
 import { DiscordEventMap, CachedGuild } from '../../typings/Discord';
 import { ThreadEvents, ResolveFunction, ClusterStats } from '../ThreadComms';
@@ -277,7 +277,11 @@ export interface BotOptions {
         /**
          * Whether or not warn when cache is enabled but it's required intents are not
          */
-        cachedIntents: boolean;
+        cachedIntents?: boolean;
     };
+    /**
+     * Options to be passed to the rest manager on every worker
+     */
+    rest?: RestManagerOptions;
 }
 export {};

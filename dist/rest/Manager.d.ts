@@ -8,6 +8,13 @@ import { MembersResource } from './resources/Members';
 import { UsersResource } from './resources/Users';
 import { MiscResource } from './resources/Misc';
 import { WebhooksResource } from './resources/Webhooks';
+export interface RestManagerOptions {
+    /**
+     * The API version number. Be careful as this can cause unexpected behavior.
+     * @default 8
+     */
+    version?: number;
+}
 /**
  * The base rest handler for all things Discord rest
  */
@@ -50,7 +57,8 @@ export declare class RestManager {
      * @type {WebhooksResource}
      */
     webhooks: WebhooksResource;
-    constructor(token: string);
+    options: RestManagerOptions;
+    constructor(token: string, options?: RestManagerOptions);
     private _key;
     /**
      * Make a custom request

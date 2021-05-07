@@ -35,7 +35,8 @@ const Webhooks_1 = require("./resources/Webhooks");
  * The base rest handler for all things Discord rest
  */
 class RestManager {
-    constructor(token) {
+    constructor(token, options = {}) {
+        var _a;
         this.token = token;
         this.buckets = new cache_1.Cache(60000);
         this.global = null;
@@ -74,6 +75,9 @@ class RestManager {
          * @type {WebhooksResource}
          */
         this.webhooks = new Webhooks_1.WebhooksResource(this);
+        this.options = {
+            version: (_a = options.version) !== null && _a !== void 0 ? _a : 8
+        };
     }
     _key(route) {
         const bucket = [];
@@ -127,7 +131,7 @@ class RestManager {
                 headers.set(key, (_a = options.headers) === null || _a === void 0 ? void 0 : _a[key]);
             });
         }
-        const res = await node_fetch_1.default(`https://discord.com/api/v8${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
+        const res = await node_fetch_1.default(`https://discord.com/api/v${this.options.version}${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
             method, headers,
             body: options.body ? ((_a = options.parser) !== null && _a !== void 0 ? _a : JSON.stringify)(options.body) : undefined
         });
