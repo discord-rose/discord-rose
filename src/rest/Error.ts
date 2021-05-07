@@ -20,7 +20,7 @@ export class RestError extends Error {
   constructor (response: any) {
     super()
     this.message = response.message
-    this.status = Number(response.message.split(':')[0])
+    this.status = Number(response.message?.split(':')[0])
     this.code = response.code
   }
 }
