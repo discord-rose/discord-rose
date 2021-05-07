@@ -132,7 +132,7 @@ export class RestManager {
       })
     }
 
-    const res = await fetch(`https://discord.com/api/v${this.options.version}${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
+    const res = await fetch(`https://discord.com/api/v${this.options.version ?? 8}${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
       method, headers, body: options.body ? (options.parser ?? JSON.stringify)(options.body) : undefined
     })
 
