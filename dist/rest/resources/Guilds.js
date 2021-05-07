@@ -73,5 +73,15 @@ class GuildsResource {
     async deleteRole(guildId, roleId) {
         return this.rest.request('DELETE', `/guilds/${guildId}/roles/${roleId}`);
     }
+    /**
+     * Gets audit-log entries
+     * @param guildId ID of guild
+     * @param data Query paramaters
+     */
+    async getAuditLog(guildId, query) {
+        return await this.rest.request('GET', `/guilds/${guildId}/audit-logs`, {
+            query
+        });
+    }
 }
 exports.GuildsResource = GuildsResource;
