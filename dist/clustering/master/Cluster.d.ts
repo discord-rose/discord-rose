@@ -12,12 +12,10 @@ export declare class Cluster extends ThreadComms {
     private thread?;
     /**
      * Whether or not the Cluster has started before
-     * @type {boolean}
      */
     started: boolean;
     /**
      * Whether or not the Cluster shouldn't restart
-     * @type {boolean}
      */
     dying: boolean;
     constructor(id: string, master: Master, fileName?: string, custom?: boolean);

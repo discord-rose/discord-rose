@@ -47,22 +47,18 @@ export declare class CommandContext {
     get author(): APIUser;
     /**
      * Guild where the message was sent
-     * @type {CachedGuild}
      */
     get guild(): CachedGuild | undefined;
     /**
      * Channel where the message was sent
-     * @type {APIChannel}
      */
     get channel(): APIChannel | undefined;
     /**
      * Member who sent the message
-     * @type {APIGuildMember}
      */
     get member(): APIGuildMember;
     /**
      * Bot's memeber within the guild
-     * @type {APIGuildMember}
      */
     get me(): APIGuildMember;
     /**
@@ -113,7 +109,6 @@ export declare class CommandContext {
     delete(): Promise<never>;
     /**
      * Makes an embed to send
-     * @type {Embed}
      * @example
      * ctx.embed
      *   .title('Hello')

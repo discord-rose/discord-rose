@@ -42,37 +42,30 @@ class RestManager {
         this.global = null;
         /**
          * Channel resource
-         * @type {ChannelsResource}
          */
         this.channels = new Channels_1.ChannelsResource(this);
         /**
          * Messages resource
-         * @type {MessagesResource}
          */
         this.messages = new Messages_1.MessagesResource(this);
         /**
          * Guilds resource
-         * @type {GuildsResource}
          */
         this.guilds = new Guilds_1.GuildsResource(this);
         /**
          * Members resource
-         * @type {MembersResource}
          */
         this.members = new Members_1.MembersResource(this);
         /**
          * Users resource
-         * @type {UsersResource}
          */
         this.users = new Users_1.UsersResource(this);
         /**
          * Misc resource
-         * @type {MiscResource}
          */
         this.misc = new Misc_1.MiscResource(this);
         /**
          * Webhooks resource
-         * @type {WebhooksResource}
          */
         this.webhooks = new Webhooks_1.WebhooksResource(this);
         this.options = {

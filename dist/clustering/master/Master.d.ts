@@ -30,17 +30,14 @@ export declare class Master extends Emitter<{
 }> {
     /**
      * Options
-     * @type {BotOptions}
      */
     options: CompleteBotOptions;
     /**
      * Rest Manager (only set after running .start())
-     * @type {RestManager}
      */
     rest: RestManager;
     /**
      * Handler emitter
-     * @type {EventEmitter}
      * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
      */
     handlers: {
@@ -49,37 +46,30 @@ export declare class Master extends Emitter<{
     };
     /**
      * Sharding manager for handling shard ratelimits
-     * @type {Sharder}
      */
     sharder: Sharder;
     /**
      * Chunked Numbers for shards / cluster
-     * @type {number[][]}
      */
     chunks: number[][];
     /**
      * Process list (including custom processes)
-     * @type {Collection<string, Cluster>}
      */
     processes: Collection<string, Cluster>;
     /**
      * File name to spawn with
-     * @type {string}
      */
     fileName: string;
     /**
      * Whether or not the master has been spawned
-     * @type {boolean}
      */
     spawned: boolean;
     /**
      * Session data (Set after .start())
-     * @type {APIGatewaySessionStartLimit}
      */
     session: APIGatewaySessionStartLimit;
     /**
      * Log function
-     * @type {Function}
      */
     log: (msg: string, cluster?: Cluster) => void;
     private readonly _clusterNames;
@@ -92,7 +82,6 @@ export declare class Master extends Emitter<{
     constructor(fileName: string, options: BotOptions);
     /**
      * Get all Discord Bot clusters (discludes custom processes)
-     * @type {Collection<string, Cluster>}
      */
     get clusters(): Collection<string, Cluster>;
     /**

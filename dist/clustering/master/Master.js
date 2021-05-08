@@ -29,33 +29,27 @@ class Master extends Emitter_1.Emitter {
         super();
         /**
          * Rest Manager (only set after running .start())
-         * @type {RestManager}
          */
         this.rest = {};
         /**
          * Handler emitter
-         * @type {EventEmitter}
          * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
          */
         this.handlers = new events_1.EventEmitter();
         /**
          * Sharding manager for handling shard ratelimits
-         * @type {Sharder}
          */
         this.sharder = new Sharder_1.Sharder(this);
         /**
          * Chunked Numbers for shards / cluster
-         * @type {number[][]}
          */
         this.chunks = [[]];
         /**
          * Process list (including custom processes)
-         * @type {Collection<string, Cluster>}
          */
         this.processes = new collection_1.default();
         /**
          * Whether or not the master has been spawned
-         * @type {boolean}
          */
         this.spawned = false;
         this._clusterNames = [];
@@ -152,7 +146,6 @@ class Master extends Emitter_1.Emitter {
     }
     /**
      * Get all Discord Bot clusters (discludes custom processes)
-     * @type {Collection<string, Cluster>}
      */
     get clusters() {
         return this.processes.filter(x => !x.custom);

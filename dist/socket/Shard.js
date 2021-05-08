@@ -17,7 +17,6 @@ class Shard {
         this.worker = worker;
         /**
          * Ping in ms
-         * @type {number}
          */
         this.ping = 0;
         this.ws = new WebSocket_1.DiscordSocket(this);
@@ -57,7 +56,6 @@ class Shard {
     }
     /**
      * Current shard state
-     * @type {State} 0 = Disconnected, 1 = Connecting, 2 = Connected
      */
     get state() {
         if (this.ready)
@@ -68,7 +66,6 @@ class Shard {
     }
     /**
      * Whether or not the shard is READY
-     * @type {boolean}
      */
     get ready() {
         var _a;

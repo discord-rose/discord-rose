@@ -5,12 +5,10 @@
 export declare class RestError extends Error {
     /**
      * Status code for error
-     * @type {number}
      */
     status: number;
     /**
      * Error code
-     * @type {number}
      */
     code: number;
     name: string;

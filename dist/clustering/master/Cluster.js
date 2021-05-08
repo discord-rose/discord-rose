@@ -15,12 +15,10 @@ class Cluster extends ThreadComms_1.ThreadComms {
         this.custom = custom;
         /**
          * Whether or not the Cluster has started before
-         * @type {boolean}
          */
         this.started = false;
         /**
          * Whether or not the Cluster shouldn't restart
-         * @type {boolean}
          */
         this.dying = false;
         this.on('*', (data, respond) => {

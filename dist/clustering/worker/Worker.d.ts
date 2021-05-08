@@ -14,57 +14,46 @@ import { RestManager } from '../../rest/Manager';
 export declare class Worker extends Emitter<DiscordEventMap> {
     /**
      * Bot options
-     * @type {BotOptions}
      */
     options: CompleteBotOptions;
     /**
      * All shards on this cluster
-     * @type {Collection<number, Shard>}
      */
     shards: Collection<number, Shard>;
     /**
      * Rest manager
-     * @type {RestManager}
      */
     api: RestManager;
     /**
      * Command handler
-     * @type {CommandHandler}
      */
     commands: CommandHandler;
     /**
      * Thread communications
-     * @type {Thread}
      */
     comms: Thread;
     /**
      * Cached guilds
-     * @type {Collection<Snowflake, CachedGuild>}
      */
     guilds: Collection<Snowflake, CachedGuild>;
     /**
      * Cached roles
-     * @type {Collection<Snowflake, Collection<Snowflake, APIRole>>}
      */
     guildRoles: Collection<Snowflake, Collection<Snowflake, DiscordEventMap['GUILD_ROLE_CREATE']['role']>>;
     /**
      * Cached channels
-     * @type {Collection<Snowflake, APIChannel>}
      */
     channels: Collection<Snowflake, DiscordEventMap['CHANNEL_CREATE']>;
     /**
      * Cached self members
-     * @type {Collection<Snowflake, APIGuildMember>}
      */
     selfMember: Collection<Snowflake, DiscordEventMap['GUILD_MEMBER_ADD']>;
     /**
      * Cached members
-     * @type {Collection<Snowflake, Collection<Snowflake, APIGuildMember>>}
      */
     members: Collection<Snowflake, Collection<Snowflake, DiscordEventMap['GUILD_MEMBER_ADD']>>;
     /**
      * Cached users
-     * @type {Collection<Snowflake, APIUser>}
      */
     users: Collection<Snowflake, DiscordEventMap['USER_UPDATE']>;
     /**
@@ -73,7 +62,6 @@ export declare class Worker extends Emitter<DiscordEventMap> {
     voiceStates: Collection<Snowflake, CachedVoiceState>;
     /**
      * Self user
-     * @type {APIUser}
      */
     user: APIUser;
     cacheManager: CacheManager;
@@ -102,7 +90,6 @@ export declare class Worker extends Emitter<DiscordEventMap> {
     getMembers(guildId: Snowflake): Promise<Collection<any, APIGuildMember>>;
     /**
      * Whether or not all shards are online and ready
-     * @type {boolean}
      */
     get ready(): boolean;
     /**

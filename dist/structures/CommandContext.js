@@ -25,21 +25,18 @@ class CommandContext {
     }
     /**
      * Guild where the message was sent
-     * @type {CachedGuild}
      */
     get guild() {
         return this.worker.guilds.get(this.message.guild_id);
     }
     /**
      * Channel where the message was sent
-     * @type {APIChannel}
      */
     get channel() {
         return this.worker.channels.get(this.message.channel_id);
     }
     /**
      * Member who sent the message
-     * @type {APIGuildMember}
      */
     get member() {
         const mem = Object.assign({ user: this.message.author }, this.message.member);
@@ -47,7 +44,6 @@ class CommandContext {
     }
     /**
      * Bot's memeber within the guild
-     * @type {APIGuildMember}
      */
     get me() {
         return this.worker.selfMember.get(this.message.guild_id);
@@ -125,7 +121,6 @@ class CommandContext {
     }
     /**
      * Makes an embed to send
-     * @type {Embed}
      * @example
      * ctx.embed
      *   .title('Hello')

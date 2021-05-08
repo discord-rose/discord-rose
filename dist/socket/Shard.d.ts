@@ -10,7 +10,6 @@ export declare class Shard {
     worker: Worker;
     /**
      * Ping in ms
-     * @type {number}
      */
     ping: number;
     private ws;
@@ -19,12 +18,10 @@ export declare class Shard {
     constructor(id: number, worker: Worker);
     /**
      * Current shard state
-     * @type {State} 0 = Disconnected, 1 = Connecting, 2 = Connected
      */
     get state(): State;
     /**
      * Whether or not the shard is READY
-     * @type {boolean}
      */
     get ready(): boolean;
     start(): void;

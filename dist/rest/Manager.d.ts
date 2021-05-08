@@ -24,37 +24,30 @@ export declare class RestManager {
     global: Promise<true> | null;
     /**
      * Channel resource
-     * @type {ChannelsResource}
      */
     channels: ChannelsResource;
     /**
      * Messages resource
-     * @type {MessagesResource}
      */
     messages: MessagesResource;
     /**
      * Guilds resource
-     * @type {GuildsResource}
      */
     guilds: GuildsResource;
     /**
      * Members resource
-     * @type {MembersResource}
      */
     members: MembersResource;
     /**
      * Users resource
-     * @type {UsersResource}
      */
     users: UsersResource;
     /**
      * Misc resource
-     * @type {MiscResource}
      */
     misc: MiscResource;
     /**
      * Webhooks resource
-     * @type {WebhooksResource}
      */
     webhooks: WebhooksResource;
     options: RestManagerOptions;

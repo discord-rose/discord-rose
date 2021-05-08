@@ -20,57 +20,46 @@ class Worker extends Emitter_1.Emitter {
         super(...arguments);
         /**
          * Bot options
-         * @type {BotOptions}
          */
         this.options = {};
         /**
          * All shards on this cluster
-         * @type {Collection<number, Shard>}
          */
         this.shards = new collection_1.default();
         /**
          * Rest manager
-         * @type {RestManager}
          */
         this.api = {};
         /**
          * Command handler
-         * @type {CommandHandler}
          */
         this.commands = new CommandHandler_1.CommandHandler(this);
         /**
          * Thread communications
-         * @type {Thread}
          */
         this.comms = new Thread_1.Thread(this);
         /**
          * Cached guilds
-         * @type {Collection<Snowflake, CachedGuild>}
          */
         this.guilds = new collection_1.default();
         /**
          * Cached roles
-         * @type {Collection<Snowflake, Collection<Snowflake, APIRole>>}
          */
         this.guildRoles = new collection_1.default();
         /**
          * Cached channels
-         * @type {Collection<Snowflake, APIChannel>}
          */
         this.channels = new collection_1.default();
         /**
          * Cached self members
-         * @type {Collection<Snowflake, APIGuildMember>}
          */
         this.selfMember = new collection_1.default();
         /**
          * Cached members
-         * @type {Collection<Snowflake, Collection<Snowflake, APIGuildMember>>}
          */
         this.members = new collection_1.default();
         /**
          * Cached users
-         * @type {Collection<Snowflake, APIUser>}
          */
         this.users = new collection_1.default();
         /**
@@ -79,7 +68,6 @@ class Worker extends Emitter_1.Emitter {
         this.voiceStates = new collection_1.default();
         /**
          * Self user
-         * @type {APIUser}
          */
         this.user = {};
         this.cacheManager = {};
@@ -151,7 +139,6 @@ class Worker extends Emitter_1.Emitter {
     }
     /**
      * Whether or not all shards are online and ready
-     * @type {boolean}
      */
     get ready() {
         return this.api instanceof Manager_1.RestManager && this.shards.every(x => x.ready);

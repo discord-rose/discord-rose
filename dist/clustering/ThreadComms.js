@@ -31,7 +31,6 @@ class ThreadComms extends events_1.EventEmitter {
         this.comms = null;
         this.commands = new collection_1.default();
         /**
-         * @type {function}
          * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
          */
         this.on = this.on;
