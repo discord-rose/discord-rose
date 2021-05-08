@@ -11,13 +11,11 @@ export class Cluster extends ThreadComms {
 
   /**
    * Whether or not the Cluster has started before
-   * @type {boolean}
    */
   public started = false
 
   /**
    * Whether or not the Cluster shouldn't restart
-   * @type {boolean}
    */
   public dying = false
 

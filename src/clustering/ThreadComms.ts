@@ -150,7 +150,6 @@ export class ThreadComms extends EventEmitter {
   private readonly commands: Collection<string, (value?: any) => void> = new Collection()
 
   /**
-   * @type {function}
    * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
    */
   on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => this = this.on

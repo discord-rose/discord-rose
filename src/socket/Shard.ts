@@ -11,7 +11,6 @@ import { DiscordSocket } from './WebSocket'
 export class Shard {
   /**
    * Ping in ms
-   * @type {number}
    */
   public ping: number = 0
 
@@ -59,7 +58,6 @@ export class Shard {
 
   /**
    * Current shard state
-   * @type {State} 0 = Disconnected, 1 = Connecting, 2 = Connected
    */
   get state (): State {
     if (this.ready) return State.CONNECTED
@@ -70,7 +68,6 @@ export class Shard {
 
   /**
    * Whether or not the shard is READY
-   * @type {boolean}
    */
   get ready (): boolean {
     return this.ws.ws?.readyState === OPEN && !this.unavailableGuilds
