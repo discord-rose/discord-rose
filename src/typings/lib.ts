@@ -16,7 +16,7 @@ namespace DiscordRose {
     /**
      * Execute function
      */
-    exec: (ctx: CommandContext) => void | Promise<void>
+    exec: (ctx: CommandContext) => any | Promise<any>
   }
   export interface CommandContext extends ctx {}
   export type Worker = worker
