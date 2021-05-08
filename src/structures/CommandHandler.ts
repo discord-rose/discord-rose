@@ -9,6 +9,7 @@ import fs from 'fs'
 import path from 'path'
 
 type MiddlewareFunction = (ctx: ctx) => boolean | Promise<boolean>
+type FinalizerFunciton = (response: any, ctx: ctx) => void | Promise<void>
 
 /**
  * Error in command
@@ -31,6 +32,7 @@ export class CommandHandler {
   }
 
   public middlewares: MiddlewareFunction[] = []
+  public finalizers: FinalizerFunciton[] = []
   public commands?: Collection<CommandType, CommandOptions>
 
   public CommandContext = CommandContext
@@ -166,6 +168,17 @@ export class CommandHandler {
   }
 
   /**
+   * Adds a global finalizer function
+   * @param fn Finalizer function
+   * @returns this
+   */
+  finalizer (fn: FinalizerFunciton): this {
+    this.finalizers.push(fn)
+
+    return this
+  }
+
+  /**
    * Adds a command to the command handler
    * @param command Command data, be sure to add exec() and command:
    * @example
@@ -268,7 +281,17 @@ export class CommandHandler {
           throw err
         }
       }
-      await cmd.exec(ctx)
+
+      const output = await cmd.exec(ctx)
+      for (const endFn of this.finalizers) {
+        try {
+          await endFn(output, ctx)
+        } catch (err) {
+          err.nonFatal = true
+
+          throw err
+        }
+      }
     } catch (err) {
       this.errorFunction(ctx, err)
     }
