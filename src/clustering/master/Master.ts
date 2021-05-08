@@ -52,7 +52,7 @@ export class Master extends Emitter<{
   /**
    * Rest Manager (only set after running .start())
    */
-  public rest: RestManager = {} as RestManager
+  public rest = {} as RestManager
 
   /**
    * Handler emitter
