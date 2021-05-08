@@ -57,7 +57,6 @@ export class CommandContext {
 
   /**
    * Guild where the message was sent
-   * @type {CachedGuild}
    */
   get guild (): CachedGuild | undefined {
     return this.worker.guilds.get(this.message.guild_id as Snowflake)
@@ -65,7 +64,6 @@ export class CommandContext {
 
   /**
    * Channel where the message was sent
-   * @type {APIChannel}
    */
   get channel (): APIChannel | undefined {
     return this.worker.channels.get(this.message.channel_id)
@@ -73,7 +71,6 @@ export class CommandContext {
 
   /**
    * Member who sent the message
-   * @type {APIGuildMember}
    */
   get member (): APIGuildMember {
     const mem = Object.assign({ user: this.message.author }, this.message.member)
@@ -83,7 +80,6 @@ export class CommandContext {
 
   /**
    * Bot's memeber within the guild
-   * @type {APIGuildMember}
    */
   get me (): APIGuildMember {
     return this.worker.selfMember.get(this.message.guild_id as Snowflake) as APIGuildMember
@@ -172,7 +168,6 @@ export class CommandContext {
 
   /**
    * Makes an embed to send
-   * @type {Embed}
    * @example
    * ctx.embed
    *   .title('Hello')

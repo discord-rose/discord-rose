@@ -30,37 +30,30 @@ export class RestManager {
 
   /**
    * Channel resource
-   * @type {ChannelsResource}
    */
   public channels = new ChannelsResource(this)
   /**
    * Messages resource
-   * @type {MessagesResource}
    */
   public messages = new MessagesResource(this)
   /**
    * Guilds resource
-   * @type {GuildsResource}
    */
   public guilds = new GuildsResource(this)
   /**
    * Members resource
-   * @type {MembersResource}
    */
   public members = new MembersResource(this)
   /**
    * Users resource
-   * @type {UsersResource}
    */
   public users = new UsersResource(this)
   /**
    * Misc resource
-   * @type {MiscResource}
    */
   public misc = new MiscResource(this)
   /**
    * Webhooks resource
-   * @type {WebhooksResource}
    */
   public webhooks = new WebhooksResource(this)
 
