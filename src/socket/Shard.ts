@@ -58,7 +58,6 @@ export class Shard {
 
   /**
    * Current shard state
-   * @type {State} 0 = Disconnected, 1 = Connecting, 2 = Connected
    */
   get state (): State {
     if (this.ready) return State.CONNECTED
