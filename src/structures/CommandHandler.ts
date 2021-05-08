@@ -114,11 +114,11 @@ export class CommandHandler {
    * @param fn String of prefix or Function to choose prefix with
    * @example
    * worker.commands
-   *   .setPrefix('!')
+   *   .prefix('!')
    * // or
-   *   .setPrefix(['!', '+'])
+   *   .prefix(['!', '+'])
    * // or
-   *   .setPrefix((message) => {
+   *   .prefix((message) => {
    *     return db.getPrefix(message.guild_id)
    *   })
    * @returns this
