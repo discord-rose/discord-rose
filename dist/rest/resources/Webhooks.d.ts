@@ -32,4 +32,20 @@ export declare class WebhooksResource {
      * @param token Token (if none provided, uses bot permission)
      */
     delete(webhookId: Snowflake, token?: string): Promise<never>;
+    /**
+     * Edits a message sent by a webhook with it's token
+     * @param webhookId ID of Webhook
+     * @param token Token of Webhook
+     * @param messageId ID of message
+     * @param data Message data to replace
+     * @returns New message
+     */
+    editMessage(webhookId: Snowflake, token: string, messageId: Snowflake, data: MessageTypes): Promise<APIMessage>;
+    /**
+     * Deletes a message sent by a webhook with it's token
+     * @param webhookId ID of Webhook
+     * @param token Token of Webhook
+     * @param messageId ID of message
+     */
+    deleteMessage(webhookId: Snowflake, token: string, messageId: Snowflake): Promise<null>;
 }
