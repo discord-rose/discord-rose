@@ -32,7 +32,7 @@ export class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' 
     if (this.hbInterval) clearInterval(this.hbInterval)
 
     try {
-      this.ws = new WebSocket(this.shard.worker.options.ws + '?v=' + this.shard.worker.options.rest?.version ?? 8)
+      this.ws = new WebSocket(this.shard.worker.options.ws + '?v=' + String(this.shard.worker.options.rest?.version ?? 8))
     } catch (err) {
       if (this.connectTimeout) clearTimeout(this.connectTimeout)
 
