@@ -51,4 +51,28 @@ export class WebhooksResource {
   async delete (webhookId: Snowflake, token?: string): Promise<never> {
     return await this.rest.request('DELETE', `/webhooks/${webhookId}${token ? `/${token}` : ''}`) as never
   }
+
+  /**
+   * Edits a message sent by a webhook with it's token
+   * @param webhookId ID of Webhook
+   * @param token Token of Webhook
+   * @param messageId ID of message
+   * @param data Message data to replace
+   * @returns New message
+   */
+  async editMessage (webhookId: Snowflake, token: string, messageId: Snowflake, data: MessageTypes): Promise<APIMessage> {
+    return await this.rest.request('PATCH', `/webhooks/${webhookId}/${token}/messages/${messageId}`, {
+      body: MessagesResource._formMessage(data, true)
+    })
+  }
+
+  /**
+   * Deletes a message sent by a webhook with it's token
+   * @param webhookId ID of Webhook
+   * @param token Token of Webhook
+   * @param messageId ID of message
+   */
+  async deleteMessage (webhookId: Snowflake, token: string, messageId: Snowflake): Promise<null> {
+    return await this.rest.request('DELETE', `/webhooks/${webhookId}/${token}/messages/${messageId}`)
+  }
 }
