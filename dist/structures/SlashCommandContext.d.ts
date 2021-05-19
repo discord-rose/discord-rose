@@ -1,20 +1,25 @@
 /// <reference types="node" />
-import { APIGuildMember, APIMessage, APIChannel, APIUser } from 'discord-api-types';
+import { CommandContext } from './CommandContext';
+import { APIGuildMember, APIMessage, APIChannel, APIUser, APIApplicationCommandInteractionDataOptionWithValues, APIGuildInteraction, APIApplicationCommandInteractionData } from 'discord-api-types';
 import { Embed } from './Embed';
-import { MessageTypes, Emoji } from '../rest/resources/Messages';
+import { MessageTypes } from '../rest/resources/Messages';
 import { CommandOptions, Worker } from '../typings/lib';
 import { bits } from '../utils/Permissions';
 import { CachedGuild } from '../typings/Discord';
-import { Interaction } from './SlashCommandContext';
-/**
- * Context holding all information about a ran command and utility functions
- */
-export declare class CommandContext {
-    get interaction(): Interaction;
+export interface InteractionData extends APIApplicationCommandInteractionData {
+    options: APIApplicationCommandInteractionDataOptionWithValues[];
+}
+export interface Interaction extends APIGuildInteraction {
+    data: InteractionData;
+}
+export declare class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send' | 'sendFile' | 'embed' | 'args'> {
+    react(): Promise<never>;
+    delete(): Promise<never>;
+    get message(): APIMessage;
     /**
      * Command arguments
      */
-    args: any[];
+    args: Array<InteractionData['options'][number]['value']>;
     /**
      * Worker
      */
@@ -22,7 +27,7 @@ export declare class CommandContext {
     /**
      * Message which command was ran with
      */
-    message: APIMessage;
+    interaction: Interaction;
     /**
      * Command options object
      */
@@ -37,11 +42,11 @@ export declare class CommandContext {
     ran: string;
     constructor(opts: {
         worker: Worker;
-        message: APIMessage;
+        interaction: Interaction;
         command: CommandOptions;
         prefix: string;
         ran: string;
-        args: string[];
+        args: SlashCommandContext['args'];
     });
     /**
      * Author of the message
@@ -58,7 +63,7 @@ export declare class CommandContext {
     /**
      * Member who sent the message
      */
-    get member(): APIGuildMember;
+    get member(): APIGuildInteraction['member'];
     /**
      * Bot's memeber within the guild
      */
@@ -66,21 +71,15 @@ export declare class CommandContext {
     /**
      * Replies to the invoking message
      * @param data Data for message
-     * @param mention Whether or not to mention the user in the reply (defaults to false)
-     * @returns Message sent
+     * @returns nothing
      */
-    reply(data: MessageTypes, mention?: boolean): Promise<APIMessage>;
+    reply(data: MessageTypes): Promise<null>;
     /**
      * Sends a message in the same channel as invoking message
      * @param data Data for message
      * @returns Message sent
      */
-    send(data: MessageTypes): Promise<APIMessage>;
-    /**
-     * React to the invoking command message
-     * @param emoji ID of custom emoji or unicode emoji
-     */
-    react(emoji: Emoji): Promise<never>;
+    send(data: MessageTypes): Promise<null>;
     /**
      * Runs an error through sendback of commands.error
      * @param message Message of error
@@ -100,15 +99,11 @@ export declare class CommandContext {
     sendFile(file: {
         name: string;
         buffer: Buffer;
-    }, extra?: MessageTypes): Promise<APIMessage>;
+    }, extra?: MessageTypes): Promise<null>;
     /**
      * Starts typing in the channel
      */
     typing(): Promise<never>;
-    /**
-     * Deletes the invoking message
-     */
-    delete(): Promise<never>;
     /**
      * Makes an embed to send
      * @example
@@ -116,7 +111,7 @@ export declare class CommandContext {
      *   .title('Hello')
      *   .send()
      */
-    get embed(): Embed;
+    get embed(): Embed<null>;
     /**
      * Whether or not the running user has a certain permission
      * @param perms Permission to test

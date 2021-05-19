@@ -8,6 +8,7 @@ const CommandContext_1 = require("./CommandContext");
 const collection_1 = __importDefault(require("@discordjs/collection"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const SlashCommandContext_1 = require("./SlashCommandContext");
 /**
  * Error in command
  */
@@ -25,6 +26,7 @@ class CommandHandler {
     constructor(worker) {
         this.worker = worker;
         this.added = false;
+        this.addedInteractions = false;
         this._options = {
             default: {},
             bots: false,
@@ -35,6 +37,7 @@ class CommandHandler {
         this.middlewares = [];
         this.CommandContext = CommandContext_1.CommandContext;
         this.errorFunction = (ctx, err) => {
+            console.log('e');
             if (ctx.myPerms('sendMessages')) {
                 if (ctx.myPerms('embed')) {
                     ctx.embed
@@ -54,6 +57,15 @@ class CommandHandler {
             err.message += ` (While Running Command: ${String(ctx.command.command)})`;
             console.error(err);
         };
+    }
+    setupInteractions() {
+        this.addedInteractions = true;
+        if (this.commands) {
+            const interactions = this.commands.filter(x => !!x.interaction);
+            if (interactions.size > 0) {
+                void this.worker.api.interactions.set(interactions.map(x => x.interaction), this.worker.user.id, this._options.interactionGuild);
+            }
+        }
     }
     /**
      * Load a directory of CommandOptions commands (will also load sub-folders)
@@ -161,6 +173,15 @@ class CommandHandler {
             this.worker.on('MESSAGE_CREATE', (data) => {
                 this._exec(data).catch(() => { });
             });
+            this.worker.on('INTERACTION_CREATE', (data) => {
+                this._interactionExec(data).catch(() => { });
+            });
+            this.worker.once('READY', () => {
+                this.setupInteractions();
+            });
+        }
+        if (this.addedInteractions && command.interaction) {
+            void this.worker.api.interactions.update(command.interaction, this.worker.user.id, this._options.interactionGuild);
         }
         (_a = this.commands) === null || _a === void 0 ? void 0 : _a.set(command.command, Object.assign(Object.assign({}, this._options.default), command));
         return this;
@@ -177,16 +198,55 @@ class CommandHandler {
     /**
      * Gets a command from registry
      * @param command Command name to fetch
+     * @param interaction Whether or not to look for interactions
      * @returns Command
      */
-    find(command) {
-        var _a;
-        return (_a = this.commands) === null || _a === void 0 ? void 0 : _a.find(x => { var _a; return (this._test(command, x.command) || ((_a = x.aliases) === null || _a === void 0 ? void 0 : _a.some(alias => this._test(command, alias)))); });
+    find(command, interaction) {
+        var _a, _b;
+        if (interaction) {
+            return (_a = this.commands) === null || _a === void 0 ? void 0 : _a.find(x => { var _a; return ((_a = x.interaction) === null || _a === void 0 ? void 0 : _a.name) === command; });
+        }
+        return (_b = this.commands) === null || _b === void 0 ? void 0 : _b.find(x => { var _a; return (this._test(command, x.command) || ((_a = x.aliases) === null || _a === void 0 ? void 0 : _a.some(alias => this._test(command, alias)))); });
     }
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     get findCommand() {
         console.warn('.findCommand is deprecated, please use .find() instead.');
         return this.find;
+    }
+    async _interactionExec(data) {
+        var _a, _b;
+        if (!data.member)
+            return;
+        if (data.type === 1 /* Ping */)
+            return;
+        const cmd = this.find(data.data.name, true);
+        if (!cmd)
+            return;
+        const ctx = new SlashCommandContext_1.SlashCommandContext({
+            worker: this.worker,
+            interaction: data,
+            command: cmd,
+            prefix: '/',
+            ran: data.data.name,
+            args: (_b = (_a = data.data.options) === null || _a === void 0 ? void 0 : _a.map(x => x.value)) !== null && _b !== void 0 ? _b : []
+        });
+        try {
+            for (const midFn of this.middlewares) {
+                try {
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+                    if (await midFn(ctx) !== true)
+                        return;
+                }
+                catch (err) {
+                    err.nonFatal = true;
+                    throw err;
+                }
+            }
+            await cmd.exec(ctx);
+        }
+        catch (err) {
+            this.errorFunction(ctx, err);
+        }
     }
     async _exec(data) {
         var _a;

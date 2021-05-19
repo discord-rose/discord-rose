@@ -2,10 +2,10 @@ import { APIEmbed, APIMessage } from 'discord-api-types';
 /**
  * Discord Embed
  */
-export declare class Embed {
+export declare class Embed<Res extends APIMessage | null = APIMessage> {
     private readonly sendback?;
     obj: APIEmbed;
-    constructor(sendback?: ((embed: Embed, reply: boolean, mention: boolean) => Promise<APIMessage>) | undefined);
+    constructor(sendback?: ((embed: Embed<Res>, reply: boolean, mention: boolean) => Promise<Res>) | undefined);
     /**
      * Sets the color
      * @param color Color hex code
@@ -66,7 +66,7 @@ export declare class Embed {
      * @param reply Whether or not to do so in an inline reply (defaults to true)
      * @param mention Whether or not to mention the user in the reply (defaults to false)
      */
-    send(reply?: boolean, mention?: boolean): Promise<APIMessage>;
+    send(reply?: boolean, mention?: boolean): Promise<Res>;
     /**
      * Renders the embed
      * @returns

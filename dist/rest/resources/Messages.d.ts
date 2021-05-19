@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { APIMessageReferenceSend, RESTGetAPIChannelMessageReactionUsersQuery, RESTGetAPIChannelMessageReactionUsersResult, RESTGetAPIChannelMessageResult, RESTPatchAPIChannelMessageResult, RESTPostAPIChannelMessageCrosspostResult, RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult, RESTPostAPIWebhookWithTokenJSONBody, RESTPutAPIChannelMessageReactionResult, Snowflake } from 'discord-api-types';
+import { APIInteractionApplicationCommandCallbackData, APIMessageReferenceSend, RESTGetAPIChannelMessageReactionUsersQuery, RESTGetAPIChannelMessageReactionUsersResult, RESTGetAPIChannelMessageResult, RESTPatchAPIChannelMessageResult, RESTPostAPIChannelMessageCrosspostResult, RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult, RESTPostAPIWebhookWithTokenJSONBody, RESTPutAPIChannelMessageReactionResult, Snowflake } from 'discord-api-types';
 import { Embed } from '../../structures/Embed';
 import { RestManager } from '../Manager';
 /**
@@ -7,14 +7,14 @@ import { RestManager } from '../Manager';
  */
 export declare type Emoji = string | Snowflake;
 declare type StringifiedMessageTypes = string | Function | bigint | number | symbol | undefined;
-export declare type MessageTypes = RESTPostAPIChannelMessageJSONBody | RESTPostAPIWebhookWithTokenJSONBody | StringifiedMessageTypes | Embed;
+export declare type MessageTypes = RESTPostAPIChannelMessageJSONBody | RESTPostAPIWebhookWithTokenJSONBody | StringifiedMessageTypes | Embed<any>;
 /**
  * Message resource
  */
 export declare class MessagesResource {
     private readonly rest;
     constructor(rest: RestManager);
-    static _formMessage(message: MessageTypes, webhook?: boolean): RESTPostAPIWebhookWithTokenJSONBody | RESTPostAPIChannelMessageJSONBody;
+    static _formMessage(message: MessageTypes, webhook?: boolean): RESTPostAPIWebhookWithTokenJSONBody | RESTPostAPIChannelMessageJSONBody | APIInteractionApplicationCommandCallbackData;
     /**
      * Sends a message to a channel
      * @param channelId ID of channel

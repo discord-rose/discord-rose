@@ -1,74 +1,64 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommandContext = void 0;
+exports.SlashCommandContext = void 0;
 const Embed_1 = require("./Embed");
-const Messages_1 = require("../rest/resources/Messages");
 const Permissions_1 = require("../utils/Permissions");
 const CommandHandler_1 = require("./CommandHandler");
-/**
- * Context holding all information about a ran command and utility functions
- */
-class CommandContext {
+class SlashCommandContext {
     constructor(opts) {
         this.worker = opts.worker;
-        this.message = opts.message;
+        this.interaction = opts.interaction;
         this.command = opts.command;
         this.prefix = opts.prefix;
         this.ran = opts.ran;
         this.args = opts.args;
     }
-    get interaction() {
-        throw new Error('Cannot access ctx.interaction since the command was ran as a message command');
+    async react() {
+        throw new Error('Cannot access ctx.react() since the command was ran as a slash command');
+    }
+    async delete() {
+        throw new Error('Cannot access ctx.delete() since the command was ran as a slash command');
+    }
+    get message() {
+        throw new Error('Cannot access ctx.message since the command was ran as a slash command');
     }
     /**
      * Author of the message
      */
     get author() {
-        return this.message.author;
+        return this.interaction.member.user;
     }
     /**
      * Guild where the message was sent
      */
     get guild() {
-        return this.worker.guilds.get(this.message.guild_id);
+        return this.worker.guilds.get(this.interaction.guild_id);
     }
     /**
      * Channel where the message was sent
      */
     get channel() {
-        return this.worker.channels.get(this.message.channel_id);
+        return this.worker.channels.get(this.interaction.channel_id);
     }
     /**
      * Member who sent the message
      */
     get member() {
-        const mem = Object.assign({ user: this.message.author }, this.message.member);
-        return mem;
+        return this.interaction.member;
     }
     /**
      * Bot's memeber within the guild
      */
     get me() {
-        return this.worker.selfMember.get(this.message.guild_id);
+        return this.worker.selfMember.get(this.interaction.guild_id);
     }
     /**
      * Replies to the invoking message
      * @param data Data for message
-     * @param mention Whether or not to mention the user in the reply (defaults to false)
-     * @returns Message sent
+     * @returns nothing
      */
-    async reply(data, mention = false) {
-        if (!mention) {
-            data = Messages_1.MessagesResource._formMessage(data);
-            if (!data.allowed_mentions)
-                data.allowed_mentions = {};
-            data.allowed_mentions.replied_user = false;
-        }
-        return await this.worker.api.messages.send(this.message.channel_id, data, {
-            message_id: this.message.id,
-            channel_id: this.message.channel_id,
-            guild_id: this.message.guild_id
-        });
+    async reply(data) {
+        return await this.send(data);
     }
     /**
      * Sends a message in the same channel as invoking message
@@ -76,14 +66,10 @@ class CommandContext {
      * @returns Message sent
      */
     async send(data) {
-        return await this.worker.api.messages.send(this.message.channel_id, data);
-    }
-    /**
-     * React to the invoking command message
-     * @param emoji ID of custom emoji or unicode emoji
-     */
-    async react(emoji) {
-        return await this.worker.api.messages.react(this.message.channel_id, this.message.id, emoji);
+        return await this.worker.api.interactions.callback(this.interaction.id, this.interaction.token, {
+            type: 4 /* ChannelMessageWithSource */,
+            data: data
+        });
     }
     /**
      * Runs an error through sendback of commands.error
@@ -99,7 +85,7 @@ class CommandContext {
      * @param data Data for message
      */
     async dm(data) {
-        return await this.worker.api.users.dm(this.message.author.id, data);
+        return await this.worker.api.users.dm(this.author.id, data);
     }
     /**
      * Sends a file to the same channel
@@ -108,19 +94,15 @@ class CommandContext {
      * @returns
      */
     async sendFile(file, extra) {
-        return await this.worker.api.messages.sendFile(this.message.channel_id, file, extra);
+        return await this.worker.api.interactions.callbackFile(this.interaction.id, this.interaction.token, file, extra);
     }
     /**
      * Starts typing in the channel
      */
     async typing() {
-        return await this.worker.api.channels.typing(this.message.channel_id);
-    }
-    /**
-     * Deletes the invoking message
-     */
-    async delete() {
-        return await this.worker.api.messages.delete(this.message.channel_id, this.message.id);
+        return await this.worker.api.interactions.callback(this.interaction.id, this.interaction.token, {
+            type: 5 /* DeferredChannelMessageWithSource */
+        });
     }
     /**
      * Makes an embed to send
@@ -130,9 +112,9 @@ class CommandContext {
      *   .send()
      */
     get embed() {
-        return new Embed_1.Embed(async (embed, reply, mention) => {
+        return new Embed_1.Embed(async (embed, reply, _mention) => {
             if (reply)
-                return await this.reply(embed, mention);
+                return await this.reply(embed);
             else
                 return await this.send(embed);
         });
@@ -143,15 +125,9 @@ class CommandContext {
      * @returns
      */
     hasPerms(perms) {
-        var _a;
         if (!this.guild)
             throw new Error('Missing guild');
-        return Permissions_1.PermissionsUtils.has(Permissions_1.PermissionsUtils.combine({
-            guild: this.guild,
-            member: this.member,
-            overwrites: (_a = this.channel) === null || _a === void 0 ? void 0 : _a.permission_overwrites,
-            roleList: this.worker.guildRoles.get(this.guild.id)
-        }), perms);
+        return Permissions_1.PermissionsUtils.has(Number(this.member.permissions), perms);
     }
     /**
      * Whether or not the bot user has a certain permission
@@ -170,4 +146,4 @@ class CommandContext {
         }), perms);
     }
 }
-exports.CommandContext = CommandContext;
+exports.SlashCommandContext = SlashCommandContext;

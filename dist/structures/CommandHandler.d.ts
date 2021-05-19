@@ -1,8 +1,8 @@
-import { APIMessage } from 'discord-api-types';
+import { APIMessage, Snowflake } from 'discord-api-types';
 import { CommandContext } from './CommandContext';
-import { CommandOptions, CommandType, CommandContext as ctx, Worker } from '../typings/lib';
+import { CommandOptions, CommandType, Worker, CTX } from '../typings/lib';
 import Collection from '@discordjs/collection';
-declare type MiddlewareFunction = (ctx: ctx) => boolean | Promise<boolean>;
+declare type MiddlewareFunction = (ctx: CTX) => boolean | Promise<boolean>;
 /**
  * Error in command
  */
@@ -15,6 +15,7 @@ export declare class CommandError extends Error {
 export declare class CommandHandler {
     private readonly worker;
     private added;
+    private addedInteractions;
     private _options;
     middlewares: MiddlewareFunction[];
     commands?: Collection<CommandType, CommandOptions>;
@@ -24,8 +25,9 @@ export declare class CommandHandler {
      * @param worker Worker
      */
     constructor(worker: Worker);
+    setupInteractions(): void;
     prefixFunction?: ((message: APIMessage) => Promise<string | string[]> | string | string[]);
-    errorFunction: (ctx: ctx, err: CommandError) => void;
+    errorFunction: (ctx: CTX, err: CommandError) => void;
     /**
      * Load a directory of CommandOptions commands (will also load sub-folders)
      * @param directory Absolute directory full of command files
@@ -63,7 +65,7 @@ export declare class CommandHandler {
      *  })
      * @returns this
      */
-    error(fn: (ctx: ctx, error: CommandError) => void): this;
+    error(fn: (ctx: CTX, error: CommandError) => void): this;
     /**
      * Adds a global middleware function
      * @param fn Middleware function
@@ -88,17 +90,19 @@ export declare class CommandHandler {
     /**
      * Gets a command from registry
      * @param command Command name to fetch
+     * @param interaction Whether or not to look for interactions
      * @returns Command
      */
-    find(command: string): CommandOptions | undefined;
-    get findCommand(): (command: string) => CommandOptions | undefined;
+    find(command: string, interaction?: boolean): CommandOptions | undefined;
+    get findCommand(): (command: string, interaction?: boolean | undefined) => CommandOptions | undefined;
+    private _interactionExec;
     private _exec;
 }
 export interface CommandHandlerOptions {
     /**
      * Default CommandOptions ('command', 'exec', and 'aliases' cannot be defaulted)
      */
-    default?: Pick<CommandOptions, Exclude<keyof CommandOptions, 'command' | 'exec' | 'aliases'>>;
+    default?: Partial<Pick<CommandOptions, Exclude<keyof CommandOptions, 'command' | 'exec' | 'aliases'>>>;
     /**
      * Allow commands from bots
      * @default false
@@ -119,5 +123,9 @@ export interface CommandHandlerOptions {
      * @default true
      */
     caseInsensitiveCommand?: boolean;
+    /**
+     * Only post interaction to one specific guild (ID)
+     */
+    interactionGuild?: Snowflake;
 }
 export {};

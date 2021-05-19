@@ -27,6 +27,7 @@ const Bucket_1 = require("./Bucket");
 const Channels_1 = require("./resources/Channels");
 const Messages_1 = require("./resources/Messages");
 const Guilds_1 = require("./resources/Guilds");
+const Interactions_1 = require("./resources/Interactions");
 const Members_1 = require("./resources/Members");
 const Users_1 = require("./resources/Users");
 const Misc_1 = require("./resources/Misc");
@@ -52,6 +53,10 @@ class RestManager {
          * Guilds resource
          */
         this.guilds = new Guilds_1.GuildsResource(this);
+        /**
+         * Interactions resource
+         */
+        this.interactions = new Interactions_1.InteractionResource(this);
         /**
          * Members resource
          */
