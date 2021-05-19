@@ -1,5 +1,5 @@
 import { CommandContext } from './CommandContext'
-import { APIGuildMember, APIMessage, APIChannel, APIUser, APIApplicationCommandInteractionDataOptionWithValues, APIGuildInteraction, APIApplicationCommandInteractionData, InteractionResponseType, APIInteractionApplicationCommandCallbackData } from 'discord-api-types'
+import { APIGuildMember, APIMessage, APIChannel, APIUser, APIApplicationCommandInteractionDataOptionWithValues, APIGuildInteraction, APIApplicationCommandInteractionData, InteractionResponseType, APIInteractionApplicationCommandCallbackData, APIInteractionResponse } from 'discord-api-types'
 
 import { Embed } from './Embed'
 import { MessageTypes } from '../rest/resources/Messages'
@@ -71,6 +71,8 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
     this.args = opts.args
   }
 
+  private sent = false
+
   /**
    * Author of the message
    */
@@ -115,13 +117,24 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
     return await this.send(data)
   }
 
+  private async _callback (data: APIInteractionResponse): Promise<null> {
+    this.sent = true
+
+    return await this.worker.api.interactions.callback(this.interaction.id, this.interaction.token, data)
+  }
+
   /**
    * Sends a message in the same channel as invoking message
    * @param data Data for message
    * @returns Message sent
    */
   async send (data: MessageTypes): Promise<null> {
-    return await this.worker.api.interactions.callback(this.interaction.id, this.interaction.token, {
+    if (this.sent) {
+      await this.worker.api.webhooks.editMessage(this.worker.user.id, this.interaction.token, '@original', data)
+      return null
+    }
+
+    return await this._callback({
       type: InteractionResponseType.ChannelMessageWithSource,
       data: data as APIInteractionApplicationCommandCallbackData
     })
@@ -160,10 +173,10 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
   /**
    * Starts typing in the channel
    */
-  async typing (): Promise<never> {
-    return await this.worker.api.interactions.callback(this.interaction.id, this.interaction.token, {
+  async typing (): Promise<null> {
+    return await this._callback({
       type: InteractionResponseType.DeferredChannelMessageWithSource
-    }) as never
+    })
   }
 
   /**

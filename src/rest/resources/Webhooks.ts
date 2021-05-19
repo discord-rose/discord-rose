@@ -60,7 +60,7 @@ export class WebhooksResource {
    * @param data Message data to replace
    * @returns New message
    */
-  async editMessage (webhookId: Snowflake, token: string, messageId: Snowflake, data: MessageTypes): Promise<APIMessage> {
+  async editMessage (webhookId: Snowflake, token: string, messageId: Snowflake|'@original', data: MessageTypes): Promise<APIMessage> {
     return await this.rest.request('PATCH', `/webhooks/${webhookId}/${token}/messages/${messageId}`, {
       body: MessagesResource._formMessage(data, true)
     })

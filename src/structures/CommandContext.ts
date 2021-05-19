@@ -165,7 +165,7 @@ export class CommandContext {
   /**
    * Starts typing in the channel
    */
-  async typing (): Promise<never> {
+  async typing (): Promise<null> {
     return await this.worker.api.channels.typing(this.message.channel_id)
   }
 
