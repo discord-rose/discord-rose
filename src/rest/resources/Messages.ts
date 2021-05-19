@@ -1,4 +1,4 @@
-import { APIMessageReferenceSend, RESTGetAPIChannelMessageReactionUsersQuery, RESTGetAPIChannelMessageReactionUsersResult, RESTGetAPIChannelMessageResult, RESTPatchAPIChannelMessageResult, RESTPostAPIChannelMessageCrosspostResult, RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult, RESTPostAPIWebhookWithTokenJSONBody, RESTPutAPIChannelMessageReactionResult, Snowflake } from 'discord-api-types'
+import { APIInteractionApplicationCommandCallbackData, APIMessageReferenceSend, RESTGetAPIChannelMessageReactionUsersQuery, RESTGetAPIChannelMessageReactionUsersResult, RESTGetAPIChannelMessageResult, RESTPatchAPIChannelMessageResult, RESTPostAPIChannelMessageCrosspostResult, RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult, RESTPostAPIWebhookWithTokenJSONBody, RESTPutAPIChannelMessageReactionResult, Snowflake } from 'discord-api-types'
 import { Embed } from '../../structures/Embed'
 import { RestManager } from '../Manager'
 
@@ -12,7 +12,7 @@ export type Emoji = string | Snowflake
 
 type StringifiedMessageTypes = string | Function | bigint | number | symbol | undefined
 
-export type MessageTypes = RESTPostAPIChannelMessageJSONBody | RESTPostAPIWebhookWithTokenJSONBody | StringifiedMessageTypes | Embed
+export type MessageTypes = RESTPostAPIChannelMessageJSONBody | RESTPostAPIWebhookWithTokenJSONBody | StringifiedMessageTypes | Embed<any>
 
 /**
  * Message resource
@@ -20,7 +20,7 @@ export type MessageTypes = RESTPostAPIChannelMessageJSONBody | RESTPostAPIWebhoo
 export class MessagesResource {
   constructor (private readonly rest: RestManager) {}
 
-  static _formMessage (message: MessageTypes, webhook?: boolean): RESTPostAPIWebhookWithTokenJSONBody | RESTPostAPIChannelMessageJSONBody {
+  static _formMessage (message: MessageTypes, webhook?: boolean): RESTPostAPIWebhookWithTokenJSONBody | RESTPostAPIChannelMessageJSONBody | APIInteractionApplicationCommandCallbackData {
     if (message instanceof Embed) {
       message = webhook
         ? {

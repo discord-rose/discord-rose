@@ -8,6 +8,7 @@ import { Bucket } from './Bucket'
 import { ChannelsResource } from './resources/Channels'
 import { MessagesResource } from './resources/Messages'
 import { GuildsResource } from './resources/Guilds'
+import { InteractionResource } from './resources/Interactions'
 import { MembersResource } from './resources/Members'
 import { UsersResource } from './resources/Users'
 import { MiscResource } from './resources/Misc'
@@ -40,6 +41,10 @@ export class RestManager {
    * Guilds resource
    */
   public guilds = new GuildsResource(this)
+  /**
+   * Interactions resource
+   */
+  public interactions = new InteractionResource(this)
   /**
    * Members resource
    */

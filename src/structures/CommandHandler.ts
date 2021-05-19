@@ -1,14 +1,15 @@
-import { APIMessage, MessageType } from 'discord-api-types'
+import { APIMessage, InteractionType, MessageType, RESTPostAPIApplicationCommandsJSONBody, Snowflake } from 'discord-api-types'
 
 import { CommandContext } from './CommandContext'
 
-import { CommandOptions, CommandType, CommandContext as ctx, Worker } from '../typings/lib'
+import { CommandOptions, CommandType, Worker, CTX } from '../typings/lib'
 import Collection from '@discordjs/collection'
 
 import fs from 'fs'
 import path from 'path'
+import { Interaction, SlashCommandContext } from './SlashCommandContext'
 
-type MiddlewareFunction = (ctx: ctx) => boolean | Promise<boolean>
+type MiddlewareFunction = (ctx: CTX) => boolean | Promise<boolean>
 
 /**
  * Error in command
@@ -22,6 +23,8 @@ export class CommandError extends Error {
  */
 export class CommandHandler {
   private added: boolean = false
+  private addedInteractions: boolean = false
+
   private _options: CommandHandlerOptions = {
     default: {},
     bots: false,
@@ -41,8 +44,20 @@ export class CommandHandler {
    */
   constructor (private readonly worker: Worker) {}
 
+  setupInteractions (): void {
+    this.addedInteractions = true
+
+    if (this.commands) {
+      const interactions = this.commands.filter(x => !!x.interaction)
+      if (interactions.size > 0) {
+        void this.worker.api.interactions.set(interactions.map(x => x.interaction) as RESTPostAPIApplicationCommandsJSONBody[], this.worker.user.id, this._options.interactionGuild)
+      }
+    }
+  }
+
   public prefixFunction?: ((message: APIMessage) => Promise<string|string[]> | string|string[])
-  public errorFunction = (ctx: ctx, err: CommandError): void => {
+  public errorFunction = (ctx: CTX, err: CommandError): void => {
+    console.log('e')
     if (ctx.myPerms('sendMessages')) {
       if (ctx.myPerms('embed')) {
         ctx.embed
@@ -148,7 +163,7 @@ export class CommandHandler {
    *  })
    * @returns this
    */
-  error (fn: (ctx: ctx, error: CommandError) => void): this {
+  error (fn: (ctx: CTX, error: CommandError) => void): this {
     this.errorFunction = fn
 
     return this
@@ -186,7 +201,18 @@ export class CommandHandler {
       this.worker.on('MESSAGE_CREATE', (data) => {
         this._exec(data).catch(() => {})
       })
+      this.worker.on('INTERACTION_CREATE', (data) => {
+        this._interactionExec(data as Interaction).catch(() => {})
+      })
+
+      this.worker.once('READY', () => {
+        this.setupInteractions()
+      })
     }
+    if (this.addedInteractions && command.interaction) {
+      void this.worker.api.interactions.update(command.interaction as unknown as RESTPostAPIApplicationCommandsJSONBody, this.worker.user.id, this._options.interactionGuild)
+    }
+
     this.commands?.set(command.command, {
       ...this._options.default,
       ...command
@@ -206,9 +232,14 @@ export class CommandHandler {
   /**
    * Gets a command from registry
    * @param command Command name to fetch
+   * @param interaction Whether or not to look for interactions
    * @returns Command
    */
-  public find (command: string): CommandOptions | undefined {
+  public find (command: string, interaction?: boolean): CommandOptions | undefined {
+    if (interaction) {
+      return this.commands?.find(x => x.interaction?.name === command)
+    }
+
     return this.commands?.find(x => (this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)) as boolean))
   }
 
@@ -217,6 +248,39 @@ export class CommandHandler {
     console.warn('.findCommand is deprecated, please use .find() instead.')
 
     return this.find
+  }
+
+  private async _interactionExec (data: Interaction): Promise<void> {
+    if (!data.member) return
+    if (data.type === InteractionType.Ping) return
+
+    const cmd = this.find(data.data.name, true) as CommandOptions
+    if (!cmd) return
+
+    const ctx = new SlashCommandContext({
+      worker: this.worker,
+      interaction: data,
+      command: cmd,
+      prefix: '/',
+      ran: data.data.name,
+      args: data.data.options?.map(x => x.value) ?? []
+    })
+
+    try {
+      for (const midFn of this.middlewares) {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+          if (await midFn(ctx) !== true) return
+        } catch (err) {
+          err.nonFatal = true
+
+          throw err
+        }
+      }
+      await cmd.exec(ctx as unknown as CommandContext)
+    } catch (err) {
+      this.errorFunction(ctx, err)
+    }
   }
 
   private async _exec (data: APIMessage): Promise<void> {
@@ -279,7 +343,7 @@ export interface CommandHandlerOptions {
   /**
    * Default CommandOptions ('command', 'exec', and 'aliases' cannot be defaulted)
    */
-  default?: Pick<CommandOptions, Exclude<keyof CommandOptions, 'command' | 'exec' | 'aliases'>>
+  default?: Partial<Pick<CommandOptions, Exclude<keyof CommandOptions, 'command' | 'exec' | 'aliases'>>>
   /**
    * Allow commands from bots
    * @default false
@@ -300,4 +364,8 @@ export interface CommandHandlerOptions {
    * @default true
    */
   caseInsensitiveCommand?: boolean
+  /**
+   * Only post interaction to one specific guild (ID)
+   */
+  interactionGuild?: Snowflake
 }

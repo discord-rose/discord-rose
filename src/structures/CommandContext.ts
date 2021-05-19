@@ -9,15 +9,20 @@ import { PermissionsUtils, bits } from '../utils/Permissions'
 
 import { CachedGuild } from '../typings/Discord'
 import { CommandError } from './CommandHandler'
+import { Interaction } from './SlashCommandContext'
 
 /**
  * Context holding all information about a ran command and utility functions
  */
 export class CommandContext {
+  get interaction (): Interaction {
+    throw new Error('Cannot access ctx.interaction since the command was ran as a message command')
+  }
+
   /**
    * Command arguments
    */
-  public args: string[]
+  public args: any[]
   /**
    * Worker
    */
