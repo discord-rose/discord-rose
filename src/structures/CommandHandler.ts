@@ -2,14 +2,14 @@ import { APIMessage, InteractionType, MessageType, RESTPostAPIApplicationCommand
 
 import { CommandContext } from './CommandContext'
 
-import { CommandOptions, CommandType, Worker, CTX } from '../typings/lib'
+import { CommandOptions, CommandType, Worker, CommandContext as ctx } from '../typings/lib'
 import Collection from '@discordjs/collection'
 
 import fs from 'fs'
 import path from 'path'
 import { Interaction, SlashCommandContext } from './SlashCommandContext'
 
-type MiddlewareFunction = (ctx: CTX) => boolean | Promise<boolean>
+type MiddlewareFunction = (ctx: ctx) => boolean | Promise<boolean>
 
 /**
  * Error in command
@@ -70,7 +70,7 @@ export class CommandHandler {
   }
 
   public prefixFunction?: ((message: APIMessage) => Promise<string|string[]> | string|string[])
-  public errorFunction = (ctx: CTX, err: CommandError): void => {
+  public errorFunction = (ctx: ctx, err: CommandError): void => {
     if (ctx.myPerms('sendMessages')) {
       if (ctx.myPerms('embed')) {
         ctx.embed
@@ -176,7 +176,7 @@ export class CommandHandler {
    *  })
    * @returns this
    */
-  error (fn: (ctx: CTX, error: CommandError) => void): this {
+  error (fn: (ctx: ctx, error: CommandError) => void): this {
     this.errorFunction = fn
 
     return this
@@ -280,7 +280,7 @@ export class CommandHandler {
       for (const midFn of this.middlewares) {
         try {
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
-          if (await midFn(ctx) !== true) return
+          if (await midFn(ctx as unknown as CommandContext) !== true) return
         } catch (err) {
           err.nonFatal = true
 
@@ -289,7 +289,7 @@ export class CommandHandler {
       }
       await cmd.exec(ctx as unknown as CommandContext)
     } catch (err) {
-      this.errorFunction(ctx, err)
+      this.errorFunction(ctx as unknown as CommandContext, err)
     }
   }
 

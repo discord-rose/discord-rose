@@ -149,7 +149,7 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
 
     error.nonFatal = true
 
-    this.worker.commands.errorFunction(this, error)
+    this.worker.commands.errorFunction(this as unknown as CommandContext, error)
   }
 
   /**
@@ -199,8 +199,6 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * @returns
    */
   hasPerms (perms: keyof typeof bits): boolean {
-    if (!this.guild) throw new Error('Missing guild')
-
     return PermissionsUtils.has(Number(this.member.permissions), perms)
   }
 
