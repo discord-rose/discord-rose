@@ -19,6 +19,24 @@ export interface Interaction extends APIGuildInteraction {
   data: InteractionData
 }
 
+/**
+ * Interaction sub-object
+ */
+export interface InteractionOptions {
+  [key: string]: InteractionOptions | undefined | any
+}
+
+function formOptions (obj): InteractionOptions {
+  const res = {}
+
+  obj?.forEach?.(opt => {
+    if (opt.value === undefined) res[opt.name] = formOptions(opt.options)
+    else res[opt.name] = opt.value
+  })
+
+  return res
+}
+
 export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send' | 'sendFile' | 'embed' | 'args'> {
   /**
    * Whether or not a command is an interaction or not
@@ -61,6 +79,10 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * Actual command that was ran (including possible aliases)
    */
   public ran: string
+  /**
+   * Interaction options if ran as a slash command
+   */
+  public options: InteractionOptions = {}
 
   constructor (opts: { worker: Worker, interaction: Interaction, command: CommandOptions, prefix: string, ran: string, args: SlashCommandContext['args'] }) {
     this.worker = opts.worker
@@ -69,6 +91,8 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
     this.prefix = opts.prefix
     this.ran = opts.ran
     this.args = opts.args
+
+    this.options = formOptions(this.interaction.data.options)
   }
 
   private sent = false
