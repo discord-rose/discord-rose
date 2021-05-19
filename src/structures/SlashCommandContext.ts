@@ -1,8 +1,8 @@
 import { CommandContext } from './CommandContext'
-import { APIGuildMember, APIMessage, APIChannel, APIUser, APIApplicationCommandInteractionDataOptionWithValues, APIGuildInteraction, APIApplicationCommandInteractionData, InteractionResponseType, APIInteractionApplicationCommandCallbackData, APIInteractionResponse } from 'discord-api-types'
+import { APIGuildMember, APIMessage, APIChannel, APIUser, APIApplicationCommandInteractionDataOptionWithValues, APIGuildInteraction, APIApplicationCommandInteractionData, InteractionResponseType, APIInteractionApplicationCommandCallbackData, APIInteractionResponse, MessageFlags } from 'discord-api-types'
 
 import { Embed } from './Embed'
-import { MessageTypes } from '../rest/resources/Messages'
+import { MessagesResource, MessageTypes } from '../rest/resources/Messages'
 
 import { CommandOptions, Worker } from '../typings/lib'
 
@@ -113,8 +113,8 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * @param data Data for message
    * @returns nothing
    */
-  async reply (data: MessageTypes): Promise<null> {
-    return await this.send(data)
+  async reply (data: MessageTypes, mention: boolean = false, ephermal: boolean = false): Promise<null> {
+    return await this.send(data, ephermal)
   }
 
   private async _callback (data: APIInteractionResponse): Promise<null> {
@@ -128,15 +128,20 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * @param data Data for message
    * @returns Message sent
    */
-  async send (data: MessageTypes): Promise<null> {
+  async send (data: MessageTypes, ephermal: boolean = false): Promise<null> {
+    const message = MessagesResource._formMessage(data)
+    if (ephermal) {
+      (message as APIInteractionApplicationCommandCallbackData).flags = MessageFlags.EPHEMERAL
+    }
+
     if (this.sent) {
-      await this.worker.api.webhooks.editMessage(this.worker.user.id, this.interaction.token, '@original', data)
+      await this.worker.api.webhooks.editMessage(this.worker.user.id, this.interaction.token, '@original', message)
       return null
     }
 
     return await this._callback({
       type: InteractionResponseType.ChannelMessageWithSource,
-      data: data as APIInteractionApplicationCommandCallbackData
+      data: message
     })
   }
 
@@ -187,9 +192,9 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    *   .send()
    */
   get embed (): Embed<null> {
-    return new Embed<null>(async (embed, reply, _mention) => {
-      if (reply) return await this.reply(embed)
-      else return await this.send(embed)
+    return new Embed<null>(async (embed, reply, mention, ephermal) => {
+      if (reply) return await this.reply(embed, mention, ephermal)
+      else return await this.send(embed, ephermal)
     })
   }
 

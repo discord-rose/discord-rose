@@ -5,7 +5,7 @@ import { APIEmbed, APIMessage } from 'discord-api-types'
  */
 export class Embed <Res extends APIMessage|null = APIMessage> {
   public obj: APIEmbed = {}
-  constructor (private readonly sendback?: (embed: Embed<Res>, reply: boolean, mention: boolean) => Promise<Res>) {}
+  constructor (private readonly sendback?: (embed: Embed<Res>, reply: boolean, mention: boolean, ephermal: boolean) => Promise<Res>) {}
 
   /**
    * Sets the color
@@ -132,9 +132,9 @@ export class Embed <Res extends APIMessage|null = APIMessage> {
    * @param reply Whether or not to do so in an inline reply (defaults to true)
    * @param mention Whether or not to mention the user in the reply (defaults to false)
    */
-  async send (reply: boolean = true, mention = false): Promise<Res> {
+  async send (reply: boolean = true, mention = false, ephermal = false): Promise<Res> {
     if (!this.sendback) throw new Error('No sendback function, so could not run Embed.send()')
-    return await this.sendback(this, reply, mention)
+    return await this.sendback(this, reply, mention, ephermal)
   }
 
   /**

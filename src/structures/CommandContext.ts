@@ -99,9 +99,10 @@ export class CommandContext {
    * Replies to the invoking message
    * @param data Data for message
    * @param mention Whether or not to mention the user in the reply (defaults to false)
+   * @param ephermal Whether to send the message so only the user can see (only available in slash commands)
    * @returns Message sent
    */
-  async reply (data: MessageTypes, mention = false): Promise<APIMessage> {
+  async reply (data: MessageTypes, mention = false, ephermal: boolean = false): Promise<APIMessage> {
     if (!mention) {
       data = MessagesResource._formMessage(data)
       if (!data.allowed_mentions) data.allowed_mentions = {}
