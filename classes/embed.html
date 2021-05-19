@@ -2720,10 +2720,10 @@ img {
 		<li class=" tsd-kind-class">
 			<a href="commandhandler.html" class="tsd-kind-icon">Command<wbr>Handler</a>
 		</li>
-		<li class="current tsd-kind-class">
+		<li class="current tsd-kind-class tsd-has-type-parameter">
 			<a href="embed.html" class="tsd-kind-icon">Embed</a>
 			<ul>
-				<li class=" tsd-kind-constructor tsd-parent-kind-class">
+				<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter">
 					<a href="embed.html#constructor" class="tsd-kind-icon">constructor</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -2862,6 +2862,14 @@ img {
 				</div>
 			</div>
 		</section>
+		<section class="tsd-panel tsd-type-parameters">
+			<h3>Type parameters</h3>
+			<ul class="tsd-type-parameters">
+				<li>
+					<h4>Res<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">APIMessage</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span> = <span class="tsd-signature-type">APIMessage</span></h4>
+				</li>
+			</ul>
+		</section>
 		<section class="tsd-panel tsd-hierarchy">
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
@@ -2877,7 +2885,7 @@ img {
 					<section class="tsd-index-section ">
 						<h3>Constructors</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="embed.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							<li class="tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter"><a href="embed.html#constructor" class="tsd-kind-icon">constructor</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
@@ -2907,34 +2915,40 @@ img {
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Constructors</h2>
-			<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+			<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter">
 				<a name="constructor" class="tsd-anchor"></a>
 				<h3>constructor</h3>
-				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">new <wbr>Embed<span class="tsd-signature-symbol">(</span>sendback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span>embed<span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a>, reply<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, mention<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">APIMessage</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></li>
+				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter">
+					<li class="tsd-signature tsd-kind-icon">new <wbr>Embed&lt;Res&gt;<span class="tsd-signature-symbol">(</span>sendback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span>embed<span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span>, reply<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, mention<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/7e81a3f/src/structures/Embed.ts#L7">src/structures/Embed.ts:7</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a52e8b9/src/structures/Embed.ts#L7">src/structures/Embed.ts:7</a></li>
 							</ul>
 						</aside>
+						<h4 class="tsd-type-parameters-title">Type parameters</h4>
+						<ul class="tsd-type-parameters">
+							<li>
+								<h4>Res<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">APIMessage</span> = <span class="tsd-signature-type">APIMessage</span></h4>
+							</li>
+						</ul>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> sendback: <span class="tsd-signature-symbol">(</span>embed<span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a>, reply<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, mention<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">APIMessage</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> sendback: <span class="tsd-signature-symbol">(</span>embed<span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span>, reply<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, mention<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								<ul class="tsd-parameters">
 									<li class="tsd-parameter-signature">
 										<ul class="tsd-signatures tsd-kind-type-literal">
-											<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>embed<span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a>, reply<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, mention<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">APIMessage</span><span class="tsd-signature-symbol">&gt;</span></li>
+											<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>embed<span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span>, reply<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, mention<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></li>
 										</ul>
 										<ul class="tsd-descriptions">
 											<li class="tsd-description">
 												<h4 class="tsd-parameters-title">Parameters</h4>
 												<ul class="tsd-parameters">
 													<li>
-														<h5>embed: <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></h5>
+														<h5>embed: <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h5>
 													</li>
 													<li>
 														<h5>reply: <span class="tsd-signature-type">boolean</span></h5>
@@ -2943,14 +2957,14 @@ img {
 														<h5>mention: <span class="tsd-signature-type">boolean</span></h5>
 													</li>
 												</ul>
-												<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">APIMessage</span><span class="tsd-signature-symbol">&gt;</span></h4>
+												<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h4>
 											</li>
 										</ul>
 									</li>
 								</ul>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -2963,7 +2977,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">obj<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">APIEmbed</span><span class="tsd-signature-symbol"> = {}</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/7e81a3f/src/structures/Embed.ts#L7">src/structures/Embed.ts:7</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a52e8b9/src/structures/Embed.ts#L7">src/structures/Embed.ts:7</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2974,13 +2988,13 @@ img {
 				<a name="author" class="tsd-anchor"></a>
 				<h3>author</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">author<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, icon<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, url<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></li>
+					<li class="tsd-signature tsd-kind-icon">author<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, icon<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, url<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/7e81a3f/src/structures/Embed.ts#L26">src/structures/Embed.ts:26</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a52e8b9/src/structures/Embed.ts#L26">src/structures/Embed.ts:26</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3009,7 +3023,7 @@ img {
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -3017,13 +3031,13 @@ img {
 				<a name="color" class="tsd-anchor"></a>
 				<h3>color</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">color<span class="tsd-signature-symbol">(</span>color<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></li>
+					<li class="tsd-signature tsd-kind-icon">color<span class="tsd-signature-symbol">(</span>color<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/7e81a3f/src/structures/Embed.ts#L14">src/structures/Embed.ts:14</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a52e8b9/src/structures/Embed.ts#L14">src/structures/Embed.ts:14</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3040,7 +3054,7 @@ img {
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -3048,13 +3062,13 @@ img {
 				<a name="description" class="tsd-anchor"></a>
 				<h3>description</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">description<span class="tsd-signature-symbol">(</span>desc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></li>
+					<li class="tsd-signature tsd-kind-icon">description<span class="tsd-signature-symbol">(</span>desc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/7e81a3f/src/structures/Embed.ts#L52">src/structures/Embed.ts:52</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a52e8b9/src/structures/Embed.ts#L52">src/structures/Embed.ts:52</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3071,7 +3085,7 @@ img {
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -3079,13 +3093,13 @@ img {
 				<a name="field" class="tsd-anchor"></a>
 				<h3>field</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">field<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, inline<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></li>
+					<li class="tsd-signature tsd-kind-icon">field<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, inline<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/7e81a3f/src/structures/Embed.ts#L64">src/structures/Embed.ts:64</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a52e8b9/src/structures/Embed.ts#L64">src/structures/Embed.ts:64</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3114,7 +3128,7 @@ img {
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -3122,13 +3136,13 @@ img {
 				<a name="footer" class="tsd-anchor"></a>
 				<h3>footer</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">footer<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, icon<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></li>
+					<li class="tsd-signature tsd-kind-icon">footer<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, icon<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/7e81a3f/src/structures/Embed.ts#L112">src/structures/Embed.ts:112</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a52e8b9/src/structures/Embed.ts#L112">src/structures/Embed.ts:112</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3151,7 +3165,7 @@ img {
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -3159,13 +3173,13 @@ img {
 				<a name="image" class="tsd-anchor"></a>
 				<h3>image</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">image<span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></li>
+					<li class="tsd-signature tsd-kind-icon">image<span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/7e81a3f/src/structures/Embed.ts#L97">src/structures/Embed.ts:97</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a52e8b9/src/structures/Embed.ts#L97">src/structures/Embed.ts:97</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3194,7 +3208,7 @@ img {
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -3208,7 +3222,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/7e81a3f/src/structures/Embed.ts#L144">src/structures/Embed.ts:144</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a52e8b9/src/structures/Embed.ts#L144">src/structures/Embed.ts:144</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3224,13 +3238,13 @@ img {
 				<a name="send" class="tsd-anchor"></a>
 				<h3>send</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">send<span class="tsd-signature-symbol">(</span>reply<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span>, mention<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">APIMessage</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">send<span class="tsd-signature-symbol">(</span>reply<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span>, mention<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/7e81a3f/src/structures/Embed.ts#L135">src/structures/Embed.ts:135</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a52e8b9/src/structures/Embed.ts#L135">src/structures/Embed.ts:135</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3253,7 +3267,7 @@ img {
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">APIMessage</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -3261,13 +3275,13 @@ img {
 				<a name="thumbnail" class="tsd-anchor"></a>
 				<h3>thumbnail</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">thumbnail<span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></li>
+					<li class="tsd-signature tsd-kind-icon">thumbnail<span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/7e81a3f/src/structures/Embed.ts#L81">src/structures/Embed.ts:81</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a52e8b9/src/structures/Embed.ts#L81">src/structures/Embed.ts:81</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3296,7 +3310,7 @@ img {
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -3304,13 +3318,13 @@ img {
 				<a name="timestamp" class="tsd-anchor"></a>
 				<h3>timestamp</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">timestamp<span class="tsd-signature-symbol">(</span>date<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></li>
+					<li class="tsd-signature tsd-kind-icon">timestamp<span class="tsd-signature-symbol">(</span>date<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/7e81a3f/src/structures/Embed.ts#L124">src/structures/Embed.ts:124</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a52e8b9/src/structures/Embed.ts#L124">src/structures/Embed.ts:124</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3327,7 +3341,7 @@ img {
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -3335,13 +3349,13 @@ img {
 				<a name="title" class="tsd-anchor"></a>
 				<h3>title</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">title<span class="tsd-signature-symbol">(</span>title<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, url<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></li>
+					<li class="tsd-signature tsd-kind-icon">title<span class="tsd-signature-symbol">(</span>title<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, url<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/7e81a3f/src/structures/Embed.ts#L41">src/structures/Embed.ts:41</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a52e8b9/src/structures/Embed.ts#L41">src/structures/Embed.ts:41</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3364,7 +3378,7 @@ img {
 								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Res</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
