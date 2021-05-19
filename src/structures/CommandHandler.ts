@@ -72,12 +72,12 @@ export class CommandHandler {
   public prefixFunction?: ((message: APIMessage) => Promise<string|string[]> | string|string[])
   public errorFunction = (ctx: ctx, err: CommandError): void => {
     if (ctx.myPerms('sendMessages')) {
-      if (ctx.myPerms('embed')) {
+      if (ctx.isInteraction || ctx.myPerms('embed')) {
         ctx.embed
           .color(0xFF0000)
           .title('An Error Occured')
           .description(`\`\`\`xl\n${err.message}\`\`\``)
-          .send().catch(() => { })
+          .send(true, false, true).catch(console.error)
       } else {
         ctx
           .send(`An Error Occured\n\`\`\`xl\n${err.message}\`\`\``)

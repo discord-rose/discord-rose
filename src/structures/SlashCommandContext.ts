@@ -129,7 +129,7 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * @returns Message sent
    */
   async send (data: MessageTypes, ephermal: boolean = false): Promise<null> {
-    const message = MessagesResource._formMessage(data)
+    const message = MessagesResource._formMessage(data, true)
     if (ephermal) {
       (message as APIInteractionApplicationCommandCallbackData).flags = MessageFlags.EPHEMERAL
     }
