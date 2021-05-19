@@ -2766,6 +2766,9 @@ img {
 					<a href="slashcommandcontext.html#interaction" class="tsd-kind-icon">interaction</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
+					<a href="slashcommandcontext.html#isinteraction" class="tsd-kind-icon">is<wbr>Interaction</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="slashcommandcontext.html#prefix" class="tsd-kind-icon">prefix</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -2930,6 +2933,7 @@ img {
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="slashcommandcontext.html#args" class="tsd-kind-icon">args</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="slashcommandcontext.html#command" class="tsd-kind-icon">command</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="slashcommandcontext.html#interaction" class="tsd-kind-icon">interaction</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="slashcommandcontext.html#isinteraction" class="tsd-kind-icon">is<wbr>Interaction</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="slashcommandcontext.html#prefix" class="tsd-kind-icon">prefix</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="slashcommandcontext.html#ran" class="tsd-kind-icon">ran</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="slashcommandcontext.html#worker" class="tsd-kind-icon">worker</a></li>
@@ -2977,7 +2981,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L58">src/structures/SlashCommandContext.ts:58</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L63">src/structures/SlashCommandContext.ts:63</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3019,7 +3023,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">args<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L38">src/structures/SlashCommandContext.ts:38</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L43">src/structures/SlashCommandContext.ts:43</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3035,7 +3039,7 @@ img {
 				<aside class="tsd-sources">
 					<p>Implementation of Omit.command</p>
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L50">src/structures/SlashCommandContext.ts:50</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L55">src/structures/SlashCommandContext.ts:55</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3051,12 +3055,28 @@ img {
 				<aside class="tsd-sources">
 					<p>Implementation of Omit.interaction</p>
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L46">src/structures/SlashCommandContext.ts:46</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L51">src/structures/SlashCommandContext.ts:51</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>Message which command was ran with</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="isinteraction" class="tsd-anchor"></a>
+				<h3>is<wbr>Interaction</h3>
+				<div class="tsd-signature tsd-kind-icon">is<wbr>Interaction<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></div>
+				<aside class="tsd-sources">
+					<p>Implementation of Omit.isInteraction</p>
+					<ul>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L26">src/structures/SlashCommandContext.ts:26</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Whether or not a command is an interaction or not</p>
 					</div>
 				</div>
 			</section>
@@ -3067,7 +3087,7 @@ img {
 				<aside class="tsd-sources">
 					<p>Implementation of Omit.prefix</p>
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L54">src/structures/SlashCommandContext.ts:54</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L59">src/structures/SlashCommandContext.ts:59</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3083,7 +3103,7 @@ img {
 				<aside class="tsd-sources">
 					<p>Implementation of Omit.ran</p>
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L58">src/structures/SlashCommandContext.ts:58</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L63">src/structures/SlashCommandContext.ts:63</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3099,7 +3119,7 @@ img {
 				<aside class="tsd-sources">
 					<p>Implementation of Omit.worker</p>
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L42">src/structures/SlashCommandContext.ts:42</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L47">src/structures/SlashCommandContext.ts:47</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3121,7 +3141,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L72">src/structures/SlashCommandContext.ts:72</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L77">src/structures/SlashCommandContext.ts:77</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3143,7 +3163,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L86">src/structures/SlashCommandContext.ts:86</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L91">src/structures/SlashCommandContext.ts:91</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3165,7 +3185,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L171">src/structures/SlashCommandContext.ts:171</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L176">src/structures/SlashCommandContext.ts:176</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3194,7 +3214,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L79">src/structures/SlashCommandContext.ts:79</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L84">src/structures/SlashCommandContext.ts:84</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3216,7 +3236,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L100">src/structures/SlashCommandContext.ts:100</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L105">src/structures/SlashCommandContext.ts:105</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3238,7 +3258,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L93">src/structures/SlashCommandContext.ts:93</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L98">src/structures/SlashCommandContext.ts:98</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3260,7 +3280,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L31">src/structures/SlashCommandContext.ts:31</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L36">src/structures/SlashCommandContext.ts:36</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">APIMessage</span></h4>
@@ -3281,7 +3301,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Implementation of Omit.delete</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L27">src/structures/SlashCommandContext.ts:27</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L32">src/structures/SlashCommandContext.ts:32</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -3299,7 +3319,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Implementation of Omit.dm</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L141">src/structures/SlashCommandContext.ts:141</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L146">src/structures/SlashCommandContext.ts:146</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3331,7 +3351,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Implementation of Omit.error</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L129">src/structures/SlashCommandContext.ts:129</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L134">src/structures/SlashCommandContext.ts:134</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3363,7 +3383,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Implementation of Omit.hasPerms</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L183">src/structures/SlashCommandContext.ts:183</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L188">src/structures/SlashCommandContext.ts:188</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3395,7 +3415,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Implementation of Omit.myPerms</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L194">src/structures/SlashCommandContext.ts:194</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L199">src/structures/SlashCommandContext.ts:199</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3427,7 +3447,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Implementation of Omit.react</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L23">src/structures/SlashCommandContext.ts:23</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L28">src/structures/SlashCommandContext.ts:28</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -3444,7 +3464,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L109">src/structures/SlashCommandContext.ts:109</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L114">src/structures/SlashCommandContext.ts:114</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3476,7 +3496,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L118">src/structures/SlashCommandContext.ts:118</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L123">src/structures/SlashCommandContext.ts:123</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3508,7 +3528,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L151">src/structures/SlashCommandContext.ts:151</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L156">src/structures/SlashCommandContext.ts:156</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3554,7 +3574,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Implementation of Omit.typing</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/81c33cd/src/structures/SlashCommandContext.ts#L158">src/structures/SlashCommandContext.ts:158</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f048c5b/src/structures/SlashCommandContext.ts#L163">src/structures/SlashCommandContext.ts:163</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
