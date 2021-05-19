@@ -138,8 +138,6 @@ class SlashCommandContext {
      * @returns
      */
     hasPerms(perms) {
-        if (!this.guild)
-            throw new Error('Missing guild');
         return Permissions_1.PermissionsUtils.has(Number(this.member.permissions), perms);
     }
     /**

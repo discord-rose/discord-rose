@@ -1,9 +1,9 @@
 import { APIMessage, Snowflake } from 'discord-api-types';
 import { CommandContext } from './CommandContext';
-import { CommandOptions, CommandType, Worker, CTX } from '../typings/lib';
+import { CommandOptions, CommandType, Worker, CommandContext as ctx } from '../typings/lib';
 import Collection from '@discordjs/collection';
 import { SlashCommandContext } from './SlashCommandContext';
-declare type MiddlewareFunction = (ctx: CTX) => boolean | Promise<boolean>;
+declare type MiddlewareFunction = (ctx: ctx) => boolean | Promise<boolean>;
 /**
  * Error in command
  */
@@ -29,7 +29,7 @@ export declare class CommandHandler {
     constructor(worker: Worker);
     setupInteractions(): void;
     prefixFunction?: ((message: APIMessage) => Promise<string | string[]> | string | string[]);
-    errorFunction: (ctx: CTX, err: CommandError) => void;
+    errorFunction: (ctx: ctx, err: CommandError) => void;
     /**
      * Load a directory of CommandOptions commands (will also load sub-folders)
      * @param directory Absolute directory full of command files
@@ -67,7 +67,7 @@ export declare class CommandHandler {
      *  })
      * @returns this
      */
-    error(fn: (ctx: CTX, error: CommandError) => void): this;
+    error(fn: (ctx: ctx, error: CommandError) => void): this;
     /**
      * Adds a global middleware function
      * @param fn Middleware function
