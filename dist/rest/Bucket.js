@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Bucket = void 0;
 const UtilityFunctions_1 = require("../utils/UtilityFunctions");
-const Error_1 = require("./Error");
 /**
  * In charge of handling rest RateLimits
  */
@@ -59,7 +58,8 @@ class Bucket {
             req.resolve(json);
         }
         else {
-            req.reject(new Error_1.RestError(json));
+            json.status = res.status;
+            req.resolve({ error: json });
         }
         void this.run(); // run next item
     }

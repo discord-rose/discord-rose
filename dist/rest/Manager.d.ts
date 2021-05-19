@@ -91,6 +91,5 @@ export interface Request {
     route: string;
     options: RequestOptions;
     resolve: (value?: any) => void;
-    reject: (reason?: any) => void;
 }
 export {};

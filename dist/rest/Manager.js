@@ -24,6 +24,7 @@ const node_fetch_1 = __importStar(require("node-fetch"));
 const qs = __importStar(require("querystring"));
 const cache_1 = require("@jpbberry/cache");
 const Bucket_1 = require("./Bucket");
+const Error_1 = require("./Error");
 const Channels_1 = require("./resources/Channels");
 const Messages_1 = require("./resources/Messages");
 const Guilds_1 = require("./resources/Guilds");
@@ -104,7 +105,18 @@ class RestManager {
                 bucket = new Bucket_1.Bucket(key, this);
                 this.buckets.set(key, bucket);
             }
-            bucket.add({ method, route, options, resolve, reject });
+            bucket.add({
+                method,
+                route,
+                options,
+                resolve: (value) => {
+                    if (value.error)
+                        return reject(value.error);
+                    resolve(value);
+                }
+            });
+        }).catch(err => {
+            throw new Error_1.RestError(err);
         });
     }
     /**
