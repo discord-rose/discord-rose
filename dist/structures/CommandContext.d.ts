@@ -10,6 +10,10 @@ import { Interaction } from './SlashCommandContext';
  * Context holding all information about a ran command and utility functions
  */
 export declare class CommandContext {
+    /**
+     * Whether or not a command is an interaction or not
+     */
+    isInteraction: boolean;
     get interaction(): Interaction;
     /**
      * Command arguments

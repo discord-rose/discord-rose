@@ -10,6 +10,10 @@ const CommandHandler_1 = require("./CommandHandler");
  */
 class CommandContext {
     constructor(opts) {
+        /**
+         * Whether or not a command is an interaction or not
+         */
+        this.isInteraction = false;
         this.worker = opts.worker;
         this.message = opts.message;
         this.command = opts.command;

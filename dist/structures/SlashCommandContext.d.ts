@@ -13,6 +13,10 @@ export interface Interaction extends APIGuildInteraction {
     data: InteractionData;
 }
 export declare class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send' | 'sendFile' | 'embed' | 'args'> {
+    /**
+     * Whether or not a command is an interaction or not
+     */
+    isInteraction: boolean;
     react(): Promise<never>;
     delete(): Promise<never>;
     get message(): APIMessage;

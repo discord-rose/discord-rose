@@ -6,6 +6,10 @@ const Permissions_1 = require("../utils/Permissions");
 const CommandHandler_1 = require("./CommandHandler");
 class SlashCommandContext {
     constructor(opts) {
+        /**
+         * Whether or not a command is an interaction or not
+         */
+        this.isInteraction = true;
         this.worker = opts.worker;
         this.interaction = opts.interaction;
         this.command = opts.command;
