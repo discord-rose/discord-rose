@@ -39,12 +39,12 @@ class CommandHandler {
         this.SlashCommandContext = SlashCommandContext_1.SlashCommandContext;
         this.errorFunction = (ctx, err) => {
             if (ctx.myPerms('sendMessages')) {
-                if (ctx.myPerms('embed')) {
+                if (ctx.isInteraction || ctx.myPerms('embed')) {
                     ctx.embed
                         .color(0xFF0000)
                         .title('An Error Occured')
                         .description(`\`\`\`xl\n${err.message}\`\`\``)
-                        .send().catch(() => { });
+                        .send(true, false, true).catch(console.error);
                 }
                 else {
                     ctx

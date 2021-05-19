@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SlashCommandContext = void 0;
 const Embed_1 = require("./Embed");
+const Messages_1 = require("../rest/resources/Messages");
 const Permissions_1 = require("../utils/Permissions");
 const CommandHandler_1 = require("./CommandHandler");
 class SlashCommandContext {
@@ -62,8 +63,8 @@ class SlashCommandContext {
      * @param data Data for message
      * @returns nothing
      */
-    async reply(data) {
-        return await this.send(data);
+    async reply(data, mention = false, ephermal = false) {
+        return await this.send(data, ephermal);
     }
     async _callback(data) {
         this.sent = true;
@@ -74,14 +75,18 @@ class SlashCommandContext {
      * @param data Data for message
      * @returns Message sent
      */
-    async send(data) {
+    async send(data, ephermal = false) {
+        const message = Messages_1.MessagesResource._formMessage(data, true);
+        if (ephermal) {
+            message.flags = 64 /* EPHEMERAL */;
+        }
         if (this.sent) {
-            await this.worker.api.webhooks.editMessage(this.worker.user.id, this.interaction.token, '@original', data);
+            await this.worker.api.webhooks.editMessage(this.worker.user.id, this.interaction.token, '@original', message);
             return null;
         }
         return await this._callback({
             type: 4 /* ChannelMessageWithSource */,
-            data: data
+            data: message
         });
     }
     /**
@@ -125,11 +130,11 @@ class SlashCommandContext {
      *   .send()
      */
     get embed() {
-        return new Embed_1.Embed(async (embed, reply, _mention) => {
+        return new Embed_1.Embed(async (embed, reply, mention, ephermal) => {
             if (reply)
-                return await this.reply(embed);
+                return await this.reply(embed, mention, ephermal);
             else
-                return await this.send(embed);
+                return await this.send(embed, ephermal);
         });
     }
     /**

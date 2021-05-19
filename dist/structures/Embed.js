@@ -122,10 +122,10 @@ class Embed {
      * @param reply Whether or not to do so in an inline reply (defaults to true)
      * @param mention Whether or not to mention the user in the reply (defaults to false)
      */
-    async send(reply = true, mention = false) {
+    async send(reply = true, mention = false, ephermal = false) {
         if (!this.sendback)
             throw new Error('No sendback function, so could not run Embed.send()');
-        return await this.sendback(this, reply, mention);
+        return await this.sendback(this, reply, mention, ephermal);
     }
     /**
      * Renders the embed

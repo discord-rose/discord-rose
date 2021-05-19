@@ -71,9 +71,10 @@ export declare class CommandContext {
      * Replies to the invoking message
      * @param data Data for message
      * @param mention Whether or not to mention the user in the reply (defaults to false)
+     * @param ephermal Whether to send the message so only the user can see (only available in slash commands)
      * @returns Message sent
      */
-    reply(data: MessageTypes, mention?: boolean): Promise<APIMessage>;
+    reply(data: MessageTypes, mention?: boolean, ephermal?: boolean): Promise<APIMessage>;
     /**
      * Sends a message in the same channel as invoking message
      * @param data Data for message
