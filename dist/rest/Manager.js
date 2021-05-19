@@ -110,7 +110,7 @@ class RestManager {
                 route,
                 options,
                 resolve: (value) => {
-                    if (value.error)
+                    if (value === null || value === void 0 ? void 0 : value.error)
                         return reject(value.error);
                     resolve(value);
                 }
