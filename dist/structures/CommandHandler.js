@@ -64,7 +64,19 @@ class CommandHandler {
         if (this.commands) {
             const interactions = this.commands.filter(x => !!x.interaction);
             if (interactions.size > 0) {
-                void this.worker.api.interactions.set(interactions.map(x => x.interaction), this.worker.user.id, this._options.interactionGuild);
+                this.worker.on('INTERACTION_CREATE', (data) => {
+                    this._interactionExec(data).catch(() => { });
+                });
+                if (this.worker.comms.id !== '0')
+                    return;
+                this.worker.api.interactions.set(interactions.map(x => x.interaction), this.worker.user.id, this._options.interactionGuild)
+                    .then(() => {
+                    this.worker.log('Posted command interactions');
+                })
+                    .catch(err => {
+                    err.message = `${err.message} (Whilst posting Command Interactions)`;
+                    console.error(err);
+                });
             }
         }
     }
@@ -174,14 +186,11 @@ class CommandHandler {
             this.worker.on('MESSAGE_CREATE', (data) => {
                 this._exec(data).catch(() => { });
             });
-            this.worker.on('INTERACTION_CREATE', (data) => {
-                this._interactionExec(data).catch(() => { });
-            });
             this.worker.once('READY', () => {
                 this.setupInteractions();
             });
         }
-        if (this.addedInteractions && command.interaction) {
+        if (this.worker.comms.id === '0' && this.addedInteractions && command.interaction) {
             void this.worker.api.interactions.update(command.interaction, this.worker.user.id, this._options.interactionGuild);
         }
         (_a = this.commands) === null || _a === void 0 ? void 0 : _a.set(command.command, Object.assign(Object.assign({}, this._options.default), command));
