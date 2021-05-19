@@ -1,8 +1,6 @@
 import { RestManager, Request } from './Manager'
 import { wait } from '../utils/UtilityFunctions'
 
-import { RestError } from './Error'
-
 /**
  * In charge of handling rest RateLimits
  */
@@ -79,7 +77,8 @@ export class Bucket {
     } else if (res.ok) {
       req.resolve(json)
     } else {
-      req.reject(new RestError(json))
+      json.status = res.status
+      req.resolve({ error: json })
     }
 
     void this.run() // run next item

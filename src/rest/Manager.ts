@@ -5,6 +5,8 @@ import { Cache } from '@jpbberry/cache'
 
 import { Bucket } from './Bucket'
 
+import { RestError } from './Error'
+
 import { ChannelsResource } from './resources/Channels'
 import { MessagesResource } from './resources/Messages'
 import { GuildsResource } from './resources/Guilds'
@@ -100,7 +102,17 @@ export class RestManager {
         this.buckets.set(key, bucket)
       }
 
-      bucket.add({ method, route, options, resolve, reject })
+      bucket.add({
+        method,
+        route,
+        options,
+        resolve: (value) => {
+          if (value.error) return reject(value.error)
+          resolve(value)
+        }
+      })
+    }).catch(err => {
+      throw new RestError(err)
     })
   }
 
@@ -160,5 +172,4 @@ export interface Request {
   route: string
   options: RequestOptions
   resolve: (value?: any) => void
-  reject: (reason?: any) => void
 }
