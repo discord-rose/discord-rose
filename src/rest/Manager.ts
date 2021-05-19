@@ -107,7 +107,7 @@ export class RestManager {
         route,
         options,
         resolve: (value) => {
-          if (value.error) return reject(value.error)
+          if (value?.error) return reject(value.error)
           resolve(value)
         }
       })
