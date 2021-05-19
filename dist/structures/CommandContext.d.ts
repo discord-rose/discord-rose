@@ -108,7 +108,7 @@ export declare class CommandContext {
     /**
      * Starts typing in the channel
      */
-    typing(): Promise<never>;
+    typing(): Promise<null>;
     /**
      * Deletes the invoking message
      */

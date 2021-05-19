@@ -40,7 +40,7 @@ export declare class WebhooksResource {
      * @param data Message data to replace
      * @returns New message
      */
-    editMessage(webhookId: Snowflake, token: string, messageId: Snowflake, data: MessageTypes): Promise<APIMessage>;
+    editMessage(webhookId: Snowflake, token: string, messageId: Snowflake | '@original', data: MessageTypes): Promise<APIMessage>;
     /**
      * Deletes a message sent by a webhook with it's token
      * @param webhookId ID of Webhook

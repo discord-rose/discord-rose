@@ -52,6 +52,7 @@ export declare class SlashCommandContext implements Omit<CommandContext, 'reply'
         ran: string;
         args: SlashCommandContext['args'];
     });
+    private sent;
     /**
      * Author of the message
      */
@@ -78,6 +79,7 @@ export declare class SlashCommandContext implements Omit<CommandContext, 'reply'
      * @returns nothing
      */
     reply(data: MessageTypes): Promise<null>;
+    private _callback;
     /**
      * Sends a message in the same channel as invoking message
      * @param data Data for message
@@ -107,7 +109,7 @@ export declare class SlashCommandContext implements Omit<CommandContext, 'reply'
     /**
      * Starts typing in the channel
      */
-    typing(): Promise<never>;
+    typing(): Promise<null>;
     /**
      * Makes an embed to send
      * @example

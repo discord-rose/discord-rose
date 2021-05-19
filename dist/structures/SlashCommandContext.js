@@ -10,6 +10,7 @@ class SlashCommandContext {
          * Whether or not a command is an interaction or not
          */
         this.isInteraction = true;
+        this.sent = false;
         this.worker = opts.worker;
         this.interaction = opts.interaction;
         this.command = opts.command;
@@ -64,13 +65,21 @@ class SlashCommandContext {
     async reply(data) {
         return await this.send(data);
     }
+    async _callback(data) {
+        this.sent = true;
+        return await this.worker.api.interactions.callback(this.interaction.id, this.interaction.token, data);
+    }
     /**
      * Sends a message in the same channel as invoking message
      * @param data Data for message
      * @returns Message sent
      */
     async send(data) {
-        return await this.worker.api.interactions.callback(this.interaction.id, this.interaction.token, {
+        if (this.sent) {
+            await this.worker.api.webhooks.editMessage(this.worker.user.id, this.interaction.token, '@original', data);
+            return null;
+        }
+        return await this._callback({
             type: 4 /* ChannelMessageWithSource */,
             data: data
         });
@@ -104,7 +113,7 @@ class SlashCommandContext {
      * Starts typing in the channel
      */
     async typing() {
-        return await this.worker.api.interactions.callback(this.interaction.id, this.interaction.token, {
+        return await this._callback({
             type: 5 /* DeferredChannelMessageWithSource */
         });
     }
