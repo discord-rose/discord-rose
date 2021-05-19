@@ -71,7 +71,6 @@ export class CommandHandler {
 
   public prefixFunction?: ((message: APIMessage) => Promise<string|string[]> | string|string[])
   public errorFunction = (ctx: CTX, err: CommandError): void => {
-    console.log('e')
     if (ctx.myPerms('sendMessages')) {
       if (ctx.myPerms('embed')) {
         ctx.embed
