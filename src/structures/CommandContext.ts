@@ -15,6 +15,11 @@ import { Interaction } from './SlashCommandContext'
  * Context holding all information about a ran command and utility functions
  */
 export class CommandContext {
+  /**
+   * Whether or not a command is an interaction or not
+   */
+  isInteraction = false
+
   get interaction (): Interaction {
     throw new Error('Cannot access ctx.interaction since the command was ran as a message command')
   }

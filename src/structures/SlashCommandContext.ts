@@ -20,6 +20,11 @@ export interface Interaction extends APIGuildInteraction {
 }
 
 export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send' | 'sendFile' | 'embed' | 'args'> {
+  /**
+   * Whether or not a command is an interaction or not
+   */
+  isInteraction = true
+
   async react (): Promise<never> {
     throw new Error('Cannot access ctx.react() since the command was ran as a slash command')
   }
