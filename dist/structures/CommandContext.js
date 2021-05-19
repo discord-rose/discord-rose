@@ -14,6 +14,10 @@ class CommandContext {
          * Whether or not a command is an interaction or not
          */
         this.isInteraction = false;
+        /**
+         * Interaction options if ran as a slash command
+         */
+        this.options = {};
         this.worker = opts.worker;
         this.message = opts.message;
         this.command = opts.command;

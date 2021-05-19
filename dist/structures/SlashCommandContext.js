@@ -5,12 +5,27 @@ const Embed_1 = require("./Embed");
 const Messages_1 = require("../rest/resources/Messages");
 const Permissions_1 = require("../utils/Permissions");
 const CommandHandler_1 = require("./CommandHandler");
+function formOptions(obj) {
+    var _a;
+    const res = {};
+    (_a = obj === null || obj === void 0 ? void 0 : obj.forEach) === null || _a === void 0 ? void 0 : _a.call(obj, opt => {
+        if (opt.value === undefined)
+            res[opt.name] = formOptions(opt.options);
+        else
+            res[opt.name] = opt.value;
+    });
+    return res;
+}
 class SlashCommandContext {
     constructor(opts) {
         /**
          * Whether or not a command is an interaction or not
          */
         this.isInteraction = true;
+        /**
+         * Interaction options if ran as a slash command
+         */
+        this.options = {};
         this.sent = false;
         this.worker = opts.worker;
         this.interaction = opts.interaction;
@@ -18,6 +33,7 @@ class SlashCommandContext {
         this.prefix = opts.prefix;
         this.ran = opts.ran;
         this.args = opts.args;
+        this.options = formOptions(this.interaction.data.options);
     }
     async react() {
         throw new Error('Cannot access ctx.react() since the command was ran as a slash command');

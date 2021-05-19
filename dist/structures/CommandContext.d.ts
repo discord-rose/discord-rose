@@ -5,7 +5,7 @@ import { MessageTypes, Emoji } from '../rest/resources/Messages';
 import { CommandOptions, Worker } from '../typings/lib';
 import { bits } from '../utils/Permissions';
 import { CachedGuild } from '../typings/Discord';
-import { Interaction } from './SlashCommandContext';
+import { Interaction, InteractionOptions } from './SlashCommandContext';
 /**
  * Context holding all information about a ran command and utility functions
  */
@@ -15,6 +15,10 @@ export declare class CommandContext {
      */
     isInteraction: boolean;
     get interaction(): Interaction;
+    /**
+     * Interaction options if ran as a slash command
+     */
+    options: InteractionOptions;
     /**
      * Command arguments
      */

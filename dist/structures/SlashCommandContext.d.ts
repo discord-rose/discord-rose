@@ -12,6 +12,12 @@ export interface InteractionData extends APIApplicationCommandInteractionData {
 export interface Interaction extends APIGuildInteraction {
     data: InteractionData;
 }
+/**
+ * Interaction sub-object
+ */
+export interface InteractionOptions {
+    [key: string]: InteractionOptions | undefined | any;
+}
 export declare class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send' | 'sendFile' | 'embed' | 'args'> {
     /**
      * Whether or not a command is an interaction or not
@@ -44,6 +50,10 @@ export declare class SlashCommandContext implements Omit<CommandContext, 'reply'
      * Actual command that was ran (including possible aliases)
      */
     ran: string;
+    /**
+     * Interaction options if ran as a slash command
+     */
+    options: InteractionOptions;
     constructor(opts: {
         worker: Worker;
         interaction: Interaction;
