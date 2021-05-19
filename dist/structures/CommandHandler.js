@@ -38,7 +38,6 @@ class CommandHandler {
         this.CommandContext = CommandContext_1.CommandContext;
         this.SlashCommandContext = SlashCommandContext_1.SlashCommandContext;
         this.errorFunction = (ctx, err) => {
-            console.log('e');
             if (ctx.myPerms('sendMessages')) {
                 if (ctx.myPerms('embed')) {
                     ctx.embed
