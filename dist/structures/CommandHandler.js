@@ -36,6 +36,7 @@ class CommandHandler {
         };
         this.middlewares = [];
         this.CommandContext = CommandContext_1.CommandContext;
+        this.SlashCommandContext = SlashCommandContext_1.SlashCommandContext;
         this.errorFunction = (ctx, err) => {
             console.log('e');
             if (ctx.myPerms('sendMessages')) {
@@ -222,7 +223,7 @@ class CommandHandler {
         const cmd = this.find(data.data.name, true);
         if (!cmd)
             return;
-        const ctx = new SlashCommandContext_1.SlashCommandContext({
+        const ctx = new this.SlashCommandContext({
             worker: this.worker,
             interaction: data,
             command: cmd,

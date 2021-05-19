@@ -2,6 +2,7 @@ import { APIMessage, Snowflake } from 'discord-api-types';
 import { CommandContext } from './CommandContext';
 import { CommandOptions, CommandType, Worker, CTX } from '../typings/lib';
 import Collection from '@discordjs/collection';
+import { SlashCommandContext } from './SlashCommandContext';
 declare type MiddlewareFunction = (ctx: CTX) => boolean | Promise<boolean>;
 /**
  * Error in command
@@ -20,6 +21,7 @@ export declare class CommandHandler {
     middlewares: MiddlewareFunction[];
     commands?: Collection<CommandType, CommandOptions>;
     CommandContext: typeof CommandContext;
+    SlashCommandContext: typeof SlashCommandContext;
     /**
      * Create's new Command Handler
      * @param worker Worker
