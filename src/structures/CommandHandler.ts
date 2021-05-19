@@ -37,6 +37,7 @@ export class CommandHandler {
   public commands?: Collection<CommandType, CommandOptions>
 
   public CommandContext = CommandContext
+  public SlashCommandContext = SlashCommandContext
 
   /**
    * Create's new Command Handler
@@ -257,7 +258,7 @@ export class CommandHandler {
     const cmd = this.find(data.data.name, true) as CommandOptions
     if (!cmd) return
 
-    const ctx = new SlashCommandContext({
+    const ctx = new this.SlashCommandContext({
       worker: this.worker,
       interaction: data,
       command: cmd,
