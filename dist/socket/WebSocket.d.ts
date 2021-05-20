@@ -1,12 +1,12 @@
 import { Shard } from './Shard';
 import WebSocket from 'ws';
-import { Emitter } from '../utils/Emitter';
 import { GatewaySendPayload } from 'discord-api-types';
 import { DiscordDefaultEventMap } from '../typings/Discord';
+import { EventEmitter } from '@jpbberry/typed-emitter';
 /**
  * Structure in charge of managing Discord communcation over websocket
  */
-export declare class DiscordSocket extends Emitter<Pick<DiscordDefaultEventMap, 'READY' | 'GUILD_CREATE'>> {
+export declare class DiscordSocket extends EventEmitter<Pick<DiscordDefaultEventMap, 'READY' | 'GUILD_CREATE'>> {
     private shard;
     private connectTimeout?;
     private sequence;

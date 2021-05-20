@@ -1,17 +1,17 @@
 import { CompleteBotOptions } from '../master/Master';
 import { Thread } from './Thread';
 import { DiscordEventMap, CachedGuild, CachedVoiceState } from '../../typings/Discord';
-import { Emitter } from '../../utils/Emitter';
 import Collection from '@discordjs/collection';
 import { Shard } from '../../socket/Shard';
 import { CacheManager } from '../../socket/CacheManager';
 import { APIUser, Snowflake, APIGuildMember } from 'discord-api-types';
 import { CommandHandler } from '../../structures/CommandHandler';
 import { RestManager } from '../../rest/Manager';
+import { EventEmitter } from '@jpbberry/typed-emitter';
 /**
  * Cluster Worker used on the worker thread
  */
-export declare class Worker extends Emitter<DiscordEventMap> {
+export declare class Worker extends EventEmitter<DiscordEventMap> {
     /**
      * Bot options
      */

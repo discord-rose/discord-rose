@@ -10,7 +10,7 @@ const self_1 = require("./cache/self");
 const members_1 = require("./cache/members");
 const users_1 = require("./cache/users");
 const voiceStates_1 = require("./cache/voiceStates");
-const Emitter_1 = require("../utils/Emitter");
+const typed_emitter_1 = require("@jpbberry/typed-emitter");
 const createNulledCollection = (cache) => {
     return new Proxy(() => { }, {
         get() {
@@ -24,7 +24,7 @@ const createNulledCollection = (cache) => {
 /**
  * Utility for managing and ruling cache and it's subsequent control
  */
-class CacheManager extends Emitter_1.Emitter {
+class CacheManager extends typed_emitter_1.EventEmitter {
     constructor(worker) {
         super();
         this.worker = worker;

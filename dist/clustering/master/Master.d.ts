@@ -5,7 +5,7 @@ import { ThreadEvents, ResolveFunction, ClusterStats } from '../ThreadComms';
 import Collection from '@discordjs/collection';
 import { Cluster } from './Cluster';
 import { Sharder } from './Sharder';
-import { Emitter } from '../../utils/Emitter';
+import { EventEmitter } from '@jpbberry/typed-emitter';
 declare type Complete<T> = {
     [P in keyof Required<T>]: Pick<T, P> extends Required<Pick<T, P>> ? T[P] : (T[P] | undefined);
 };
@@ -23,7 +23,7 @@ export interface CompleteBotOptions extends Complete<BotOptions> {
 /**
  * Master process controller
  */
-export declare class Master extends Emitter<{
+export declare class Master extends EventEmitter<{
     READY: Master;
     CLUSTER_STARTED: Cluster;
     CLUSTER_STOPPED: Cluster;

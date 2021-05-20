@@ -5,17 +5,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Worker = void 0;
 const Thread_1 = require("./Thread");
-const Emitter_1 = require("../../utils/Emitter");
 const collection_1 = __importDefault(require("@discordjs/collection"));
 const Shard_1 = require("../../socket/Shard");
 const CacheManager_1 = require("../../socket/CacheManager");
 const UtilityFunctions_1 = require("../../utils/UtilityFunctions");
 const CommandHandler_1 = require("../../structures/CommandHandler");
 const Manager_1 = require("../../rest/Manager");
+const typed_emitter_1 = require("@jpbberry/typed-emitter");
 /**
  * Cluster Worker used on the worker thread
  */
-class Worker extends Emitter_1.Emitter {
+class Worker extends typed_emitter_1.EventEmitter {
     constructor() {
         super(...arguments);
         /**

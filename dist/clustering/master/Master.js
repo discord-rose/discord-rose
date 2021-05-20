@@ -11,14 +11,13 @@ const collection_1 = __importDefault(require("@discordjs/collection"));
 const Cluster_1 = require("./Cluster");
 const Sharder_1 = require("./Sharder");
 const handlers_1 = require("./handlers");
-const events_1 = require("events");
 const path_1 = __importDefault(require("path"));
-const Emitter_1 = require("../../utils/Emitter");
+const typed_emitter_1 = require("@jpbberry/typed-emitter");
 const CachedChannelTypes = ['text', 'voice', 'category'];
 /**
  * Master process controller
  */
-class Master extends Emitter_1.Emitter {
+class Master extends typed_emitter_1.EventEmitter {
     /**
      * Creates a new Master instance
      * @param fileName Location of Worker file
@@ -35,7 +34,7 @@ class Master extends Emitter_1.Emitter {
          * Handler emitter
          * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
          */
-        this.handlers = new events_1.EventEmitter();
+        this.handlers = new typed_emitter_1.EventEmitter();
         /**
          * Sharding manager for handling shard ratelimits
          */

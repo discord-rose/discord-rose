@@ -5,11 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DiscordSocket = void 0;
 const ws_1 = __importDefault(require("ws"));
-const Emitter_1 = require("../utils/Emitter");
+const typed_emitter_1 = require("@jpbberry/typed-emitter");
 /**
  * Structure in charge of managing Discord communcation over websocket
  */
-class DiscordSocket extends Emitter_1.Emitter {
+class DiscordSocket extends typed_emitter_1.EventEmitter {
     constructor(shard) {
         super();
         this.shard = shard;
