@@ -3,7 +3,6 @@ import { CompleteBotOptions } from '../master/Master'
 import { Thread } from './Thread'
 
 import { DiscordEventMap, CachedGuild, CachedVoiceState } from '../../typings/Discord'
-import { Emitter } from '../../utils/Emitter'
 import Collection from '@discordjs/collection'
 
 import { Shard } from '../../socket/Shard'
@@ -17,10 +16,12 @@ import { CommandHandler } from '../../structures/CommandHandler'
 
 import { RestManager } from '../../rest/Manager'
 
+import { EventEmitter } from '@jpbberry/typed-emitter'
+
 /**
  * Cluster Worker used on the worker thread
  */
-export class Worker extends Emitter<DiscordEventMap> {
+export class Worker extends EventEmitter<DiscordEventMap> {
   /**
    * Bot options
    */

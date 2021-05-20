@@ -11,8 +11,8 @@ import { members } from './cache/members'
 import { users } from './cache/users'
 import { voiceStates } from './cache/voiceStates'
 
-import { Emitter } from '../utils/Emitter'
 import Collection from '@discordjs/collection'
+import { EventEmitter } from '@jpbberry/typed-emitter'
 
 const createNulledCollection = (cache: string): Collection<any, any> => {
   return new Proxy(() => {}, {
@@ -28,7 +28,7 @@ const createNulledCollection = (cache: string): Collection<any, any> => {
 /**
  * Utility for managing and ruling cache and it's subsequent control
  */
-export class CacheManager extends Emitter<DiscordEventMap> {
+export class CacheManager extends EventEmitter<DiscordEventMap> {
   constructor (private readonly worker: Worker) {
     super()
 

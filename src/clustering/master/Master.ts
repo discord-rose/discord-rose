@@ -13,10 +13,8 @@ import { Cluster } from './Cluster'
 import { Sharder } from './Sharder'
 import { handlers } from './handlers'
 
-import { EventEmitter } from 'events'
-
 import path from 'path'
-import { Emitter } from '../../utils/Emitter'
+import { EventEmitter } from '@jpbberry/typed-emitter'
 
 const CachedChannelTypes = ['text', 'voice', 'category'] as const
 
@@ -40,7 +38,7 @@ export interface CompleteBotOptions extends Complete<BotOptions> {
 /**
  * Master process controller
  */
-export class Master extends Emitter<{
+export class Master extends EventEmitter<{
   READY: Master
   CLUSTER_STARTED: Cluster
   CLUSTER_STOPPED: Cluster
