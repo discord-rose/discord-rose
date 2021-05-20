@@ -2723,9 +2723,6 @@ img {
 				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="worker.html#comms" class="tsd-kind-icon">comms</a>
 				</li>
-				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a href="worker.html#emit" class="tsd-kind-icon">emit</a>
-				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="worker.html#guildroles" class="tsd-kind-icon">guild<wbr>Roles</a>
 				</li>
@@ -2735,20 +2732,8 @@ img {
 				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="worker.html#members" class="tsd-kind-icon">members</a>
 				</li>
-				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a href="worker.html#off" class="tsd-kind-icon">off</a>
-				</li>
-				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a href="worker.html#on" class="tsd-kind-icon">on</a>
-				</li>
-				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a href="worker.html#once" class="tsd-kind-icon">once</a>
-				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="worker.html#options" class="tsd-kind-icon">options</a>
-				</li>
-				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a href="worker.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="worker.html#selfmember" class="tsd-kind-icon">self<wbr>Member</a>
@@ -2800,7 +2785,7 @@ img {
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
 				<li>
-					<span class="tsd-signature-type">Emitter</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">&gt;</span>
+					<span class="tsd-signature-type">EventEmitter</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">&gt;</span>
 					<ul class="tsd-hierarchy">
 						<li>
 							<span class="target">Worker</span>
@@ -2827,15 +2812,10 @@ img {
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="worker.html#channels" class="tsd-kind-icon">channels</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="worker.html#commands" class="tsd-kind-icon">commands</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="worker.html#comms" class="tsd-kind-icon">comms</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="worker.html#emit" class="tsd-kind-icon">emit</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="worker.html#guildroles" class="tsd-kind-icon">guild<wbr>Roles</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="worker.html#guilds" class="tsd-kind-icon">guilds</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="worker.html#members" class="tsd-kind-icon">members</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="worker.html#off" class="tsd-kind-icon">off</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="worker.html#on" class="tsd-kind-icon">on</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="worker.html#once" class="tsd-kind-icon">once</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="worker.html#options" class="tsd-kind-icon">options</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="worker.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="worker.html#selfmember" class="tsd-kind-icon">self<wbr>Member</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="worker.html#shards" class="tsd-kind-icon">shards</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="worker.html#user" class="tsd-kind-icon">user</a></li>
@@ -2873,7 +2853,7 @@ img {
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
-							<p>Inherited from Emitter&lt;DiscordEventMap&gt;.constructor</p>
+							<p>Inherited from EventEmitter&lt;DiscordEventMap&gt;.constructor</p>
 							<ul>
 								<li>Defined in node_modules/@types/node/events.d.ts:22</li>
 							</ul>
@@ -2897,7 +2877,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">api<span class="tsd-signature-symbol">:</span> <a href="restmanager.html" class="tsd-signature-type" data-tsd-kind="Class">RestManager</a><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L36">src/clustering/worker/Worker.ts:36</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L37">src/clustering/worker/Worker.ts:37</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2912,7 +2892,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">cache<wbr>Manager<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">CacheManager</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L80">src/clustering/worker/Worker.ts:80</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L81">src/clustering/worker/Worker.ts:81</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2922,7 +2902,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">channels<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">APIChannel</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L57">src/clustering/worker/Worker.ts:57</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L58">src/clustering/worker/Worker.ts:58</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2937,7 +2917,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">commands<span class="tsd-signature-symbol">:</span> <a href="commandhandler.html" class="tsd-signature-type" data-tsd-kind="Class">CommandHandler</a><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L40">src/clustering/worker/Worker.ts:40</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L41">src/clustering/worker/Worker.ts:41</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2952,7 +2932,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">comms<span class="tsd-signature-symbol">:</span> <a href="thread.html" class="tsd-signature-type" data-tsd-kind="Class">Thread</a><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L44">src/clustering/worker/Worker.ts:44</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L45">src/clustering/worker/Worker.ts:45</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2961,54 +2941,13 @@ img {
 					</div>
 				</div>
 			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-				<a name="emit" class="tsd-anchor"></a>
-				<h3>emit</h3>
-				<div class="tsd-signature tsd-kind-icon">emit<span class="tsd-signature-symbol">:</span> &lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span>, data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = ...</span></div>
-				<aside class="tsd-sources">
-					<p>Inherited from Emitter.emit</p>
-					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/utils/Emitter.ts#L15">src/utils/Emitter.ts:15</a></li>
-					</ul>
-				</aside>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter-signature">
-							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-class tsd-has-type-parameter">
-								<li class="tsd-signature tsd-kind-icon">&lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span>, data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-							</ul>
-							<ul class="tsd-descriptions">
-								<li class="tsd-description">
-									<h4 class="tsd-type-parameters-title">Type parameters</h4>
-									<ul class="tsd-type-parameters">
-										<li>
-											<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a></h4>
-										</li>
-									</ul>
-									<h4 class="tsd-parameters-title">Parameters</h4>
-									<ul class="tsd-parameters">
-										<li>
-											<h5>event: <span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span></h5>
-										</li>
-										<li>
-											<h5>data: <a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span></h5>
-										</li>
-									</ul>
-									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 				<a name="guildroles" class="tsd-anchor"></a>
 				<h3>guild<wbr>Roles</h3>
 				<div class="tsd-signature tsd-kind-icon">guild<wbr>Roles<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">APIRole</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L53">src/clustering/worker/Worker.ts:53</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L54">src/clustering/worker/Worker.ts:54</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3023,7 +2962,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">guilds<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">, </span><a href="../modules.html#cachedguild" class="tsd-signature-type" data-tsd-kind="Type alias">CachedGuild</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L49">src/clustering/worker/Worker.ts:49</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L50">src/clustering/worker/Worker.ts:50</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3038,7 +2977,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">members<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">GatewayGuildMemberAddDispatchData</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L65">src/clustering/worker/Worker.ts:65</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L66">src/clustering/worker/Worker.ts:66</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3047,190 +2986,13 @@ img {
 					</div>
 				</div>
 			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-				<a name="off" class="tsd-anchor"></a>
-				<h3>off</h3>
-				<div class="tsd-signature tsd-kind-icon">off<span class="tsd-signature-symbol">:</span> &lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span>, listener<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="worker.html" class="tsd-signature-type" data-tsd-kind="Class">Worker</a></div>
-				<aside class="tsd-sources">
-					<p>Inherited from Emitter.off</p>
-					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/utils/Emitter.ts#L17">src/utils/Emitter.ts:17</a></li>
-					</ul>
-				</aside>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter-signature">
-							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-class tsd-has-type-parameter">
-								<li class="tsd-signature tsd-kind-icon">&lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span>, listener<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="worker.html" class="tsd-signature-type" data-tsd-kind="Class">Worker</a></li>
-							</ul>
-							<ul class="tsd-descriptions">
-								<li class="tsd-description">
-									<h4 class="tsd-type-parameters-title">Type parameters</h4>
-									<ul class="tsd-type-parameters">
-										<li>
-											<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a></h4>
-										</li>
-									</ul>
-									<h4 class="tsd-parameters-title">Parameters</h4>
-									<ul class="tsd-parameters">
-										<li>
-											<h5>event: <span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span></h5>
-										</li>
-										<li>
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> listener: <span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
-											<ul class="tsd-parameters">
-												<li class="tsd-parameter-signature">
-													<ul class="tsd-signatures tsd-kind-type-literal">
-														<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-													</ul>
-													<ul class="tsd-descriptions">
-														<li class="tsd-description">
-															<h4 class="tsd-parameters-title">Parameters</h4>
-															<ul class="tsd-parameters">
-																<li>
-																	<h5>data: <a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span></h5>
-																</li>
-															</ul>
-															<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-														</li>
-													</ul>
-												</li>
-											</ul>
-										</li>
-									</ul>
-									<h4 class="tsd-returns-title">Returns <a href="worker.html" class="tsd-signature-type" data-tsd-kind="Class">Worker</a></h4>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-				<a name="on" class="tsd-anchor"></a>
-				<h3>on</h3>
-				<div class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">:</span> &lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span>, listener<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="worker.html" class="tsd-signature-type" data-tsd-kind="Class">Worker</a></div>
-				<aside class="tsd-sources">
-					<p>Inherited from Emitter.on</p>
-					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/utils/Emitter.ts#L11">src/utils/Emitter.ts:11</a></li>
-					</ul>
-				</aside>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter-signature">
-							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-class tsd-has-type-parameter">
-								<li class="tsd-signature tsd-kind-icon">&lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span>, listener<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="worker.html" class="tsd-signature-type" data-tsd-kind="Class">Worker</a></li>
-							</ul>
-							<ul class="tsd-descriptions">
-								<li class="tsd-description">
-									<h4 class="tsd-type-parameters-title">Type parameters</h4>
-									<ul class="tsd-type-parameters">
-										<li>
-											<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a></h4>
-										</li>
-									</ul>
-									<h4 class="tsd-parameters-title">Parameters</h4>
-									<ul class="tsd-parameters">
-										<li>
-											<h5>event: <span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span></h5>
-										</li>
-										<li>
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> listener: <span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
-											<ul class="tsd-parameters">
-												<li class="tsd-parameter-signature">
-													<ul class="tsd-signatures tsd-kind-type-literal">
-														<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-													</ul>
-													<ul class="tsd-descriptions">
-														<li class="tsd-description">
-															<h4 class="tsd-parameters-title">Parameters</h4>
-															<ul class="tsd-parameters">
-																<li>
-																	<h5>data: <a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span></h5>
-																</li>
-															</ul>
-															<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-														</li>
-													</ul>
-												</li>
-											</ul>
-										</li>
-									</ul>
-									<h4 class="tsd-returns-title">Returns <a href="worker.html" class="tsd-signature-type" data-tsd-kind="Class">Worker</a></h4>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-				<a name="once" class="tsd-anchor"></a>
-				<h3>once</h3>
-				<div class="tsd-signature tsd-kind-icon">once<span class="tsd-signature-symbol">:</span> &lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span>, listener<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="worker.html" class="tsd-signature-type" data-tsd-kind="Class">Worker</a></div>
-				<aside class="tsd-sources">
-					<p>Inherited from Emitter.once</p>
-					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/utils/Emitter.ts#L13">src/utils/Emitter.ts:13</a></li>
-					</ul>
-				</aside>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter-signature">
-							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-class tsd-has-type-parameter">
-								<li class="tsd-signature tsd-kind-icon">&lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span>, listener<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="worker.html" class="tsd-signature-type" data-tsd-kind="Class">Worker</a></li>
-							</ul>
-							<ul class="tsd-descriptions">
-								<li class="tsd-description">
-									<h4 class="tsd-type-parameters-title">Type parameters</h4>
-									<ul class="tsd-type-parameters">
-										<li>
-											<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a></h4>
-										</li>
-									</ul>
-									<h4 class="tsd-parameters-title">Parameters</h4>
-									<ul class="tsd-parameters">
-										<li>
-											<h5>event: <span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span></h5>
-										</li>
-										<li>
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> listener: <span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
-											<ul class="tsd-parameters">
-												<li class="tsd-parameter-signature">
-													<ul class="tsd-signatures tsd-kind-type-literal">
-														<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-													</ul>
-													<ul class="tsd-descriptions">
-														<li class="tsd-description">
-															<h4 class="tsd-parameters-title">Parameters</h4>
-															<ul class="tsd-parameters">
-																<li>
-																	<h5>data: <a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span></h5>
-																</li>
-															</ul>
-															<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-														</li>
-													</ul>
-												</li>
-											</ul>
-										</li>
-									</ul>
-									<h4 class="tsd-returns-title">Returns <a href="worker.html" class="tsd-signature-type" data-tsd-kind="Class">Worker</a></h4>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 				<a name="options" class="tsd-anchor"></a>
 				<h3>options</h3>
 				<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">CompleteBotOptions</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L27">src/clustering/worker/Worker.ts:27</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L28">src/clustering/worker/Worker.ts:28</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3239,51 +3001,13 @@ img {
 					</div>
 				</div>
 			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-				<a name="removealllisteners" class="tsd-anchor"></a>
-				<h3>remove<wbr>All<wbr>Listeners</h3>
-				<div class="tsd-signature tsd-kind-icon">remove<wbr>All<wbr>Listeners<span class="tsd-signature-symbol">:</span> &lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="worker.html" class="tsd-signature-type" data-tsd-kind="Class">Worker</a></div>
-				<aside class="tsd-sources">
-					<p>Inherited from Emitter.removeAllListeners</p>
-					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/utils/Emitter.ts#L19">src/utils/Emitter.ts:19</a></li>
-					</ul>
-				</aside>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter-signature">
-							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-class tsd-has-type-parameter">
-								<li class="tsd-signature tsd-kind-icon">&lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="worker.html" class="tsd-signature-type" data-tsd-kind="Class">Worker</a></li>
-							</ul>
-							<ul class="tsd-descriptions">
-								<li class="tsd-description">
-									<h4 class="tsd-type-parameters-title">Type parameters</h4>
-									<ul class="tsd-type-parameters">
-										<li>
-											<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a></h4>
-										</li>
-									</ul>
-									<h4 class="tsd-parameters-title">Parameters</h4>
-									<ul class="tsd-parameters">
-										<li>
-											<h5><span class="tsd-flag ts-flagOptional">Optional</span> event: <span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">K</span></h5>
-										</li>
-									</ul>
-									<h4 class="tsd-returns-title">Returns <a href="worker.html" class="tsd-signature-type" data-tsd-kind="Class">Worker</a></h4>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 				<a name="selfmember" class="tsd-anchor"></a>
 				<h3>self<wbr>Member</h3>
 				<div class="tsd-signature tsd-kind-icon">self<wbr>Member<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">GatewayGuildMemberAddDispatchData</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L61">src/clustering/worker/Worker.ts:61</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L62">src/clustering/worker/Worker.ts:62</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3298,7 +3022,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">shards<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><a href="shard.html" class="tsd-signature-type" data-tsd-kind="Class">Shard</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L31">src/clustering/worker/Worker.ts:31</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L32">src/clustering/worker/Worker.ts:32</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3313,7 +3037,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">user<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">APIUser</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L78">src/clustering/worker/Worker.ts:78</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L79">src/clustering/worker/Worker.ts:79</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3328,7 +3052,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">users<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">APIUser</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L69">src/clustering/worker/Worker.ts:69</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L70">src/clustering/worker/Worker.ts:70</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3343,7 +3067,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">voice<wbr>States<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/cachedvoicestate.html" class="tsd-signature-type" data-tsd-kind="Interface">CachedVoiceState</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L73">src/clustering/worker/Worker.ts:73</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L74">src/clustering/worker/Worker.ts:74</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3365,7 +3089,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L153">src/clustering/worker/Worker.ts:153</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L154">src/clustering/worker/Worker.ts:154</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3390,7 +3114,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L142">src/clustering/worker/Worker.ts:142</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L143">src/clustering/worker/Worker.ts:143</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3421,7 +3145,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L132">src/clustering/worker/Worker.ts:132</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L133">src/clustering/worker/Worker.ts:133</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3452,7 +3176,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L161">src/clustering/worker/Worker.ts:161</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L162">src/clustering/worker/Worker.ts:162</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3483,7 +3207,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L104">src/clustering/worker/Worker.ts:104</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L105">src/clustering/worker/Worker.ts:105</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3539,7 +3263,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f726ba3/src/clustering/worker/Worker.ts#L82">src/clustering/worker/Worker.ts:82</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/4d7580f/src/clustering/worker/Worker.ts#L83">src/clustering/worker/Worker.ts:83</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
