@@ -87,11 +87,11 @@ exports.PermissionsUtils = {
                 allow |= BigInt(overwrite.allow);
                 deny |= BigInt(overwrite.deny);
             });
-            result |= allow;
             result &= ~deny;
+            result |= allow;
             data.overwrites.filter(x => { var _a; return x.type === 1 /* Member */ && ((_a = data.member.user) === null || _a === void 0 ? void 0 : _a.id) === x.id; }).forEach(overwrite => {
-                result |= BigInt(overwrite.allow);
                 result &= ~BigInt(overwrite.deny);
+                result |= BigInt(overwrite.allow);
             });
         }
         return Number(result);
