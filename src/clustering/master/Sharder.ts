@@ -31,11 +31,15 @@ export class Sharder {
 
   async loop (bucket: number): Promise<void> {
     if (!this.buckets[bucket]) return
-    const next = this.buckets[bucket]?.shift()
+    let next = this.buckets[bucket]?.shift()
 
     if (next === undefined) {
-      this.buckets[bucket] = null
-      return
+      await wait(5100)
+      next = this.buckets[bucket]?.shift()
+      if (next === undefined) {
+        this.buckets[bucket] = null
+        return
+      }
     }
 
     this.master.shardToCluster(next)?.tell('START_SHARD', { id: next })

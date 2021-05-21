@@ -1,6 +1,8 @@
 import { ThreadEvents, ResolveFunction } from '../ThreadComms'
 import { Cluster } from './Cluster'
 
+import { wait } from '../../utils/UtilityFunctions'
+
 export const handlers: {
   [key in keyof ThreadEvents]?: (this: Cluster, data: ThreadEvents[key]['send'], resolve: ResolveFunction<key>) => void | Promise<void>
 } = {
@@ -11,9 +13,10 @@ export const handlers: {
 
     respond({})
   },
-  SHARD_READY: function ({ id }, _) {
+  SHARD_READY: async function ({ id }, _) {
     this.logAs(`Shard ${id} connected to Discord`)
     if (!this.master.spawned) {
+      await wait(6000)
       if (this.master.sharder.buckets.every(x => x === null)) this.master.emit('READY', this.master)
     }
   },
