@@ -1,15 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handlers = void 0;
+const UtilityFunctions_1 = require("../../utils/UtilityFunctions");
 exports.handlers = {
     REGISTER_SHARD: function ({ id }, respond) {
         this.master.sharder.register(id);
         this.logAs(`Registered shard ${id}`);
         respond({});
     },
-    SHARD_READY: function ({ id }, _) {
+    SHARD_READY: async function ({ id }, _) {
         this.logAs(`Shard ${id} connected to Discord`);
         if (!this.master.spawned) {
+            await UtilityFunctions_1.wait(6000);
             if (this.master.sharder.buckets.every(x => x === null))
                 this.master.emit('READY', this.master);
         }

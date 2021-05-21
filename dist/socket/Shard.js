@@ -78,8 +78,9 @@ class Shard {
     _ready() {
         this.worker.emit('SHARD_READY', this);
         this.unavailableGuilds = null;
-        if (this.worker.shards.every(x => x.unavailableGuilds === null))
+        if (this.worker.shards.every(x => x.ready)) {
             this.worker.emit('READY', null);
+        }
     }
     async register() {
         this.registered = true;
