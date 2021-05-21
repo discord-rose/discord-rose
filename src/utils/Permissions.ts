@@ -97,12 +97,12 @@ export const PermissionsUtils = {
         deny |= BigInt(overwrite.deny)
       })
 
-      result |= allow
       result &= ~deny
+      result |= allow
 
       data.overwrites.filter(x => x.type === OverwriteType.Member && data.member.user?.id === x.id).forEach(overwrite => {
-        result |= BigInt(overwrite.allow)
         result &= ~BigInt(overwrite.deny)
+        result |= BigInt(overwrite.allow)
       })
     }
 
