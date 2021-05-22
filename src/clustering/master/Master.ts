@@ -33,6 +33,7 @@ export interface CompleteBotOptions extends Complete<BotOptions> {
   shards: number
   shardsPerCluster: number
   intents: number
+  spawnTimeout: number
 }
 
 /**
@@ -153,7 +154,8 @@ export class Master extends EventEmitter<{
         cachedIntents: options.warnings?.cachedIntents ?? true
       },
       log: options.log,
-      rest: options.rest
+      rest: options.rest,
+      spawnTimeout: options.spawnTimeout ?? 5100
     } as CompleteBotOptions
 
     if ((this.options.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true) {
@@ -469,4 +471,9 @@ export interface BotOptions {
    * Options to be passed to the rest manager on every worker
    */
   rest?: RestManagerOptions
+  /**
+   * Amount of time between when shards are spawned (don't change unless you know what you're doing)
+   * @default 5100
+   */
+  spawnTimeout?: number
 }
