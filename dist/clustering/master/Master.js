@@ -24,7 +24,7 @@ class Master extends typed_emitter_1.EventEmitter {
      * @param options Options
      */
     constructor(fileName, options) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14;
         super();
         /**
          * Rest Manager (only set after running .start())
@@ -102,20 +102,21 @@ class Master extends typed_emitter_1.EventEmitter {
                 cachedIntents: (_y = (_x = options.warnings) === null || _x === void 0 ? void 0 : _x.cachedIntents) !== null && _y !== void 0 ? _y : true
             },
             log: options.log,
-            rest: options.rest
+            rest: options.rest,
+            spawnTimeout: (_z = options.spawnTimeout) !== null && _z !== void 0 ? _z : 5100
         };
-        if (((_z = this.options.cache) === null || _z === void 0 ? void 0 : _z.channels) === true) {
+        if (((_0 = this.options.cache) === null || _0 === void 0 ? void 0 : _0.channels) === true) {
             this.options.cache.channels = true;
         }
         else if (this.options.cache.channels) {
-            const channelCaches = ((_0 = this.options.cache) === null || _0 === void 0 ? void 0 : _0.channels) === true ? CachedChannelTypes : (_1 = this.options.cache.channels) !== null && _1 !== void 0 ? _1 : [];
+            const channelCaches = ((_1 = this.options.cache) === null || _1 === void 0 ? void 0 : _1.channels) === true ? CachedChannelTypes : (_2 = this.options.cache.channels) !== null && _2 !== void 0 ? _2 : [];
             this.options.cache.channels = [];
             if (channelCaches.includes('text'))
-                (_3 = (_2 = this.options.cache) === null || _2 === void 0 ? void 0 : _2.channels) === null || _3 === void 0 ? void 0 : _3.push(5 /* GUILD_NEWS */, 0 /* GUILD_TEXT */);
+                (_4 = (_3 = this.options.cache) === null || _3 === void 0 ? void 0 : _3.channels) === null || _4 === void 0 ? void 0 : _4.push(5 /* GUILD_NEWS */, 0 /* GUILD_TEXT */);
             if (channelCaches.includes('voice'))
-                (_5 = (_4 = this.options.cache) === null || _4 === void 0 ? void 0 : _4.channels) === null || _5 === void 0 ? void 0 : _5.push(2 /* GUILD_VOICE */);
+                (_6 = (_5 = this.options.cache) === null || _5 === void 0 ? void 0 : _5.channels) === null || _6 === void 0 ? void 0 : _6.push(2 /* GUILD_VOICE */);
             if (channelCaches.includes('category'))
-                (_7 = (_6 = this.options.cache) === null || _6 === void 0 ? void 0 : _6.channels) === null || _7 === void 0 ? void 0 : _7.push(4 /* GUILD_CATEGORY */);
+                (_8 = (_7 = this.options.cache) === null || _7 === void 0 ? void 0 : _7.channels) === null || _8 === void 0 ? void 0 : _8.push(4 /* GUILD_CATEGORY */);
         }
         this.log = typeof options.log === 'undefined'
             ? (msg, cluster) => {
@@ -124,17 +125,17 @@ class Master extends typed_emitter_1.EventEmitter {
             : options.log;
         if (!this.log)
             this.log = () => { };
-        if ((_8 = this.options.warnings) === null || _8 === void 0 ? void 0 : _8.cachedIntents) {
+        if ((_9 = this.options.warnings) === null || _9 === void 0 ? void 0 : _9.cachedIntents) {
             const warn = (key, intent) => console.warn(`WARNING: CacheOptions.${key} was turned on, but is missing the ${intent} intent. Meaning your cache with be empty. Either turn this on, or if it's intentional set Options.warnings.cachedIntents to false.`);
-            if (((_9 = this.options.cache) === null || _9 === void 0 ? void 0 : _9.guilds) && ((this.options.intents & Intents.GUILDS) === 0))
+            if (((_10 = this.options.cache) === null || _10 === void 0 ? void 0 : _10.guilds) && ((this.options.intents & Intents.GUILDS) === 0))
                 warn('guilds', 'GUILDS');
-            if (((_10 = this.options.cache) === null || _10 === void 0 ? void 0 : _10.roles) && ((this.options.intents & Intents.GUILDS) === 0))
+            if (((_11 = this.options.cache) === null || _11 === void 0 ? void 0 : _11.roles) && ((this.options.intents & Intents.GUILDS) === 0))
                 warn('roles', 'GUILDS');
-            if (((_11 = this.options.cache) === null || _11 === void 0 ? void 0 : _11.channels) && ((this.options.intents & Intents.GUILDS) === 0))
+            if (((_12 = this.options.cache) === null || _12 === void 0 ? void 0 : _12.channels) && ((this.options.intents & Intents.GUILDS) === 0))
                 warn('channels', 'GUILDS');
-            if (((_12 = this.options.cache) === null || _12 === void 0 ? void 0 : _12.members) && ((this.options.intents & Intents.GUILD_MEMBERS) === 0))
+            if (((_13 = this.options.cache) === null || _13 === void 0 ? void 0 : _13.members) && ((this.options.intents & Intents.GUILD_MEMBERS) === 0))
                 warn('members', 'GUILD_MEMBERS');
-            if (((_13 = this.options.cache) === null || _13 === void 0 ? void 0 : _13.messages) && ((this.options.intents & Intents.GUILD_MESSAGES) === 0))
+            if (((_14 = this.options.cache) === null || _14 === void 0 ? void 0 : _14.messages) && ((this.options.intents & Intents.GUILD_MESSAGES) === 0))
                 warn('messages', 'GUILD_MESSAGES');
         }
         const keys = Object.keys(handlers_1.handlers);

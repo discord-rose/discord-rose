@@ -26,21 +26,16 @@ class Sharder {
             void this.loop(bucket);
     }
     async loop(bucket) {
-        var _a, _b, _c, _d;
+        var _a, _b;
         if (!this.buckets[bucket])
             return;
-        let next = (_a = this.buckets[bucket]) === null || _a === void 0 ? void 0 : _a.shift();
+        const next = (_a = this.buckets[bucket]) === null || _a === void 0 ? void 0 : _a.shift();
         if (next === undefined) {
-            await UtilityFunctions_1.wait(5100);
-            next = (_b = this.buckets[bucket]) === null || _b === void 0 ? void 0 : _b.shift();
-            if (next === undefined) {
-                this.buckets[bucket] = null;
-                return;
-            }
+            this.buckets[bucket] = null;
+            return;
         }
-        (_c = this.master.shardToCluster(next)) === null || _c === void 0 ? void 0 : _c.tell('START_SHARD', { id: next });
-        if ((_d = this.buckets[bucket]) === null || _d === void 0 ? void 0 : _d.length)
-            await UtilityFunctions_1.wait(5100);
+        (_b = this.master.shardToCluster(next)) === null || _b === void 0 ? void 0 : _b.tell('START_SHARD', { id: next });
+        await UtilityFunctions_1.wait(this.master.options.spawnTimeout);
         return await this.loop(bucket);
     }
 }

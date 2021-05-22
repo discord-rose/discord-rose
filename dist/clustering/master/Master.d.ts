@@ -19,6 +19,7 @@ export interface CompleteBotOptions extends Complete<BotOptions> {
     shards: number;
     shardsPerCluster: number;
     intents: number;
+    spawnTimeout: number;
 }
 /**
  * Master process controller
@@ -272,5 +273,10 @@ export interface BotOptions {
      * Options to be passed to the rest manager on every worker
      */
     rest?: RestManagerOptions;
+    /**
+     * Amount of time between when shards are spawned (don't change unless you know what you're doing)
+     * @default 5100
+     */
+    spawnTimeout?: number;
 }
 export {};
