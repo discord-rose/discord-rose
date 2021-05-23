@@ -61,16 +61,20 @@ export class CommandHandler {
         if (this._options.reuseInteractions) {
           const currentInteractions = await this.worker.api.interactions.get(this.worker.user.id, this._options.interactionGuild)
 
-          const newInteractions = interactions.filter(command => !!!currentInteractions.find(interaction => command.interaction?.name === interaction.name))
-          const deletedInteractions = currentInteractions.filter(interaction => !!!interactions.find(command => interaction.name === command.interaction?.name))
-          const changedInteractions = interactions.filter(command => !!!currentInteractions.find(interaction =>
+          const newInteractions = interactions.filter(command => !currentInteractions.find(interaction => command.interaction?.name === interaction.name))
+          const deletedInteractions = currentInteractions.filter(interaction => !interactions.find(command => interaction.name === command.interaction?.name))
+          const changedInteractions = interactions.filter(command => !currentInteractions.find(interaction =>
             interaction.default_permission === (typeof command.interaction?.default_permission === 'boolean' ? command.interaction?.default_permission : true) &&
             interaction.description === command.interaction?.description &&
             interaction.name === command.interaction?.name &&
             interaction.options === command.interaction?.options
-          ) && !!!newInteractions.find(newCommand => newCommand === command))
+          ) && !newInteractions.find(newCommand => newCommand === command))
 
-          const promises: Array<Promise<any>> = [];
+          console.log(newInteractions)
+          console.log(deletedInteractions)
+          console.log(changedInteractions)
+
+          const promises: Array<Promise<any>> = []
           newInteractions.forEach(command => promises.push(this.worker.api.interactions.add(command.interaction as RESTPostAPIApplicationCommandsJSONBody, this.worker.user.id, this._options.interactionGuild)))
           deletedInteractions.forEach(interaction => promises.push(this.worker.api.interactions.delete(interaction.id, this.worker.user.id, this._options.interactionGuild)))
           changedInteractions.forEach(command => promises.push(this.worker.api.interactions.update(command.interaction as RESTPatchAPIApplicationCommandJSONBody, this.worker.user.id, currentInteractions.find(interaction => interaction.name === command.interaction?.name)?.id, this._options.interactionGuild)))
