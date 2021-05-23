@@ -43,6 +43,16 @@ export class InteractionResource {
   }
 
   /**
+   * Deletes a specific command
+   * @param interactionId Interaction ID
+   * @param applicationId Application/client ID
+   * @param guildId Optional guild ID to only delete a command for a specific guild
+   */
+  async delete (interactionId: Snowflake, applicationId: Snowflake, guildId?: Snowflake): Promise<void> {
+    await this.rest.request('DELETE', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}/commands/${interactionId}`)
+  }
+
+  /**
    * Responds to an interaction
    * @param interactionId Interact ID
    * @param interactionToken Interaction Token
