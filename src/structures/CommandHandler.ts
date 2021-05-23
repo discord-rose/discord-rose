@@ -1,4 +1,4 @@
-import { APIMessage, InteractionType, MessageType, RESTPostAPIApplicationCommandsJSONBody, Snowflake } from 'discord-api-types'
+import { APIMessage, InteractionType, MessageType, RESTPatchAPIApplicationCommandJSONBody, RESTPostAPIApplicationCommandsJSONBody, Snowflake } from 'discord-api-types'
 
 import { CommandContext } from './CommandContext'
 
@@ -30,7 +30,8 @@ export class CommandHandler {
     bots: false,
     mentionPrefix: true,
     caseInsensitivePrefix: true,
-    caseInsensitiveCommand: true
+    caseInsensitiveCommand: true,
+    reuseInteractions: false
   }
 
   public middlewares: MiddlewareFunction[] = []
@@ -45,7 +46,7 @@ export class CommandHandler {
    */
   constructor (private readonly worker: Worker) {}
 
-  setupInteractions (): void {
+  async setupInteractions (): Promise<void> {
     this.addedInteractions = true
 
     if (this.commands) {
@@ -57,14 +58,31 @@ export class CommandHandler {
 
         if (this.worker.comms.id !== '0') return
 
-        this.worker.api.interactions.set(interactions.map(x => x.interaction) as RESTPostAPIApplicationCommandsJSONBody[], this.worker.user.id, this._options.interactionGuild)
-          .then(() => {
-            this.worker.log('Posted command interactions')
-          })
-          .catch(err => {
-            err.message = `${err.message as string} (Whilst posting Command Interactions)`
-            console.error(err)
-          })
+        if (this._options.reuseInteractions) {
+          const currentInteractions = await this.worker.api.interactions.get(this.worker.user.id, this._options.interactionGuild)
+
+          const newInteractions = interactions.filter(command => !!!currentInteractions.find(interaction => command.interaction?.name === interaction.name))
+          const deletedInteractions = currentInteractions.filter(interaction => !!!interactions.find(command => interaction.name === command.interaction?.name))
+          const changedInteractions = interactions.filter(command => !!!currentInteractions.find(interaction =>
+            interaction.default_permission === (typeof command.interaction?.default_permission === 'boolean' ? command.interaction?.default_permission : true) &&
+            interaction.description === command.interaction?.description &&
+            interaction.name === command.interaction?.name &&
+            interaction.options === command.interaction?.options
+          ) && !!!newInteractions.find(newCommand => newCommand === command))
+
+          newInteractions.forEach(command => this.worker.api.interactions.add(command.interaction as RESTPostAPIApplicationCommandsJSONBody, this.worker.user.id, this._options.interactionGuild))
+          deletedInteractions.forEach(interaction => this.worker.api.interactions.delete(interaction.id, this.worker.user.id, this._options.interactionGuild))
+          changedInteractions.forEach(command => this.worker.api.interactions.update(command.interaction as RESTPatchAPIApplicationCommandJSONBody, this.worker.user.id, currentInteractions.find(interaction => interaction.name === command.interaction?.name)?.id, this._options.interactionGuild))
+        } else {
+          this.worker.api.interactions.set(interactions.map(x => x.interaction) as RESTPostAPIApplicationCommandsJSONBody[], this.worker.user.id, this._options.interactionGuild)
+            .then(() => {
+              this.worker.log('Posted command interactions')
+            })
+            .catch(err => {
+              err.message = `${err.message as string} (Whilst posting Command Interactions)`
+              console.error(err)
+            })
+        }
       }
     }
   }
@@ -378,4 +396,9 @@ export interface CommandHandlerOptions {
    * Only post interaction to one specific guild (ID)
    */
   interactionGuild?: Snowflake
+  /**
+   * If interactions previously posted should be reused when possible
+   * @default false
+   */
+  reuseInteractions?: boolean
 }
