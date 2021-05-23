@@ -1,4 +1,4 @@
-import { InteractionResponseType, RESTPatchAPIApplicationCommandJSONBody, RESTPatchAPIApplicationCommandResult, RESTPatchAPIApplicationGuildCommandJSONBody, RESTPatchAPIApplicationGuildCommandResult, RESTPostAPIInteractionCallbackJSONBody, RESTPutAPIApplicationCommandsJSONBody, RESTPutAPIApplicationCommandsResult, RESTPutAPIApplicationGuildCommandsJSONBody, RESTPutAPIApplicationGuildCommandsResult, Snowflake } from 'discord-api-types'
+import { InteractionResponseType, RESTGetAPIApplicationCommandsResult, RESTGetAPIApplicationGuildCommandsResult, RESTPatchAPIApplicationCommandJSONBody, RESTPatchAPIApplicationCommandResult, RESTPatchAPIApplicationGuildCommandJSONBody, RESTPatchAPIApplicationGuildCommandResult, RESTPostAPIInteractionCallbackJSONBody, RESTPutAPIApplicationCommandsJSONBody, RESTPutAPIApplicationCommandsResult, RESTPutAPIApplicationGuildCommandsJSONBody, RESTPutAPIApplicationGuildCommandsResult, Snowflake } from 'discord-api-types'
 import FormData from 'form-data'
 import { RestManager } from '../Manager'
 import { MessagesResource, MessageTypes } from './Messages'
@@ -18,6 +18,15 @@ export class InteractionResource {
     return await this.rest.request('PUT', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands`, {
       body: data
     })
+  }
+
+  /**
+   * Gets all posted commands for an application
+   * @param applicationId Application/client ID
+   * @param guildId Optional guild ID to only get commands for specific guild
+   */
+  async get (applicationId: Snowflake, guildId?: Snowflake): Promise<RESTGetAPIApplicationCommandsResult | RESTGetAPIApplicationGuildCommandsResult> {
+    return await this.rest.request('GET', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands`)
   }
 
   /**
