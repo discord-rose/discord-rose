@@ -70,10 +70,6 @@ export class CommandHandler {
             interaction.options === command.interaction?.options
           ) && !newInteractions.find(newCommand => newCommand === command))
 
-          console.log(newInteractions)
-          console.log(deletedInteractions)
-          console.log(changedInteractions)
-
           const promises: Array<Promise<any>> = []
           newInteractions.forEach(command => promises.push(this.worker.api.interactions.add(command.interaction as RESTPostAPIApplicationCommandsJSONBody, this.worker.user.id, this._options.interactionGuild)))
           deletedInteractions.forEach(interaction => promises.push(this.worker.api.interactions.delete(interaction.id, this.worker.user.id, this._options.interactionGuild)))
