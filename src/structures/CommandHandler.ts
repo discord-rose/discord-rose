@@ -243,7 +243,7 @@ export class CommandHandler {
       })
 
       this.worker.once('READY', () => {
-        this.setupInteractions()
+        void this.setupInteractions()
       })
     }
     if (this.worker.comms.id === '0' && this.addedInteractions && command.interaction) {
