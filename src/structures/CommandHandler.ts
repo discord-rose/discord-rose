@@ -70,9 +70,18 @@ export class CommandHandler {
             interaction.options === command.interaction?.options
           ) && !!!newInteractions.find(newCommand => newCommand === command))
 
-          newInteractions.forEach(command => this.worker.api.interactions.add(command.interaction as RESTPostAPIApplicationCommandsJSONBody, this.worker.user.id, this._options.interactionGuild))
-          deletedInteractions.forEach(interaction => this.worker.api.interactions.delete(interaction.id, this.worker.user.id, this._options.interactionGuild))
-          changedInteractions.forEach(command => this.worker.api.interactions.update(command.interaction as RESTPatchAPIApplicationCommandJSONBody, this.worker.user.id, currentInteractions.find(interaction => interaction.name === command.interaction?.name)?.id, this._options.interactionGuild))
+          const promises: Array<Promise<any>> = [];
+          newInteractions.forEach(command => promises.push(this.worker.api.interactions.add(command.interaction as RESTPostAPIApplicationCommandsJSONBody, this.worker.user.id, this._options.interactionGuild)))
+          deletedInteractions.forEach(interaction => promises.push(this.worker.api.interactions.delete(interaction.id, this.worker.user.id, this._options.interactionGuild)))
+          changedInteractions.forEach(command => promises.push(this.worker.api.interactions.update(command.interaction as RESTPatchAPIApplicationCommandJSONBody, this.worker.user.id, currentInteractions.find(interaction => interaction.name === command.interaction?.name)?.id, this._options.interactionGuild)))
+          Promise.all(promises)
+            .then(() => {
+              this.worker.log('Posted command interactions')
+            })
+            .catch(err => {
+              err.message = `${err.message as string} (Whilst posting Command Interactions)`
+              console.error(err)
+            })
         } else {
           this.worker.api.interactions.set(interactions.map(x => x.interaction) as RESTPostAPIApplicationCommandsJSONBody[], this.worker.user.id, this._options.interactionGuild)
             .then(() => {
