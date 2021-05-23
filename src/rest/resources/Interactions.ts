@@ -1,4 +1,4 @@
-import { InteractionResponseType, RESTPostAPIApplicationCommandsJSONBody, RESTPostAPIApplicationCommandsResult, RESTPostAPIInteractionCallbackJSONBody, RESTPutAPIApplicationCommandsJSONBody, Snowflake } from 'discord-api-types'
+import { InteractionResponseType, RESTPatchAPIApplicationCommandJSONBody, RESTPatchAPIApplicationCommandResult, RESTPatchAPIApplicationGuildCommandJSONBody, RESTPatchAPIApplicationGuildCommandResult, RESTPostAPIInteractionCallbackJSONBody, RESTPutAPIApplicationCommandsJSONBody, RESTPutAPIApplicationCommandsResult, RESTPutAPIApplicationGuildCommandsJSONBody, RESTPutAPIApplicationGuildCommandsResult, Snowflake } from 'discord-api-types'
 import FormData from 'form-data'
 import { RestManager } from '../Manager'
 import { MessagesResource, MessageTypes } from './Messages'
@@ -14,7 +14,7 @@ export class InteractionResource {
    * @param applicationId Application/client ID
    * @param guildId Optional guild ID to only set commands for specific guild
    */
-  async set (data: RESTPutAPIApplicationCommandsJSONBody, applicationId: Snowflake, guildId?: Snowflake): Promise<RESTPostAPIApplicationCommandsResult> {
+  async set (data: RESTPutAPIApplicationCommandsJSONBody | RESTPutAPIApplicationGuildCommandsJSONBody, applicationId: Snowflake, guildId?: Snowflake): Promise<RESTPutAPIApplicationCommandsResult | RESTPutAPIApplicationGuildCommandsResult> {
     return await this.rest.request('PUT', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands`, {
       body: data
     })
@@ -27,7 +27,7 @@ export class InteractionResource {
    * @param commandId Command ID to replace
    * @param guildId Optional guild ID to only set command to specific guild
    */
-  async update (data: RESTPostAPIApplicationCommandsJSONBody, applicationId: Snowflake, commandId?: string, guildId?: Snowflake): Promise<RESTPostAPIApplicationCommandsResult> {
+  async update (data: RESTPatchAPIApplicationCommandJSONBody | RESTPatchAPIApplicationGuildCommandJSONBody, applicationId: Snowflake, commandId?: string, guildId?: Snowflake): Promise<RESTPatchAPIApplicationCommandResult | RESTPatchAPIApplicationGuildCommandResult> {
     return await this.rest.request('PATCH', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands/${commandId ?? data.name}`, {
       body: data
     })
