@@ -71,9 +71,16 @@ export class CommandHandler {
           ) && !newInteractions.find(newCommand => newCommand === command))
 
           const promises: Array<Promise<any>> = []
+
           newInteractions.forEach(command => promises.push(this.worker.api.interactions.add(command.interaction as RESTPostAPIApplicationCommandsJSONBody, this.worker.user.id, this._options.interactionGuild)))
           deletedInteractions.forEach(interaction => promises.push(this.worker.api.interactions.delete(interaction.id, this.worker.user.id, this._options.interactionGuild)))
-          changedInteractions.forEach(command => promises.push(this.worker.api.interactions.update(command.interaction as RESTPatchAPIApplicationCommandJSONBody, this.worker.user.id, currentInteractions.find(interaction => interaction.name === command.interaction?.name)?.id, this._options.interactionGuild)))
+          changedInteractions.forEach(command => {
+            const changedInteraction = currentInteractions.find(interaction => interaction.name === command.interaction?.name)
+            if (changedInteraction) {
+              promises.push(this.worker.api.interactions.update(command.interaction as RESTPatchAPIApplicationCommandJSONBody, changedInteraction.id, this.worker.user.id, this._options.interactionGuild))
+            }
+          })
+
           Promise.all(promises)
             .then(() => {
               this.worker.log('Posted command interactions')
@@ -247,7 +254,11 @@ export class CommandHandler {
       })
     }
     if (this.worker.comms.id === '0' && this.addedInteractions && command.interaction) {
-      void this.worker.api.interactions.update(command.interaction as unknown as RESTPostAPIApplicationCommandsJSONBody, this.worker.user.id, this._options.interactionGuild)
+      this.worker.api.interactions.add(command.interaction, this.worker.user.id, this._options.interactionGuild)
+        .catch(err => {
+          err.message = `${err.message as string} (Whilst posting Command Interactions)`
+          console.error(err)
+        })
     }
 
     this.commands?.set(command.command, {

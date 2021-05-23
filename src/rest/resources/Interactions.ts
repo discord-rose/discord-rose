@@ -54,12 +54,12 @@ export class InteractionResource {
   /**
    * Updates/upserts a specific command
    * @param data Interaction data
+   * @param interactionId Interaction ID
    * @param applicationId Application/client ID
-   * @param commandId Command ID to replace
    * @param guildId Optional guild ID to only set command to specific guild
    */
-  async update (data: RESTPatchAPIApplicationCommandJSONBody | RESTPatchAPIApplicationGuildCommandJSONBody, applicationId: Snowflake, commandId?: string, guildId?: Snowflake): Promise<RESTPatchAPIApplicationCommandResult | RESTPatchAPIApplicationGuildCommandResult> {
-    return await this.rest.request('PATCH', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands/${(commandId ?? data.name) ?? ''}`, {
+  async update (data: RESTPatchAPIApplicationCommandJSONBody | RESTPatchAPIApplicationGuildCommandJSONBody, interactionId: Snowflake, applicationId: Snowflake, guildId?: Snowflake): Promise<RESTPatchAPIApplicationCommandResult | RESTPatchAPIApplicationGuildCommandResult> {
+    return await this.rest.request('PATCH', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands/${interactionId}`, {
       body: data
     })
   }
