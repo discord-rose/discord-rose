@@ -23,7 +23,7 @@ export class InteractionResource {
   /**
    * Gets all posted commands for an application
    * @param applicationId Application/client ID
-   * @param guildId Optional guild ID to only get commands for specific guild
+   * @param guildId Optional guild ID to only get commands from a specific guild
    */
   async get (applicationId: Snowflake, guildId?: Snowflake): Promise<RESTGetAPIApplicationCommandsResult | RESTGetAPIApplicationGuildCommandsResult> {
     return await this.rest.request('GET', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands`)
@@ -33,7 +33,7 @@ export class InteractionResource {
    * Adds a command for an application
    * @param data Interaction data
    * @param applicationId Application/client ID
-   * @param guildId Optional guild ID to only set commands for specific guild
+   * @param guildId Optional guild ID to only add a command for a specific guild
    */
   async add (data: RESTPostAPIApplicationCommandsJSONBody | RESTPostAPIApplicationGuildCommandsJSONBody, applicationId: Snowflake, guildId?: Snowflake): Promise<RESTPostAPIApplicationCommandsResult | RESTPostAPIApplicationGuildCommandsResult> {
     return await this.rest.request('POST', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands`, {
@@ -42,7 +42,7 @@ export class InteractionResource {
   }
 
   /**
-   * Deletes a specific command
+   * Deletes a specific command for an application
    * @param interactionId Interaction ID
    * @param applicationId Application/client ID
    * @param guildId Optional guild ID to only delete a command for a specific guild
@@ -56,7 +56,7 @@ export class InteractionResource {
    * @param data Interaction data
    * @param interactionId Interaction ID
    * @param applicationId Application/client ID
-   * @param guildId Optional guild ID to only set command to specific guild
+   * @param guildId Optional guild ID to only update a command for a specific guild
    */
   async update (data: RESTPatchAPIApplicationCommandJSONBody | RESTPatchAPIApplicationGuildCommandJSONBody, interactionId: Snowflake, applicationId: Snowflake, guildId?: Snowflake): Promise<RESTPatchAPIApplicationCommandResult | RESTPatchAPIApplicationGuildCommandResult> {
     return await this.rest.request('PATCH', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands/${interactionId}`, {
@@ -66,7 +66,7 @@ export class InteractionResource {
 
   /**
    * Responds to an interaction
-   * @param interactionId Interact ID
+   * @param interactionId Interaction ID
    * @param interactionToken Interaction Token
    * @param data Interaction Callback Data
    */
