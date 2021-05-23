@@ -1,4 +1,4 @@
-import { InteractionResponseType, RESTGetAPIApplicationCommandsResult, RESTGetAPIApplicationGuildCommandsResult, RESTPatchAPIApplicationCommandJSONBody, RESTPatchAPIApplicationCommandResult, RESTPatchAPIApplicationGuildCommandJSONBody, RESTPatchAPIApplicationGuildCommandResult, RESTPostAPIInteractionCallbackJSONBody, RESTPutAPIApplicationCommandsJSONBody, RESTPutAPIApplicationCommandsResult, RESTPutAPIApplicationGuildCommandsJSONBody, RESTPutAPIApplicationGuildCommandsResult, Snowflake } from 'discord-api-types'
+import { InteractionResponseType, RESTGetAPIApplicationCommandsResult, RESTGetAPIApplicationGuildCommandsResult, RESTPatchAPIApplicationCommandJSONBody, RESTPatchAPIApplicationCommandResult, RESTPatchAPIApplicationGuildCommandJSONBody, RESTPatchAPIApplicationGuildCommandResult, RESTPostAPIApplicationCommandsJSONBody, RESTPostAPIApplicationCommandsResult,  RESTPostAPIApplicationGuildCommandsJSONBody, RESTPostAPIApplicationGuildCommandsResult, RESTPostAPIInteractionCallbackJSONBody, RESTPutAPIApplicationCommandsJSONBody, RESTPutAPIApplicationCommandsResult, RESTPutAPIApplicationGuildCommandsJSONBody, RESTPutAPIApplicationGuildCommandsResult, Snowflake } from 'discord-api-types'
 import FormData from 'form-data'
 import { RestManager } from '../Manager'
 import { MessagesResource, MessageTypes } from './Messages'
@@ -30,14 +30,13 @@ export class InteractionResource {
   }
 
   /**
-   * Updates/upserts a specific command
+   * Adds a command for an application
    * @param data Interaction data
    * @param applicationId Application/client ID
-   * @param commandId Command ID to replace
-   * @param guildId Optional guild ID to only set command to specific guild
+   * @param guildId Optional guild ID to only set commands for specific guild
    */
-  async update (data: RESTPatchAPIApplicationCommandJSONBody | RESTPatchAPIApplicationGuildCommandJSONBody, applicationId: Snowflake, commandId?: string, guildId?: Snowflake): Promise<RESTPatchAPIApplicationCommandResult | RESTPatchAPIApplicationGuildCommandResult> {
-    return await this.rest.request('PATCH', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands/${commandId ?? data.name}`, {
+  async add (data: RESTPostAPIApplicationCommandsJSONBody | RESTPostAPIApplicationGuildCommandsJSONBody, applicationId: Snowflake, guildId?: Snowflake): Promise<RESTPostAPIApplicationCommandsResult | RESTPostAPIApplicationGuildCommandsResult> {
+    return await this.rest.request('POST', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands`, {
       body: data
     })
   }
@@ -50,6 +49,19 @@ export class InteractionResource {
    */
   async delete (interactionId: Snowflake, applicationId: Snowflake, guildId?: Snowflake): Promise<void> {
     await this.rest.request('DELETE', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}/commands/${interactionId}`)
+  }
+
+  /**
+   * Updates/upserts a specific command
+   * @param data Interaction data
+   * @param applicationId Application/client ID
+   * @param commandId Command ID to replace
+   * @param guildId Optional guild ID to only set command to specific guild
+   */
+   async update (data: RESTPatchAPIApplicationCommandJSONBody | RESTPatchAPIApplicationGuildCommandJSONBody, applicationId: Snowflake, commandId?: string, guildId?: Snowflake): Promise<RESTPatchAPIApplicationCommandResult | RESTPatchAPIApplicationGuildCommandResult> {
+    return await this.rest.request('PATCH', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands/${commandId ?? data.name}`, {
+      body: data
+    })
   }
 
   /**
