@@ -2,6 +2,8 @@ import { APIMessage, InteractionType, MessageType, RESTPatchAPIApplicationComman
 
 import { CommandContext } from './CommandContext'
 
+import { traverseObject } from '../utils/UtilityFunctions'
+
 import { CommandOptions, CommandType, Worker, CommandContext as ctx } from '../typings/lib'
 import Collection from '@discordjs/collection'
 
@@ -63,12 +65,21 @@ export class CommandHandler {
 
           const newInteractions = interactions.filter(command => !currentInteractions.find(interaction => command.interaction?.name === interaction.name))
           const deletedInteractions = currentInteractions.filter(interaction => !interactions.find(command => interaction.name === command.interaction?.name))
-          const changedInteractions = interactions.filter(command => !currentInteractions.find(interaction =>
-            interaction.default_permission === (typeof command.interaction?.default_permission === 'boolean' ? command.interaction?.default_permission : true) &&
-            interaction.description === command.interaction?.description &&
-            interaction.name === command.interaction?.name &&
-            interaction.options === command.interaction?.options
-          ) && !newInteractions.find(newCommand => newCommand === command))
+          const changedInteractions = interactions.filter(command => {
+            if (command.interaction) {
+              command.interaction.default_permission = typeof command.interaction.default_permission === 'boolean' ? command.interaction.default_permission : true
+              traverseObject(command.interaction, obj => {
+                if (typeof obj.required === 'boolean' && !obj.required) delete obj.required
+              })
+            }
+
+            return !currentInteractions.find(interaction =>
+              interaction.default_permission === command.interaction?.default_permission &&
+              interaction.description === command.interaction?.description &&
+              interaction.name === command.interaction?.name &&
+              JSON.stringify(interaction.options) === JSON.stringify(command.interaction?.options)
+            ) && !newInteractions.find(newCommand => newCommand === command)
+          })
 
           const promises: Array<Promise<any>> = []
 
