@@ -1,4 +1,4 @@
-import { APIMessage, InteractionType, MessageType, RESTPatchAPIApplicationCommandJSONBody, RESTPostAPIApplicationCommandsJSONBody, Snowflake } from 'discord-api-types'
+import { APIMessage, InteractionType, MessageType, RESTPostAPIApplicationCommandsJSONBody, Snowflake } from 'discord-api-types'
 
 import { CommandContext } from './CommandContext'
 
@@ -89,7 +89,7 @@ export class CommandHandler {
 
           Promise.all(promises)
             .then(() => {
-              this.worker.log('Posted command interactions')
+              this.worker.log(`Added ${newInteractions.size}, deleted ${deletedInteractions.length}, and updated ${changedInteractions.size} command interactions`)
             })
             .catch(err => {
               err.message = `${err.message as string} (Whilst posting Command Interactions)`
@@ -262,7 +262,7 @@ export class CommandHandler {
     if (this.worker.comms.id === '0' && this.addedInteractions && command.interaction) {
       this.worker.api.interactions.add(command.interaction, this.worker.user.id, this._options.interactionGuild)
         .catch(err => {
-          err.message = `${err.message as string} (Whilst posting Command Interactions)`
+          err.message = `${err.message as string} (Whilst posting a Command Interaction)`
           console.error(err)
         })
     }
