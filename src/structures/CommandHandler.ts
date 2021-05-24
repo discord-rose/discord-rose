@@ -85,12 +85,7 @@ export class CommandHandler {
 
           newInteractions.forEach(command => promises.push(this.worker.api.interactions.add(command.interaction as RESTPostAPIApplicationCommandsJSONBody, this.worker.user.id, this._options.interactionGuild)))
           deletedInteractions.forEach(interaction => promises.push(this.worker.api.interactions.delete(interaction.id, this.worker.user.id, this._options.interactionGuild)))
-          changedInteractions.forEach(command => {
-            const changedInteraction = currentInteractions.find(interaction => interaction.name === command.interaction?.name)
-            if (changedInteraction) {
-              promises.push(this.worker.api.interactions.update(command.interaction as RESTPatchAPIApplicationCommandJSONBody, changedInteraction.id, this.worker.user.id, this._options.interactionGuild))
-            }
-          })
+          changedInteractions.forEach(command => promises.push(this.worker.api.interactions.add(command.interaction as RESTPostAPIApplicationCommandsJSONBody, this.worker.user.id, this._options.interactionGuild)))
 
           Promise.all(promises)
             .then(() => {
