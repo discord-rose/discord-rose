@@ -57,3 +57,15 @@ export function resolveString (data: any): string {
 
   return String(data)
 }
+
+/**
+ * Traverses through all elements and nested elements of an object.
+ * @param obj The object to traverse.
+ * @param callback A callback that fires for every element of the object.
+ */
+export function traverseObject (obj: object, callback: (obj: {[key: string]: any}) => void): void {
+  callback(obj)
+  Object.keys(obj).forEach(key => {
+    if (typeof obj[key] === 'object') traverseObject(obj[key], callback)
+  })
+}
