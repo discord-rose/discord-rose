@@ -1,4 +1,4 @@
-import { RESTGetAPIAuditLogResult, RESTGetAPIAuditLogQuery, RESTGetAPIGuildQuery, RESTGetAPIGuildRolesResult, RESTPatchAPIGuildJSONBody, RESTPatchAPIGuildRoleJSONBody, RESTPatchAPIGuildRoleResult, RESTPostAPIGuildRoleJSONBody, RESTPostAPIGuildRoleResult, Snowflake } from 'discord-api-types';
+import { RESTGetAPIAuditLogResult, RESTGetAPIAuditLogQuery, RESTGetAPIGuildRolesResult, RESTPatchAPIGuildJSONBody, RESTPatchAPIGuildRoleJSONBody, RESTPatchAPIGuildRoleResult, RESTPostAPIGuildRoleJSONBody, RESTPostAPIGuildRoleResult, Snowflake, RESTGetAPIGuildResult, RESTPatchAPIGuildResult } from 'discord-api-types';
 import { RestManager } from '../Manager';
 /**
  * Guilds resource
@@ -11,13 +11,13 @@ export declare class GuildsResource {
      * @param guildId ID of guild
      * @param withCount Whether or not to add approximation counts
      */
-    get(guildId: Snowflake, withCount?: boolean): Promise<RESTGetAPIGuildQuery>;
+    get(guildId: Snowflake, withCount?: boolean): Promise<RESTGetAPIGuildResult>;
     /**
      * Edit a guild
      * @param guildId ID of guild
      * @param data Data to edit with
      */
-    edit(guildId: Snowflake, data: RESTPatchAPIGuildJSONBody): Promise<RESTPatchAPIGuildJSONBody>;
+    edit(guildId: Snowflake, data: RESTPatchAPIGuildJSONBody): Promise<RESTPatchAPIGuildResult>;
     /**
      * Leaves a guild
      * @param guildId ID of guild
