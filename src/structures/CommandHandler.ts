@@ -33,7 +33,7 @@ export class CommandHandler {
     mentionPrefix: true,
     caseInsensitivePrefix: true,
     caseInsensitiveCommand: true,
-    reuseInteractions: false
+    reuseInteractions: true
   }
 
   public middlewares: MiddlewareFunction[] = []
@@ -424,7 +424,7 @@ export interface CommandHandlerOptions {
   interactionGuild?: Snowflake
   /**
    * If interactions previously posted should be reused when possible
-   * @default false
+   * @default true
    */
   reuseInteractions?: boolean
 }
