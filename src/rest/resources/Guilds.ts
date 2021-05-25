@@ -1,4 +1,4 @@
-import { RESTGetAPIAuditLogResult, RESTGetAPIAuditLogQuery, RESTGetAPIGuildQuery, RESTGetAPIGuildRolesResult, RESTPatchAPIGuildJSONBody, RESTPatchAPIGuildRoleJSONBody, RESTPatchAPIGuildRoleResult, RESTPostAPIGuildRoleJSONBody, RESTPostAPIGuildRoleResult, Snowflake } from 'discord-api-types'
+import { RESTGetAPIAuditLogResult, RESTGetAPIAuditLogQuery, RESTGetAPIGuildRolesResult, RESTPatchAPIGuildJSONBody, RESTPatchAPIGuildRoleJSONBody, RESTPatchAPIGuildRoleResult, RESTPostAPIGuildRoleJSONBody, RESTPostAPIGuildRoleResult, Snowflake, RESTGetAPIGuildResult, RESTPatchAPIGuildResult } from 'discord-api-types'
 import { RestManager } from '../Manager'
 
 /**
@@ -12,7 +12,7 @@ export class GuildsResource {
    * @param guildId ID of guild
    * @param withCount Whether or not to add approximation counts
    */
-  async get (guildId: Snowflake, withCount: boolean = false): Promise<RESTGetAPIGuildQuery> {
+  async get (guildId: Snowflake, withCount: boolean = false): Promise<RESTGetAPIGuildResult> {
     return await this.rest.request('GET', `/guilds/${guildId}`, {
       query: {
         with_counts: withCount
@@ -25,7 +25,7 @@ export class GuildsResource {
    * @param guildId ID of guild
    * @param data Data to edit with
    */
-  async edit (guildId: Snowflake, data: RESTPatchAPIGuildJSONBody): Promise<RESTPatchAPIGuildJSONBody> {
+  async edit (guildId: Snowflake, data: RESTPatchAPIGuildJSONBody): Promise<RESTPatchAPIGuildResult> {
     return await this.rest.request('PATCH', `/guilds/${guildId}`, {
       body: data
     })
