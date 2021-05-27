@@ -60,10 +60,10 @@ exports.PermissionsUtils = {
      * @returns Full permission bit
      */
     combine(data) {
-        var _a, _b;
+        var _a, _b, _c;
         if (((_a = data.member.user) === null || _a === void 0 ? void 0 : _a.id) === data.guild.owner_id)
             return exports.PermissionsUtils.bits.administrator;
-        let result = data.roleList ? BigInt((_b = data.roleList.get(data.guild.id)) === null || _b === void 0 ? void 0 : _b.permissions) : BigInt(0);
+        let result = data.roleList ? BigInt((_c = (_b = data.roleList.get(data.guild.id)) === null || _b === void 0 ? void 0 : _b.permissions) !== null && _c !== void 0 ? _c : 0) : BigInt(0);
         if (data.roleList) {
             data.member.roles.forEach(role => {
                 var _a;
