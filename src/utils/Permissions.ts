@@ -70,7 +70,7 @@ export const PermissionsUtils = {
    */
   combine (data: { member: APIGuildMember, guild: CachedGuild, roleList?: Collection<Snowflake, DiscordEventMap['GUILD_ROLE_CREATE']['role']>, overwrites?: APIOverwrite[] }): number {
     if (data.member.user?.id === data.guild.owner_id) return PermissionsUtils.bits.administrator
-    let result = data.roleList ? BigInt(data.roleList.get(data.guild.id)?.permissions) : BigInt(0)
+    let result = data.roleList ? BigInt(data.roleList.get(data.guild.id)?.permissions ?? 0) : BigInt(0)
 
     if (data.roleList) {
       data.member.roles.forEach(role => {

@@ -89,7 +89,7 @@ export class CommandHandler {
 
           Promise.all(promises)
             .then(() => {
-              this.worker.log(`Added ${newInteractions.size}, deleted ${deletedInteractions.length as number}, and updated ${changedInteractions.size} command interactions`)
+              this.worker.log(`Added ${newInteractions.size}, deleted ${deletedInteractions.length}, and updated ${changedInteractions.size} command interactions`)
             })
             .catch(err => {
               err.message = `${err.message as string} (Whilst posting Command Interactions)`
