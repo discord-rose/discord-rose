@@ -254,7 +254,7 @@ class CommandHandler {
     find(command, interaction) {
         var _a, _b;
         if (interaction) {
-            return (_a = this.commands) === null || _a === void 0 ? void 0 : _a.find(x => { var _a; return ((_a = x.interaction) === null || _a === void 0 ? void 0 : _a.name) === command; });
+            return (_a = this.commands) === null || _a === void 0 ? void 0 : _a.find(x => !!x.interaction && x.interaction.name === command);
         }
         return (_b = this.commands) === null || _b === void 0 ? void 0 : _b.find(x => { var _a; return (this._test(command, x.command) || ((_a = x.aliases) === null || _a === void 0 ? void 0 : _a.some(alias => this._test(command, alias)))); });
     }
