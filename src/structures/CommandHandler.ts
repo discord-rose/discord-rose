@@ -89,7 +89,7 @@ export class CommandHandler {
 
           Promise.all(promises)
             .then(() => {
-              this.worker.log(`Added ${newInteractions.size}, deleted ${deletedInteractions.length}, and updated ${changedInteractions.size} command interactions`)
+              this.worker.log(`Added ${newInteractions.size}, deleted ${deletedInteractions.length as number}, and updated ${changedInteractions.size} command interactions`)
             })
             .catch(err => {
               err.message = `${err.message as string} (Whilst posting Command Interactions)`
@@ -291,7 +291,7 @@ export class CommandHandler {
    */
   public find (command: string, interaction?: boolean): CommandOptions | undefined {
     if (interaction) {
-      return this.commands?.find(x => x.interaction?.name === command)
+      return this.commands?.find(x => !!x.interaction && x.interaction.name === command)
     }
 
     return this.commands?.find(x => (this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)) as boolean))
