@@ -27,7 +27,7 @@ export declare class CommandHandler {
      * @param worker Worker
      */
     constructor(worker: Worker);
-    setupInteractions(): void;
+    setupInteractions(): Promise<void>;
     prefixFunction?: ((message: APIMessage) => Promise<string | string[]> | string | string[]);
     errorFunction: (ctx: ctx, err: CommandError) => void;
     /**
@@ -129,5 +129,10 @@ export interface CommandHandlerOptions {
      * Only post interaction to one specific guild (ID)
      */
     interactionGuild?: Snowflake;
+    /**
+     * If interactions previously posted should be reused when possible
+     * @default true
+     */
+    reuseInteractions?: boolean;
 }
 export {};

@@ -22,3 +22,11 @@ export declare function generateID(currently: string[]): string;
  */
 export declare function guildShard(id: Snowflake, totalShards: number): number;
 export declare function resolveString(data: any): string;
+/**
+ * Traverses through all elements and nested elements of an object.
+ * @param obj The object to traverse.
+ * @param callback A callback that fires for every element of the object.
+ */
+export declare function traverseObject(obj: object, callback: (obj: {
+    [key: string]: any;
+}) => void): void;

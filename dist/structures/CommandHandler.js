@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommandHandler = exports.CommandError = void 0;
 const CommandContext_1 = require("./CommandContext");
+const UtilityFunctions_1 = require("../utils/UtilityFunctions");
 const collection_1 = __importDefault(require("@discordjs/collection"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
@@ -32,7 +33,8 @@ class CommandHandler {
             bots: false,
             mentionPrefix: true,
             caseInsensitivePrefix: true,
-            caseInsensitiveCommand: true
+            caseInsensitiveCommand: true,
+            reuseInteractions: true
         };
         this.middlewares = [];
         this.CommandContext = CommandContext_1.CommandContext;
@@ -58,7 +60,7 @@ class CommandHandler {
             console.error(err);
         };
     }
-    setupInteractions() {
+    async setupInteractions() {
         this.addedInteractions = true;
         if (this.commands) {
             const interactions = this.commands.filter(x => !!x.interaction);
@@ -68,14 +70,49 @@ class CommandHandler {
                 });
                 if (this.worker.comms.id !== '0')
                     return;
-                this.worker.api.interactions.set(interactions.map(x => x.interaction), this.worker.user.id, this._options.interactionGuild)
-                    .then(() => {
-                    this.worker.log('Posted command interactions');
-                })
-                    .catch(err => {
-                    err.message = `${err.message} (Whilst posting Command Interactions)`;
-                    console.error(err);
-                });
+                if (this._options.reuseInteractions) {
+                    const currentInteractions = await this.worker.api.interactions.get(this.worker.user.id, this._options.interactionGuild);
+                    const newInteractions = interactions.filter(command => !currentInteractions.find(interaction => { var _a; return ((_a = command.interaction) === null || _a === void 0 ? void 0 : _a.name) === interaction.name; }));
+                    const deletedInteractions = currentInteractions.filter(interaction => !interactions.find(command => { var _a; return interaction.name === ((_a = command.interaction) === null || _a === void 0 ? void 0 : _a.name); }));
+                    const changedInteractions = interactions.filter(command => {
+                        if (command.interaction) {
+                            command.interaction.default_permission = typeof command.interaction.default_permission === 'boolean' ? command.interaction.default_permission : true;
+                            UtilityFunctions_1.traverseObject(command.interaction, obj => {
+                                if (typeof obj.required === 'boolean' && !obj.required)
+                                    delete obj.required;
+                            });
+                        }
+                        return !currentInteractions.find(interaction => {
+                            var _a, _b, _c, _d;
+                            return interaction.default_permission === ((_a = command.interaction) === null || _a === void 0 ? void 0 : _a.default_permission) &&
+                                interaction.description === ((_b = command.interaction) === null || _b === void 0 ? void 0 : _b.description) &&
+                                interaction.name === ((_c = command.interaction) === null || _c === void 0 ? void 0 : _c.name) &&
+                                JSON.stringify(interaction.options) === JSON.stringify((_d = command.interaction) === null || _d === void 0 ? void 0 : _d.options);
+                        }) && !newInteractions.find(newCommand => newCommand === command);
+                    });
+                    const promises = [];
+                    newInteractions.forEach(command => promises.push(this.worker.api.interactions.add(command.interaction, this.worker.user.id, this._options.interactionGuild)));
+                    deletedInteractions.forEach(interaction => promises.push(this.worker.api.interactions.delete(interaction.id, this.worker.user.id, this._options.interactionGuild)));
+                    changedInteractions.forEach(command => promises.push(this.worker.api.interactions.add(command.interaction, this.worker.user.id, this._options.interactionGuild)));
+                    Promise.all(promises)
+                        .then(() => {
+                        this.worker.log(`Added ${newInteractions.size}, deleted ${deletedInteractions.length}, and updated ${changedInteractions.size} command interactions`);
+                    })
+                        .catch(err => {
+                        err.message = `${err.message} (Whilst posting Command Interactions)`;
+                        console.error(err);
+                    });
+                }
+                else {
+                    this.worker.api.interactions.set(interactions.map(x => x.interaction), this.worker.user.id, this._options.interactionGuild)
+                        .then(() => {
+                        this.worker.log('Posted command interactions');
+                    })
+                        .catch(err => {
+                        err.message = `${err.message} (Whilst posting Command Interactions)`;
+                        console.error(err);
+                    });
+                }
             }
         }
     }
@@ -186,11 +223,15 @@ class CommandHandler {
                 this._exec(data).catch(() => { });
             });
             this.worker.once('READY', () => {
-                this.setupInteractions();
+                void this.setupInteractions();
             });
         }
         if (this.worker.comms.id === '0' && this.addedInteractions && command.interaction) {
-            void this.worker.api.interactions.update(command.interaction, this.worker.user.id, this._options.interactionGuild);
+            this.worker.api.interactions.add(command.interaction, this.worker.user.id, this._options.interactionGuild)
+                .catch(err => {
+                err.message = `${err.message} (Whilst posting a Command Interaction)`;
+                console.error(err);
+            });
         }
         (_a = this.commands) === null || _a === void 0 ? void 0 : _a.set(command.command, Object.assign(Object.assign({}, this._options.default), command));
         return this;

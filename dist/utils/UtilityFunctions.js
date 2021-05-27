@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resolveString = exports.guildShard = exports.generateID = exports.chunkShards = exports.wait = void 0;
+exports.traverseObject = exports.resolveString = exports.guildShard = exports.generateID = exports.chunkShards = exports.wait = void 0;
 /**
  * Promisify a waiting time
  * @param time Time to wait
@@ -58,3 +58,16 @@ function resolveString(data) {
     return String(data);
 }
 exports.resolveString = resolveString;
+/**
+ * Traverses through all elements and nested elements of an object.
+ * @param obj The object to traverse.
+ * @param callback A callback that fires for every element of the object.
+ */
+function traverseObject(obj, callback) {
+    callback(obj);
+    Object.keys(obj).forEach(key => {
+        if (typeof obj[key] === 'object')
+            traverseObject(obj[key], callback);
+    });
+}
+exports.traverseObject = traverseObject;

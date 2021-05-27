@@ -25,20 +25,48 @@ class InteractionResource {
         });
     }
     /**
+     * Gets all posted commands for an application
+     * @param applicationId Application/client ID
+     * @param guildId Optional guild ID to only get commands from a specific guild
+     */
+    async get(applicationId, guildId) {
+        return await this.rest.request('GET', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands`);
+    }
+    /**
+     * Adds a command for an application
+     * @param data Interaction data
+     * @param applicationId Application/client ID
+     * @param guildId Optional guild ID to only add a command for a specific guild
+     */
+    async add(data, applicationId, guildId) {
+        return await this.rest.request('POST', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands`, {
+            body: data
+        });
+    }
+    /**
+     * Deletes a specific command for an application
+     * @param interactionId Interaction ID
+     * @param applicationId Application/client ID
+     * @param guildId Optional guild ID to only delete a command for a specific guild
+     */
+    async delete(interactionId, applicationId, guildId) {
+        await this.rest.request('DELETE', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}/commands/${interactionId}`);
+    }
+    /**
      * Updates/upserts a specific command
      * @param data Interaction data
      * @param applicationId Application/client ID
-     * @param commandId Command ID to replace
-     * @param guildId Optional guild ID to only set command to specific guild
+     * @param interactionId Interaction ID
+     * @param guildId Optional guild ID to only update a command for a specific guild
      */
-    async update(data, applicationId, commandId, guildId) {
-        return await this.rest.request('PATCH', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands/${commandId !== null && commandId !== void 0 ? commandId : data.name}`, {
+    async update(data, applicationId, interactionId, guildId) {
+        return await this.rest.request('PATCH', `/applications/${applicationId}/${guildId ? `/guilds/${guildId}/` : ''}commands/${interactionId}`, {
             body: data
         });
     }
     /**
      * Responds to an interaction
-     * @param interactionId Interact ID
+     * @param interactionId Interaction ID
      * @param interactionToken Interaction Token
      * @param data Interaction Callback Data
      */
