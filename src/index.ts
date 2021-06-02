@@ -9,6 +9,7 @@ export * from './clustering/worker/Thread'
 
 export * from './rest/Manager'
 export * from './rest/resources/Channels'
+export * from './rest/resources/Emojis'
 export * from './rest/resources/Guilds'
 export * from './rest/resources/Interactions'
 export * from './rest/resources/Members'

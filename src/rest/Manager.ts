@@ -8,6 +8,7 @@ import { Bucket } from './Bucket'
 import { RestError } from './Error'
 
 import { ChannelsResource } from './resources/Channels'
+import { EmojisResource } from './resources/Emojis'
 import { MessagesResource } from './resources/Messages'
 import { GuildsResource } from './resources/Guilds'
 import { InteractionResource } from './resources/Interactions'
@@ -35,6 +36,10 @@ export class RestManager {
    * Channel resource
    */
   public channels = new ChannelsResource(this)
+  /**
+   * Emojis resource
+   */
+  public emojis = new EmojisResource(this)
   /**
    * Messages resource
    */
