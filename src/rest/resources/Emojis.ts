@@ -8,12 +8,20 @@ export class EmojisResource {
   constructor (private readonly rest: RestManager) {}
 
   /**
-   * Gets all emojis in a guild, or a single emoji from a guild
+   * Get a single emoji from a guild
    * @param guildId ID of the emoji's guild
    * @param emojiId The ID of the emoji
    */
-  async get (guildId: Snowflake, emojiId?: Snowflake): Promise<RESTGetAPIGuildEmojisResult | RESTGetAPIGuildEmojiResult> {
-    return await this.rest.request('GET', `/guilds/${guildId}/emojis${emojiId ? `/${emojiId}` : ''}`)
+  async get (guildId: Snowflake, emojiId: Snowflake): Promise<RESTGetAPIGuildEmojiResult> {
+    return await this.rest.request('GET', `/guilds/${guildId}/emojis/${emojiId}`)
+  }
+
+  /**
+   * Get all emojis from a guild
+   * @param guildId ID of the emoji's guild
+   */
+  async getMany (guildId: Snowflake): Promise<RESTGetAPIGuildEmojisResult> {
+    return await this.rest.request('GET', `/guilds/${guildId}/emojis`)
   }
 
   /**
