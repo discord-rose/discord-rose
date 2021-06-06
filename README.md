@@ -38,9 +38,13 @@ worker.commands
   .prefix('!')
   .add({
     command: 'hello',
+    interaction: {
+      name: 'hello',
+      description: 'Hello World!'
+    },
     exec: (ctx) => {
       ctx.reply('World!')
-    }
+    } 
   })
 ```
 Do `node ./master.js` and you're off to the races. Scaled automatically.
