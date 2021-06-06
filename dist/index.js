@@ -21,6 +21,7 @@ __exportStar(require("./clustering/worker/Worker"), exports);
 __exportStar(require("./clustering/worker/Thread"), exports);
 __exportStar(require("./rest/Manager"), exports);
 __exportStar(require("./rest/resources/Channels"), exports);
+__exportStar(require("./rest/resources/Emojis"), exports);
 __exportStar(require("./rest/resources/Guilds"), exports);
 __exportStar(require("./rest/resources/Interactions"), exports);
 __exportStar(require("./rest/resources/Members"), exports);

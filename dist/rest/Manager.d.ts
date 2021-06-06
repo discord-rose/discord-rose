@@ -2,6 +2,7 @@ import { Response } from 'node-fetch';
 import { Cache } from '@jpbberry/cache';
 import { Bucket } from './Bucket';
 import { ChannelsResource } from './resources/Channels';
+import { EmojisResource } from './resources/Emojis';
 import { MessagesResource } from './resources/Messages';
 import { GuildsResource } from './resources/Guilds';
 import { InteractionResource } from './resources/Interactions';
@@ -27,6 +28,10 @@ export declare class RestManager {
      * Channel resource
      */
     channels: ChannelsResource;
+    /**
+     * Emojis resource
+     */
+    emojis: EmojisResource;
     /**
      * Messages resource
      */

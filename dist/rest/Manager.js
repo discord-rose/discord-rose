@@ -26,6 +26,7 @@ const cache_1 = require("@jpbberry/cache");
 const Bucket_1 = require("./Bucket");
 const Error_1 = require("./Error");
 const Channels_1 = require("./resources/Channels");
+const Emojis_1 = require("./resources/Emojis");
 const Messages_1 = require("./resources/Messages");
 const Guilds_1 = require("./resources/Guilds");
 const Interactions_1 = require("./resources/Interactions");
@@ -46,6 +47,10 @@ class RestManager {
          * Channel resource
          */
         this.channels = new Channels_1.ChannelsResource(this);
+        /**
+         * Emojis resource
+         */
+        this.emojis = new Emojis_1.EmojisResource(this);
         /**
          * Messages resource
          */
@@ -142,8 +147,7 @@ class RestManager {
             });
         }
         const res = await node_fetch_1.default(`https://discord.com/api/v${(_a = this.options.version) !== null && _a !== void 0 ? _a : 8}${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
-            method, headers,
-            body: options.body ? ((_b = options.parser) !== null && _b !== void 0 ? _b : JSON.stringify)(options.body) : undefined
+            method, headers, body: options.body ? ((_b = options.parser) !== null && _b !== void 0 ? _b : JSON.stringify)(options.body) : undefined
         });
         const json = res.status === 204 ? null : await res.json();
         return { res, json };
