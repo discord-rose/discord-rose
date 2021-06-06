@@ -44,7 +44,7 @@ worker.commands
     },
     exec: (ctx) => {
       ctx.reply('World!')
-    } 
+    }
   })
 ```
 Do `node ./master.js` and you're off to the races. Scaled automatically.
