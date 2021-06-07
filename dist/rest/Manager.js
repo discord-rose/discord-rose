@@ -147,7 +147,8 @@ class RestManager {
             });
         }
         const res = await node_fetch_1.default(`https://discord.com/api/v${(_a = this.options.version) !== null && _a !== void 0 ? _a : 8}${route}${options.query ? `?${qs.stringify(options.query)}` : ''}`, {
-            method, headers, body: options.body ? ((_b = options.parser) !== null && _b !== void 0 ? _b : JSON.stringify)(options.body) : undefined
+            method, headers,
+            body: options.body ? ((_b = options.parser) !== null && _b !== void 0 ? _b : JSON.stringify)(options.body) : undefined
         });
         const json = res.status === 204 ? null : await res.json();
         return { res, json };
