@@ -6,7 +6,7 @@ global.ROSE_DEFAULT_EMBED = {}
  * Discord Embed
  */
 export class Embed <Res extends APIMessage|null = APIMessage> {
-  public obj: APIEmbed = global.ROSE_DEFAULT_EMBED
+  public obj: APIEmbed = Object.assign({}, global.ROSE_DEFAULT_EMBED)
   constructor (private readonly sendback?: (embed: Embed<Res>, reply: boolean, mention: boolean, ephermal: boolean) => Promise<Res>) {}
 
   /**
