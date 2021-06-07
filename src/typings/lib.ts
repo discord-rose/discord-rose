@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-namespace */
+
 import { CommandContext as ctx } from '../structures/CommandContext'
 import { Worker as worker } from '../clustering/worker/Worker'
 import { RESTPostAPIApplicationCommandsJSONBody } from 'discord-api-types'
 import { SlashCommandContext } from '../structures/SlashCommandContext'
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace DiscordRose {
   export type CommandType = string | RegExp
   export interface CommandOptions {

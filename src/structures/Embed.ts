@@ -1,10 +1,12 @@
 import { APIEmbed, APIMessage } from 'discord-api-types'
 
+global.ROSE_DEFAULT_EMBED = {}
+
 /**
  * Discord Embed
  */
 export class Embed <Res extends APIMessage|null = APIMessage> {
-  public obj: APIEmbed = {}
+  public obj: APIEmbed = global.ROSE_DEFAULT_EMBED
   constructor (private readonly sendback?: (embed: Embed<Res>, reply: boolean, mention: boolean, ephermal: boolean) => Promise<Res>) {}
 
   /**
