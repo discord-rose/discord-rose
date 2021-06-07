@@ -2727,6 +2727,9 @@ img {
 					<a href="cluster.html#on" class="tsd-kind-icon">on</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
+					<a href="cluster.html#spawned" class="tsd-kind-icon">spawned</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="cluster.html#started" class="tsd-kind-icon">started</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
@@ -2810,6 +2813,7 @@ img {
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="cluster.html#id" class="tsd-kind-icon">id</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="cluster.html#master" class="tsd-kind-icon">master</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="cluster.html#on" class="tsd-kind-icon">on</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="cluster.html#spawned" class="tsd-kind-icon">spawned</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="cluster.html#started" class="tsd-kind-icon">started</a></li>
 						</ul>
 					</section>
@@ -2846,7 +2850,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Overrides ThreadComms.constructor</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Cluster.ts#L20">src/clustering/master/Cluster.ts:20</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/master/Cluster.ts#L25">src/clustering/master/Cluster.ts:25</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2884,7 +2888,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">dying<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Cluster.ts#L20">src/clustering/master/Cluster.ts:20</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/master/Cluster.ts#L25">src/clustering/master/Cluster.ts:25</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2921,7 +2925,7 @@ img {
 				<aside class="tsd-sources">
 					<p>Inherited from ThreadComms.on</p>
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/ThreadComms.ts#L155">src/clustering/ThreadComms.ts:155</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/ThreadComms.ts#L155">src/clustering/ThreadComms.ts:155</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2984,17 +2988,32 @@ img {
 				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="spawned" class="tsd-anchor"></a>
+				<h3>spawned</h3>
+				<div class="tsd-signature tsd-kind-icon">spawned<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/master/Cluster.ts#L20">src/clustering/master/Cluster.ts:20</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Whether or not the cluster has been spawned before</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 				<a name="started" class="tsd-anchor"></a>
 				<h3>started</h3>
 				<div class="tsd-signature tsd-kind-icon">started<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Cluster.ts#L15">src/clustering/master/Cluster.ts:15</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/master/Cluster.ts#L15">src/clustering/master/Cluster.ts:15</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Whether or not the Cluster has started before</p>
+						<p>Whether or not the Cluster is currently online</p>
 					</div>
 				</div>
 			</section>
@@ -3012,7 +3031,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from ThreadComms.emit</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/ThreadComms.ts#L157">src/clustering/ThreadComms.ts:157</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/ThreadComms.ts#L157">src/clustering/ThreadComms.ts:157</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -3047,7 +3066,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Cluster.ts#L115">src/clustering/master/Cluster.ts:115</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/master/Cluster.ts#L122">src/clustering/master/Cluster.ts:122</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3078,7 +3097,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Cluster.ts#L107">src/clustering/master/Cluster.ts:107</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/master/Cluster.ts#L114">src/clustering/master/Cluster.ts:114</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3109,7 +3128,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Cluster.ts#L89">src/clustering/master/Cluster.ts:89</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/master/Cluster.ts#L96">src/clustering/master/Cluster.ts:96</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3131,7 +3150,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Cluster.ts#L73">src/clustering/master/Cluster.ts:73</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/master/Cluster.ts#L80">src/clustering/master/Cluster.ts:80</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3155,7 +3174,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from ThreadComms.register</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/ThreadComms.ts#L167">src/clustering/ThreadComms.ts:167</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/ThreadComms.ts#L167">src/clustering/ThreadComms.ts:167</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3178,7 +3197,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Cluster.ts#L80">src/clustering/master/Cluster.ts:80</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/master/Cluster.ts#L87">src/clustering/master/Cluster.ts:87</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3200,7 +3219,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Cluster.ts#L99">src/clustering/master/Cluster.ts:99</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/master/Cluster.ts#L106">src/clustering/master/Cluster.ts:106</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3232,7 +3251,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from ThreadComms.sendCommand</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/ThreadComms.ts#L210">src/clustering/ThreadComms.ts:210</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/ThreadComms.ts#L210">src/clustering/ThreadComms.ts:210</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3281,7 +3300,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Cluster.ts#L30">src/clustering/master/Cluster.ts:30</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/master/Cluster.ts#L35">src/clustering/master/Cluster.ts:35</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -3298,7 +3317,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Cluster.ts#L64">src/clustering/master/Cluster.ts:64</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/master/Cluster.ts#L71">src/clustering/master/Cluster.ts:71</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -3316,7 +3335,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from ThreadComms.tell</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/ThreadComms.ts#L240">src/clustering/ThreadComms.ts:240</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b7ff966/src/clustering/ThreadComms.ts#L240">src/clustering/ThreadComms.ts:240</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
