@@ -10,9 +10,14 @@ export class Cluster extends ThreadComms {
   private thread?: Worker
 
   /**
-   * Whether or not the Cluster has started before
+   * Whether or not the Cluster is currently online
    */
   public started = false
+
+  /**
+   * Whether or not the cluster has been spawned before
+   */
+  public spawned = false
 
   /**
    * Whether or not the Cluster shouldn't restart
@@ -51,7 +56,9 @@ export class Cluster extends ThreadComms {
         console.error(error)
       })
       this.thread.on('online', () => {
-        if (this.master.spawned) void this.start()
+        if (this.spawned) void this.start()
+
+        this.spawned = true
 
         this.logAs('Started')
         this.master.emit('CLUSTER_STARTED', this)
