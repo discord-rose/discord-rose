@@ -43,6 +43,8 @@ worker.commands
     }
   })
 ```
+Note: You can even easily implement [slash commands](https://github.com/discord-rose/discord-rose/wiki/Slash-Commands) directly within message commands.
+
 Do `node ./master.js` and you're off to the races. Scaled automatically.
 
 ## Ready to take it to the next level? Take a look out our [Wiki](https://github.com/discord-rose/discord-rose/wiki)
