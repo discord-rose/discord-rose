@@ -2724,6 +2724,9 @@ img {
 			<a href="classes/embed.html" class="tsd-kind-icon">Embed</a>
 		</li>
 		<li class=" tsd-kind-class">
+			<a href="classes/emojisresource.html" class="tsd-kind-icon">Emojis<wbr>Resource</a>
+		</li>
+		<li class=" tsd-kind-class">
 			<a href="classes/guildsresource.html" class="tsd-kind-icon">Guilds<wbr>Resource</a>
 		</li>
 		<li class=" tsd-kind-class">
@@ -2873,10 +2876,62 @@ img {
 <span style="color: #000000">    }</span>
 <span style="color: #000000">  })</span>
 </code></pre>
+			<p>Note: You can even easily implement <a href="https://github.com/discord-rose/discord-rose/wiki/Slash-Commands">slash commands</a> directly within message commands.</p>
 			<p>Do <code>node ./master.js</code> and you&#39;re off to the races. Scaled automatically.</p>
 			<a href="#ready-to-take-it-to-the-next-level-take-a-look-out-our-wiki" id="ready-to-take-it-to-the-next-level-take-a-look-out-our-wiki" style="color: inherit; text-decoration: none;">
 				<h2>Ready to take it to the next level? Take a look out our <a href="https://github.com/discord-rose/discord-rose/wiki">Wiki</a></h2>
 			</a>
+			<a href="#comparsions" id="comparsions" style="color: inherit; text-decoration: none;">
+				<h1>Comparsions</h1>
+			</a>
+			<p>Here we&#39;ll compare discord-rose to other known competitors, by server count.</p>
+			<a href="#memory-usage-rss" id="memory-usage-rss" style="color: inherit; text-decoration: none;">
+				<h2>Memory Usage (RSS)</h2>
+			</a>
+			<table>
+				<thead>
+					<tr>
+						<th align="center">Library</th>
+						<th align="center">130k</th>
+						<th align="center">50k</th>
+						<th align="center">4k</th>
+						<th align="center">500</th>
+						<th align="center">100</th>
+					</tr>
+				</thead>
+				<tbody><tr>
+						<td align="center">Discord.js</td>
+						<td align="center">20GB</td>
+						<td align="center">13GB</td>
+						<td align="center">6GB</td>
+						<td align="center">3GB</td>
+						<td align="center">2GB</td>
+					</tr>
+					<tr>
+						<td align="center">Eris</td>
+						<td align="center">16GB</td>
+						<td align="center">10GB</td>
+						<td align="center">5GB</td>
+						<td align="center">1GB</td>
+						<td align="center">500MB</td>
+					</tr>
+					<tr>
+						<td align="center">Discord.js-light</td>
+						<td align="center">10GB</td>
+						<td align="center">5GB</td>
+						<td align="center">2GB</td>
+						<td align="center">500MB</td>
+						<td align="center">200MB</td>
+					</tr>
+					<tr>
+						<td align="center"><strong>discord-rose</strong></td>
+						<td align="center"><strong>5GB</strong></td>
+						<td align="center"><strong>1.5GB</strong></td>
+						<td align="center"><strong>200MB</strong></td>
+						<td align="center"><strong>80MB</strong></td>
+						<td align="center"><strong>50MB</strong></td>
+					</tr>
+			</tbody></table>
 		</div>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
@@ -2897,6 +2952,7 @@ img {
 							<li class="tsd-kind-class"><a href="classes/commanderror.html" class="tsd-kind-icon">Command<wbr>Error</a></li>
 							<li class="tsd-kind-class"><a href="classes/commandhandler.html" class="tsd-kind-icon">Command<wbr>Handler</a></li>
 							<li class="tsd-kind-class tsd-has-type-parameter"><a href="classes/embed.html" class="tsd-kind-icon">Embed</a></li>
+							<li class="tsd-kind-class"><a href="classes/emojisresource.html" class="tsd-kind-icon">Emojis<wbr>Resource</a></li>
 							<li class="tsd-kind-class"><a href="classes/guildsresource.html" class="tsd-kind-icon">Guilds<wbr>Resource</a></li>
 							<li class="tsd-kind-class"><a href="classes/interactionresource.html" class="tsd-kind-icon">Interaction<wbr>Resource</a></li>
 							<li class="tsd-kind-class"><a href="classes/master.html" class="tsd-kind-icon">Master</a></li>
@@ -2959,7 +3015,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Cached<wbr>Guild<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">&quot;GUILD_CREATE&quot;</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Exclude</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">keyof </span><a href="interfaces/discordeventmap.html" class="tsd-signature-type" data-tsd-kind="Interface">DiscordEventMap</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">&quot;GUILD_CREATE&quot;</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">&quot;channels&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;roles&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;members&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;presences&quot;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/54e3c39/src/typings/Discord.ts#L8">src/typings/Discord.ts:8</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/typings/Discord.ts#L8">src/typings/Discord.ts:8</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2974,7 +3030,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Command<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RegExp</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/54e3c39/src/typings/lib.ts#L8">src/typings/lib.ts:8</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/typings/lib.ts#L8">src/typings/lib.ts:8</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2984,7 +3040,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Emoji<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Snowflake</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/54e3c39/src/rest/resources/Messages.ts#L11">src/rest/resources/Messages.ts:11</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/rest/resources/Messages.ts#L11">src/rest/resources/Messages.ts:11</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2999,7 +3055,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Message<wbr>Types<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RESTPostAPIChannelMessageJSONBody</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RESTPostAPIWebhookWithTokenJSONBody</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">StringifiedMessageTypes</span><span class="tsd-signature-symbol"> | </span><a href="classes/embed.html" class="tsd-signature-type" data-tsd-kind="Class">Embed</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/54e3c39/src/rest/resources/Messages.ts#L15">src/rest/resources/Messages.ts:15</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/rest/resources/Messages.ts#L15">src/rest/resources/Messages.ts:15</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3012,7 +3068,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Permissions<wbr>Utils<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>bits<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>addReactions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>administrator<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>auditLog<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>ban<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>connect<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>createInvites<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>deafen<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>embed<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>emojis<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>externalEmojis<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>files<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>kick<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>manageChannels<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>manageGuild<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>manageMessages<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>manageNicknames<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>manageRoles<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>mentionEveryone<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>move<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>mute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>nickname<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>prioritySpeaker<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>readHistory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>sendMessages<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>speak<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>stream<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>tts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>useVoiceActivity<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>viewChannel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>viewInsights<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>webhooks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>calculate<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>combine<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>has<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>hasPerms<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/54e3c39/src/utils/Permissions.ts#L39">src/utils/Permissions.ts:39</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/utils/Permissions.ts#L39">src/utils/Permissions.ts:39</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -3125,7 +3181,7 @@ img {
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/54e3c39/src/utils/Permissions.ts#L55">src/utils/Permissions.ts:55</a></li>
+											<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/utils/Permissions.ts#L55">src/utils/Permissions.ts:55</a></li>
 										</ul>
 									</aside>
 									<div class="tsd-comment tsd-typography">
@@ -3162,7 +3218,7 @@ img {
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/54e3c39/src/utils/Permissions.ts#L71">src/utils/Permissions.ts:71</a></li>
+											<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/utils/Permissions.ts#L71">src/utils/Permissions.ts:71</a></li>
 										</ul>
 									</aside>
 									<div class="tsd-comment tsd-typography">
@@ -3207,7 +3263,7 @@ img {
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/54e3c39/src/utils/Permissions.ts#L48">src/utils/Permissions.ts:48</a></li>
+											<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/utils/Permissions.ts#L48">src/utils/Permissions.ts:48</a></li>
 										</ul>
 									</aside>
 									<div class="tsd-comment tsd-typography">
@@ -3244,7 +3300,7 @@ img {
 								<li class="tsd-description">
 									<aside class="tsd-sources">
 										<ul>
-											<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/54e3c39/src/utils/Permissions.ts#L118">src/utils/Permissions.ts:118</a></li>
+											<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/utils/Permissions.ts#L118">src/utils/Permissions.ts:118</a></li>
 										</ul>
 									</aside>
 									<div class="tsd-comment tsd-typography">

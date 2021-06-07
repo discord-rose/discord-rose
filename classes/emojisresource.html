@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Sharder | discord-rose</title>
+	<title>EmojisResource | discord-rose</title>
 	<meta name="description" content="Documentation for discord-rose">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">:root {
@@ -2703,22 +2703,25 @@ img {
 <nav class="tsd-navigation secondary">
 	<ul>
 		<li class="current tsd-kind-class">
-			<a href="sharder.html" class="tsd-kind-icon">Sharder</a>
+			<a href="emojisresource.html" class="tsd-kind-icon">Emojis<wbr>Resource</a>
 			<ul>
 				<li class=" tsd-kind-constructor tsd-parent-kind-class">
-					<a href="sharder.html#constructor" class="tsd-kind-icon">constructor</a>
-				</li>
-				<li class=" tsd-kind-property tsd-parent-kind-class">
-					<a href="sharder.html#buckets" class="tsd-kind-icon">buckets</a>
-				</li>
-				<li class=" tsd-kind-property tsd-parent-kind-class">
-					<a href="sharder.html#master" class="tsd-kind-icon">master</a>
+					<a href="emojisresource.html#constructor" class="tsd-kind-icon">constructor</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
-					<a href="sharder.html#loop" class="tsd-kind-icon">loop</a>
+					<a href="emojisresource.html#create" class="tsd-kind-icon">create</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
-					<a href="sharder.html#register" class="tsd-kind-icon">register</a>
+					<a href="emojisresource.html#delete" class="tsd-kind-icon">delete</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="emojisresource.html#edit" class="tsd-kind-icon">edit</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="emojisresource.html#get" class="tsd-kind-icon">get</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="emojisresource.html#getmany" class="tsd-kind-icon">get<wbr>Many</a>
 				</li>
 			</ul>
 		</li>
@@ -2729,7 +2732,7 @@ img {
 		<section class="tsd-panel tsd-comment">
 			<div class="tsd-comment tsd-typography">
 				<div class="lead">
-					<p>Sharder in charge of handling shard spawn ratelimtis</p>
+					<p>Emojis resource</p>
 				</div>
 			</div>
 		</section>
@@ -2737,7 +2740,7 @@ img {
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
 				<li>
-					<span class="target">Sharder</span>
+					<span class="target">EmojisResource</span>
 				</li>
 			</ul>
 		</section>
@@ -2748,21 +2751,17 @@ img {
 					<section class="tsd-index-section ">
 						<h3>Constructors</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="sharder.html#constructor" class="tsd-kind-icon">constructor</a></li>
-						</ul>
-					</section>
-					<section class="tsd-index-section ">
-						<h3>Properties</h3>
-						<ul class="tsd-index-list">
-							<li class="tsd-kind-property tsd-parent-kind-class"><a href="sharder.html#buckets" class="tsd-kind-icon">buckets</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-class"><a href="sharder.html#master" class="tsd-kind-icon">master</a></li>
+							<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="emojisresource.html#constructor" class="tsd-kind-icon">constructor</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-method tsd-parent-kind-class"><a href="sharder.html#loop" class="tsd-kind-icon">loop</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-class"><a href="sharder.html#register" class="tsd-kind-icon">register</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="emojisresource.html#create" class="tsd-kind-icon">create</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="emojisresource.html#delete" class="tsd-kind-icon">delete</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="emojisresource.html#edit" class="tsd-kind-icon">edit</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="emojisresource.html#get" class="tsd-kind-icon">get</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="emojisresource.html#getmany" class="tsd-kind-icon">get<wbr>Many</a></li>
 						</ul>
 					</section>
 				</div>
@@ -2774,91 +2773,210 @@ img {
 				<a name="constructor" class="tsd-anchor"></a>
 				<h3>constructor</h3>
 				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">new <wbr>Sharder<span class="tsd-signature-symbol">(</span>master<span class="tsd-signature-symbol">: </span><a href="master.html" class="tsd-signature-type" data-tsd-kind="Class">Master</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="sharder.html" class="tsd-signature-type" data-tsd-kind="Class">Sharder</a></li>
+					<li class="tsd-signature tsd-kind-icon">new <wbr>Emojis<wbr>Resource<span class="tsd-signature-symbol">(</span>rest<span class="tsd-signature-symbol">: </span><a href="restmanager.html" class="tsd-signature-type" data-tsd-kind="Class">RestManager</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="emojisresource.html" class="tsd-signature-type" data-tsd-kind="Class">EmojisResource</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Sharder.ts#L9">src/clustering/master/Sharder.ts:9</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/rest/resources/Emojis.ts#L7">src/rest/resources/Emojis.ts:7</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>master: <a href="master.html" class="tsd-signature-type" data-tsd-kind="Class">Master</a></h5>
+								<h5>rest: <a href="restmanager.html" class="tsd-signature-type" data-tsd-kind="Class">RestManager</a></h5>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="sharder.html" class="tsd-signature-type" data-tsd-kind="Class">Sharder</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="emojisresource.html" class="tsd-signature-type" data-tsd-kind="Class">EmojisResource</a></h4>
 					</li>
 				</ul>
-			</section>
-		</section>
-		<section class="tsd-panel-group tsd-member-group ">
-			<h2>Properties</h2>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-				<a name="buckets" class="tsd-anchor"></a>
-				<h3>buckets</h3>
-				<div class="tsd-signature tsd-kind-icon">buckets<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
-				<aside class="tsd-sources">
-					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Sharder.ts#L9">src/clustering/master/Sharder.ts:9</a></li>
-					</ul>
-				</aside>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-				<a name="master" class="tsd-anchor"></a>
-				<h3>master</h3>
-				<div class="tsd-signature tsd-kind-icon">master<span class="tsd-signature-symbol">:</span> <a href="master.html" class="tsd-signature-type" data-tsd-kind="Class">Master</a></div>
-				<aside class="tsd-sources">
-				</aside>
 			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Methods</h2>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="loop" class="tsd-anchor"></a>
-				<h3>loop</h3>
+				<a name="create" class="tsd-anchor"></a>
+				<h3>create</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">loop<span class="tsd-signature-symbol">(</span>bucket<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">create<span class="tsd-signature-symbol">(</span>guildId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RESTPostAPIGuildEmojiJSONBody</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">APIEmoji</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Sharder.ts#L32">src/clustering/master/Sharder.ts:32</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/rest/resources/Emojis.ts#L32">src/rest/resources/Emojis.ts:32</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Create an emoji</p>
+							</div>
+						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>bucket: <span class="tsd-signature-type">number</span></h5>
+								<h5>guildId: <span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>ID of the guild to create the emoji in</p>
+								</div>
+							</li>
+							<li>
+								<h5>data: <span class="tsd-signature-type">RESTPostAPIGuildEmojiJSONBody</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Emoji data</p>
+								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">APIEmoji</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="register" class="tsd-anchor"></a>
-				<h3>register</h3>
+				<a name="delete" class="tsd-anchor"></a>
+				<h3>delete</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">register<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<li class="tsd-signature tsd-kind-icon">delete<span class="tsd-signature-symbol">(</span>guildId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span>, emojiId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/clustering/master/Sharder.ts#L13">src/clustering/master/Sharder.ts:13</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/rest/resources/Emojis.ts#L55">src/rest/resources/Emojis.ts:55</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Delete an emoji</p>
+							</div>
+						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>id: <span class="tsd-signature-type">number</span></h5>
+								<h5>guildId: <span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>ID of the emoji&#39;s guild</p>
+								</div>
+							</li>
+							<li>
+								<h5>emojiId: <span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>The ID of the emoji</p>
+								</div>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="edit" class="tsd-anchor"></a>
+				<h3>edit</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">edit<span class="tsd-signature-symbol">(</span>guildId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span>, emojiId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RESTPatchAPIGuildEmojiJSONBody</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">APIEmoji</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/rest/resources/Emojis.ts#L44">src/rest/resources/Emojis.ts:44</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Edit an emoji</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>guildId: <span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>ID of the emoji&#39;s guild</p>
+								</div>
+							</li>
+							<li>
+								<h5>emojiId: <span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>The ID of the emoji</p>
+								</div>
+							</li>
+							<li>
+								<h5>data: <span class="tsd-signature-type">RESTPatchAPIGuildEmojiJSONBody</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>Data to edit with</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">APIEmoji</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="get" class="tsd-anchor"></a>
+				<h3>get</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span>guildId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span>, emojiId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">APIEmoji</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/rest/resources/Emojis.ts#L15">src/rest/resources/Emojis.ts:15</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Get a single emoji from a guild</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>guildId: <span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>ID of the emoji&#39;s guild</p>
+								</div>
+							</li>
+							<li>
+								<h5>emojiId: <span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>The ID of the emoji</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">APIEmoji</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="getmany" class="tsd-anchor"></a>
+				<h3>get<wbr>Many</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Many<span class="tsd-signature-symbol">(</span>guildId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RESTGetAPIGuildEmojisResult</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/a204bd5/src/rest/resources/Emojis.ts#L23">src/rest/resources/Emojis.ts:23</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Get all emojis from a guild</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>guildId: <span class="tsd-signature-symbol">`</span><span class="tsd-signature-symbol">${</span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">`</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<p>ID of the emoji&#39;s guild</p>
+								</div>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RESTGetAPIGuildEmojisResult</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
