@@ -1,13 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Embed = void 0;
+global.ROSE_DEFAULT_EMBED = {};
 /**
  * Discord Embed
  */
 class Embed {
     constructor(sendback) {
         this.sendback = sendback;
-        this.obj = {};
+        this.obj = global.ROSE_DEFAULT_EMBED;
     }
     /**
      * Sets the color

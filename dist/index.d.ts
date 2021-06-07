@@ -1,3 +1,4 @@
+import { APIEmbed } from 'discord-api-types';
 export { ClusterStats, ShardStats, State, ThreadEvents } from './clustering/ThreadComms';
 export { BotOptions, Master, CacheOptions, CacheControlOptions } from './clustering/master/Master';
 export * from './clustering/master/Cluster';
@@ -23,3 +24,10 @@ export { PermissionsUtils } from './utils/Permissions';
 export { CommandOptions, CommandType } from './typings/lib';
 export { DiscordEventMap, CachedGuild, CachedVoiceState } from './typings/Discord';
 export { Snowflake } from 'discord-api-types';
+declare global {
+    namespace NodeJS {
+        interface Global {
+            ROSE_DEFAULT_EMBED: APIEmbed;
+        }
+    }
+}
