@@ -8,7 +8,7 @@ global.ROSE_DEFAULT_EMBED = {};
 class Embed {
     constructor(sendback) {
         this.sendback = sendback;
-        this.obj = global.ROSE_DEFAULT_EMBED;
+        this.obj = Object.assign({}, global.ROSE_DEFAULT_EMBED);
     }
     /**
      * Sets the color
