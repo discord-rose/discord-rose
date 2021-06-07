@@ -14,9 +14,13 @@ class Cluster extends ThreadComms_1.ThreadComms {
         this.fileName = fileName;
         this.custom = custom;
         /**
-         * Whether or not the Cluster has started before
+         * Whether or not the Cluster is currently online
          */
         this.started = false;
+        /**
+         * Whether or not the cluster has been spawned before
+         */
+        this.spawned = false;
         /**
          * Whether or not the Cluster shouldn't restart
          */
@@ -48,8 +52,9 @@ class Cluster extends ThreadComms_1.ThreadComms {
                 console.error(error);
             });
             this.thread.on('online', () => {
-                if (this.master.spawned)
+                if (this.spawned)
                     void this.start();
+                this.spawned = true;
                 this.logAs('Started');
                 this.master.emit('CLUSTER_STARTED', this);
                 resolve(true);

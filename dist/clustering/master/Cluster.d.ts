@@ -11,9 +11,13 @@ export declare class Cluster extends ThreadComms {
     custom: boolean;
     private thread?;
     /**
-     * Whether or not the Cluster has started before
+     * Whether or not the Cluster is currently online
      */
     started: boolean;
+    /**
+     * Whether or not the cluster has been spawned before
+     */
+    spawned: boolean;
     /**
      * Whether or not the Cluster shouldn't restart
      */
