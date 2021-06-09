@@ -399,6 +399,7 @@ export interface CacheControlOptions {
   roles?: Array<keyof DiscordEventMap['GUILD_ROLE_CREATE']['role']> | false
   channels?: Array<keyof DiscordEventMap['CHANNEL_CREATE']> | false
   members?: Array<keyof DiscordEventMap['GUILD_MEMBER_ADD']> | false
+  voiceStates?: Array<keyof DiscordEventMap['VOICE_STATE_UPDATE']> | false
 }
 
 const Intents = {
