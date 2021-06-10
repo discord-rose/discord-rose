@@ -79,7 +79,8 @@ export class DiscordSocket {
 
       this.shard.worker.emit('*', msg as any)
 
-      if (msg.t === 'READY') return // To satisfy typings
+      if (msg.t === GatewayDispatchEvents.Ready || msg.t === GatewayDispatchEvents.GuildCreate) return
+
       this.shard.worker.emit(msg.t as any, msg.d)
     } else if (msg.op === GatewayOPCodes.Heartbeat) {
       this._heartbeat()
