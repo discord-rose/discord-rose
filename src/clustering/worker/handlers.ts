@@ -12,9 +12,15 @@ export const handlers: {
 
     respond({})
   },
-  START_SHARD: function (data) {
+  START_SHARD: function (data, respond) {
     const shard = this.worker.shards.get(data.id)
-    shard?.start()
+    if (!shard) return respond({})
+
+    shard.once('READY', () => {
+      respond({})
+    })
+
+    shard.start()
   },
   RESTART_SHARD: function ({ id }) {
     this.worker.shards.get(id)?.restart(true, 1002, 'Internally restarted')

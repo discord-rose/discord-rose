@@ -38,7 +38,10 @@ export class Sharder {
       return
     }
 
-    this.master.shardToCluster(next)?.tell('START_SHARD', { id: next })
+    await this.master.shardToCluster(next)?.sendCommand('START_SHARD', { id: next })
+      .catch(() => {
+        this.master.log(`Shard ${next} failed to startup in time. Continuing.`)
+      })
 
     await wait(this.master.options.spawnTimeout)
 
