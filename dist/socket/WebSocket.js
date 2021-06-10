@@ -77,8 +77,8 @@ class DiscordSocket {
                 this.sessionID = msg.d.session_id;
             void this.shard.emit(msg.t, msg.d);
             this.shard.worker.emit('*', msg);
-            if (msg.t === 'READY')
-                return; // To satisfy typings
+            if (msg.t === "READY" /* Ready */ || msg.t === "GUILD_CREATE" /* GuildCreate */)
+                return;
             this.shard.worker.emit(msg.t, msg.d);
         }
         else if (msg.op === 1 /* Heartbeat */) {
