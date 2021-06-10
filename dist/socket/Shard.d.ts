@@ -1,11 +1,13 @@
 import Collection from '@discordjs/collection';
+import { EventEmitter } from '@jpbberry/typed-emitter';
 import { APIGuildMember, GatewayPresenceUpdateData, GatewayRequestGuildMembersData, Snowflake } from 'discord-api-types';
 import { State } from '../clustering/ThreadComms';
+import { DiscordDefaultEventMap } from '../typings/Discord';
 import { Worker } from '../typings/lib';
 /**
  * Utility manager for a shard
  */
-export declare class Shard {
+export declare class Shard extends EventEmitter<DiscordDefaultEventMap> {
     id: number;
     worker: Worker;
     /**

@@ -5,14 +5,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Shard = void 0;
 const collection_1 = __importDefault(require("@discordjs/collection"));
+const typed_emitter_1 = require("@jpbberry/typed-emitter");
 const ws_1 = require("ws");
 const ThreadComms_1 = require("../clustering/ThreadComms");
 const WebSocket_1 = require("./WebSocket");
 /**
  * Utility manager for a shard
  */
-class Shard {
+class Shard extends typed_emitter_1.EventEmitter {
     constructor(id, worker) {
+        super();
         this.id = id;
         this.worker = worker;
         /**
@@ -22,7 +24,7 @@ class Shard {
         this.ws = new WebSocket_1.DiscordSocket(this);
         this.unavailableGuilds = null;
         this.registered = false;
-        this.ws.on('READY', (data) => {
+        this.on('READY', (data) => {
             if (!data)
                 return;
             this.worker.comms.tell('SHARD_READY', { id });
@@ -33,7 +35,7 @@ class Shard {
             data.guilds.forEach(guild => { var _a; return (_a = this.unavailableGuilds) === null || _a === void 0 ? void 0 : _a.set(guild.id, guild); });
         });
         let checkTimeout;
-        this.ws.on('GUILD_CREATE', (data) => {
+        this.on('GUILD_CREATE', (data) => {
             this.worker.cacheManager.emit('GUILD_CREATE', data);
             if (!this.unavailableGuilds)
                 return this.worker.emit('GUILD_CREATE', data);
@@ -86,14 +88,13 @@ class Shard {
         this.registered = true;
         return await this.worker.comms.registerShard(this.id);
     }
-    restart(kill, code = 1000, reason = 'Manually Stopped') {
-        var _a;
+    restart(kill, code = 1012, reason = 'Manually Stopped') {
         if (kill)
             this.ws.kill();
         else {
             this.ws.resuming = true;
         }
-        (_a = this.ws.ws) === null || _a === void 0 ? void 0 : _a.close(code, reason);
+        this.ws.close(code, reason);
     }
     setPresence(presence) {
         this.ws._send({

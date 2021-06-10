@@ -61,7 +61,7 @@ export interface ThreadEvents {
         send: {
             id: number;
         };
-        receive: null;
+        receive: {};
     };
     SHARD_READY: {
         send: {

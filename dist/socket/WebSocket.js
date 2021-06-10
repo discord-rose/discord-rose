@@ -5,13 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DiscordSocket = void 0;
 const ws_1 = __importDefault(require("ws"));
-const typed_emitter_1 = require("@jpbberry/typed-emitter");
 /**
  * Structure in charge of managing Discord communcation over websocket
  */
-class DiscordSocket extends typed_emitter_1.EventEmitter {
+class DiscordSocket {
     constructor(shard) {
-        super();
         this.shard = shard;
         this.sequence = null;
         this.sessionID = null;
@@ -22,11 +20,18 @@ class DiscordSocket extends typed_emitter_1.EventEmitter {
         this.connected = false;
         this.resuming = false;
         this.dying = false;
+        this.selfClose = false;
+    }
+    close(code, reason) {
+        var _a;
+        this.shard.worker.log(`Shard ${this.shard.id} closing with ${code} & ${reason}`);
+        this.selfClose = true;
+        (_a = this.ws) === null || _a === void 0 ? void 0 : _a.close(code, reason);
     }
     async spawn() {
-        var _a, _b, _c, _d;
+        var _a, _b, _c;
         if (this.ws && this.ws.readyState === ws_1.default.OPEN)
-            this.ws.close(1002);
+            this.close(1012, 'Starting again');
         this.ws = null;
         this.connected = false;
         this.heartbeatRetention = 0;
@@ -46,8 +51,7 @@ class DiscordSocket extends typed_emitter_1.EventEmitter {
             if (!this.connected)
                 return this.shard.restart(true, 1013, 'Didn\'t Connect in Time');
         }, 60e3);
-        (_c = this.ws) === null || _c === void 0 ? void 0 : _c.on('message', (data) => this._handleMessage(data));
-        (_d = this.ws) === null || _d === void 0 ? void 0 : _d.once('close', (code, reason) => this.close(code, reason));
+        (_c = this.ws) === null || _c === void 0 ? void 0 : _c.on('message', (data) => this._handleMessage(data)).once('close', (code, reason) => this.onClose(code, reason));
     }
     _send(data) {
         var _a, _b, _c;
@@ -56,18 +60,22 @@ class DiscordSocket extends typed_emitter_1.EventEmitter {
         (_c = this.ws) === null || _c === void 0 ? void 0 : _c.send(JSON.stringify(data));
     }
     _handleMessage(data) {
+        var _a;
         const msg = JSON.parse(data.toString('utf-8'));
         if (msg.s)
             this.sequence = msg.s;
         if (msg.op === 0 /* Dispatch */) {
             if (["READY" /* Ready */, "RESUMED" /* Resumed */].includes(msg.t)) {
+                if (msg.t === "RESUMED" /* Resumed */) {
+                    this.shard.worker.log(`Shard ${this.shard.id} resumed at sequence ${(_a = this.sequence) !== null && _a !== void 0 ? _a : 0}`);
+                }
                 this.connected = true;
+                this.resuming = false;
                 clearTimeout(this.connectTimeout);
             }
             if (msg.t === "READY" /* Ready */)
                 this.sessionID = msg.d.session_id;
-            if (["GUILD_CREATE" /* GuildCreate */, "READY" /* Ready */].includes(msg.t))
-                return void this.emit(msg.t, msg.d);
+            void this.shard.emit(msg.t, msg.d);
             this.shard.worker.emit('*', msg);
             if (msg.t === 'READY')
                 return; // To satisfy typings
@@ -85,6 +93,10 @@ class DiscordSocket extends typed_emitter_1.EventEmitter {
             }, Math.ceil(Math.random() * 5) * 1000);
         }
         else if (msg.op === 10 /* Hello */) {
+            if (this.resuming && (!this.sessionID || !this.sequence)) {
+                this.shard.worker.log('Cancelling resume because of missing session info');
+                this.resuming = false;
+            }
             if (this.resuming) {
                 this._send({
                     op: 6 /* Resume */,
@@ -94,7 +106,6 @@ class DiscordSocket extends typed_emitter_1.EventEmitter {
                         seq: this.sequence
                     }
                 });
-                this.shard.worker.log(`Shard ${this.shard.id} resuming`);
             }
             else {
                 this._send({
@@ -135,8 +146,12 @@ class DiscordSocket extends typed_emitter_1.EventEmitter {
         });
         this.waitingHeartbeat = Date.now();
     }
-    close(code, reason) {
-        this.shard.worker.log(`Shard ${this.shard.id} closed with ${code} & ${reason || 'No Reason'}`);
+    onClose(code, reason) {
+        if (this.selfClose) {
+            this.selfClose = false;
+        }
+        else
+            this.shard.worker.log(`Shard ${this.shard.id} closed with ${code} & ${reason || 'No Reason'}`);
         if (this.dying)
             void this.shard.register();
         else

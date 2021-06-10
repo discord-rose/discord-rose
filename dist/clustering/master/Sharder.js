@@ -34,7 +34,9 @@ class Sharder {
             this.buckets[bucket] = null;
             return;
         }
-        (_b = this.master.shardToCluster(next)) === null || _b === void 0 ? void 0 : _b.tell('START_SHARD', { id: next });
+        await ((_b = this.master.shardToCluster(next)) === null || _b === void 0 ? void 0 : _b.sendCommand('START_SHARD', { id: next }).catch(() => {
+            this.master.log(`Shard ${next} failed to startup in time. Continuing.`);
+        }));
         await UtilityFunctions_1.wait(this.master.options.spawnTimeout);
         return await this.loop(bucket);
     }

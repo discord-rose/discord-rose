@@ -7,9 +7,14 @@ exports.handlers = {
         await this.worker.start(data.shards);
         respond({});
     },
-    START_SHARD: function (data) {
+    START_SHARD: function (data, respond) {
         const shard = this.worker.shards.get(data.id);
-        shard === null || shard === void 0 ? void 0 : shard.start();
+        if (!shard)
+            return respond({});
+        shard.once('READY', () => {
+            respond({});
+        });
+        shard.start();
     },
     RESTART_SHARD: function ({ id }) {
         var _a;
