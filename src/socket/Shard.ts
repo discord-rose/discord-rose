@@ -47,6 +47,11 @@ export class Shard extends EventEmitter<DiscordDefaultEventMap> {
         checkTimeout = setTimeout(() => {
           if (!this.unavailableGuilds) return
           this.worker.log(`Shard ${this.id} reported ${this.unavailableGuilds.size} unavailable guilds. Continuing startup.`)
+
+          this.unavailableGuilds.keyArray().forEach(id => {
+            this.worker.emit('GUILD_UNAVAILABLE', { id, unavailable: true })
+          })
+
           this._ready()
         }, 15e3)
       } else checkTimeout.refresh()
@@ -56,6 +61,16 @@ export class Shard extends EventEmitter<DiscordDefaultEventMap> {
       if (this.unavailableGuilds.size === 0) {
         clearTimeout(checkTimeout)
         this._ready()
+      }
+    })
+
+    this.on('GUILD_DELETE', (guild) => {
+      if (guild.unavailable) {
+        worker.emit('GUILD_UNAVAILABLE', worker.options.cache.guilds ? worker.guilds.get(guild.id) ?? guild : guild)
+      }
+
+      if (this.unavailableGuilds) {
+        this.unavailableGuilds.delete(guild.id)
       }
     })
   }
