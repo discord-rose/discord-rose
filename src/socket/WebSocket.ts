@@ -83,7 +83,7 @@ export class DiscordSocket {
 
       this.shard.worker.emit('*', msg as any)
 
-      if (msg.t === GatewayDispatchEvents.Ready || msg.t === GatewayDispatchEvents.GuildCreate) return
+      if ([GatewayDispatchEvents.Ready, GatewayDispatchEvents.GuildCreate, GatewayDispatchEvents.GuildDelete].includes(msg.t)) return
 
       this.shard.worker.emit(msg.t as any, msg.d)
     } else if (msg.op === GatewayOPCodes.Heartbeat) {
