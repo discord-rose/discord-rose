@@ -24,6 +24,8 @@ export class Cluster extends ThreadComms {
    */
   public dying = false
 
+  private startRetention = 0
+
   constructor (public id: string, public master: Master, public fileName = master.fileName, public custom: boolean = false) {
     super()
 
@@ -74,6 +76,15 @@ export class Cluster extends ThreadComms {
     return await this.sendCommand('START', {
       shards: this.master.chunks[Number(this.id)],
       options: JSON.parse(JSON.stringify(this.master.options)) // normalize options
+    }).catch(async () => {
+      this.startRetention++
+      if (this.startRetention >= this.master.options.clusterStartRetention) {
+        throw new Error(`After trying ${this.master.options.clusterStartRetention} times, the cluster refused to start.`)
+      }
+
+      this.logAs(`Failed to start, trying again (try ${this.startRetention}/${this.master.options.clusterStartRetention})`)
+
+      return await this.start()
     })
   }
 

@@ -34,6 +34,7 @@ export interface CompleteBotOptions extends Complete<BotOptions> {
   shardsPerCluster: number
   intents: number
   spawnTimeout: number
+  clusterStartRetention: number
 }
 
 /**
@@ -155,7 +156,8 @@ export class Master extends EventEmitter<{
       },
       log: options.log,
       rest: options.rest,
-      spawnTimeout: options.spawnTimeout ?? 5100
+      spawnTimeout: options.spawnTimeout ?? 5100,
+      clusterStartRetention: options.clusterStartRetention ?? 3
     } as CompleteBotOptions
 
     if ((this.options.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true) {
@@ -477,4 +479,9 @@ export interface BotOptions {
    * @default 5100
    */
   spawnTimeout?: number
+  /**
+   * Amount of time to try asking the cluster to start before giving up and respawning
+   * @default 3
+   */
+  clusterStartRetention?: number
 }
