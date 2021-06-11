@@ -62,7 +62,7 @@ export class Cluster extends ThreadComms {
 
         this.spawned = true
 
-        this.logAs('Started')
+        this.logAs('Spawned')
         this.master.emit('CLUSTER_STARTED', this)
 
         resolve(true)
