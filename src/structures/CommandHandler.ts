@@ -10,6 +10,7 @@ import Collection from '@discordjs/collection'
 import fs from 'fs'
 import path from 'path'
 import { Interaction, SlashCommandContext } from './SlashCommandContext'
+import Pieces from '../utils/Pieces'
 
 type MiddlewareFunction = (ctx: ctx) => boolean | Promise<boolean>
 
@@ -73,12 +74,15 @@ export class CommandHandler {
               })
             }
 
-            return !currentInteractions.find(interaction =>
-              interaction.default_permission === command.interaction?.default_permission &&
+            return !currentInteractions.find(interaction => {
+              const current = Pieces.generate(command.interaction?.options)
+              const incoming = Pieces.generate(interaction?.options)
+
+              return interaction.default_permission === command.interaction?.default_permission &&
               interaction.description === command.interaction?.description &&
               interaction.name === command.interaction?.name &&
-              JSON.stringify(interaction.options) === JSON.stringify(command.interaction?.options)
-            ) && !newInteractions.find(newCommand => newCommand === command)
+              Object.keys(current).every(x => current[x] === incoming[x])
+            }) && !newInteractions.find(newCommand => newCommand === command)
           })
 
           const promises: Array<Promise<any>> = []
