@@ -22,7 +22,7 @@ export declare class Cluster extends ThreadComms {
      * Whether or not the Cluster shouldn't restart
      */
     dying: boolean;
-    private startRetention;
+    private startAttempt;
     constructor(id: string, master: Master, fileName?: string, custom?: boolean);
     spawn(): Promise<void>;
     start(): Promise<{} | undefined>;
