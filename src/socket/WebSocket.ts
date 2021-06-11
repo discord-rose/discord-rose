@@ -19,10 +19,12 @@ export class DiscordSocket {
   public dying: boolean = false
   public selfClose = false
 
+  private op7 = false
+
   constructor (private shard: Shard) {}
 
   public close (code: number, reason: string): void {
-    this.shard.worker.log(`Shard ${this.shard.id} closing with ${code} & ${reason}`)
+    if (!this.op7) this.shard.worker.log(`Shard ${this.shard.id} closing with ${code} & ${reason}`)
     this.selfClose = true
 
     this.ws?.close(code, reason)
@@ -67,7 +69,9 @@ export class DiscordSocket {
     if (msg.op === GatewayOPCodes.Dispatch) {
       if ([GatewayDispatchEvents.Ready, GatewayDispatchEvents.Resumed].includes(msg.t)) {
         if (msg.t === GatewayDispatchEvents.Resumed) {
-          this.shard.worker.log(`Shard ${this.shard.id} resumed at sequence ${this.sequence ?? 0}`)
+          if (this.op7) {
+            this.op7 = false
+          } else this.shard.worker.log(`Shard ${this.shard.id} resumed at sequence ${this.sequence ?? 0}`)
         }
         this.connected = true
         this.resuming = false
@@ -85,6 +89,7 @@ export class DiscordSocket {
     } else if (msg.op === GatewayOPCodes.Heartbeat) {
       this._heartbeat()
     } else if (msg.op === GatewayOPCodes.Reconnect) {
+      this.op7 = true
       this.shard.restart(false, 1012, 'Opcode 7 Restart')
     } else if (msg.op === GatewayOPCodes.InvalidSession) {
       setTimeout(() => {
