@@ -41,7 +41,7 @@ class Shard extends typed_emitter_1.EventEmitter {
                 return this.worker.emit('GUILD_CREATE', data);
             if (!checkTimeout) {
                 checkTimeout = setTimeout(() => {
-                    if (!this.unavailableGuilds)
+                    if (!this.unavailableGuilds || !this.unavailableGuilds.size)
                         return;
                     this.worker.log(`Shard ${this.id} reported ${this.unavailableGuilds.size} unavailable guilds. Continuing startup.`);
                     this.unavailableGuilds.keyArray().forEach(id => {
