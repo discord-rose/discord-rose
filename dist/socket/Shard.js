@@ -63,6 +63,7 @@ class Shard extends typed_emitter_1.EventEmitter {
             if (guild.unavailable) {
                 worker.emit('GUILD_UNAVAILABLE', worker.options.cache.guilds ? (_a = worker.guilds.get(guild.id)) !== null && _a !== void 0 ? _a : guild : guild);
             }
+            worker.emit('GUILD_DELETE', guild);
             if (this.unavailableGuilds) {
                 this.unavailableGuilds.delete(guild.id);
             }

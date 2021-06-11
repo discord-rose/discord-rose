@@ -83,7 +83,7 @@ class DiscordSocket {
                 this.sessionID = msg.d.session_id;
             void this.shard.emit(msg.t, msg.d);
             this.shard.worker.emit('*', msg);
-            if (msg.t === "READY" /* Ready */ || msg.t === "GUILD_CREATE" /* GuildCreate */)
+            if (["READY" /* Ready */, "GUILD_CREATE" /* GuildCreate */, "GUILD_DELETE" /* GuildDelete */].includes(msg.t))
                 return;
             this.shard.worker.emit(msg.t, msg.d);
         }
