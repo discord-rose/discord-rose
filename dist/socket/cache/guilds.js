@@ -68,7 +68,7 @@ function guilds(events, worker) {
     });
     events.on('GUILD_DELETE', (guild) => {
         if (guild.unavailable)
-            return worker.emit('GUILD_UNAVAILABLE', worker.guilds.get(guild.id));
+            return;
         worker.guilds.delete(guild.id);
     });
 }
