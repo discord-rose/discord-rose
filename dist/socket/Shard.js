@@ -59,14 +59,15 @@ class Shard extends typed_emitter_1.EventEmitter {
             }
         });
         this.on('GUILD_DELETE', (guild) => {
-            var _a;
+            var _a, _b;
             if (guild.unavailable) {
                 worker.emit('GUILD_UNAVAILABLE', worker.options.cache.guilds ? (_a = worker.guilds.get(guild.id)) !== null && _a !== void 0 ? _a : guild : guild);
             }
-            worker.emit('GUILD_DELETE', guild);
-            if (this.unavailableGuilds) {
+            if (((_b = this.unavailableGuilds) === null || _b === void 0 ? void 0 : _b.has(guild.id)) && !guild.unavailable) {
                 this.unavailableGuilds.delete(guild.id);
             }
+            else
+                worker.emit('GUILD_DELETE', guild);
         });
     }
     /**
