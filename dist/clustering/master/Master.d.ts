@@ -20,6 +20,7 @@ export interface CompleteBotOptions extends Complete<BotOptions> {
     shardsPerCluster: number;
     intents: number;
     spawnTimeout: number;
+    clusterStartRetention: number;
 }
 /**
  * Master process controller
@@ -279,5 +280,10 @@ export interface BotOptions {
      * @default 5100
      */
     spawnTimeout?: number;
+    /**
+     * Amount of time to try asking the cluster to start before giving up and respawning
+     * @default 3
+     */
+    clusterStartRetention?: number;
 }
 export {};

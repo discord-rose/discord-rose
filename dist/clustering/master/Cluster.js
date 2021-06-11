@@ -25,6 +25,7 @@ class Cluster extends ThreadComms_1.ThreadComms {
          * Whether or not the Cluster shouldn't restart
          */
         this.dying = false;
+        this.startRetention = 0;
         this.on('*', (data, respond) => {
             this.master.handlers.emit(data.event, this, data.d, respond);
         });
@@ -68,6 +69,13 @@ class Cluster extends ThreadComms_1.ThreadComms {
         return await this.sendCommand('START', {
             shards: this.master.chunks[Number(this.id)],
             options: JSON.parse(JSON.stringify(this.master.options)) // normalize options
+        }).catch(async () => {
+            this.startRetention++;
+            if (this.startRetention >= this.master.options.clusterStartRetention) {
+                throw new Error(`After trying ${this.master.options.clusterStartRetention} times, the cluster refused to start.`);
+            }
+            this.logAs(`Failed to start, trying again (try ${this.startRetention}/${this.master.options.clusterStartRetention})`);
+            return await this.start();
         });
     }
     logAs(msg) {
