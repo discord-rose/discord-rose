@@ -68,11 +68,10 @@ export class Shard extends EventEmitter<DiscordDefaultEventMap> {
       if (guild.unavailable) {
         worker.emit('GUILD_UNAVAILABLE', worker.options.cache.guilds ? worker.guilds.get(guild.id) ?? guild : guild)
       }
-      worker.emit('GUILD_DELETE', guild)
 
-      if (this.unavailableGuilds) {
+      if (this.unavailableGuilds?.has(guild.id) && !guild.unavailable) {
         this.unavailableGuilds.delete(guild.id)
-      }
+      } else worker.emit('GUILD_DELETE', guild)
     })
   }
 
