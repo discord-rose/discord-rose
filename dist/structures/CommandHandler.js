@@ -10,6 +10,7 @@ const collection_1 = __importDefault(require("@discordjs/collection"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const SlashCommandContext_1 = require("./SlashCommandContext");
+const Pieces_1 = __importDefault(require("../utils/Pieces"));
 /**
  * Error in command
  */
@@ -84,10 +85,12 @@ class CommandHandler {
                         }
                         return !currentInteractions.find(interaction => {
                             var _a, _b, _c, _d;
-                            return interaction.default_permission === ((_a = command.interaction) === null || _a === void 0 ? void 0 : _a.default_permission) &&
-                                interaction.description === ((_b = command.interaction) === null || _b === void 0 ? void 0 : _b.description) &&
-                                interaction.name === ((_c = command.interaction) === null || _c === void 0 ? void 0 : _c.name) &&
-                                JSON.stringify(interaction.options) === JSON.stringify((_d = command.interaction) === null || _d === void 0 ? void 0 : _d.options);
+                            const current = Pieces_1.default.generate((_a = command.interaction) === null || _a === void 0 ? void 0 : _a.options);
+                            const incoming = Pieces_1.default.generate(interaction === null || interaction === void 0 ? void 0 : interaction.options);
+                            return interaction.default_permission === ((_b = command.interaction) === null || _b === void 0 ? void 0 : _b.default_permission) &&
+                                interaction.description === ((_c = command.interaction) === null || _c === void 0 ? void 0 : _c.description) &&
+                                interaction.name === ((_d = command.interaction) === null || _d === void 0 ? void 0 : _d.name) &&
+                                Object.keys(current).every(x => current[x] === incoming[x]);
                         }) && !newInteractions.find(newCommand => newCommand === command);
                     });
                     const promises = [];
