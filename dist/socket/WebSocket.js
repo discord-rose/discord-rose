@@ -21,10 +21,12 @@ class DiscordSocket {
         this.resuming = false;
         this.dying = false;
         this.selfClose = false;
+        this.op7 = false;
     }
     close(code, reason) {
         var _a;
-        this.shard.worker.log(`Shard ${this.shard.id} closing with ${code} & ${reason}`);
+        if (!this.op7)
+            this.shard.worker.log(`Shard ${this.shard.id} closing with ${code} & ${reason}`);
         this.selfClose = true;
         (_a = this.ws) === null || _a === void 0 ? void 0 : _a.close(code, reason);
     }
@@ -67,7 +69,11 @@ class DiscordSocket {
         if (msg.op === 0 /* Dispatch */) {
             if (["READY" /* Ready */, "RESUMED" /* Resumed */].includes(msg.t)) {
                 if (msg.t === "RESUMED" /* Resumed */) {
-                    this.shard.worker.log(`Shard ${this.shard.id} resumed at sequence ${(_a = this.sequence) !== null && _a !== void 0 ? _a : 0}`);
+                    if (this.op7) {
+                        this.op7 = false;
+                    }
+                    else
+                        this.shard.worker.log(`Shard ${this.shard.id} resumed at sequence ${(_a = this.sequence) !== null && _a !== void 0 ? _a : 0}`);
                 }
                 this.connected = true;
                 this.resuming = false;
@@ -85,6 +91,7 @@ class DiscordSocket {
             this._heartbeat();
         }
         else if (msg.op === 7 /* Reconnect */) {
+            this.op7 = true;
             this.shard.restart(false, 1012, 'Opcode 7 Restart');
         }
         else if (msg.op === 9 /* InvalidSession */) {

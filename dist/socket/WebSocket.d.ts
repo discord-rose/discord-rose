@@ -17,6 +17,7 @@ export declare class DiscordSocket {
     resuming: boolean;
     dying: boolean;
     selfClose: boolean;
+    private op7;
     constructor(shard: Shard);
     close(code: number, reason: string): void;
     spawn(): Promise<void>;
