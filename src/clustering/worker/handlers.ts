@@ -2,10 +2,16 @@ import { APIGuild } from 'discord-api-types'
 import { ThreadEvents, ResolveFunction } from '../ThreadComms'
 import { Thread } from './Thread'
 
+let receivedStart = false
+
 export const handlers: {
   [key in keyof ThreadEvents]?: (this: Thread, data: ThreadEvents[key]['send'], resolve: ResolveFunction<key>) => void | Promise<void>
 } = {
   START: async function (data, respond) {
+    if (receivedStart) return
+
+    receivedStart = true
+
     this.worker.options = data.options
 
     await this.worker.start(data.shards)

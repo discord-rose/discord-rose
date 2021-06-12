@@ -30,11 +30,13 @@ export class Sharder {
   }
 
   async loop (bucket: number): Promise<void> {
+    this.master.debug(`Looping bucket #${bucket}`)
     if (!this.buckets[bucket]) return
     const next = this.buckets[bucket]?.shift()
 
     if (next === undefined) {
       this.buckets[bucket] = null
+      this.master.debug(`Reached end of bucket #${bucket}`)
       return
     }
 

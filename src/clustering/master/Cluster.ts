@@ -31,6 +31,8 @@ export class Cluster extends ThreadComms {
 
     this.on('*', (data, respond) => {
       this.master.handlers.emit(data.event, this, data.d, respond)
+
+      this.master.debug(`Received ${data.event} from cluster ${id}`)
     })
   }
 
@@ -38,7 +40,7 @@ export class Cluster extends ThreadComms {
     if (this.custom) {
       this.started = true
     }
-    return void new Promise(resolve => {
+    return await new Promise(resolve => {
       this.thread = new Worker(this.fileName, {
         workerData: {
           id: this.id,
@@ -65,7 +67,7 @@ export class Cluster extends ThreadComms {
         this.logAs('Spawned')
         this.master.emit('CLUSTER_STARTED', this)
 
-        resolve(true)
+        resolve()
       })
     })
   }
@@ -98,6 +100,8 @@ export class Cluster extends ThreadComms {
   restart (): void {
     this.dying = false
 
+    this.master.debug(`Manual restart occured on cluster ${this.id}`)
+
     this.tell('KILL', null)
   }
 
@@ -106,6 +110,8 @@ export class Cluster extends ThreadComms {
    */
   kill (): void {
     this.dying = true
+
+    this.master.debug(`Manual shutdown occured on cluster ${this.id}`)
 
     this.tell('KILL', null)
   }

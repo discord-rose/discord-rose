@@ -9,7 +9,7 @@ export const handlers: {
   REGISTER_SHARD: function ({ id }, respond) {
     this.master.sharder.register(id)
 
-    this.logAs(`Registered shard ${id}`)
+    this.master.debug(`Cluster ${this.id} registered shard ${id}`)
 
     respond({})
   },
