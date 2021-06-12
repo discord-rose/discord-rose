@@ -27,11 +27,13 @@ class Sharder {
     }
     async loop(bucket) {
         var _a, _b;
+        this.master.debug(`Looping bucket #${bucket}`);
         if (!this.buckets[bucket])
             return;
         const next = (_a = this.buckets[bucket]) === null || _a === void 0 ? void 0 : _a.shift();
         if (next === undefined) {
             this.buckets[bucket] = null;
+            this.master.debug(`Reached end of bucket #${bucket}`);
             return;
         }
         await ((_b = this.master.shardToCluster(next)) === null || _b === void 0 ? void 0 : _b.sendCommand('START_SHARD', { id: next }).catch(() => {

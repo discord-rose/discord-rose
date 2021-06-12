@@ -28,13 +28,14 @@ class Cluster extends ThreadComms_1.ThreadComms {
         this.startAttempt = 1;
         this.on('*', (data, respond) => {
             this.master.handlers.emit(data.event, this, data.d, respond);
+            this.master.debug(`Received ${data.event} from cluster ${id}`);
         });
     }
     async spawn() {
         if (this.custom) {
             this.started = true;
         }
-        return void new Promise(resolve => {
+        return await new Promise(resolve => {
             this.thread = new worker_threads_1.Worker(this.fileName, {
                 workerData: {
                     id: this.id,
@@ -58,7 +59,7 @@ class Cluster extends ThreadComms_1.ThreadComms {
                 this.spawned = true;
                 this.logAs('Spawned');
                 this.master.emit('CLUSTER_STARTED', this);
-                resolve(true);
+                resolve();
             });
         });
     }
@@ -86,6 +87,7 @@ class Cluster extends ThreadComms_1.ThreadComms {
      */
     restart() {
         this.dying = false;
+        this.master.debug(`Manual restart occured on cluster ${this.id}`);
         this.tell('KILL', null);
     }
     /**
@@ -93,6 +95,7 @@ class Cluster extends ThreadComms_1.ThreadComms {
      */
     kill() {
         this.dying = true;
+        this.master.debug(`Manual shutdown occured on cluster ${this.id}`);
         this.tell('KILL', null);
     }
     /**

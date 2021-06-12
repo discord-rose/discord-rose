@@ -5,7 +5,7 @@ const UtilityFunctions_1 = require("../../utils/UtilityFunctions");
 exports.handlers = {
     REGISTER_SHARD: function ({ id }, respond) {
         this.master.sharder.register(id);
-        this.logAs(`Registered shard ${id}`);
+        this.master.debug(`Cluster ${this.id} registered shard ${id}`);
         respond({});
     },
     SHARD_READY: async function ({ id }, _) {

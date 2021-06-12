@@ -1,8 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handlers = void 0;
+let receivedStart = false;
 exports.handlers = {
     START: async function (data, respond) {
+        if (receivedStart)
+            return;
+        receivedStart = true;
         this.worker.options = data.options;
         await this.worker.start(data.shards);
         respond({});

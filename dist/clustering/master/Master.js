@@ -52,7 +52,7 @@ class Master extends typed_emitter_1.EventEmitter {
          */
         this.spawned = false;
         this._clusterNames = [];
-        this.longestName = 1;
+        this.longestName = 0;
         if (!fileName)
             throw new Error('Please provide the file name for the Worker');
         if (!options.token)
@@ -145,6 +145,9 @@ class Master extends typed_emitter_1.EventEmitter {
             this.handlers.on(key, (shard, ...data) => { var _a; return (_a = handlers_1.handlers[key]) === null || _a === void 0 ? void 0 : _a.bind(shard)(...data); });
         }
     }
+    debug(msg) {
+        this.emit('DEBUG', msg);
+    }
     /**
      * Get all Discord Bot clusters (discludes custom processes)
      */
@@ -175,6 +178,7 @@ class Master extends typed_emitter_1.EventEmitter {
         const timeStart = Date.now();
         this.rest = new Manager_1.RestManager(this.options.token);
         const gatewayRequest = await this.rest.misc.getGateway();
+        this.debug(`Start gateway: ${JSON.stringify(gatewayRequest)}`);
         this.session = gatewayRequest.session_start_limit;
         if (!this.options.ws)
             this.options.ws = gatewayRequest.url;
@@ -183,7 +187,7 @@ class Master extends typed_emitter_1.EventEmitter {
         if (typeof this.options.shards !== 'number')
             this.options.shards = 1;
         this.options.shards += (_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.shardOffset) !== null && _b !== void 0 ? _b : 0;
-        this.log(`Spawning ${this.options.shards} shards.`);
+        this.log(`Creating ${this.options.shards} shard${this.options.shards > 1 ? 's' : ''}.`);
         this.chunks = UtilityFunctions_1.chunkShards(((_c = this.options) === null || _c === void 0 ? void 0 : _c.shards) || 1, (_d = this.options.shardsPerCluster) !== null && _d !== void 0 ? _d : 5);
         const promises = [];
         for (let i = 0; i < this.chunks.length; i++) {
@@ -194,9 +198,9 @@ class Master extends typed_emitter_1.EventEmitter {
             promises.push(cluster.spawn());
         }
         await Promise.all(promises);
-        this.log('Registering shards');
+        this.debug('All clusters have been spawned, registering shards');
         await Promise.all(this.clusters.map(async (x) => await x.start()));
-        this.log('Spawning');
+        this.debug('Shards have been registered, starting loop');
         for (let i = 0; i < this.session.max_concurrency; i++) {
             void this.sharder.loop(i);
         }

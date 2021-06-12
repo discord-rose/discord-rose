@@ -29,6 +29,7 @@ export declare class Master extends EventEmitter<{
     READY: Master;
     CLUSTER_STARTED: Cluster;
     CLUSTER_STOPPED: Cluster;
+    DEBUG: string;
 }> {
     /**
      * Options
@@ -82,6 +83,7 @@ export declare class Master extends EventEmitter<{
      * @param options Options
      */
     constructor(fileName: string, options: BotOptions);
+    debug(msg: string): void;
     /**
      * Get all Discord Bot clusters (discludes custom processes)
      */
