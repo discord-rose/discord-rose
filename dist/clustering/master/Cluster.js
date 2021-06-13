@@ -36,6 +36,14 @@ class Cluster extends ThreadComms_1.ThreadComms {
             this.started = true;
         }
         return await new Promise(resolve => {
+            this.once('BEGIN', () => {
+                if (this.spawned)
+                    void this.start();
+                this.spawned = true;
+                this.logAs('Started, spawning shards');
+                this.master.emit('CLUSTER_STARTED', this);
+                resolve();
+            });
             this.thread = new worker_threads_1.Worker(this.fileName, {
                 workerData: {
                     id: this.id,
@@ -54,12 +62,7 @@ class Cluster extends ThreadComms_1.ThreadComms {
                 console.error(error);
             });
             this.thread.on('online', () => {
-                if (this.spawned)
-                    void this.start();
-                this.spawned = true;
-                this.logAs('Spawned');
-                this.master.emit('CLUSTER_STARTED', this);
-                resolve();
+                this.master.debug(`Cluster ${this.id} reported an online status`);
             });
         });
     }

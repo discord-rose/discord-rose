@@ -24,6 +24,7 @@ class Thread extends ThreadComms_1.ThreadComms {
                 (_a = handlers_1.handlers[key]) === null || _a === void 0 ? void 0 : _a.bind(this)(data, resolve);
             });
         }
+        this.tell('BEGIN', null);
     }
     async registerShard(id) {
         return await this.sendCommand('REGISTER_SHARD', { id });

@@ -52,7 +52,7 @@ class Master extends typed_emitter_1.EventEmitter {
          */
         this.spawned = false;
         this._clusterNames = [];
-        this.longestName = 0;
+        this.longestName = 1;
         if (!fileName)
             throw new Error('Please provide the file name for the Worker');
         if (!options.token)
@@ -187,8 +187,8 @@ class Master extends typed_emitter_1.EventEmitter {
         if (typeof this.options.shards !== 'number')
             this.options.shards = 1;
         this.options.shards += (_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.shardOffset) !== null && _b !== void 0 ? _b : 0;
-        this.log(`Creating ${this.options.shards} shard${this.options.shards > 1 ? 's' : ''}.`);
         this.chunks = UtilityFunctions_1.chunkShards(((_c = this.options) === null || _c === void 0 ? void 0 : _c.shards) || 1, (_d = this.options.shardsPerCluster) !== null && _d !== void 0 ? _d : 5);
+        this.log(`Creating ${this.options.shards} shard${this.options.shards > 1 ? 's' : ''} / ${this.chunks.length} cluster${this.chunks.length > 1 ? 's' : ''}`);
         const promises = [];
         for (let i = 0; i < this.chunks.length; i++) {
             const cluster = new Cluster_1.Cluster(`${i}`, this);
