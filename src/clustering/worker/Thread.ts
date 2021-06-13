@@ -28,6 +28,8 @@ export class Thread extends ThreadComms {
         handlers[key]?.bind(this)(data, resolve)
       })
     }
+
+    this.tell('BEGIN', null)
   }
 
   async registerShard (id: number): Promise<{}> {

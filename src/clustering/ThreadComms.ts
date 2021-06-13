@@ -138,6 +138,10 @@ export interface ThreadEvents {
     send: null
     receive: ClusterStats[]
   }
+  BEGIN: {
+    send: null
+    receive: null
+  }
 }
 
 export type ResolveFunction<K extends keyof ThreadEvents> = ThreadEvents[K]['receive'] extends null ? null : (data: ThreadEvents[K]['receive'] | { error: string }) => void
