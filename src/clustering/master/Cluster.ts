@@ -70,6 +70,9 @@ export class Cluster extends ThreadComms {
       this.thread.on('error', (error) => {
         console.error(error)
       })
+      this.thread.on('messageerror', (err) => {
+        console.error(`Message error on cluster ${this.id}, ${err.name}: ${err.message}`)
+      })
       this.thread.on('online', () => {
         this.master.debug(`Cluster ${this.id} reported an online status`)
       })
