@@ -19,6 +19,9 @@ exports.handlers = {
     LOG: function (data, _) {
         this.logAs(data);
     },
+    DEBUG: function (msg) {
+        this.master.debug(msg);
+    },
     RESTART_CLUSTER: function ({ id }, _) {
         var _a;
         (_a = this.master.processes.get(String(id))) === null || _a === void 0 ? void 0 : _a.restart();

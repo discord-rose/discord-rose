@@ -4,8 +4,9 @@ exports.handlers = void 0;
 let receivedStart = false;
 exports.handlers = {
     START: async function (data, respond) {
+        this.worker.debug(`Received START on cluster ${this.id}${receivedStart ? '. Already Received!' : ''}`);
         if (receivedStart)
-            return;
+            return respond({});
         receivedStart = true;
         this.worker.options = data.options;
         await this.worker.start(data.shards);

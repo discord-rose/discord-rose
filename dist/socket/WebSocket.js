@@ -32,6 +32,7 @@ class DiscordSocket {
     }
     async spawn() {
         var _a, _b, _c;
+        this.shard.worker.debug(`Shard ${this.shard.id} is spawning`);
         if (this.ws && this.ws.readyState === ws_1.default.OPEN)
             this.close(1012, 'Starting again');
         this.ws = null;
@@ -101,9 +102,10 @@ class DiscordSocket {
         }
         else if (msg.op === 10 /* Hello */) {
             if (this.resuming && (!this.sessionID || !this.sequence)) {
-                this.shard.worker.log('Cancelling resume because of missing session info');
+                this.shard.worker.debug('Cancelling resume because of missing session info');
                 this.resuming = false;
             }
+            this.shard.worker.debug(`Received HELLO on shard ${this.shard.id}. ${this.resuming ? '' : 'Not '}Resuming. (Heartbeat @ 1/${msg.d.heartbeat_interval / 1000}s)`);
             if (this.resuming) {
                 this._send({
                     op: 6 /* Resume */,
@@ -135,6 +137,7 @@ class DiscordSocket {
             this._heartbeat();
         }
         else if (msg.op === 11 /* HeartbeatAck */) {
+            this.shard.worker.debug(`Heartbeat acknowledged on shard ${this.shard.id}`);
             this.heartbeatRetention = 0;
             this.shard.ping = Date.now() - this.waitingHeartbeat;
             this.waitingHeartbeat = false;
@@ -142,6 +145,8 @@ class DiscordSocket {
         }
     }
     _heartbeat() {
+        var _a;
+        this.shard.worker.debug(`Heartbeat @ ${(_a = this.sequence) !== null && _a !== void 0 ? _a : 'none'}. Retention at ${this.heartbeatRetention} on shard ${this.shard.id}`);
         if (this.waitingHeartbeat) {
             this.heartbeatRetention++;
             if (this.heartbeatRetention > 5)
@@ -155,6 +160,7 @@ class DiscordSocket {
     }
     onClose(code, reason) {
         if (this.selfClose) {
+            this.shard.worker.debug(`Self closed with code ${code}`);
             this.selfClose = false;
         }
         else

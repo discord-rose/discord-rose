@@ -28,7 +28,6 @@ class Cluster extends ThreadComms_1.ThreadComms {
         this.startAttempt = 1;
         this.on('*', (data, respond) => {
             this.master.handlers.emit(data.event, this, data.d, respond);
-            this.master.debug(`Received ${data.event} from cluster ${id}`);
         });
     }
     async spawn() {

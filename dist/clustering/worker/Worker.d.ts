@@ -97,4 +97,10 @@ export declare class Worker extends EventEmitter<DiscordEventMap> {
      * @param data What to log
      */
     log(...data: any[]): void;
+    /**
+     * Debug
+     * @internal
+     * @param msg Debug message
+     */
+    debug(msg: string): void;
 }

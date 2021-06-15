@@ -150,5 +150,13 @@ class Worker extends typed_emitter_1.EventEmitter {
     log(...data) {
         this.comms.log(...data);
     }
+    /**
+     * Debug
+     * @internal
+     * @param msg Debug message
+     */
+    debug(msg) {
+        this.comms.tell('DEBUG', msg);
+    }
 }
 exports.Worker = Worker;
