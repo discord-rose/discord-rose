@@ -31,8 +31,6 @@ export class Cluster extends ThreadComms {
 
     this.on('*', (data, respond) => {
       this.master.handlers.emit(data.event, this, data.d, respond)
-
-      this.master.debug(`Received ${data.event} from cluster ${id}`)
     })
   }
 

@@ -31,6 +31,7 @@ export class DiscordSocket {
   }
 
   async spawn (): Promise<void> {
+    this.shard.worker.debug(`Shard ${this.shard.id} is spawning`)
     if (this.ws && this.ws.readyState === WebSocket.OPEN) this.close(1012, 'Starting again')
     this.ws = null
     this.connected = false
@@ -97,9 +98,11 @@ export class DiscordSocket {
       }, Math.ceil(Math.random() * 5) * 1000)
     } else if (msg.op === GatewayOPCodes.Hello) {
       if (this.resuming && (!this.sessionID || !this.sequence)) {
-        this.shard.worker.log('Cancelling resume because of missing session info')
+        this.shard.worker.debug('Cancelling resume because of missing session info')
         this.resuming = false
       }
+
+      this.shard.worker.debug(`Received HELLO on shard ${this.shard.id}. ${this.resuming ? '' : 'Not '}Resuming. (Heartbeat @ 1/${(msg.d as unknown as GatewayHelloData).heartbeat_interval / 1000}s)`)
 
       if (this.resuming) {
         this._send({
@@ -130,6 +133,7 @@ export class DiscordSocket {
       this.heartbeatRetention = 0
       this._heartbeat()
     } else if (msg.op === GatewayOPCodes.HeartbeatAck) {
+      this.shard.worker.debug(`Heartbeat acknowledged on shard ${this.shard.id}`)
       this.heartbeatRetention = 0
       this.shard.ping = Date.now() - (this.waitingHeartbeat as number)
 
@@ -139,6 +143,7 @@ export class DiscordSocket {
   }
 
   private _heartbeat (): void {
+    this.shard.worker.debug(`Heartbeat @ ${this.sequence ?? 'none'}. Retention at ${this.heartbeatRetention} on shard ${this.shard.id}`)
     if (this.waitingHeartbeat) {
       this.heartbeatRetention++
 
@@ -153,6 +158,7 @@ export class DiscordSocket {
 
   private onClose (code: number, reason: string): void {
     if (this.selfClose) {
+      this.shard.worker.debug(`Self closed with code ${code}`)
       this.selfClose = false
     } else this.shard.worker.log(`Shard ${this.shard.id} closed with ${code} & ${reason || 'No Reason'}`)
 

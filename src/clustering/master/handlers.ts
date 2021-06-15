@@ -23,6 +23,9 @@ export const handlers: {
   LOG: function (data, _) {
     this.logAs(data)
   },
+  DEBUG: function (msg) {
+    this.master.debug(msg)
+  },
   RESTART_CLUSTER: function ({ id }, _) {
     this.master.processes.get(String(id))?.restart()
   },

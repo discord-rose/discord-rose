@@ -92,6 +92,10 @@ export interface ThreadEvents {
     send: string
     receive: null
   }
+  DEBUG: {
+    send: string
+    receive: null
+  }
   RESTART_CLUSTER: {
     send: {
       id: any
