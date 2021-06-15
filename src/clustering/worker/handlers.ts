@@ -8,7 +8,7 @@ export const handlers: {
   [key in keyof ThreadEvents]?: (this: Thread, data: ThreadEvents[key]['send'], resolve: ResolveFunction<key>) => void | Promise<void>
 } = {
   START: async function (data, respond) {
-    if (receivedStart) return
+    if (receivedStart) return respond({})
 
     receivedStart = true
 
