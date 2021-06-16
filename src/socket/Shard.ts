@@ -45,8 +45,9 @@ export class Shard extends EventEmitter<DiscordDefaultEventMap> {
 
       if (!checkTimeout) {
         checkTimeout = setTimeout(() => {
-          if (!this.unavailableGuilds || !this.unavailableGuilds.size) return
-          this.worker.log(`Shard ${this.id} reported ${this.unavailableGuilds.size} unavailable guilds. Continuing startup.`)
+          if (!this.unavailableGuilds) return
+
+          if (this.unavailableGuilds.size) this.worker.log(`Shard ${this.id} reported ${this.unavailableGuilds.size} unavailable guilds. Continuing startup.`)
 
           this.unavailableGuilds.keyArray().forEach(id => {
             this.worker.emit('GUILD_UNAVAILABLE', { id, unavailable: true })
