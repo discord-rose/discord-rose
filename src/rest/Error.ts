@@ -13,12 +13,18 @@ export class RestError extends Error {
    */
   public code: number
 
+  /**
+   * Path of request
+   */
+  public path: string
+
   public name = 'DiscordAPIError'
 
-  constructor (response: any) {
+  constructor (response: any, path: string) {
     super()
     this.message = response.message
     this.status = response.status
     this.code = response.code
+    this.path = path
   }
 }

@@ -2,6 +2,7 @@ import fetch, { Headers, Response } from 'node-fetch'
 import * as qs from 'querystring'
 
 import { Cache } from '@jpbberry/cache'
+import { EventEmitter } from '@jpbberry/typed-emitter'
 
 import { Bucket } from './Bucket'
 
@@ -28,7 +29,9 @@ export interface RestManagerOptions {
 /**
  * The base rest handler for all things Discord rest
  */
-export class RestManager {
+export class RestManager extends EventEmitter<{
+  error: RestError
+}> {
   public buckets: Cache<string, Bucket> = new Cache(60000)
   public global: Promise<true> | null = null
 
@@ -72,6 +75,8 @@ export class RestManager {
   public options: RestManagerOptions
 
   constructor (private readonly token: string, options: RestManagerOptions = {}) {
+    super()
+
     this.options = {
       version: options.version ?? 8
     }
@@ -117,7 +122,10 @@ export class RestManager {
         }
       })
     }).catch(err => {
-      throw new RestError(err)
+      const error = new RestError(err, route)
+      this.emit('error', error)
+
+      throw error
     })
   }
 
