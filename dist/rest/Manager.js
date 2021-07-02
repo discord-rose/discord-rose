@@ -23,6 +23,7 @@ exports.RestManager = void 0;
 const node_fetch_1 = __importStar(require("node-fetch"));
 const qs = __importStar(require("querystring"));
 const cache_1 = require("@jpbberry/cache");
+const typed_emitter_1 = require("@jpbberry/typed-emitter");
 const Bucket_1 = require("./Bucket");
 const Error_1 = require("./Error");
 const Channels_1 = require("./resources/Channels");
@@ -37,9 +38,10 @@ const Webhooks_1 = require("./resources/Webhooks");
 /**
  * The base rest handler for all things Discord rest
  */
-class RestManager {
+class RestManager extends typed_emitter_1.EventEmitter {
     constructor(token, options = {}) {
         var _a;
+        super();
         this.token = token;
         this.buckets = new cache_1.Cache(60000);
         this.global = null;
@@ -121,7 +123,9 @@ class RestManager {
                 }
             });
         }).catch(err => {
-            throw new Error_1.RestError(err);
+            const error = new Error_1.RestError(err, route);
+            this.emit('error', error);
+            throw error;
         });
     }
     /**

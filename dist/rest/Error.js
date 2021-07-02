@@ -6,12 +6,13 @@ exports.RestError = void 0;
  * @extends {Error}
  */
 class RestError extends Error {
-    constructor(response) {
+    constructor(response, path) {
         super();
         this.name = 'DiscordAPIError';
         this.message = response.message;
         this.status = response.status;
         this.code = response.code;
+        this.path = path;
     }
 }
 exports.RestError = RestError;

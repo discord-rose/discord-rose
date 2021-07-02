@@ -1,6 +1,6 @@
 {
   "name": "discord-rose",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "The simple Discord library for advanced users.",
   "main": "./dist/index.js",
   "scripts": {
@@ -27,7 +27,7 @@
     "@discordjs/collection": "^0.1.6",
     "@jpbberry/cache": "^1.0.4",
     "@jpbberry/typed-emitter": "^1.0.1",
-    "discord-api-types": "latest",
+    "discord-api-types": "^0.18.1",
     "form-data": "^3.0.0",
     "node-fetch": "^2.6.1",
     "querystring": "^0.2.0",

@@ -11,6 +11,10 @@ export declare class RestError extends Error {
      * Error code
      */
     code: number;
+    /**
+     * Path of request
+     */
+    path: string;
     name: string;
-    constructor(response: any);
+    constructor(response: any, path: string);
 }

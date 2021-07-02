@@ -1,6 +1,8 @@
 import { Response } from 'node-fetch';
 import { Cache } from '@jpbberry/cache';
+import { EventEmitter } from '@jpbberry/typed-emitter';
 import { Bucket } from './Bucket';
+import { RestError } from './Error';
 import { ChannelsResource } from './resources/Channels';
 import { EmojisResource } from './resources/Emojis';
 import { MessagesResource } from './resources/Messages';
@@ -20,7 +22,9 @@ export interface RestManagerOptions {
 /**
  * The base rest handler for all things Discord rest
  */
-export declare class RestManager {
+export declare class RestManager extends EventEmitter<{
+    error: RestError;
+}> {
     private readonly token;
     buckets: Cache<string, Bucket>;
     global: Promise<true> | null;
