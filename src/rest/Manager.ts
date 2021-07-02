@@ -102,7 +102,7 @@ export class RestManager extends EventEmitter<{
    * @param options Other options
    */
   public async request (method: Methods, route: string, options: RequestOptions = {}): Promise<any> {
-    return await new Promise((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
+    const res = await new Promise<{ roseError: RestError} | any>((resolve: (value?: any) => void) => {
       const key = this._key(route)
 
       let bucket = this.buckets.get(key)
@@ -117,16 +117,20 @@ export class RestManager extends EventEmitter<{
         route,
         options,
         resolve: (value) => {
-          if (value?.error) return reject(value.error)
+          if (value?.error) return resolve({ roseError: value.error })
           resolve(value)
         }
       })
-    }).catch(err => {
-      const error = new RestError(err, route)
+    })
+
+    if (res.roseError) {
+      const error = new RestError(res.roseError, route)
       this.emit('error', error)
 
       throw error
-    })
+    }
+
+    return res
   }
 
   /**
