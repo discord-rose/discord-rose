@@ -2,19 +2,32 @@ import { APIGuild } from 'discord-api-types'
 import { ThreadEvents, ResolveFunction } from '../ThreadComms'
 import { Thread } from './Thread'
 
+let receivedStart = false
+
 export const handlers: {
   [key in keyof ThreadEvents]?: (this: Thread, data: ThreadEvents[key]['send'], resolve: ResolveFunction<key>) => void | Promise<void>
 } = {
   START: async function (data, respond) {
+    this.worker.debug(`Received START on cluster ${this.id}${receivedStart ? '. Already Received!' : ''}`)
+    if (receivedStart) return respond({})
+
+    receivedStart = true
+
     this.worker.options = data.options
 
     await this.worker.start(data.shards)
 
     respond({})
   },
-  START_SHARD: function (data) {
+  START_SHARD: function (data, respond) {
     const shard = this.worker.shards.get(data.id)
-    shard?.start()
+    if (!shard) return respond({})
+
+    shard.once('READY', () => {
+      respond({})
+    })
+
+    shard.start()
   },
   RESTART_SHARD: function ({ id }) {
     this.worker.shards.get(id)?.restart(true, 1002, 'Internally restarted')

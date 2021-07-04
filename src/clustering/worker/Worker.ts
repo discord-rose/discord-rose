@@ -162,4 +162,13 @@ export class Worker extends EventEmitter<DiscordEventMap> {
   log (...data): void {
     this.comms.log(...data)
   }
+
+  /**
+   * Debug
+   * @internal
+   * @param msg Debug message
+   */
+  debug (msg: string): void {
+    this.comms.tell('DEBUG', msg)
+  }
 }

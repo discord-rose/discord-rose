@@ -80,7 +80,7 @@ export interface ThreadEvents {
     send: {
       id: number
     }
-    receive: null
+    receive: {}
   }
   SHARD_READY: {
     send: {
@@ -89,6 +89,10 @@ export interface ThreadEvents {
     receive: null
   }
   LOG: {
+    send: string
+    receive: null
+  }
+  DEBUG: {
     send: string
     receive: null
   }
@@ -137,6 +141,10 @@ export interface ThreadEvents {
   STATS: {
     send: null
     receive: ClusterStats[]
+  }
+  BEGIN: {
+    send: null
+    receive: null
   }
 }
 

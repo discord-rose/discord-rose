@@ -1,14 +1,16 @@
 import Collection from '@discordjs/collection'
+import { EventEmitter } from '@jpbberry/typed-emitter'
 import { APIGuildMember, GatewayGuildMemberAddDispatchData, GatewayGuildMembersChunkDispatchData, GatewayOPCodes, GatewayPresenceUpdateData, GatewayRequestGuildMembersData, Snowflake } from 'discord-api-types'
 import { OPEN } from 'ws'
 import { State } from '../clustering/ThreadComms'
+import { DiscordDefaultEventMap } from '../typings/Discord'
 import { Worker } from '../typings/lib'
 import { DiscordSocket } from './WebSocket'
 
 /**
  * Utility manager for a shard
  */
-export class Shard {
+export class Shard extends EventEmitter<DiscordDefaultEventMap> {
   /**
    * Ping in ms
    */
@@ -19,7 +21,9 @@ export class Shard {
   private registered = false
 
   constructor (public id: number, public worker: Worker) {
-    this.ws.on('READY', (data) => {
+    super()
+
+    this.on('READY', (data) => {
       if (!data) return
       this.worker.comms.tell('SHARD_READY', { id })
 
@@ -34,7 +38,7 @@ export class Shard {
 
     let checkTimeout: NodeJS.Timeout
 
-    this.ws.on('GUILD_CREATE', (data) => {
+    this.on('GUILD_CREATE', (data) => {
       this.worker.cacheManager.emit('GUILD_CREATE', data)
 
       if (!this.unavailableGuilds) return this.worker.emit('GUILD_CREATE', data)
@@ -42,7 +46,13 @@ export class Shard {
       if (!checkTimeout) {
         checkTimeout = setTimeout(() => {
           if (!this.unavailableGuilds) return
-          this.worker.log(`Shard ${this.id} reported ${this.unavailableGuilds.size} unavailable guilds. Continuing startup.`)
+
+          if (this.unavailableGuilds.size) this.worker.log(`Shard ${this.id} reported ${this.unavailableGuilds.size} unavailable guilds. Continuing startup.`)
+
+          this.unavailableGuilds.keyArray().forEach(id => {
+            this.worker.emit('GUILD_UNAVAILABLE', { id, unavailable: true })
+          })
+
           this._ready()
         }, 15e3)
       } else checkTimeout.refresh()
@@ -53,6 +63,16 @@ export class Shard {
         clearTimeout(checkTimeout)
         this._ready()
       }
+    })
+
+    this.on('GUILD_DELETE', (guild) => {
+      if (guild.unavailable) {
+        worker.emit('GUILD_UNAVAILABLE', worker.options.cache.guilds ? worker.guilds.get(guild.id) ?? guild : guild)
+      }
+
+      if (this.unavailableGuilds?.has(guild.id) && !guild.unavailable) {
+        this.unavailableGuilds.delete(guild.id)
+      } else worker.emit('GUILD_DELETE', guild)
     })
   }
 
@@ -92,12 +112,13 @@ export class Shard {
     return await this.worker.comms.registerShard(this.id)
   }
 
-  restart (kill: boolean, code: number = 1000, reason: string = 'Manually Stopped'): void {
+  restart (kill: boolean, code: number = 1012, reason: string = 'Manually Stopped'): void {
     if (kill) this.ws.kill()
     else {
       this.ws.resuming = true
     }
-    this.ws.ws?.close(code, reason)
+
+    this.ws.close(code, reason)
   }
 
   setPresence (presence: GatewayPresenceUpdateData): void {

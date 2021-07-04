@@ -24,6 +24,8 @@ export class Cluster extends ThreadComms {
    */
   public dying = false
 
+  private startAttempt = 1
+
   constructor (public id: string, public master: Master, public fileName = master.fileName, public custom: boolean = false) {
     super()
 
@@ -36,7 +38,18 @@ export class Cluster extends ThreadComms {
     if (this.custom) {
       this.started = true
     }
-    return void new Promise(resolve => {
+    return await new Promise(resolve => {
+      this.once('BEGIN', () => {
+        if (this.spawned) void this.start()
+
+        this.spawned = true
+
+        this.logAs('Started, spawning shards')
+        this.master.emit('CLUSTER_STARTED', this)
+
+        resolve()
+      })
+
       this.thread = new Worker(this.fileName, {
         workerData: {
           id: this.id,
@@ -55,15 +68,11 @@ export class Cluster extends ThreadComms {
       this.thread.on('error', (error) => {
         console.error(error)
       })
+      this.thread.on('messageerror', (err) => {
+        console.error(`Message error on cluster ${this.id}, ${err.name}: ${err.message}`)
+      })
       this.thread.on('online', () => {
-        if (this.spawned) void this.start()
-
-        this.spawned = true
-
-        this.logAs('Started')
-        this.master.emit('CLUSTER_STARTED', this)
-
-        resolve(true)
+        this.master.debug(`Cluster ${this.id} reported an online status`)
       })
     })
   }
@@ -74,6 +83,15 @@ export class Cluster extends ThreadComms {
     return await this.sendCommand('START', {
       shards: this.master.chunks[Number(this.id)],
       options: JSON.parse(JSON.stringify(this.master.options)) // normalize options
+    }).catch(async () => {
+      this.startAttempt++
+      if (this.startAttempt > this.master.options.clusterStartRetention) {
+        throw new Error(`After trying ${this.master.options.clusterStartRetention} times, the cluster refused to start.`)
+      }
+
+      this.logAs(`Failed to start, trying again (try ${this.startAttempt}/${this.master.options.clusterStartRetention})`)
+
+      return await this.start()
     })
   }
 
@@ -87,6 +105,8 @@ export class Cluster extends ThreadComms {
   restart (): void {
     this.dying = false
 
+    this.master.debug(`Manual restart occured on cluster ${this.id}`)
+
     this.tell('KILL', null)
   }
 
@@ -95,6 +115,8 @@ export class Cluster extends ThreadComms {
    */
   kill (): void {
     this.dying = true
+
+    this.master.debug(`Manual shutdown occured on cluster ${this.id}`)
 
     this.tell('KILL', null)
   }

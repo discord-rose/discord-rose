@@ -75,7 +75,7 @@ export function guilds (events: CacheManager, worker: Worker): void {
   })
 
   events.on('GUILD_DELETE', (guild) => {
-    if (guild.unavailable) return worker.emit('GUILD_UNAVAILABLE', worker.guilds.get(guild.id) as CachedGuild)
+    if (guild.unavailable) return
 
     worker.guilds.delete(guild.id)
   })

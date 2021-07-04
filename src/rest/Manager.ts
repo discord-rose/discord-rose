@@ -2,6 +2,7 @@ import fetch, { Headers, Response } from 'node-fetch'
 import * as qs from 'querystring'
 
 import { Cache } from '@jpbberry/cache'
+import { EventEmitter } from '@jpbberry/typed-emitter'
 
 import { Bucket } from './Bucket'
 
@@ -28,7 +29,9 @@ export interface RestManagerOptions {
 /**
  * The base rest handler for all things Discord rest
  */
-export class RestManager {
+export class RestManager extends EventEmitter<{
+  error: RestError
+}> {
   public buckets: Cache<string, Bucket> = new Cache(60000)
   public global: Promise<true> | null = null
 
@@ -72,6 +75,8 @@ export class RestManager {
   public options: RestManagerOptions
 
   constructor (private readonly token: string, options: RestManagerOptions = {}) {
+    super()
+
     this.options = {
       version: options.version ?? 8
     }
@@ -97,7 +102,7 @@ export class RestManager {
    * @param options Other options
    */
   public async request (method: Methods, route: string, options: RequestOptions = {}): Promise<any> {
-    return await new Promise((resolve: (value?: any) => void, reject: (reason?: any) => void) => {
+    const res = await new Promise<{ roseError: RestError} | any>((resolve: (value?: any) => void) => {
       const key = this._key(route)
 
       let bucket = this.buckets.get(key)
@@ -112,13 +117,20 @@ export class RestManager {
         route,
         options,
         resolve: (value) => {
-          if (value?.error) return reject(value.error)
+          if (value?.error) return resolve({ roseError: value.error })
           resolve(value)
         }
       })
-    }).catch(err => {
-      throw new RestError(err)
     })
+
+    if (res.roseError) {
+      const error = new RestError(res.roseError, route)
+      this.emit('error', error)
+
+      throw error
+    }
+
+    return res
   }
 
   /**

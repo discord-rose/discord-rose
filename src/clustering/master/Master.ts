@@ -34,6 +34,7 @@ export interface CompleteBotOptions extends Complete<BotOptions> {
   shardsPerCluster: number
   intents: number
   spawnTimeout: number
+  clusterStartRetention: number
 }
 
 /**
@@ -43,6 +44,7 @@ export class Master extends EventEmitter<{
   READY: Master
   CLUSTER_STARTED: Cluster
   CLUSTER_STOPPED: Cluster
+  DEBUG: string
 }> {
   /**
    * Options
@@ -155,7 +157,8 @@ export class Master extends EventEmitter<{
       },
       log: options.log,
       rest: options.rest,
-      spawnTimeout: options.spawnTimeout ?? 5100
+      spawnTimeout: options.spawnTimeout ?? 5100,
+      clusterStartRetention: options.clusterStartRetention ?? 3
     } as CompleteBotOptions
 
     if ((this.options.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true) {
@@ -194,6 +197,10 @@ export class Master extends EventEmitter<{
     }
   }
 
+  debug (msg: string): void {
+    this.emit('DEBUG', msg)
+  }
+
   /**
    * Get all Discord Bot clusters (discludes custom processes)
    */
@@ -227,6 +234,8 @@ export class Master extends EventEmitter<{
     this.rest = new RestManager(this.options.token)
 
     const gatewayRequest = await this.rest.misc.getGateway()
+    this.debug(`Start gateway: ${JSON.stringify(gatewayRequest)}`)
+
     this.session = gatewayRequest.session_start_limit
 
     if (!this.options.ws) this.options.ws = gatewayRequest.url
@@ -234,9 +243,10 @@ export class Master extends EventEmitter<{
     if ((this.options.shards as number | 'auto') === 'auto') this.options.shards = gatewayRequest.shards
     if (typeof this.options.shards !== 'number') this.options.shards = 1
     this.options.shards += this.options?.shardOffset ?? 0
-    this.log(`Spawning ${this.options.shards} shards.`)
 
     this.chunks = chunkShards(this.options?.shards || 1, this.options.shardsPerCluster ?? 5)
+
+    this.log(`Creating ${this.options.shards} shard${this.options.shards > 1 ? 's' : ''} / ${this.chunks.length} cluster${this.chunks.length > 1 ? 's' : ''}`)
 
     const promises: Array<Promise<void>> = []
 
@@ -251,11 +261,10 @@ export class Master extends EventEmitter<{
     }
 
     await Promise.all(promises)
-    this.log('Registering shards')
-
+    this.debug('All clusters have been spawned, registering shards')
     await Promise.all(this.clusters.map(async x => await x.start()))
+    this.debug('Shards have been registered, starting loop')
 
-    this.log('Spawning')
     for (let i = 0; i < this.session.max_concurrency; i++) {
       void this.sharder.loop(i)
     }
@@ -477,4 +486,9 @@ export interface BotOptions {
    * @default 5100
    */
   spawnTimeout?: number
+  /**
+   * Amount of time to try asking the cluster to start before giving up and respawning
+   * @default 3
+   */
+  clusterStartRetention?: number
 }
