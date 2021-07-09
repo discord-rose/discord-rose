@@ -123,7 +123,7 @@ export class RestManager extends EventEmitter<{
       })
     })
 
-    if (res.roseError) {
+    if (res?.roseError) {
       const error = new RestError(res.roseError, route)
       this.emit('error', error)
 
