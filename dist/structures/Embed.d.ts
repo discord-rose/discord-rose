@@ -1,4 +1,5 @@
 import { APIEmbed, APIMessage } from 'discord-api-types';
+import Colors from '../utils/webColors';
 /**
  * Discord Embed
  */
@@ -10,7 +11,7 @@ export declare class Embed<Res extends APIMessage | null = APIMessage> {
      * Sets the color
      * @param color Color hex code
      */
-    color(color: number): this;
+    color(color: keyof typeof Colors | number): this;
     /**
      * Sets author
      * @param name Name of author

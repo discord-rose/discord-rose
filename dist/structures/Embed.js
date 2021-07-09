@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Embed = void 0;
+const webColors_1 = __importDefault(require("../utils/webColors"));
 global.ROSE_DEFAULT_EMBED = {};
 /**
  * Discord Embed
@@ -15,7 +19,8 @@ class Embed {
      * @param color Color hex code
      */
     color(color) {
-        this.obj.color = color;
+        var _a;
+        this.obj.color = (_a = webColors_1.default[color]) !== null && _a !== void 0 ? _a : color;
         return this;
     }
     /**
