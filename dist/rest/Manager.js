@@ -123,7 +123,7 @@ class RestManager extends typed_emitter_1.EventEmitter {
                 }
             });
         });
-        if (res.roseError) {
+        if (res === null || res === void 0 ? void 0 : res.roseError) {
             const error = new Error_1.RestError(res.roseError, route);
             this.emit('error', error);
             throw error;
