@@ -1,6 +1,6 @@
 import { Shard } from './Shard'
 import WebSocket from 'ws'
-import { GatewayDispatchEvents, GatewayDispatchPayload, GatewayHelloData, GatewayOPCodes, GatewaySendPayload } from 'discord-api-types'
+import { GatewayDispatchEvents, GatewayDispatchPayload, GatewayHelloData, GatewayOpcodes, GatewaySendPayload } from 'discord-api-types'
 
 /**
  * Structure in charge of managing Discord communcation over websocket
@@ -67,7 +67,7 @@ export class DiscordSocket {
 
     if (msg.s) this.sequence = msg.s
 
-    if (msg.op === GatewayOPCodes.Dispatch) {
+    if (msg.op === GatewayOpcodes.Dispatch) {
       if ([GatewayDispatchEvents.Ready, GatewayDispatchEvents.Resumed].includes(msg.t)) {
         if (msg.t === GatewayDispatchEvents.Resumed) {
           if (this.op7) {
@@ -87,16 +87,16 @@ export class DiscordSocket {
       if ([GatewayDispatchEvents.Ready, GatewayDispatchEvents.GuildCreate, GatewayDispatchEvents.GuildDelete].includes(msg.t)) return
 
       this.shard.worker.emit(msg.t as any, msg.d)
-    } else if (msg.op === GatewayOPCodes.Heartbeat) {
+    } else if (msg.op === GatewayOpcodes.Heartbeat) {
       this._heartbeat()
-    } else if (msg.op === GatewayOPCodes.Reconnect) {
+    } else if (msg.op === GatewayOpcodes.Reconnect) {
       this.op7 = true
       this.shard.restart(false, 1012, 'Opcode 7 Restart')
-    } else if (msg.op === GatewayOPCodes.InvalidSession) {
+    } else if (msg.op === GatewayOpcodes.InvalidSession) {
       setTimeout(() => {
         this.shard.restart(!msg.d, 1002, 'Invalid Session')
       }, Math.ceil(Math.random() * 5) * 1000)
-    } else if (msg.op === GatewayOPCodes.Hello) {
+    } else if (msg.op === GatewayOpcodes.Hello) {
       if (this.resuming && (!this.sessionID || !this.sequence)) {
         this.shard.worker.debug('Cancelling resume because of missing session info')
         this.resuming = false
@@ -106,7 +106,7 @@ export class DiscordSocket {
 
       if (this.resuming) {
         this._send({
-          op: GatewayOPCodes.Resume,
+          op: GatewayOpcodes.Resume,
           d: {
             token: this.shard.worker.options.token,
             session_id: this.sessionID as string,
@@ -115,7 +115,7 @@ export class DiscordSocket {
         })
       } else {
         this._send({
-          op: GatewayOPCodes.Identify,
+          op: GatewayOpcodes.Identify,
           d: {
             shard: [this.shard.id, this.shard.worker.options.shards],
             intents: this.shard.worker.options.intents,
@@ -132,7 +132,7 @@ export class DiscordSocket {
       this.waitingHeartbeat = false
       this.heartbeatRetention = 0
       this._heartbeat()
-    } else if (msg.op === GatewayOPCodes.HeartbeatAck) {
+    } else if (msg.op === GatewayOpcodes.HeartbeatAck) {
       this.shard.worker.debug(`Heartbeat acknowledged on shard ${this.shard.id}`)
       this.heartbeatRetention = 0
       this.shard.ping = Date.now() - (this.waitingHeartbeat as number)
@@ -150,7 +150,7 @@ export class DiscordSocket {
       if (this.heartbeatRetention > 5) return this.shard.restart(false, 1006, 'Not Receiving Heartbeats')
     }
     this._send({
-      op: GatewayOPCodes.Heartbeat,
+      op: GatewayOpcodes.Heartbeat,
       d: this.sequence
     })
     this.waitingHeartbeat = Date.now()

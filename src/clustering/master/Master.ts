@@ -167,9 +167,9 @@ export class Master extends EventEmitter<{
       const channelCaches = (this.options.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true ? CachedChannelTypes : (this.options.cache.channels as unknown as typeof CachedChannelTypes[number]) ?? [] as Array<typeof CachedChannelTypes[number]>
       this.options.cache.channels = [] as ChannelType[]
 
-      if (channelCaches.includes('text')) this.options.cache?.channels?.push(ChannelType.GUILD_NEWS, ChannelType.GUILD_TEXT)
-      if (channelCaches.includes('voice')) this.options.cache?.channels?.push(ChannelType.GUILD_VOICE)
-      if (channelCaches.includes('category')) this.options.cache?.channels?.push(ChannelType.GUILD_CATEGORY)
+      if (channelCaches.includes('text')) this.options.cache?.channels?.push(ChannelType.GuildNews, ChannelType.GuildText)
+      if (channelCaches.includes('voice')) this.options.cache?.channels?.push(ChannelType.GuildVoice)
+      if (channelCaches.includes('category')) this.options.cache?.channels?.push(ChannelType.GuildCategory)
     }
 
     this.log = typeof options.log === 'undefined'

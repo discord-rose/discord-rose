@@ -1,6 +1,6 @@
 import Collection from '@discordjs/collection'
 import { EventEmitter } from '@jpbberry/typed-emitter'
-import { APIGuildMember, GatewayGuildMemberAddDispatchData, GatewayGuildMembersChunkDispatchData, GatewayOPCodes, GatewayPresenceUpdateData, GatewayRequestGuildMembersData, Snowflake } from 'discord-api-types'
+import { APIGuildMember, GatewayGuildMemberAddDispatchData, GatewayGuildMembersChunkDispatchData, GatewayOpcodes, GatewayPresenceUpdateData, GatewayRequestGuildMembersData, Snowflake } from 'discord-api-types'
 import { OPEN } from 'ws'
 import { State } from '../clustering/ThreadComms'
 import { DiscordDefaultEventMap } from '../typings/Discord'
@@ -123,7 +123,7 @@ export class Shard extends EventEmitter<DiscordDefaultEventMap> {
 
   setPresence (presence: GatewayPresenceUpdateData): void {
     this.ws._send({
-      op: GatewayOPCodes.PresenceUpdate,
+      op: GatewayOpcodes.PresenceUpdate,
       d: presence
     })
   }
@@ -149,7 +149,7 @@ export class Shard extends EventEmitter<DiscordDefaultEventMap> {
       }
       this.worker.on('GUILD_MEMBERS_CHUNK', listener)
       this.ws._send({
-        op: GatewayOPCodes.RequestGuildMembers,
+        op: GatewayOpcodes.RequestGuildMembers,
         d: opts
       })
     })

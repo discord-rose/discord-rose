@@ -343,7 +343,7 @@ export class CommandHandler {
 
   private async _exec (data: APIMessage): Promise<void> {
     if (!data.content || (!this._options.bots && data.author.bot)) return
-    if (![MessageType.DEFAULT, MessageType.REPLY].includes(data.type)) return
+    if (![MessageType.Default, MessageType.Reply].includes(data.type)) return
 
     let prefix: string | string[] | undefined = ''
     if (this.prefixFunction) {
