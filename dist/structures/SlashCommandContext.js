@@ -94,7 +94,7 @@ class SlashCommandContext {
     async send(data, ephermal = false) {
         const message = Messages_1.MessagesResource._formMessage(data, true);
         if (ephermal) {
-            message.flags = 64 /* EPHEMERAL */;
+            message.flags = 64 /* Ephemeral */;
         }
         if (this.sent) {
             await this.worker.api.webhooks.editMessage(this.worker.user.id, this.interaction.token, '@original', message);

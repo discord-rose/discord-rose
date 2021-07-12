@@ -113,11 +113,11 @@ class Master extends typed_emitter_1.EventEmitter {
             const channelCaches = ((_2 = this.options.cache) === null || _2 === void 0 ? void 0 : _2.channels) === true ? CachedChannelTypes : (_3 = this.options.cache.channels) !== null && _3 !== void 0 ? _3 : [];
             this.options.cache.channels = [];
             if (channelCaches.includes('text'))
-                (_5 = (_4 = this.options.cache) === null || _4 === void 0 ? void 0 : _4.channels) === null || _5 === void 0 ? void 0 : _5.push(5 /* GUILD_NEWS */, 0 /* GUILD_TEXT */);
+                (_5 = (_4 = this.options.cache) === null || _4 === void 0 ? void 0 : _4.channels) === null || _5 === void 0 ? void 0 : _5.push(5 /* GuildNews */, 0 /* GuildText */);
             if (channelCaches.includes('voice'))
-                (_7 = (_6 = this.options.cache) === null || _6 === void 0 ? void 0 : _6.channels) === null || _7 === void 0 ? void 0 : _7.push(2 /* GUILD_VOICE */);
+                (_7 = (_6 = this.options.cache) === null || _6 === void 0 ? void 0 : _6.channels) === null || _7 === void 0 ? void 0 : _7.push(2 /* GuildVoice */);
             if (channelCaches.includes('category'))
-                (_9 = (_8 = this.options.cache) === null || _8 === void 0 ? void 0 : _8.channels) === null || _9 === void 0 ? void 0 : _9.push(4 /* GUILD_CATEGORY */);
+                (_9 = (_8 = this.options.cache) === null || _8 === void 0 ? void 0 : _8.channels) === null || _9 === void 0 ? void 0 : _9.push(4 /* GuildCategory */);
         }
         this.log = typeof options.log === 'undefined'
             ? (msg, cluster) => {

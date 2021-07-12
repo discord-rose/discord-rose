@@ -305,7 +305,7 @@ class CommandHandler {
         var _a;
         if (!data.content || (!this._options.bots && data.author.bot))
             return;
-        if (![0 /* DEFAULT */, 19 /* REPLY */].includes(data.type))
+        if (![0 /* Default */, 19 /* Reply */].includes(data.type))
             return;
         let prefix = '';
         if (this.prefixFunction) {
