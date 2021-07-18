@@ -42,7 +42,7 @@ export class Worker extends EventEmitter<DiscordEventMap> {
   /**
    * Thread communications
    */
-  public comms: Thread = new Thread(this)
+  public comms: Thread
 
   /**
    * Cached guilds
@@ -79,6 +79,12 @@ export class Worker extends EventEmitter<DiscordEventMap> {
   public user = {} as APIUser
 
   public cacheManager = {} as CacheManager
+
+  constructor (connectComms = true) {
+    super()
+
+    if (connectComms) this.comms = new Thread(this)
+  }
 
   async start (shardNumbers: number[]): Promise<void> {
     this.api = new RestManager(this.options.token)

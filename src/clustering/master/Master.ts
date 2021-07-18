@@ -15,8 +15,7 @@ import { handlers } from './handlers'
 
 import path from 'path'
 import { EventEmitter } from '@jpbberry/typed-emitter'
-
-const CachedChannelTypes = ['text', 'voice', 'category'] as const
+import { formatBotOptions } from '../../utils/formatBotOptions'
 
 type Complete<T> = {
   [P in keyof Required<T>]: Pick<T, P> extends Required<Pick<T, P>> ? T[P] : (T[P] | undefined)
@@ -112,65 +111,7 @@ export class Master extends EventEmitter<{
 
     this.fileName = path.isAbsolute(fileName) ? fileName : path.resolve(process.cwd(), fileName)
 
-    this.options = {
-      token: options.token,
-      shards: options.shards ?? 'auto',
-      shardsPerCluster: options.shardsPerCluster ?? 5,
-      shardOffset: options.shardOffset ?? 0,
-      cache: options.cache === false
-        ? {
-            guilds: false,
-            roles: false,
-            channels: false,
-            self: false,
-            members: false,
-            messages: false,
-            users: false,
-            voiceStates: false
-          }
-        : {
-            guilds: options.cache?.guilds ?? true,
-            roles: options.cache?.roles ?? true,
-            channels: options.cache?.channels ?? true,
-            self: options.cache?.self ?? true,
-            members: options.cache?.members ?? false,
-            messages: options.cache?.messages ?? false,
-            users: options.cache?.users ?? false,
-            voiceStates: options.cache?.voiceStates ?? false
-          },
-      cacheControl: options.cacheControl as Complete<CacheControlOptions> ?? {
-        channels: false,
-        guilds: false,
-        members: false,
-        roles: false
-      },
-      ws: options.ws ?? '',
-      intents: Array.isArray(options.intents)
-        ? options.intents.reduce((a, b) => a | Intents[b], 0)
-        : options.intents === true
-          ? Object.values(Intents).reduce((a, b) => a | b, 0)
-          : options.intents
-            ? options.intents
-            : Object.values(Intents).reduce((a, b) => a | b) & ~Intents.GUILD_MEMBERS & ~Intents.GUILD_PRESENCES,
-      warnings: {
-        cachedIntents: options.warnings?.cachedIntents ?? true
-      },
-      log: options.log,
-      rest: options.rest,
-      spawnTimeout: options.spawnTimeout ?? 5100,
-      clusterStartRetention: options.clusterStartRetention ?? 3
-    } as CompleteBotOptions
-
-    if ((this.options.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true) {
-      this.options.cache.channels = true
-    } else if (this.options.cache.channels) {
-      const channelCaches = (this.options.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true ? CachedChannelTypes : (this.options.cache.channels as unknown as typeof CachedChannelTypes[number]) ?? [] as Array<typeof CachedChannelTypes[number]>
-      this.options.cache.channels = [] as ChannelType[]
-
-      if (channelCaches.includes('text')) this.options.cache?.channels?.push(ChannelType.GuildNews, ChannelType.GuildText)
-      if (channelCaches.includes('voice')) this.options.cache?.channels?.push(ChannelType.GuildVoice)
-      if (channelCaches.includes('category')) this.options.cache?.channels?.push(ChannelType.GuildCategory)
-    }
+    this.options = formatBotOptions(options)
 
     this.log = typeof options.log === 'undefined'
       ? (msg, cluster) => {
@@ -178,16 +119,6 @@ export class Master extends EventEmitter<{
         }
       : options.log
     if (!this.log) this.log = () => {}
-
-    if (this.options.warnings?.cachedIntents) {
-      const warn = (key: string, intent: string): void => console.warn(`WARNING: CacheOptions.${key} was turned on, but is missing the ${intent} intent. Meaning your cache with be empty. Either turn this on, or if it's intentional set Options.warnings.cachedIntents to false.`)
-
-      if (this.options.cache?.guilds && ((this.options.intents & Intents.GUILDS) === 0)) warn('guilds', 'GUILDS')
-      if (this.options.cache?.roles && ((this.options.intents & Intents.GUILDS) === 0)) warn('roles', 'GUILDS')
-      if (this.options.cache?.channels && ((this.options.intents & Intents.GUILDS) === 0)) warn('channels', 'GUILDS')
-      if (this.options.cache?.members && ((this.options.intents & Intents.GUILD_MEMBERS) === 0)) warn('members', 'GUILD_MEMBERS')
-      if (this.options.cache?.messages && ((this.options.intents & Intents.GUILD_MESSAGES) === 0)) warn('messages', 'GUILD_MESSAGES')
-    }
 
     const keys = Object.keys(handlers)
     for (let i = 0; i < keys.length; i++) {
@@ -411,7 +342,7 @@ export interface CacheControlOptions {
   voiceStates?: Array<keyof DiscordEventMap['VOICE_STATE_UPDATE']> | false
 }
 
-const Intents = {
+export const Intents = {
   GUILDS: 1 << 0,
   GUILD_MEMBERS: 1 << 1,
   GUILD_BANS: 1 << 2,
