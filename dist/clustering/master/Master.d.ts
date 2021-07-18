@@ -208,7 +208,7 @@ export interface CacheControlOptions {
     members?: Array<keyof DiscordEventMap['GUILD_MEMBER_ADD']> | false;
     voiceStates?: Array<keyof DiscordEventMap['VOICE_STATE_UPDATE']> | false;
 }
-declare const Intents: {
+export declare const Intents: {
     GUILDS: number;
     GUILD_MEMBERS: number;
     GUILD_BANS: number;

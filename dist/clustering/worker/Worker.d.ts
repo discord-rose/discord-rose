@@ -65,6 +65,7 @@ export declare class Worker extends EventEmitter<DiscordEventMap> {
      */
     user: APIUser;
     cacheManager: CacheManager;
+    constructor(connectComms?: boolean);
     start(shardNumbers: number[]): Promise<void>;
     /**
      * Sets the status of the client

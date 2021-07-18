@@ -19,6 +19,7 @@ __exportStar(require("./clustering/master/Cluster"), exports);
 __exportStar(require("./clustering/master/Sharder"), exports);
 __exportStar(require("./clustering/worker/Worker"), exports);
 __exportStar(require("./clustering/worker/Thread"), exports);
+__exportStar(require("./clustering/worker/single/SingleWorker"), exports);
 __exportStar(require("./rest/Manager"), exports);
 __exportStar(require("./rest/resources/Channels"), exports);
 __exportStar(require("./rest/resources/Emojis"), exports);

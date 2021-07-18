@@ -5,6 +5,7 @@ export * from './clustering/master/Cluster';
 export * from './clustering/master/Sharder';
 export * from './clustering/worker/Worker';
 export * from './clustering/worker/Thread';
+export * from './clustering/worker/single/SingleWorker';
 export * from './rest/Manager';
 export * from './rest/resources/Channels';
 export * from './rest/resources/Emojis';

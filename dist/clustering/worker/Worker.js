@@ -16,8 +16,8 @@ const typed_emitter_1 = require("@jpbberry/typed-emitter");
  * Cluster Worker used on the worker thread
  */
 class Worker extends typed_emitter_1.EventEmitter {
-    constructor() {
-        super(...arguments);
+    constructor(connectComms = true) {
+        super();
         /**
          * Bot options
          */
@@ -34,10 +34,6 @@ class Worker extends typed_emitter_1.EventEmitter {
          * Command handler
          */
         this.commands = new CommandHandler_1.CommandHandler(this);
-        /**
-         * Thread communications
-         */
-        this.comms = new Thread_1.Thread(this);
         /**
          * Cached guilds
          */
@@ -71,6 +67,8 @@ class Worker extends typed_emitter_1.EventEmitter {
          */
         this.user = {};
         this.cacheManager = {};
+        if (connectComms)
+            this.comms = new Thread_1.Thread(this);
     }
     async start(shardNumbers) {
         this.api = new Manager_1.RestManager(this.options.token);
