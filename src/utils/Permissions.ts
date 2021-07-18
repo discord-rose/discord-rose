@@ -50,8 +50,8 @@ export const PermissionsUtils = {
    * @param perm Permission name to test
    * @returns Whether or not the user has permissions
    */
-  has (bit: number, perm: keyof typeof bits): boolean {
-    return this.hasPerms(bit, bits[perm])
+  has (bit: number | bigint, perm: keyof typeof bits): boolean {
+    return this.hasPerms(bit, BigInt(bits[perm]))
   },
 
   /**
@@ -120,9 +120,9 @@ export const PermissionsUtils = {
    * @param bit Number bit ermission to test
    * @returns Whether or not the user has permissions
    */
-  hasPerms (perms: number, bit: number): boolean {
-    if ((perms & bits.administrator) !== 0) return true // administrator
-    if ((perms & bit) !== 0) return true
+  hasPerms (perms: number | bigint, bit: number | bigint): boolean {
+    if (Number(BigInt(perms) & BigInt(bits.administrator)) !== 0) return true // administrator
+    if (Number(BigInt(perms) & BigInt(bit)) !== 0) return true
 
     return false
   }
