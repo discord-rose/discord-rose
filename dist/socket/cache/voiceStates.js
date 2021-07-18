@@ -45,6 +45,7 @@ function voiceStates(events, worker) {
             newVoiceState.guild_id = voiceState.guild_id;
             newVoiceState.channel_id = voiceState.channel_id;
             newVoiceState.user_id = voiceState.user_id;
+            newVoiceState.session_id = voiceState.session_id;
             voiceState = newVoiceState;
         }
         if (!voiceState.guild_id)
