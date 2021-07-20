@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { APIInteractionApplicationCommandCallbackData, APIMessageReferenceSend, RESTGetAPIChannelMessageReactionUsersQuery, RESTGetAPIChannelMessageReactionUsersResult, RESTGetAPIChannelMessageResult, RESTPatchAPIChannelMessageResult, RESTPostAPIChannelMessageCrosspostResult, RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult, RESTPostAPIWebhookWithTokenJSONBody, RESTPutAPIChannelMessageReactionResult, Snowflake } from 'discord-api-types';
+import { APIInteractionResponseCallbackData, APIMessageReferenceSend, RESTGetAPIChannelMessageReactionUsersQuery, RESTGetAPIChannelMessageReactionUsersResult, RESTGetAPIChannelMessageResult, RESTPatchAPIChannelMessageResult, RESTPostAPIChannelMessageCrosspostResult, RESTPostAPIChannelMessageJSONBody, RESTPostAPIChannelMessageResult, RESTPostAPIWebhookWithTokenJSONBody, RESTPutAPIChannelMessageReactionResult, Snowflake } from 'discord-api-types';
 import { Embed } from '../../structures/Embed';
 import { RestManager } from '../Manager';
 /**
@@ -14,7 +14,7 @@ export declare type MessageTypes = RESTPostAPIChannelMessageJSONBody | RESTPostA
 export declare class MessagesResource {
     private readonly rest;
     constructor(rest: RestManager);
-    static _formMessage(message: MessageTypes, webhook?: boolean): RESTPostAPIWebhookWithTokenJSONBody | RESTPostAPIChannelMessageJSONBody | APIInteractionApplicationCommandCallbackData;
+    static _formMessage(message: MessageTypes, webhook?: boolean): RESTPostAPIWebhookWithTokenJSONBody | RESTPostAPIChannelMessageJSONBody | APIInteractionResponseCallbackData;
     /**
      * Sends a message to a channel
      * @param channelId ID of channel

@@ -48,12 +48,15 @@ class SlashCommandContext {
      * Author of the message
      */
     get author() {
-        return this.interaction.member.user;
+        var _a, _b;
+        return ((_b = (_a = this.interaction.member) === null || _a === void 0 ? void 0 : _a.user) !== null && _b !== void 0 ? _b : this.interaction.user);
     }
     /**
      * Guild where the message was sent
      */
     get guild() {
+        if (!this.interaction.guild_id)
+            throw new Error('Command was not ran in a guild');
         return this.worker.guilds.get(this.interaction.guild_id);
     }
     /**
@@ -66,12 +69,16 @@ class SlashCommandContext {
      * Member who sent the message
      */
     get member() {
+        if (!this.interaction.member)
+            throw new Error('Command was not ran in a guild');
         return this.interaction.member;
     }
     /**
      * Bot's memeber within the guild
      */
     get me() {
+        if (!this.interaction.guild_id)
+            throw new Error('Command was not ran in a guild');
         return this.worker.selfMember.get(this.interaction.guild_id);
     }
     /**

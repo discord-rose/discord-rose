@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ThreadComms = exports.State = void 0;
-const events_1 = require("events");
+const typed_emitter_1 = require("@jpbberry/typed-emitter");
 const UtilityFunctions_1 = require("../utils/UtilityFunctions");
 const collection_1 = __importDefault(require("@discordjs/collection"));
 var ThreadMethod;
@@ -25,27 +25,23 @@ var State;
 /**
  * Middleman between all thread communications
  */
-class ThreadComms extends events_1.EventEmitter {
+class ThreadComms extends typed_emitter_1.EventEmitter {
     constructor() {
         super();
         this.comms = null;
         this.commands = new collection_1.default();
-        /**
-         * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
-         */
-        this.on = this.on;
         this.on('KILL', () => process.exit(5));
     }
-    emit(event, data, resolve) {
-        super.emit('*', { event, d: data }, resolve);
-        return super.emit(event, data, resolve);
+    _emit(event, data, resolve) {
+        this.emit('*', { event, d: data }, resolve);
+        return this.emit(event, ...[data, resolve]);
     }
     register(comms) {
         this.comms = comms;
         this.comms.on('message', (msg) => {
             switch (msg.op) {
                 case ThreadMethod.COMMAND: {
-                    this.emit(msg.e, msg.d, (data) => {
+                    this._emit(msg.e, msg.d, (data) => {
                         this._respond(msg.i, data);
                     });
                     break;
@@ -59,7 +55,7 @@ class ThreadComms extends events_1.EventEmitter {
                     break;
                 }
                 case ThreadMethod.TELL: {
-                    this.emit(msg.e, msg.d, null);
+                    this._emit(msg.e, msg.d, null);
                     break;
                 }
             }

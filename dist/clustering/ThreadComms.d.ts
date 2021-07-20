@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { EventEmitter } from 'events';
+import { EventEmitter } from '@jpbberry/typed-emitter';
 import { Worker, MessagePort } from 'worker_threads';
 import { CompleteBotOptions } from './master/Master';
 import { APIGuild, APIMessage, Snowflake } from 'discord-api-types';
@@ -131,17 +131,16 @@ export interface ThreadEvents {
 export declare type ResolveFunction<K extends keyof ThreadEvents> = ThreadEvents[K]['receive'] extends null ? null : (data: ThreadEvents[K]['receive'] | {
     error: string;
 }) => void;
+export declare type ThreadCommsEventEmitter = {
+    [K in keyof ThreadEvents]: [data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>];
+};
 /**
  * Middleman between all thread communications
  */
-export declare class ThreadComms extends EventEmitter {
+export declare class ThreadComms extends EventEmitter<ThreadCommsEventEmitter> {
     private comms?;
     private readonly commands;
-    /**
-     * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
-     */
-    on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => this;
-    emit<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>): boolean;
+    _emit<K extends keyof ThreadCommsEventEmitter>(event: K, data: ThreadCommsEventEmitter[K], resolve: ResolveFunction<K>): boolean;
     constructor();
     register(comms: Worker | MessagePort): void;
     private _send;

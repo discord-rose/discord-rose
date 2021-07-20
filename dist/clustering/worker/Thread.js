@@ -11,20 +11,22 @@ const handlers_1 = require("./handlers");
  */
 class Thread extends ThreadComms_1.ThreadComms {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    constructor(worker = {}) {
+    constructor(worker = {}, register = true) {
         super();
         this.worker = worker;
-        this.id = worker_threads_1.workerData.id;
-        super.register(worker_threads_1.parentPort);
-        const keys = Object.keys(handlers_1.handlers);
-        for (let i = 0; i < keys.length; i++) {
-            const key = keys[i];
-            this.on(key, (data, resolve) => {
-                var _a;
-                (_a = handlers_1.handlers[key]) === null || _a === void 0 ? void 0 : _a.bind(this)(data, resolve);
-            });
+        if (register) {
+            this.id = worker_threads_1.workerData.id;
+            super.register(worker_threads_1.parentPort);
+            const keys = Object.keys(handlers_1.handlers);
+            for (let i = 0; i < keys.length; i++) {
+                const key = keys[i];
+                this.on(key, (data, resolve) => {
+                    var _a;
+                    (_a = handlers_1.handlers[key]) === null || _a === void 0 ? void 0 : _a.bind(this)(data, resolve);
+                });
+            }
+            this.tell('BEGIN', null);
         }
-        this.tell('BEGIN', null);
     }
     async registerShard(id) {
         return await this.sendCommand('REGISTER_SHARD', { id });

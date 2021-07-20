@@ -6,29 +6,31 @@ const Worker_1 = require("../Worker");
 const formatBotOptions_1 = require("../../../utils/formatBotOptions");
 const Manager_1 = require("../../../rest/Manager");
 const Shard_1 = require("../../../socket/Shard");
+// import { Thread } from '../Thread'
 const SingleSharder_1 = require("./SingleSharder");
+const SingleThread_1 = require("./SingleThread");
 class SingleWorker extends Worker_1.Worker {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    // comms = {
+    //   id: '0',
+    //   tell: (event: string, data: any) => {
+    //     if (event === 'LOG') this.log(data)
+    //     if (event === 'SHARD_READY') this.log(`Shard ${data.id as string} connected to Discord`)
+    //   },
+    //   registerShard: (id) => {
+    //     this.sharder.register(id)
+    //   }
+    // } as Thread
     constructor(options) {
         super(false);
         this.sharder = new SingleSharder_1.SingleSharder(this);
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        this.comms = {
-            id: '0',
-            tell: (event, data) => {
-                if (event === 'LOG')
-                    this.log(data);
-                if (event === 'SHARD_READY')
-                    this.log(`Shard ${data.id} connected to Discord`);
-            },
-            registerShard: (id) => {
-                this.sharder.register(id);
-            }
-        };
+        this.comms = new SingleThread_1.SingleThread(this);
         this.options = formatBotOptions_1.formatBotOptions(options);
         this.cacheManager = new CacheManager_1.CacheManager(this);
         this.api = new Manager_1.RestManager(this.options.token);
+        const timeStart = Date.now();
         this.once('READY', () => {
-            this.log('All shards ready');
+            this.log(`Finished spawning after ${((Date.now() - timeStart) / 1000).toFixed(2)}s`);
         });
         void this._beginSingleton();
     }
@@ -41,11 +43,18 @@ class SingleWorker extends Worker_1.Worker {
         void this.start();
     }
     async _waitForShard(shard) {
-        return await new Promise((resolve) => {
-            shard.once('READY', () => resolve());
+        return await new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+                reject(new Error());
+            }, 15e3);
+            shard.once('READY', () => {
+                clearTimeout(timeout);
+                resolve();
+            });
         });
     }
     async start() {
+        this.log(`Connecting ${this.options.shards} shard${this.options.shards > 1 ? 's' : ''}`);
         for (let i = 0; i < this.options.shards; i++) {
             const shard = new Shard_1.Shard(i, this);
             this.shards.set(i, shard);

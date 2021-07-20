@@ -270,7 +270,11 @@ class CommandHandler {
         var _a, _b;
         if (!data.member)
             return;
-        if (data.type === 1 /* Ping */)
+        if (data.type === 3 /* MessageComponent */)
+            return;
+        if (!data.data.options)
+            return;
+        if (!('value' in data.data.options[0]))
             return;
         const cmd = this.find(data.data.name, true);
         if (!cmd)
@@ -281,7 +285,7 @@ class CommandHandler {
             command: cmd,
             prefix: '/',
             ran: data.data.name,
-            args: (_b = (_a = data.data.options) === null || _a === void 0 ? void 0 : _a.map(x => x.value)) !== null && _b !== void 0 ? _b : []
+            args: (_b = (_a = data.data.options) === null || _a === void 0 ? void 0 : _a.map(x => 'value' in x ? x.value : '').filter(x => x)) !== null && _b !== void 0 ? _b : []
         });
         try {
             for (const midFn of this.middlewares) {

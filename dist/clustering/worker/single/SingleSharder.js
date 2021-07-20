@@ -39,7 +39,10 @@ class SingleSharder {
         const nextShard = this.worker.shards.get(next);
         if (nextShard) {
             nextShard.start();
-            await this.worker._waitForShard(nextShard);
+            await this.worker._waitForShard(nextShard)
+                .catch(() => {
+                this.worker.log(`Shard ${next} failed to startup in time. Continuing.`);
+            });
         }
         await UtilityFunctions_1.wait(this.worker.options.spawnTimeout);
         return await this.loop(bucket);

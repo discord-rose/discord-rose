@@ -8,7 +8,7 @@ import { ClusterStats, ThreadComms } from '../ThreadComms';
 export declare class Thread extends ThreadComms {
     worker: Worker;
     id: string;
-    constructor(worker?: Worker);
+    constructor(worker?: Worker, register?: boolean);
     registerShard(id: number): Promise<{}>;
     /**
      * Destroys entire master.

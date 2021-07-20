@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import { CommandContext } from './CommandContext';
-import { APIGuildMember, APIMessage, APIChannel, APIUser, APIApplicationCommandInteractionDataOptionWithValues, APIGuildInteraction, APIApplicationCommandInteractionData } from 'discord-api-types';
+import { APIGuildMember, APIMessage, APIChannel, APIUser, APIApplicationCommandInteractionDataOptionWithValues, APIGuildInteraction, APIApplicationCommandInteractionData, APIApplicationCommandInteraction } from 'discord-api-types';
 import { Embed } from './Embed';
 import { MessageTypes } from '../rest/resources/Messages';
 import { CommandOptions, Worker } from '../typings/lib';
@@ -9,7 +9,7 @@ import { CachedGuild } from '../typings/Discord';
 export interface InteractionData extends APIApplicationCommandInteractionData {
     options: APIApplicationCommandInteractionDataOptionWithValues[];
 }
-export interface Interaction extends APIGuildInteraction {
+export interface Interaction extends APIApplicationCommandInteraction {
     data: InteractionData;
 }
 /**
@@ -70,7 +70,7 @@ export declare class SlashCommandContext implements Omit<CommandContext, 'reply'
     /**
      * Guild where the message was sent
      */
-    get guild(): CachedGuild | undefined;
+    get guild(): CachedGuild;
     /**
      * Channel where the message was sent
      */
