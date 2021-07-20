@@ -43,6 +43,9 @@ export class SingleSharder {
     if (nextShard) {
       nextShard.start()
       await this.worker._waitForShard(nextShard)
+        .catch(() => {
+          this.worker.log(`Shard ${next} failed to startup in time. Continuing.`)
+        })
     }
 
     await wait(this.worker.options.spawnTimeout)

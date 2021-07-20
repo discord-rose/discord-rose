@@ -13,23 +13,26 @@ import { handlers } from './handlers'
  * Thread interface for interacting with the master process from a worker
  */
 export class Thread extends ThreadComms {
-  public id: string = workerData.id
+  public id: string
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  constructor (public worker: Worker = {} as Worker) {
+  constructor (public worker: Worker = {} as Worker, register = true) {
     super()
-    super.register(parentPort as MessagePort)
+    if (register) {
+      this.id = workerData.id
+      super.register(parentPort as MessagePort)
 
-    const keys = Object.keys(handlers)
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i] as keyof ThreadEvents
+      const keys = Object.keys(handlers)
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i] as keyof ThreadEvents
 
-      this.on(key, (data, resolve) => {
-        handlers[key]?.bind(this)(data, resolve)
-      })
+        this.on(key, (data, resolve) => {
+          handlers[key]?.bind(this)(data, resolve)
+        })
+      }
+
+      this.tell('BEGIN', null)
     }
-
-    this.tell('BEGIN', null)
   }
 
   async registerShard (id: number): Promise<{}> {

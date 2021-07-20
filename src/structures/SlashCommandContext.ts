@@ -1,5 +1,5 @@
 import { CommandContext } from './CommandContext'
-import { APIGuildMember, APIMessage, APIChannel, APIUser, APIApplicationCommandInteractionDataOptionWithValues, APIGuildInteraction, APIApplicationCommandInteractionData, InteractionResponseType, APIInteractionApplicationCommandCallbackData, APIInteractionResponse, MessageFlags } from 'discord-api-types'
+import { APIGuildMember, APIMessage, APIChannel, APIUser, APIApplicationCommandInteractionDataOptionWithValues, APIGuildInteraction, APIApplicationCommandInteractionData, InteractionResponseType, APIInteractionResponse, MessageFlags, APIApplicationCommandInteraction, APIInteractionResponseCallbackData } from 'discord-api-types'
 
 import { Embed } from './Embed'
 import { MessagesResource, MessageTypes } from '../rest/resources/Messages'
@@ -15,7 +15,7 @@ export interface InteractionData extends APIApplicationCommandInteractionData {
   options: APIApplicationCommandInteractionDataOptionWithValues[]
 }
 
-export interface Interaction extends APIGuildInteraction {
+export interface Interaction extends APIApplicationCommandInteraction {
   data: InteractionData
 }
 
@@ -101,14 +101,16 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * Author of the message
    */
   get author (): APIUser {
-    return this.interaction.member.user
+    return (this.interaction.member?.user ?? this.interaction.user) as APIUser
   }
 
   /**
    * Guild where the message was sent
    */
-  get guild (): CachedGuild | undefined {
-    return this.worker.guilds.get(this.interaction.guild_id)
+  get guild (): CachedGuild {
+    if (!this.interaction.guild_id) throw new Error('Command was not ran in a guild')
+
+    return this.worker.guilds.get(this.interaction.guild_id) as CachedGuild
   }
 
   /**
@@ -122,6 +124,8 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * Member who sent the message
    */
   get member (): APIGuildInteraction['member'] {
+    if (!this.interaction.member) throw new Error('Command was not ran in a guild')
+
     return this.interaction.member
   }
 
@@ -129,6 +133,8 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * Bot's memeber within the guild
    */
   get me (): APIGuildMember {
+    if (!this.interaction.guild_id) throw new Error('Command was not ran in a guild')
+
     return this.worker.selfMember.get(this.interaction.guild_id) as APIGuildMember
   }
 
@@ -155,7 +161,7 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
   async send (data: MessageTypes, ephermal: boolean = false): Promise<null> {
     const message = MessagesResource._formMessage(data, true)
     if (ephermal) {
-      (message as APIInteractionApplicationCommandCallbackData).flags = MessageFlags.Ephemeral
+      (message as APIInteractionResponseCallbackData).flags = MessageFlags.Ephemeral
     }
 
     if (this.sent) {

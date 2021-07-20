@@ -1,4 +1,4 @@
-import { APIMessage, InteractionType, MessageType, RESTPostAPIApplicationCommandsJSONBody, Snowflake } from 'discord-api-types'
+import { APIMessage, GatewayInteractionCreateDispatchData, InteractionType, MessageType, RESTPostAPIApplicationCommandsJSONBody, Snowflake } from 'discord-api-types'
 
 import { CommandContext } from './CommandContext'
 
@@ -56,7 +56,7 @@ export class CommandHandler {
       const interactions = this.commands.filter(x => !!x.interaction)
       if (interactions.size > 0) {
         this.worker.on('INTERACTION_CREATE', (data) => {
-          this._interactionExec(data as Interaction).catch(() => {})
+          this._interactionExec(data).catch(() => {})
         })
 
         if (this.worker.comms.id !== '0') return
@@ -308,20 +308,23 @@ export class CommandHandler {
     return this.find
   }
 
-  private async _interactionExec (data: Interaction): Promise<void> {
+  private async _interactionExec (data: GatewayInteractionCreateDispatchData): Promise<void> {
     if (!data.member) return
-    if (data.type === InteractionType.Ping) return
+    if (data.type === InteractionType.MessageComponent) return
+
+    if (!data.data.options) return
+    if (!('value' in data.data.options[0])) return
 
     const cmd = this.find(data.data.name, true) as CommandOptions
     if (!cmd) return
 
     const ctx = new this.SlashCommandContext({
       worker: this.worker,
-      interaction: data,
+      interaction: data as Interaction,
       command: cmd,
       prefix: '/',
       ran: data.data.name,
-      args: data.data.options?.map(x => x.value) ?? []
+      args: data.data.options?.map(x => 'value' in x ? x.value : '').filter(x => x) ?? []
     })
 
     try {

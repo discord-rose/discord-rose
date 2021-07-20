@@ -1,4 +1,4 @@
-import { EventEmitter } from 'events'
+import { EventEmitter } from '@jpbberry/typed-emitter'
 import { Worker, MessagePort } from 'worker_threads'
 
 import { generateID } from '../utils/UtilityFunctions'
@@ -150,21 +150,20 @@ export interface ThreadEvents {
 
 export type ResolveFunction<K extends keyof ThreadEvents> = ThreadEvents[K]['receive'] extends null ? null : (data: ThreadEvents[K]['receive'] | { error: string }) => void
 
+export type ThreadCommsEventEmitter = {
+  [K in keyof ThreadEvents]: [data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>]
+}
+
 /**
  * Middleman between all thread communications
  */
-export class ThreadComms extends EventEmitter {
+export class ThreadComms extends EventEmitter<ThreadCommsEventEmitter> {
   private comms?: Worker | MessagePort | null = null
   private readonly commands: Collection<string, (value?: any) => void> = new Collection()
 
-  /**
-   * @link https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events
-   */
-  on: <K extends keyof ThreadEvents>(event: K, listener: (data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>) => void) => this = this.on
-
-  emit<K extends keyof ThreadEvents>(event: K, data: ThreadEvents[K]['send'], resolve: ResolveFunction<K>): boolean {
-    super.emit('*', { event, d: data }, resolve)
-    return super.emit(event, data, resolve)
+  _emit <K extends keyof ThreadCommsEventEmitter>(event: K, data: ThreadCommsEventEmitter[K], resolve: ResolveFunction<K>): boolean {
+    this.emit('*', { event, d: data }, resolve)
+    return this.emit(event, ...([data, resolve] as any))
   }
 
   constructor () {
@@ -178,7 +177,7 @@ export class ThreadComms extends EventEmitter {
     this.comms.on('message', (msg: ThreadEvent) => {
       switch (msg.op) {
         case ThreadMethod.COMMAND: {
-          this.emit(msg.e, msg.d, (data) => {
+          this._emit(msg.e, msg.d, (data) => {
             this._respond(msg.i, data)
           })
           break
@@ -192,7 +191,7 @@ export class ThreadComms extends EventEmitter {
           break
         }
         case ThreadMethod.TELL: {
-          this.emit(msg.e, msg.d, null)
+          this._emit(msg.e, msg.d, null)
           break
         }
       }
