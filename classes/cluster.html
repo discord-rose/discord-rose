@@ -2723,9 +2723,6 @@ img {
 				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="cluster.html#master" class="tsd-kind-icon">master</a>
 				</li>
-				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a href="cluster.html#on" class="tsd-kind-icon">on</a>
-				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="cluster.html#spawned" class="tsd-kind-icon">spawned</a>
 				</li>
@@ -2733,7 +2730,7 @@ img {
 					<a href="cluster.html#started" class="tsd-kind-icon">started</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
-					<a href="cluster.html#emit" class="tsd-kind-icon">emit</a>
+					<a href="cluster.html#_emit" class="tsd-kind-icon">_emit</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="cluster.html#eval" class="tsd-kind-icon">eval</a>
@@ -2812,7 +2809,6 @@ img {
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="cluster.html#filename" class="tsd-kind-icon">file<wbr>Name</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="cluster.html#id" class="tsd-kind-icon">id</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="cluster.html#master" class="tsd-kind-icon">master</a></li>
-							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="cluster.html#on" class="tsd-kind-icon">on</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="cluster.html#spawned" class="tsd-kind-icon">spawned</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="cluster.html#started" class="tsd-kind-icon">started</a></li>
 						</ul>
@@ -2820,7 +2816,7 @@ img {
 					<section class="tsd-index-section ">
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="cluster.html#emit" class="tsd-kind-icon">emit</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="cluster.html#_emit" class="tsd-kind-icon">_emit</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="cluster.html#eval" class="tsd-kind-icon">eval</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="cluster.html#getguild" class="tsd-kind-icon">get<wbr>Guild</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="cluster.html#kill" class="tsd-kind-icon">kill</a></li>
@@ -2850,7 +2846,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Overrides ThreadComms.constructor</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/master/Cluster.ts#L27">src/clustering/master/Cluster.ts:27</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/master/Cluster.ts#L27">src/clustering/master/Cluster.ts:27</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2888,7 +2884,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">dying<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/master/Cluster.ts#L25">src/clustering/master/Cluster.ts:25</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/master/Cluster.ts#L25">src/clustering/master/Cluster.ts:25</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2918,82 +2914,13 @@ img {
 				<aside class="tsd-sources">
 				</aside>
 			</section>
-			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-				<a name="on" class="tsd-anchor"></a>
-				<h3>on</h3>
-				<div class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">:</span> &lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/threadevents.html" class="tsd-signature-type" data-tsd-kind="Interface">ThreadEvents</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">&quot;send&quot;</span><span class="tsd-signature-symbol">]</span>, resolve<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ResolveFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="cluster.html" class="tsd-signature-type" data-tsd-kind="Class">Cluster</a><span class="tsd-signature-symbol"> = ...</span></div>
-				<aside class="tsd-sources">
-					<p>Inherited from ThreadComms.on</p>
-					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/ThreadComms.ts#L163">src/clustering/ThreadComms.ts:163</a></li>
-					</ul>
-				</aside>
-				<div class="tsd-comment tsd-typography">
-					<dl class="tsd-comment-tags">
-						<dt>link</dt>
-						<dd><p><a href="https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events">https://github.com/discord-rose/discord-rose/wiki/Using-Clusters#creating-custom-events</a></p>
-						</dd>
-					</dl>
-				</div>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter-signature">
-							<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-class tsd-has-type-parameter">
-								<li class="tsd-signature tsd-kind-icon">&lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/threadevents.html" class="tsd-signature-type" data-tsd-kind="Interface">ThreadEvents</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">&quot;send&quot;</span><span class="tsd-signature-symbol">]</span>, resolve<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ResolveFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="cluster.html" class="tsd-signature-type" data-tsd-kind="Class">Cluster</a></li>
-							</ul>
-							<ul class="tsd-descriptions">
-								<li class="tsd-description">
-									<h4 class="tsd-type-parameters-title">Type parameters</h4>
-									<ul class="tsd-type-parameters">
-										<li>
-											<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../interfaces/threadevents.html" class="tsd-signature-type" data-tsd-kind="Interface">ThreadEvents</a></h4>
-										</li>
-									</ul>
-									<h4 class="tsd-parameters-title">Parameters</h4>
-									<ul class="tsd-parameters">
-										<li>
-											<h5>event: <span class="tsd-signature-type">K</span></h5>
-										</li>
-										<li>
-											<h5>listener: <span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/threadevents.html" class="tsd-signature-type" data-tsd-kind="Interface">ThreadEvents</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">&quot;send&quot;</span><span class="tsd-signature-symbol">]</span>, resolve<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ResolveFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
-											<ul class="tsd-parameters">
-												<li class="tsd-parameter-signature">
-													<ul class="tsd-signatures tsd-kind-type-literal">
-														<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/threadevents.html" class="tsd-signature-type" data-tsd-kind="Interface">ThreadEvents</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">&quot;send&quot;</span><span class="tsd-signature-symbol">]</span>, resolve<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ResolveFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-													</ul>
-													<ul class="tsd-descriptions">
-														<li class="tsd-description">
-															<h4 class="tsd-parameters-title">Parameters</h4>
-															<ul class="tsd-parameters">
-																<li>
-																	<h5>data: <a href="../interfaces/threadevents.html" class="tsd-signature-type" data-tsd-kind="Interface">ThreadEvents</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">&quot;send&quot;</span><span class="tsd-signature-symbol">]</span></h5>
-																</li>
-																<li>
-																	<h5>resolve: <span class="tsd-signature-type">ResolveFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">&gt;</span></h5>
-																</li>
-															</ul>
-															<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-														</li>
-													</ul>
-												</li>
-											</ul>
-										</li>
-									</ul>
-									<h4 class="tsd-returns-title">Returns <a href="cluster.html" class="tsd-signature-type" data-tsd-kind="Class">Cluster</a></h4>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 				<a name="spawned" class="tsd-anchor"></a>
 				<h3>spawned</h3>
 				<div class="tsd-signature tsd-kind-icon">spawned<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/master/Cluster.ts#L20">src/clustering/master/Cluster.ts:20</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/master/Cluster.ts#L20">src/clustering/master/Cluster.ts:20</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3008,7 +2935,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">started<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/master/Cluster.ts#L15">src/clustering/master/Cluster.ts:15</a></li>
+						<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/master/Cluster.ts#L15">src/clustering/master/Cluster.ts:15</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3021,17 +2948,17 @@ img {
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Methods</h2>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
-				<a name="emit" class="tsd-anchor"></a>
-				<h3>emit</h3>
+				<a name="_emit" class="tsd-anchor"></a>
+				<h3>_emit</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
-					<li class="tsd-signature tsd-kind-icon">emit&lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, data<span class="tsd-signature-symbol">: </span><a href="../interfaces/threadevents.html" class="tsd-signature-type" data-tsd-kind="Interface">ThreadEvents</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">&quot;send&quot;</span><span class="tsd-signature-symbol">]</span>, resolve<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ResolveFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					<li class="tsd-signature tsd-kind-icon">_emit&lt;K&gt;<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ThreadCommsEventEmitter</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span>, resolve<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ResolveFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
-							<p>Inherited from ThreadComms.emit</p>
+							<p>Inherited from ThreadComms._emit</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/ThreadComms.ts#L165">src/clustering/ThreadComms.ts:165</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/ThreadComms.ts#L164">src/clustering/ThreadComms.ts:164</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -3046,7 +2973,7 @@ img {
 								<h5>event: <span class="tsd-signature-type">K</span></h5>
 							</li>
 							<li>
-								<h5>data: <a href="../interfaces/threadevents.html" class="tsd-signature-type" data-tsd-kind="Interface">ThreadEvents</a><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">&quot;send&quot;</span><span class="tsd-signature-symbol">]</span></h5>
+								<h5>data: <span class="tsd-signature-type">ThreadCommsEventEmitter</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span></h5>
 							</li>
 							<li>
 								<h5>resolve: <span class="tsd-signature-type">ResolveFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">&gt;</span></h5>
@@ -3066,7 +2993,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/master/Cluster.ts#L144">src/clustering/master/Cluster.ts:144</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/master/Cluster.ts#L144">src/clustering/master/Cluster.ts:144</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3097,7 +3024,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/master/Cluster.ts#L136">src/clustering/master/Cluster.ts:136</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/master/Cluster.ts#L136">src/clustering/master/Cluster.ts:136</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3128,7 +3055,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/master/Cluster.ts#L116">src/clustering/master/Cluster.ts:116</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/master/Cluster.ts#L116">src/clustering/master/Cluster.ts:116</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3150,7 +3077,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/master/Cluster.ts#L98">src/clustering/master/Cluster.ts:98</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/master/Cluster.ts#L98">src/clustering/master/Cluster.ts:98</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3174,7 +3101,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from ThreadComms.register</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/ThreadComms.ts#L175">src/clustering/ThreadComms.ts:175</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/ThreadComms.ts#L174">src/clustering/ThreadComms.ts:174</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3197,7 +3124,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/master/Cluster.ts#L105">src/clustering/master/Cluster.ts:105</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/master/Cluster.ts#L105">src/clustering/master/Cluster.ts:105</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3219,7 +3146,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/master/Cluster.ts#L128">src/clustering/master/Cluster.ts:128</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/master/Cluster.ts#L128">src/clustering/master/Cluster.ts:128</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3251,7 +3178,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from ThreadComms.sendCommand</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/ThreadComms.ts#L218">src/clustering/ThreadComms.ts:218</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/ThreadComms.ts#L217">src/clustering/ThreadComms.ts:217</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3300,7 +3227,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/master/Cluster.ts#L37">src/clustering/master/Cluster.ts:37</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/master/Cluster.ts#L37">src/clustering/master/Cluster.ts:37</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -3317,7 +3244,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/master/Cluster.ts#L80">src/clustering/master/Cluster.ts:80</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/master/Cluster.ts#L80">src/clustering/master/Cluster.ts:80</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -3335,7 +3262,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from ThreadComms.tell</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/b145503/src/clustering/ThreadComms.ts#L248">src/clustering/ThreadComms.ts:248</a></li>
+								<li>Defined in <a href="https://github.com/discord-rose/discord-rose/blob/f66f270/src/clustering/ThreadComms.ts#L247">src/clustering/ThreadComms.ts:247</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
