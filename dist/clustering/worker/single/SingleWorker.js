@@ -6,21 +6,9 @@ const Worker_1 = require("../Worker");
 const formatBotOptions_1 = require("../../../utils/formatBotOptions");
 const Manager_1 = require("../../../rest/Manager");
 const Shard_1 = require("../../../socket/Shard");
-// import { Thread } from '../Thread'
 const SingleSharder_1 = require("./SingleSharder");
 const SingleThread_1 = require("./SingleThread");
 class SingleWorker extends Worker_1.Worker {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    // comms = {
-    //   id: '0',
-    //   tell: (event: string, data: any) => {
-    //     if (event === 'LOG') this.log(data)
-    //     if (event === 'SHARD_READY') this.log(`Shard ${data.id as string} connected to Discord`)
-    //   },
-    //   registerShard: (id) => {
-    //     this.sharder.register(id)
-    //   }
-    // } as Thread
     constructor(options) {
         super(false);
         this.sharder = new SingleSharder_1.SingleSharder(this);

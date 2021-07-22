@@ -272,10 +272,6 @@ class CommandHandler {
             return;
         if (data.type === 3 /* MessageComponent */)
             return;
-        if (!data.data.options)
-            return;
-        if (!('value' in data.data.options[0]))
-            return;
         const cmd = this.find(data.data.name, true);
         if (!cmd)
             return;
