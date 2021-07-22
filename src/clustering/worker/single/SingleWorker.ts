@@ -5,7 +5,6 @@ import { Worker } from '../Worker'
 import { formatBotOptions } from '../../../utils/formatBotOptions'
 import { RestManager } from '../../../rest/Manager'
 import { Shard } from '../../../socket/Shard'
-// import { Thread } from '../Thread'
 
 import { SingleSharder } from './SingleSharder'
 import { SingleThread } from './SingleThread'
@@ -15,18 +14,6 @@ export class SingleWorker extends Worker {
   sharder = new SingleSharder(this)
 
   comms = new SingleThread(this)
-
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  // comms = {
-  //   id: '0',
-  //   tell: (event: string, data: any) => {
-  //     if (event === 'LOG') this.log(data)
-  //     if (event === 'SHARD_READY') this.log(`Shard ${data.id as string} connected to Discord`)
-  //   },
-  //   registerShard: (id) => {
-  //     this.sharder.register(id)
-  //   }
-  // } as Thread
 
   constructor (options: BotOptions) {
     super(false)

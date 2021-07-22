@@ -312,9 +312,6 @@ export class CommandHandler {
     if (!data.member) return
     if (data.type === InteractionType.MessageComponent) return
 
-    if (!data.data.options) return
-    if (!('value' in data.data.options[0])) return
-
     const cmd = this.find(data.data.name, true) as CommandOptions
     if (!cmd) return
 
