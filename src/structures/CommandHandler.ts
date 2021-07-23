@@ -81,7 +81,8 @@ export class CommandHandler {
               return interaction.default_permission === command.interaction?.default_permission &&
               interaction.description === command.interaction?.description &&
               interaction.name === command.interaction?.name &&
-              Object.keys(current).every(x => current[x] === incoming[x])
+              Object.keys(current).every(x => current[x] === incoming[x]) &&
+              Object.keys(incoming).every(x => incoming[x] === current[x])
             }) && !newInteractions.find(newCommand => newCommand === command)
           })
 
@@ -180,15 +181,15 @@ export class CommandHandler {
   }
 
   /**
-   * Sets a prefix fetcher
+   * Sets a prefix
    * @param fn String of prefix or Function to choose prefix with
    * @example
    * worker.commands
-   *   .setPrefix('!')
+   *   .prefix('!')
    * // or
-   *   .setPrefix(['!', '+'])
+   *   .prefix(['!', '+'])
    * // or
-   *   .setPrefix((message) => {
+   *   .prefix((message) => {
    *     return db.getPrefix(message.guild_id)
    *   })
    * @returns this
@@ -203,11 +204,16 @@ export class CommandHandler {
     return this
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  get setPrefix () {
+  /**
+   * Sets a prefix
+   * @deprecated Use the new {@link CommandHandler.prefix | .prefix()} function
+   * @param fn String of prefix or Function to choose prefix with
+   * @returns this
+   */
+  public setPrefix (fn: string|string[] | ((message: APIMessage) => Promise<string|string[]> | string|string[])): this {
     console.warn('.setPrefix is deprecated, please use .prefix() instead.')
 
-    return this.prefix
+    return this.prefix(fn)
   }
 
   /**
@@ -301,11 +307,16 @@ export class CommandHandler {
     return this.commands?.find(x => (this._test(command, x.command) || x.aliases?.some(alias => this._test(command, alias)) as boolean))
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  get findCommand () {
+  /**
+   * Gets a command from registry
+   * @deprecated Use the new {@link CommandHandler.find | .find()} function
+   * @param command Command name to fetch
+   * @returns Command
+   */
+  public findCommand (command: string): CommandOptions | undefined {
     console.warn('.findCommand is deprecated, please use .find() instead.')
 
-    return this.find
+    return this.find(command)
   }
 
   private async _interactionExec (data: GatewayInteractionCreateDispatchData): Promise<void> {
