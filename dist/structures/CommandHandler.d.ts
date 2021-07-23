@@ -42,21 +42,27 @@ export declare class CommandHandler {
      */
     options(opts: CommandHandlerOptions): this;
     /**
-     * Sets a prefix fetcher
+     * Sets a prefix
      * @param fn String of prefix or Function to choose prefix with
      * @example
      * worker.commands
-     *   .setPrefix('!')
+     *   .prefix('!')
      * // or
-     *   .setPrefix(['!', '+'])
+     *   .prefix(['!', '+'])
      * // or
-     *   .setPrefix((message) => {
+     *   .prefix((message) => {
      *     return db.getPrefix(message.guild_id)
      *   })
      * @returns this
      */
     prefix(fn: string | string[] | ((message: APIMessage) => Promise<string | string[]> | string | string[])): this;
-    get setPrefix(): (fn: string | string[] | ((message: APIMessage) => string | string[] | Promise<string | string[]>)) => this;
+    /**
+     * Sets a prefix
+     * @deprecated Use the new {@link CommandHandler.prefix | .prefix()} function
+     * @param fn String of prefix or Function to choose prefix with
+     * @returns this
+     */
+    setPrefix(fn: string | string[] | ((message: APIMessage) => Promise<string | string[]> | string | string[])): this;
     /**
      * Defines an error handler replacing the default one
      * @param fn Function to handle error
@@ -96,7 +102,13 @@ export declare class CommandHandler {
      * @returns Command
      */
     find(command: string, interaction?: boolean): CommandOptions | undefined;
-    get findCommand(): (command: string, interaction?: boolean | undefined) => CommandOptions | undefined;
+    /**
+     * Gets a command from registry
+     * @deprecated Use the new {@link CommandHandler.find | .find()} function
+     * @param command Command name to fetch
+     * @returns Command
+     */
+    findCommand(command: string): CommandOptions | undefined;
     private _interactionExec;
     private _exec;
 }

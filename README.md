@@ -16,6 +16,30 @@ Run `npm i --save discord-rose`
 
 # Simple bot
 
+You can easily use the `SingleWorker` class for easy use of discord-rose, for scaled solution, look [below](#scaled-bot)
+
+**./index.js**
+```js
+const { SingleWorker } = require('discord-rose')
+
+const worker = new SingleWorker({
+  token: 'BOT TOKEN'
+})
+
+worker.commands
+  .prefix('!')
+  .add({
+    command: 'hello',
+    exec: (ctx) => {
+      ctx.reply('World!')
+    }
+  })
+```
+
+# Scaled Bot
+
+You can instead use a `Master` & `Worker` solution, one master managing multiple workers/clusters, which hold x amount of shards, making it much more efficient.
+
 **./master.js**
 ```js
 const { Master } = require('discord-rose')
@@ -43,8 +67,11 @@ worker.commands
     }
   })
 ```
-Note: You can even easily implement [slash commands](https://github.com/discord-rose/discord-rose/wiki/Slash-Commands) directly within message commands.
-
 Do `node ./master.js` and you're off to the races. Scaled automatically.
+
+*Do note if your bot only ever fits into 1 cluster (< 5000 servers by default), you should consider using [SingleWorker](#simple-bot) since master & worker introduce more process overhead*
+
+
+You can even easily implement [slash commands](https://github.com/discord-rose/discord-rose/wiki/Slash-Commands) directly within message commands.
 
 ## Ready to take it to the next level? Take a look out our [Wiki](https://github.com/discord-rose/discord-rose/wiki)

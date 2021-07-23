@@ -90,7 +90,8 @@ class CommandHandler {
                             return interaction.default_permission === ((_b = command.interaction) === null || _b === void 0 ? void 0 : _b.default_permission) &&
                                 interaction.description === ((_c = command.interaction) === null || _c === void 0 ? void 0 : _c.description) &&
                                 interaction.name === ((_d = command.interaction) === null || _d === void 0 ? void 0 : _d.name) &&
-                                Object.keys(current).every(x => current[x] === incoming[x]);
+                                Object.keys(current).every(x => current[x] === incoming[x]) &&
+                                Object.keys(incoming).every(x => incoming[x] === current[x]);
                         }) && !newInteractions.find(newCommand => newCommand === command);
                     });
                     const promises = [];
@@ -154,15 +155,15 @@ class CommandHandler {
         return this;
     }
     /**
-     * Sets a prefix fetcher
+     * Sets a prefix
      * @param fn String of prefix or Function to choose prefix with
      * @example
      * worker.commands
-     *   .setPrefix('!')
+     *   .prefix('!')
      * // or
-     *   .setPrefix(['!', '+'])
+     *   .prefix(['!', '+'])
      * // or
-     *   .setPrefix((message) => {
+     *   .prefix((message) => {
      *     return db.getPrefix(message.guild_id)
      *   })
      * @returns this
@@ -176,10 +177,15 @@ class CommandHandler {
         }
         return this;
     }
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    get setPrefix() {
+    /**
+     * Sets a prefix
+     * @deprecated Use the new {@link CommandHandler.prefix | .prefix()} function
+     * @param fn String of prefix or Function to choose prefix with
+     * @returns this
+     */
+    setPrefix(fn) {
         console.warn('.setPrefix is deprecated, please use .prefix() instead.');
-        return this.prefix;
+        return this.prefix(fn);
     }
     /**
      * Defines an error handler replacing the default one
@@ -261,10 +267,15 @@ class CommandHandler {
         }
         return (_b = this.commands) === null || _b === void 0 ? void 0 : _b.find(x => { var _a; return (this._test(command, x.command) || ((_a = x.aliases) === null || _a === void 0 ? void 0 : _a.some(alias => this._test(command, alias)))); });
     }
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    get findCommand() {
+    /**
+     * Gets a command from registry
+     * @deprecated Use the new {@link CommandHandler.find | .find()} function
+     * @param command Command name to fetch
+     * @returns Command
+     */
+    findCommand(command) {
         console.warn('.findCommand is deprecated, please use .find() instead.');
-        return this.find;
+        return this.find(command);
     }
     async _interactionExec(data) {
         var _a, _b;
