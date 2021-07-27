@@ -33,6 +33,11 @@ export declare const bits: {
     manageRoles: number;
     webhooks: number;
     emojis: number;
+    useSlashCommands: number;
+    requestToSpeak: number;
+    manageThreads: number;
+    usePublicThreads: number;
+    usePrivateThreads: number;
 };
 export declare const PermissionsUtils: {
     bits: {
@@ -67,6 +72,11 @@ export declare const PermissionsUtils: {
         manageRoles: number;
         webhooks: number;
         emojis: number;
+        useSlashCommands: number;
+        requestToSpeak: number;
+        manageThreads: number;
+        usePublicThreads: number;
+        usePrivateThreads: number;
     };
     /**
      * Test a permission on a user
@@ -74,7 +84,7 @@ export declare const PermissionsUtils: {
      * @param perm Permission name to test
      * @returns Whether or not the user has permissions
      */
-    has(bit: number, perm: keyof typeof bits): boolean;
+    has(bit: number | bigint, perm: keyof typeof bits): boolean;
     /**
      * @deprecated
      */
@@ -96,5 +106,5 @@ export declare const PermissionsUtils: {
      * @param bit Number bit ermission to test
      * @returns Whether or not the user has permissions
      */
-    hasPerms(perms: number, bit: number): boolean;
+    hasPerms(perms: number | bigint, bit: number | bigint): boolean;
 };
