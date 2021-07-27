@@ -27,7 +27,7 @@
     "@discordjs/collection": "^0.1.6",
     "@jpbberry/cache": "^1.0.4",
     "@jpbberry/typed-emitter": "^1.0.1",
-    "discord-api-types": "^0.21.0-next.f0f44e6.1626784179",
+    "discord-api-types": "^0.21.0-next.6f15e53.1627388966",
     "form-data": "^3.0.0",
     "node-fetch": "^2.6.1",
     "querystring": "^0.2.0",
