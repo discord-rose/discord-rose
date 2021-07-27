@@ -8,7 +8,7 @@ import Collection from '@discordjs/collection'
 import { Shard } from '../../socket/Shard'
 import { CacheManager } from '../../socket/CacheManager'
 
-import { APIUser, PresenceUpdateStatus, Snowflake, ActivityType, APIGuildMember } from 'discord-api-types'
+import { APIUser, PresenceUpdateStatus, Snowflake, ActivityType, APIGuildMember, GatewayPresenceUpdateData } from 'discord-api-types'
 
 import { guildShard } from '../../utils/UtilityFunctions'
 
@@ -98,6 +98,11 @@ export class Worker extends EventEmitter<DiscordEventMap> {
   }
 
   /**
+   * The status that the worker will retain when a shard restarts, to change use Worker.setStatus() for no unintended side affects
+   */
+  public status?: GatewayPresenceUpdateData
+
+  /**
    * Sets the status of the client
    * @param type Type of status, e.g "playing" is "Playing Game!"
    * @param name Name of status, in this case Game
@@ -109,26 +114,35 @@ export class Worker extends EventEmitter<DiscordEventMap> {
    * worker.setStatus('streaming', 'Rocket League', 'online', 'https://twitch.com/jpbberry')
    */
   setStatus (type: 'playing' | 'streaming' | 'listening' | 'watching' | 'competing', name: string, status: 'idle' | 'online' | 'dnd' | 'offline' | 'invisible' = 'online', url?: string): void {
-    if (!this.ready) return void this.once('READY', () => { this.setStatus(type, name, status) })
-    this.shards.forEach(shard => {
-      shard.setPresence({
-        afk: false,
-        since: Date.now(),
-        status: status as PresenceUpdateStatus,
-        activities: [
-          {
-            name,
-            type: ({
-              playing: ActivityType.Game,
-              streaming: ActivityType.Streaming,
-              listening: ActivityType.Listening,
-              watching: ActivityType.Watching,
-              competing: ActivityType.Competing
-            })[type],
-            url
-          }
-        ]
+    if (!this.status) {
+      this.on('SHARD_READY', (shard) => {
+        if (!this.status) return
+
+        shard.setPresence(this.status)
       })
+    }
+
+    this.status = {
+      afk: false,
+      since: Date.now(),
+      status: status as PresenceUpdateStatus,
+      activities: [
+        {
+          name,
+          type: ({
+            playing: ActivityType.Game,
+            streaming: ActivityType.Streaming,
+            listening: ActivityType.Listening,
+            watching: ActivityType.Watching,
+            competing: ActivityType.Competing
+          })[type],
+          url
+        }
+      ]
+    }
+
+    this.shards.forEach(shard => {
+      if (shard.ready && this.status) shard.setPresence(this.status)
     })
   }
 
