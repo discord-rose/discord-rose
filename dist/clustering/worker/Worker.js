@@ -91,27 +91,34 @@ class Worker extends typed_emitter_1.EventEmitter {
      * worker.setStatus('streaming', 'Rocket League', 'online', 'https://twitch.com/jpbberry')
      */
     setStatus(type, name, status = 'online', url) {
-        if (!this.ready)
-            return void this.once('READY', () => { this.setStatus(type, name, status); });
-        this.shards.forEach(shard => {
-            shard.setPresence({
-                afk: false,
-                since: Date.now(),
-                status: status,
-                activities: [
-                    {
-                        name,
-                        type: ({
-                            playing: 0 /* Game */,
-                            streaming: 1 /* Streaming */,
-                            listening: 2 /* Listening */,
-                            watching: 3 /* Watching */,
-                            competing: 5 /* Competing */
-                        })[type],
-                        url
-                    }
-                ]
+        if (!this.status) {
+            this.on('SHARD_READY', (shard) => {
+                if (!this.status)
+                    return;
+                shard.setPresence(this.status);
             });
+        }
+        this.status = {
+            afk: false,
+            since: Date.now(),
+            status: status,
+            activities: [
+                {
+                    name,
+                    type: ({
+                        playing: 0 /* Game */,
+                        streaming: 1 /* Streaming */,
+                        listening: 2 /* Listening */,
+                        watching: 3 /* Watching */,
+                        competing: 5 /* Competing */
+                    })[type],
+                    url
+                }
+            ]
+        };
+        this.shards.forEach(shard => {
+            if (shard.ready && this.status)
+                shard.setPresence(this.status);
         });
     }
     /**

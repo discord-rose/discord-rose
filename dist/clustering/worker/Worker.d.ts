@@ -4,7 +4,7 @@ import { DiscordEventMap, CachedGuild, CachedVoiceState } from '../../typings/Di
 import Collection from '@discordjs/collection';
 import { Shard } from '../../socket/Shard';
 import { CacheManager } from '../../socket/CacheManager';
-import { APIUser, Snowflake, APIGuildMember } from 'discord-api-types';
+import { APIUser, Snowflake, APIGuildMember, GatewayPresenceUpdateData } from 'discord-api-types';
 import { CommandHandler } from '../../structures/CommandHandler';
 import { RestManager } from '../../rest/Manager';
 import { EventEmitter } from '@jpbberry/typed-emitter';
@@ -67,6 +67,10 @@ export declare class Worker extends EventEmitter<DiscordEventMap> {
     cacheManager: CacheManager;
     constructor(connectComms?: boolean);
     start(shardNumbers: number[]): Promise<void>;
+    /**
+     * The status that the worker will retain when a shard restarts, to change use Worker.setStatus() for no unintended side affects
+     */
+    status?: GatewayPresenceUpdateData;
     /**
      * Sets the status of the client
      * @param type Type of status, e.g "playing" is "Playing Game!"
