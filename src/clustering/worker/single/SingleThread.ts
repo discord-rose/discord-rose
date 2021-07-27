@@ -1,8 +1,9 @@
 import { Thread } from '../Thread'
-import { SingleWorker } from './SingleWorker'
+import { Worker } from '../../../typings/lib'
 
 import { handlers } from './singleHandlers'
 import { ThreadEvents } from '../../ThreadComms'
+import { SingleWorker } from './SingleWorker'
 
 /**
  * Thread interface for interacting with the master process from a worker
@@ -11,7 +12,7 @@ export class SingleThread extends Thread {
   public id: string = '0'
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  constructor (public worker: SingleWorker) {
+  constructor (public worker: Worker & SingleWorker) {
     super(worker, false)
 
     const keys = Object.keys(handlers)

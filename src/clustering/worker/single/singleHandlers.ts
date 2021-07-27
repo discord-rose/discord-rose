@@ -1,13 +1,14 @@
 import { ThreadEvents, ResolveFunction } from '../../ThreadComms'
 
-import { SingleWorker } from './SingleWorker'
+import { Worker } from '../../../typings/lib'
 import { APIGuild } from 'discord-api-types'
+import { SingleWorker } from './SingleWorker'
 
 export const handlers: {
-  [key in keyof ThreadEvents]?: (this: SingleWorker, data: ThreadEvents[key]['send'], resolve: ResolveFunction<key>) => void | Promise<void>
+  [key in keyof ThreadEvents]?: (this: Worker & SingleWorker, data: ThreadEvents[key]['send'], resolve: ResolveFunction<key>) => void | Promise<void>
 } = {
   REGISTER_SHARD: function ({ id }, respond) {
-    this.sharder.register(id)
+    this.sharder?.register(id)
 
     this.debug(`Registered shard ${id}`)
 
