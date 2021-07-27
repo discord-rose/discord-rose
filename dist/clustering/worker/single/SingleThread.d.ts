@@ -1,13 +1,14 @@
 import { Thread } from '../Thread';
-import { SingleWorker } from './SingleWorker';
+import { Worker } from '../../../typings/lib';
 import { ThreadEvents } from '../../ThreadComms';
+import { SingleWorker } from './SingleWorker';
 /**
  * Thread interface for interacting with the master process from a worker
  */
 export declare class SingleThread extends Thread {
-    worker: SingleWorker;
+    worker: Worker & SingleWorker;
     id: string;
-    constructor(worker: SingleWorker);
+    constructor(worker: Worker & SingleWorker);
     /**
      * Sends a command to the master
      * @param event Event to send

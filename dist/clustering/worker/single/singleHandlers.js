@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.handlers = void 0;
 exports.handlers = {
     REGISTER_SHARD: function ({ id }, respond) {
-        this.sharder.register(id);
+        var _a;
+        (_a = this.sharder) === null || _a === void 0 ? void 0 : _a.register(id);
         this.debug(`Registered shard ${id}`);
         respond({});
     },
