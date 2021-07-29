@@ -21,7 +21,7 @@ import { EventEmitter } from '@jpbberry/typed-emitter'
 /**
  * Cluster Worker used on the worker thread
  */
-export class Worker extends EventEmitter<DiscordEventMap> {
+export class Worker<ExtraEvents = {}> extends EventEmitter<DiscordEventMap & ExtraEvents> {
   /**
    * Bot options
    */

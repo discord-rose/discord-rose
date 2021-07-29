@@ -9,7 +9,7 @@ import { Shard } from '../../../socket/Shard'
 import { SingleSharder } from './SingleSharder'
 import { SingleThread } from './SingleThread'
 
-export class SingleWorker extends Worker {
+export class SingleWorker extends Worker<{ DEBUG: string }> {
   cacheManager: CacheManager
   sharder = new SingleSharder(this)
 
@@ -27,6 +27,13 @@ export class SingleWorker extends Worker {
     this.once('READY', () => {
       this.log(`Finished spawning after ${((Date.now() - timeStart) / 1000).toFixed(2)}s`)
     })
+
+    this.log = typeof options.log === 'undefined'
+      ? (msg: string, _cluster) => {
+          console.log(`Singleton | ${msg}`)
+        }
+      : options.log
+    if (!this.log) this.log = () => {}
 
     void this._beginSingleton()
   }
@@ -66,9 +73,7 @@ export class SingleWorker extends Worker {
     }
   }
 
-  log (msg): void {
-    console.log(msg)
+  debug (msg): void {
+    this.emit('DEBUG', msg)
   }
-
-  debug (msg): void {}
 }
