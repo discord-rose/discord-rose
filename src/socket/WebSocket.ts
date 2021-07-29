@@ -55,6 +55,7 @@ export class DiscordSocket {
     this.ws
       ?.on('message', (data) => this._handleMessage(data as Buffer))
       .once('close', (code, reason) => this.onClose(code, reason))
+      .on('error', (err) => this.shard.worker.debug(`Received WS error on shard ${this.shard.id}: ${err.name} / ${err.message}`))
   }
 
   public _send (data: GatewaySendPayload): void {
@@ -147,7 +148,7 @@ export class DiscordSocket {
     if (this.waitingHeartbeat) {
       this.heartbeatRetention++
 
-      if (this.heartbeatRetention > 5) return this.shard.restart(false, 1006, 'Not Receiving Heartbeats')
+      if (this.heartbeatRetention > 5) return this.shard.restart(false, 1012, 'Not Receiving Heartbeats')
     }
     this._send({
       op: GatewayOpcodes.Heartbeat,
