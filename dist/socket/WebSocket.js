@@ -54,7 +54,7 @@ class DiscordSocket {
             if (!this.connected)
                 return this.shard.restart(true, 1013, 'Didn\'t Connect in Time');
         }, 60e3);
-        (_c = this.ws) === null || _c === void 0 ? void 0 : _c.on('message', (data) => this._handleMessage(data)).once('close', (code, reason) => this.onClose(code, reason));
+        (_c = this.ws) === null || _c === void 0 ? void 0 : _c.on('message', (data) => this._handleMessage(data)).once('close', (code, reason) => this.onClose(code, reason)).on('error', (err) => this.shard.worker.debug(`Received WS error on shard ${this.shard.id}: ${err.name} / ${err.message}`));
     }
     _send(data) {
         var _a, _b, _c;
@@ -150,7 +150,7 @@ class DiscordSocket {
         if (this.waitingHeartbeat) {
             this.heartbeatRetention++;
             if (this.heartbeatRetention > 5)
-                return this.shard.restart(false, 1006, 'Not Receiving Heartbeats');
+                return this.shard.restart(false, 1012, 'Not Receiving Heartbeats');
         }
         this._send({
             op: 1 /* Heartbeat */,
