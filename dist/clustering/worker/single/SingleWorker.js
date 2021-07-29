@@ -20,6 +20,13 @@ class SingleWorker extends Worker_1.Worker {
         this.once('READY', () => {
             this.log(`Finished spawning after ${((Date.now() - timeStart) / 1000).toFixed(2)}s`);
         });
+        this.log = typeof options.log === 'undefined'
+            ? (msg, _cluster) => {
+                console.log(`Singleton | ${msg}`);
+            }
+            : options.log;
+        if (!this.log)
+            this.log = () => { };
         void this._beginSingleton();
     }
     async _beginSingleton() {
@@ -49,9 +56,8 @@ class SingleWorker extends Worker_1.Worker {
             await shard.register();
         }
     }
-    log(msg) {
-        console.log(msg);
+    debug(msg) {
+        this.emit('DEBUG', msg);
     }
-    debug(msg) { }
 }
 exports.SingleWorker = SingleWorker;

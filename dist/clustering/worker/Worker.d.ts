@@ -5,13 +5,12 @@ import Collection from '@discordjs/collection';
 import { Shard } from '../../socket/Shard';
 import { CacheManager } from '../../socket/CacheManager';
 import { APIUser, Snowflake, APIGuildMember, GatewayPresenceUpdateData } from 'discord-api-types';
-import { CommandHandler } from '../../structures/CommandHandler';
 import { RestManager } from '../../rest/Manager';
 import { EventEmitter } from '@jpbberry/typed-emitter';
 /**
  * Cluster Worker used on the worker thread
  */
-export declare class Worker extends EventEmitter<DiscordEventMap> {
+export declare class Worker<ExtraEvents = {}> extends EventEmitter<DiscordEventMap & ExtraEvents> {
     /**
      * Bot options
      */
@@ -27,7 +26,7 @@ export declare class Worker extends EventEmitter<DiscordEventMap> {
     /**
      * Command handler
      */
-    commands: CommandHandler;
+    commands: any;
     /**
      * Thread communications
      */
