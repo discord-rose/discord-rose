@@ -23,6 +23,7 @@ export declare class DiscordSocket {
     spawn(): Promise<void>;
     _send(data: GatewaySendPayload): void;
     private _handleMessage;
+    private _sendIdentify;
     private _heartbeat;
     private onClose;
     kill(): void;

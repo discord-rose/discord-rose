@@ -11,14 +11,14 @@ const ws_1 = __importDefault(require("ws"));
 class DiscordSocket {
     constructor(shard) {
         this.shard = shard;
-        this.sequence = null;
-        this.sessionID = null;
+        this.sequence = 1;
+        this.sessionID = 'null';
         this.hbInterval = null;
         this.waitingHeartbeat = false;
         this.heartbeatRetention = 0;
         this.ws = null;
         this.connected = false;
-        this.resuming = false;
+        this.resuming = true;
         this.dying = false;
         this.selfClose = false;
         this.op7 = false;
@@ -98,16 +98,21 @@ class DiscordSocket {
         }
         else if (msg.op === 9 /* InvalidSession */) {
             setTimeout(() => {
-                this.shard.restart(!msg.d, 1002, 'Invalid Session');
+                if (!this.resuming)
+                    this.shard.restart(!msg.d, 1002, 'Invalid Session');
+                else {
+                    this.shard.worker.debug(`Shard ${this.shard.id} could not resume, sending a fresh identify`);
+                    this.resuming = false;
+                    this._sendIdentify();
+                }
             }, Math.ceil(Math.random() * 5) * 1000);
         }
         else if (msg.op === 10 /* Hello */) {
             if (this.resuming && (!this.sessionID || !this.sequence)) {
                 this.shard.worker.debug('Cancelling resume because of missing session info');
                 this.resuming = false;
-            }
-            if (!this.resuming) {
                 this.sequence = null;
+                this.sessionID = null;
             }
             this.shard.worker.debug(`Received HELLO on shard ${this.shard.id}. ${this.resuming ? '' : 'Not '}Resuming. (Heartbeat @ 1/${msg.d.heartbeat_interval / 1000}s)`);
             if (this.resuming) {
@@ -121,19 +126,7 @@ class DiscordSocket {
                 });
             }
             else {
-                this._send({
-                    op: 2 /* Identify */,
-                    d: {
-                        shard: [this.shard.id, this.shard.worker.options.shards],
-                        intents: this.shard.worker.options.intents,
-                        token: this.shard.worker.options.token,
-                        properties: {
-                            $os: 'linux',
-                            $browser: 'Discord-Rose',
-                            $device: 'bot'
-                        }
-                    }
-                });
+                this._sendIdentify();
             }
             this.hbInterval = setInterval(() => this._heartbeat(), msg.d.heartbeat_interval);
             this.waitingHeartbeat = false;
@@ -147,6 +140,21 @@ class DiscordSocket {
             this.waitingHeartbeat = false;
             this.heartbeatRetention = 0;
         }
+    }
+    _sendIdentify() {
+        this._send({
+            op: 2 /* Identify */,
+            d: {
+                shard: [this.shard.id, this.shard.worker.options.shards],
+                intents: this.shard.worker.options.intents,
+                token: this.shard.worker.options.token,
+                properties: {
+                    $os: 'linux',
+                    $browser: 'Discord-Rose',
+                    $device: 'bot'
+                }
+            }
+        });
     }
     _heartbeat() {
         var _a;
@@ -163,12 +171,15 @@ class DiscordSocket {
         this.waitingHeartbeat = Date.now();
     }
     onClose(code, reason) {
+        this.shard.emit('CLOSED', code, reason);
         if (this.selfClose) {
             this.shard.worker.debug(`Self closed with code ${code}`);
             this.selfClose = false;
         }
         else
             this.shard.worker.log(`Shard ${this.shard.id} closed with ${code} & ${reason || 'No Reason'}`);
+        if (code === 1006)
+            this.resuming = true;
         if (this.dying)
             void this.shard.register();
         else

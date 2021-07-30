@@ -42,10 +42,21 @@ class SingleWorker extends Worker_1.Worker {
             const timeout = setTimeout(() => {
                 reject(new Error());
             }, 15e3);
-            shard.once('READY', () => {
+            const done = () => {
                 clearTimeout(timeout);
-                resolve();
-            });
+                shard.off('READY', readyFn);
+                shard.off('CLOSED', closedFn);
+            };
+            const readyFn = () => {
+                resolve({ err: false });
+                done();
+            };
+            const closedFn = (_code, _reason) => {
+                resolve({ err: true });
+                done();
+            };
+            shard.on('READY', readyFn);
+            shard.on('CLOSED', closedFn);
         });
     }
     async start() {

@@ -11,7 +11,9 @@ export declare class SingleWorker extends Worker<{
     comms: any;
     constructor(options: BotOptions);
     _beginSingleton(): Promise<void>;
-    _waitForShard(shard: Shard): Promise<void>;
+    _waitForShard(shard: Shard): Promise<{
+        err: boolean;
+    }>;
     start(): Promise<void>;
     debug(msg: any): void;
 }

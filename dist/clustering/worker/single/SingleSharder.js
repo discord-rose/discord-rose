@@ -37,14 +37,22 @@ class SingleSharder {
             return;
         }
         const nextShard = this.worker.shards.get(next);
+        let waiting = false;
         if (nextShard) {
             nextShard.start();
-            await this.worker._waitForShard(nextShard)
+            waiting = await this.worker._waitForShard(nextShard)
+                .then(res => {
+                return !res.err;
+            })
                 .catch(() => {
                 this.worker.log(`Shard ${next} failed to startup in time. Continuing.`);
+                return true;
             });
         }
-        await UtilityFunctions_1.wait(this.worker.options.spawnTimeout);
+        if (waiting)
+            await UtilityFunctions_1.wait(this.worker.options.spawnTimeout);
+        else
+            await UtilityFunctions_1.wait(500);
         return await this.loop(bucket);
     }
 }

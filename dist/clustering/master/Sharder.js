@@ -36,10 +36,16 @@ class Sharder {
             this.master.debug(`Reached end of bucket #${bucket}`);
             return;
         }
-        await ((_b = this.master.shardToCluster(next)) === null || _b === void 0 ? void 0 : _b.sendCommand('START_SHARD', { id: next }).catch(() => {
+        const waiting = await ((_b = this.master.shardToCluster(next)) === null || _b === void 0 ? void 0 : _b.sendCommand('START_SHARD', { id: next }).then(res => {
+            return !res.err;
+        }).catch(() => {
             this.master.log(`Shard ${next} failed to startup in time. Continuing.`);
+            return true;
         }));
-        await UtilityFunctions_1.wait(this.master.options.spawnTimeout);
+        if (waiting)
+            await UtilityFunctions_1.wait(this.master.options.spawnTimeout);
+        else
+            await UtilityFunctions_1.wait(500);
         return await this.loop(bucket);
     }
 }

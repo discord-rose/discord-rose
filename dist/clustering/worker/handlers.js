@@ -15,10 +15,19 @@ exports.handlers = {
     START_SHARD: function (data, respond) {
         const shard = this.worker.shards.get(data.id);
         if (!shard)
-            return respond({});
-        shard.once('READY', () => {
-            respond({});
-        });
+            return respond({ err: true });
+        const readyFn = () => {
+            respond({ err: false });
+            shard.off('READY', readyFn);
+            shard.off('CLOSED', closedFn);
+        };
+        const closedFn = (_code, _reason) => {
+            respond({ err: true });
+            shard.off('READY', readyFn);
+            shard.off('CLOSED', closedFn);
+        };
+        shard.on('READY', readyFn);
+        shard.on('CLOSED', closedFn);
         shard.start();
     },
     RESTART_SHARD: function ({ id }) {

@@ -7,7 +7,9 @@ import { Worker } from '../typings/lib';
 /**
  * Utility manager for a shard
  */
-export declare class Shard extends EventEmitter<DiscordDefaultEventMap> {
+export declare class Shard extends EventEmitter<DiscordDefaultEventMap & {
+    CLOSED: [code: number, reason: string];
+}> {
     id: number;
     worker: Worker;
     /**
