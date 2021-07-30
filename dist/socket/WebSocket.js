@@ -11,14 +11,14 @@ const ws_1 = __importDefault(require("ws"));
 class DiscordSocket {
     constructor(shard) {
         this.shard = shard;
-        this.sequence = 1;
-        this.sessionID = 'null';
+        this.sequence = null;
+        this.sessionID = null;
         this.hbInterval = null;
         this.waitingHeartbeat = false;
         this.heartbeatRetention = 0;
         this.ws = null;
         this.connected = false;
-        this.resuming = true;
+        this.resuming = false;
         this.dying = false;
         this.selfClose = false;
         this.op7 = false;
