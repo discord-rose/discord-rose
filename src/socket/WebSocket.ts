@@ -7,15 +7,15 @@ import { GatewayDispatchEvents, GatewayDispatchPayload, GatewayHelloData, Gatewa
  */
 export class DiscordSocket {
   private connectTimeout?: NodeJS.Timeout
-  private sequence: number | null = 1
-  private sessionID: string | null = 'null'
+  private sequence: number | null = null
+  private sessionID: string | null = null
   private hbInterval: NodeJS.Timeout | null = null
   private waitingHeartbeat: false | number = false
   private heartbeatRetention: number = 0
 
   public ws: WebSocket | null = null
   public connected: boolean = false
-  public resuming: boolean = true
+  public resuming: boolean = false
   public dying: boolean = false
   public selfClose = false
 
