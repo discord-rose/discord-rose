@@ -23,18 +23,19 @@ class DiscordSocket {
         this.selfClose = false;
         this.op7 = false;
     }
-    close(code, reason) {
+    close(code, reason, report = true) {
         var _a;
         if (!this.op7)
             this.shard.worker.log(`Shard ${this.shard.id} closing with ${code} & ${reason}`);
-        this.selfClose = true;
+        if (report)
+            this.selfClose = true;
         (_a = this.ws) === null || _a === void 0 ? void 0 : _a.close(code, reason);
     }
     async spawn() {
         var _a, _b, _c;
         this.shard.worker.debug(`Shard ${this.shard.id} is spawning`);
         if (this.ws && this.ws.readyState === ws_1.default.OPEN)
-            this.close(1012, 'Starting again');
+            this.close(1012, 'Starting again', false);
         this.ws = null;
         this.connected = false;
         this.heartbeatRetention = 0;
@@ -104,6 +105,9 @@ class DiscordSocket {
             if (this.resuming && (!this.sessionID || !this.sequence)) {
                 this.shard.worker.debug('Cancelling resume because of missing session info');
                 this.resuming = false;
+            }
+            if (!this.resuming) {
+                this.sequence = null;
             }
             this.shard.worker.debug(`Received HELLO on shard ${this.shard.id}. ${this.resuming ? '' : 'Not '}Resuming. (Heartbeat @ 1/${msg.d.heartbeat_interval / 1000}s)`);
             if (this.resuming) {

@@ -19,7 +19,7 @@ export declare class DiscordSocket {
     selfClose: boolean;
     private op7;
     constructor(shard: Shard);
-    close(code: number, reason: string): void;
+    close(code: number, reason: string, report?: boolean): void;
     spawn(): Promise<void>;
     _send(data: GatewaySendPayload): void;
     private _handleMessage;
