@@ -23,16 +23,16 @@ export class DiscordSocket {
 
   constructor (private shard: Shard) {}
 
-  public close (code: number, reason: string): void {
+  public close (code: number, reason: string, report = true): void {
     if (!this.op7) this.shard.worker.log(`Shard ${this.shard.id} closing with ${code} & ${reason}`)
-    this.selfClose = true
+    if (report) this.selfClose = true
 
     this.ws?.close(code, reason)
   }
 
   async spawn (): Promise<void> {
     this.shard.worker.debug(`Shard ${this.shard.id} is spawning`)
-    if (this.ws && this.ws.readyState === WebSocket.OPEN) this.close(1012, 'Starting again')
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) this.close(1012, 'Starting again', false)
     this.ws = null
     this.connected = false
     this.heartbeatRetention = 0
@@ -101,6 +101,10 @@ export class DiscordSocket {
       if (this.resuming && (!this.sessionID || !this.sequence)) {
         this.shard.worker.debug('Cancelling resume because of missing session info')
         this.resuming = false
+      }
+
+      if (!this.resuming) {
+        this.sequence = null
       }
 
       this.shard.worker.debug(`Received HELLO on shard ${this.shard.id}. ${this.resuming ? '' : 'Not '}Resuming. (Heartbeat @ 1/${(msg.d as unknown as GatewayHelloData).heartbeat_interval / 1000}s)`)
