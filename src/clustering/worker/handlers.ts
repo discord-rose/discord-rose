@@ -21,11 +21,21 @@ export const handlers: {
   },
   START_SHARD: function (data, respond) {
     const shard = this.worker.shards.get(data.id)
-    if (!shard) return respond({})
+    if (!shard) return respond({ err: true })
 
-    shard.once('READY', () => {
-      respond({})
-    })
+    const readyFn = (): void => {
+      respond({ err: false })
+      shard.off('READY', readyFn)
+      shard.off('CLOSED', closedFn)
+    }
+    const closedFn = (_code: number, _reason: string): void => {
+      respond({ err: true })
+      shard.off('READY', readyFn)
+      shard.off('CLOSED', closedFn)
+    }
+
+    shard.on('READY', readyFn)
+    shard.on('CLOSED', closedFn)
 
     shard.start()
   },

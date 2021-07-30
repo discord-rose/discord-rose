@@ -7,15 +7,15 @@ import { GatewayDispatchEvents, GatewayDispatchPayload, GatewayHelloData, Gatewa
  */
 export class DiscordSocket {
   private connectTimeout?: NodeJS.Timeout
-  private sequence: number | null = null
-  private sessionID: string | null = null
+  private sequence: number | null = 1
+  private sessionID: string | null = 'null'
   private hbInterval: NodeJS.Timeout | null = null
   private waitingHeartbeat: false | number = false
   private heartbeatRetention: number = 0
 
   public ws: WebSocket | null = null
   public connected: boolean = false
-  public resuming: boolean = false
+  public resuming: boolean = true
   public dying: boolean = false
   public selfClose = false
 
@@ -95,16 +95,20 @@ export class DiscordSocket {
       this.shard.restart(false, 1012, 'Opcode 7 Restart')
     } else if (msg.op === GatewayOpcodes.InvalidSession) {
       setTimeout(() => {
-        this.shard.restart(!msg.d, 1002, 'Invalid Session')
+        if (!this.resuming) this.shard.restart(!msg.d, 1002, 'Invalid Session')
+        else {
+          this.shard.worker.debug(`Shard ${this.shard.id} could not resume, sending a fresh identify`)
+          this.resuming = false
+          this._sendIdentify()
+        }
       }, Math.ceil(Math.random() * 5) * 1000)
     } else if (msg.op === GatewayOpcodes.Hello) {
       if (this.resuming && (!this.sessionID || !this.sequence)) {
         this.shard.worker.debug('Cancelling resume because of missing session info')
-        this.resuming = false
-      }
 
-      if (!this.resuming) {
+        this.resuming = false
         this.sequence = null
+        this.sessionID = null
       }
 
       this.shard.worker.debug(`Received HELLO on shard ${this.shard.id}. ${this.resuming ? '' : 'Not '}Resuming. (Heartbeat @ 1/${(msg.d as unknown as GatewayHelloData).heartbeat_interval / 1000}s)`)
@@ -119,19 +123,7 @@ export class DiscordSocket {
           }
         })
       } else {
-        this._send({
-          op: GatewayOpcodes.Identify,
-          d: {
-            shard: [this.shard.id, this.shard.worker.options.shards],
-            intents: this.shard.worker.options.intents,
-            token: this.shard.worker.options.token,
-            properties: {
-              $os: 'linux',
-              $browser: 'Discord-Rose',
-              $device: 'bot'
-            }
-          }
-        })
+        this._sendIdentify()
       }
       this.hbInterval = setInterval(() => this._heartbeat(), (msg.d as unknown as GatewayHelloData).heartbeat_interval)
       this.waitingHeartbeat = false
@@ -145,6 +137,22 @@ export class DiscordSocket {
       this.waitingHeartbeat = false
       this.heartbeatRetention = 0
     }
+  }
+
+  private _sendIdentify (): void {
+    this._send({
+      op: GatewayOpcodes.Identify,
+      d: {
+        shard: [this.shard.id, this.shard.worker.options.shards],
+        intents: this.shard.worker.options.intents,
+        token: this.shard.worker.options.token,
+        properties: {
+          $os: 'linux',
+          $browser: 'Discord-Rose',
+          $device: 'bot'
+        }
+      }
+    })
   }
 
   private _heartbeat (): void {
@@ -162,10 +170,13 @@ export class DiscordSocket {
   }
 
   private onClose (code: number, reason: string): void {
+    this.shard.emit('CLOSED', code, reason)
     if (this.selfClose) {
       this.shard.worker.debug(`Self closed with code ${code}`)
       this.selfClose = false
     } else this.shard.worker.log(`Shard ${this.shard.id} closed with ${code} & ${reason || 'No Reason'}`)
+
+    if (code === 1006) this.resuming = true
 
     if (this.dying) void this.shard.register()
     else void this.spawn()

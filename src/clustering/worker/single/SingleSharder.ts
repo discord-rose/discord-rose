@@ -40,15 +40,21 @@ export class SingleSharder {
     }
 
     const nextShard = this.worker.shards.get(next)
+    let waiting = false
     if (nextShard) {
       nextShard.start()
-      await this.worker._waitForShard(nextShard)
+      waiting = await this.worker._waitForShard(nextShard)
+        .then(res => {
+          return !res.err
+        })
         .catch(() => {
           this.worker.log(`Shard ${next} failed to startup in time. Continuing.`)
+          return true
         })
     }
 
-    await wait(this.worker.options.spawnTimeout)
+    if (waiting) await wait(this.worker.options.spawnTimeout)
+    else await wait(500)
 
     return await this.loop(bucket)
   }

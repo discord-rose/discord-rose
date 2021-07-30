@@ -50,17 +50,29 @@ export class SingleWorker extends Worker<{ DEBUG: string }> {
     void this.start()
   }
 
-  async _waitForShard (shard: Shard): Promise<void> {
+  async _waitForShard (shard: Shard): Promise<{ err: boolean }> {
     return await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         reject(new Error())
       }, 15e3)
 
-      shard.once('READY', () => {
+      const done = (): void => {
         clearTimeout(timeout)
+        shard.off('READY', readyFn)
+        shard.off('CLOSED', closedFn)
+      }
 
-        resolve()
-      })
+      const readyFn = (): void => {
+        resolve({ err: false })
+        done()
+      }
+      const closedFn = (_code: number, _reason: string): void => {
+        resolve({ err: true })
+        done()
+      }
+
+      shard.on('READY', readyFn)
+      shard.on('CLOSED', closedFn)
     })
   }
 

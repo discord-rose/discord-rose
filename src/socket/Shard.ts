@@ -10,7 +10,7 @@ import { DiscordSocket } from './WebSocket'
 /**
  * Utility manager for a shard
  */
-export class Shard extends EventEmitter<DiscordDefaultEventMap> {
+export class Shard extends EventEmitter<DiscordDefaultEventMap & { CLOSED: [code: number, reason: string] }> {
   /**
    * Ping in ms
    */

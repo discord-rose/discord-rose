@@ -40,12 +40,17 @@ export class Sharder {
       return
     }
 
-    await this.master.shardToCluster(next)?.sendCommand('START_SHARD', { id: next })
+    const waiting = await this.master.shardToCluster(next)?.sendCommand('START_SHARD', { id: next })
+      .then(res => {
+        return !res.err
+      })
       .catch(() => {
         this.master.log(`Shard ${next} failed to startup in time. Continuing.`)
+        return true
       })
 
-    await wait(this.master.options.spawnTimeout)
+    if (waiting) await wait(this.master.options.spawnTimeout)
+    else await wait(500)
 
     return await this.loop(bucket)
   }
