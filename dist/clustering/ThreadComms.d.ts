@@ -1,9 +1,9 @@
 /// <reference types="node" />
 import { EventEmitter } from '@jpbberry/typed-emitter';
 import { Worker, MessagePort } from 'worker_threads';
-import { CompleteBotOptions } from './master/Master';
 import { APIGuild, APIMessage, Snowflake } from 'discord-api-types';
 import { MessageTypes } from '../rest/resources/Messages';
+import { CompleteBotOptions } from '../typings/options';
 /**
  * State of a shard socket
  */

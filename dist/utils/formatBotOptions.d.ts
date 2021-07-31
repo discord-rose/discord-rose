@@ -1,2 +1,2 @@
-import { BotOptions, CompleteBotOptions } from '../clustering/master/Master';
+import { BotOptions, CompleteBotOptions } from '../typings/options';
 export declare function formatBotOptions(options: BotOptions): CompleteBotOptions;

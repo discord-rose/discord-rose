@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Worker = void 0;
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
 const Thread_1 = require("./Thread");
 const collection_1 = __importDefault(require("@discordjs/collection"));
 const Shard_1 = require("../../socket/Shard");

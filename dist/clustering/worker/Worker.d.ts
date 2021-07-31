@@ -1,4 +1,3 @@
-import { CompleteBotOptions } from '../master/Master';
 import { Thread } from './Thread';
 import { DiscordEventMap, CachedGuild, CachedVoiceState } from '../../typings/Discord';
 import Collection from '@discordjs/collection';
@@ -8,6 +7,7 @@ import { APIUser, Snowflake, APIGuildMember, GatewayPresenceUpdateData } from 'd
 import { CommandHandler } from '../../structures/CommandHandler';
 import { RestManager } from '../../rest/Manager';
 import { EventEmitter } from '@jpbberry/typed-emitter';
+import { CompleteBotOptions } from '../../typings/options';
 /**
  * Cluster Worker used on the worker thread
  */
