@@ -2,7 +2,9 @@ import { APIEmbed } from 'discord-api-types'
 
 export { ClusterStats, ShardStats, State, ThreadEvents } from './clustering/ThreadComms'
 
-export { BotOptions, Master, CacheOptions, CacheControlOptions } from './clustering/master/Master'
+export { BaseBotOptions, BotOptions } from './typings/options'
+
+export { Master } from './clustering/master/Master'
 export * from './clustering/master/Cluster'
 export * from './clustering/master/Sharder'
 

@@ -2,10 +2,10 @@ import { EventEmitter } from '@jpbberry/typed-emitter'
 import { Worker, MessagePort } from 'worker_threads'
 
 import { generateID } from '../utils/UtilityFunctions'
-import { CompleteBotOptions } from './master/Master'
 import Collection from '@discordjs/collection'
 import { APIGuild, APIMessage, Snowflake } from 'discord-api-types'
 import { MessageTypes } from '../rest/resources/Messages'
+import { CompleteBotOptions } from '../typings/options'
 
 enum ThreadMethod {
   COMMAND,

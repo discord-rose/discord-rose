@@ -1,5 +1,4 @@
 import { CacheManager } from '../../../socket/CacheManager'
-import { BotOptions } from '../../master/Master'
 import { Worker } from '../Worker'
 
 import { formatBotOptions } from '../../../utils/formatBotOptions'
@@ -8,6 +7,7 @@ import { Shard } from '../../../socket/Shard'
 
 import { SingleSharder } from './SingleSharder'
 import { SingleThread } from './SingleThread'
+import { BotOptions } from '../../../typings/options'
 
 export class SingleWorker extends Worker<{ DEBUG: string }> {
   cacheManager: CacheManager
@@ -32,7 +32,7 @@ export class SingleWorker extends Worker<{ DEBUG: string }> {
       ? (msg: string, _cluster) => {
           console.log(`Singleton | ${msg}`)
         }
-      : options.log
+      : options.log as () => {}
     if (!this.log) this.log = () => {}
 
     void this._beginSingleton()

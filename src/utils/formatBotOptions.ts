@@ -1,9 +1,6 @@
 import { ChannelType } from 'discord-api-types'
-import { BotOptions, CacheControlOptions, CompleteBotOptions, Intents } from '../clustering/master/Master'
-
-type Complete<T> = {
-  [P in keyof Required<T>]: Pick<T, P> extends Required<Pick<T, P>> ? T[P] : (T[P] | undefined)
-}
+import { Intents } from '../clustering/master/Master'
+import { BotOptions, CompleteBotOptions } from '../typings/options'
 
 const CachedChannelTypes = ['text', 'voice', 'category'] as const
 
@@ -35,7 +32,7 @@ export function formatBotOptions (options: BotOptions): CompleteBotOptions {
           users: options.cache?.users ?? false,
           voiceStates: options.cache?.voiceStates ?? false
         },
-    cacheControl: options.cacheControl as Complete<CacheControlOptions> ?? {
+    cacheControl: options.cacheControl ?? {
       channels: false,
       guilds: false,
       members: false,
@@ -43,7 +40,7 @@ export function formatBotOptions (options: BotOptions): CompleteBotOptions {
     },
     ws: options.ws ?? '',
     intents: Array.isArray(options.intents)
-      ? options.intents.reduce((a, b) => a | Intents[b], 0)
+      ? options.intents.reduce((a, b: any) => a | Intents[b], 0)
       : options.intents === true
         ? Object.values(Intents).reduce((a, b) => a | b, 0)
         : options.intents
@@ -56,7 +53,7 @@ export function formatBotOptions (options: BotOptions): CompleteBotOptions {
     rest: options.rest,
     spawnTimeout: options.spawnTimeout ?? 5100,
     clusterStartRetention: options.clusterStartRetention ?? 3
-  } as CompleteBotOptions
+  }
 
   if ((opts.cache?.channels as unknown as boolean | typeof CachedChannelTypes[number]) === true) {
     opts.cache.channels = true
@@ -79,5 +76,5 @@ export function formatBotOptions (options: BotOptions): CompleteBotOptions {
     if (opts.cache?.messages && ((opts.intents & Intents.GUILD_MESSAGES) === 0)) warn('messages', 'GUILD_MESSAGES')
   }
 
-  return opts
+  return opts as CompleteBotOptions
 }
