@@ -38,7 +38,7 @@ export class Worker<ExtraEvents = {}> extends EventEmitter<DiscordEventMap & Ext
   /**
    * Command handler
    */
-  public commands = new CommandHandler(this)
+  public commands: CommandHandler = new CommandHandler(this)
   /**
    * Thread communications
    */

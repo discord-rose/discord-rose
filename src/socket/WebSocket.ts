@@ -53,8 +53,10 @@ export class DiscordSocket {
     }, 60e3)
 
     this.ws
-      ?.on('message', (data) => this._handleMessage(data as Buffer))
-      .once('close', (code, reason) => this.onClose(code, reason))
+      ?.on('message', (data, isBuffer) => {
+        this._handleMessage(isBuffer ? data.toString('utf-8') : data)
+      })
+      .once('close', (code, reason: Buffer) => this.onClose(code, reason.toString('utf-8')))
       .on('error', (err) => this.shard.worker.debug(`Received WS error on shard ${this.shard.id}: ${err.name} / ${err.message}`))
   }
 
@@ -63,8 +65,8 @@ export class DiscordSocket {
     this.ws?.send(JSON.stringify(data))
   }
 
-  private _handleMessage (data: Buffer): void {
-    const msg: GatewayDispatchPayload = JSON.parse(data.toString('utf-8'))
+  private _handleMessage (data: string): void {
+    const msg: GatewayDispatchPayload = JSON.parse(data)
 
     if (msg.s) this.sequence = msg.s
 
