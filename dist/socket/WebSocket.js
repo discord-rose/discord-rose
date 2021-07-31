@@ -55,7 +55,9 @@ class DiscordSocket {
             if (!this.connected)
                 return this.shard.restart(true, 1013, 'Didn\'t Connect in Time');
         }, 60e3);
-        (_c = this.ws) === null || _c === void 0 ? void 0 : _c.on('message', (data) => this._handleMessage(data)).once('close', (code, reason) => this.onClose(code, reason)).on('error', (err) => this.shard.worker.debug(`Received WS error on shard ${this.shard.id}: ${err.name} / ${err.message}`));
+        (_c = this.ws) === null || _c === void 0 ? void 0 : _c.on('message', (data, isBuffer) => {
+            this._handleMessage(isBuffer ? data.toString('utf-8') : data);
+        }).once('close', (code, reason) => this.onClose(code, reason.toString('utf-8'))).on('error', (err) => this.shard.worker.debug(`Received WS error on shard ${this.shard.id}: ${err.name} / ${err.message}`));
     }
     _send(data) {
         var _a, _b, _c;
@@ -65,7 +67,7 @@ class DiscordSocket {
     }
     _handleMessage(data) {
         var _a;
-        const msg = JSON.parse(data.toString('utf-8'));
+        const msg = JSON.parse(data);
         if (msg.s)
             this.sequence = msg.s;
         if (msg.op === 0 /* Dispatch */) {

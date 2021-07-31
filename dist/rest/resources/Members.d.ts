@@ -24,7 +24,7 @@ export declare class MembersResource {
      * @param memberId ID of member
      * @param data New data for member
      */
-    edit(guildId: Snowflake, memberId: `${bigint}` | "@me" | undefined, data: RESTPatchAPIGuildMemberJSONBody): Promise<RESTPatchAPIGuildMemberResult>;
+    edit(guildId: Snowflake, memberId: string | undefined, data: RESTPatchAPIGuildMemberJSONBody): Promise<RESTPatchAPIGuildMemberResult>;
     /**
      * Sets a members nickname
      * @param guildId ID of guild

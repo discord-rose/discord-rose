@@ -5,6 +5,7 @@ import Collection from '@discordjs/collection';
 import { Shard } from '../../socket/Shard';
 import { CacheManager } from '../../socket/CacheManager';
 import { APIUser, Snowflake, APIGuildMember, GatewayPresenceUpdateData } from 'discord-api-types';
+import { CommandHandler } from '../../structures/CommandHandler';
 import { RestManager } from '../../rest/Manager';
 import { EventEmitter } from '@jpbberry/typed-emitter';
 /**
@@ -26,7 +27,7 @@ export declare class Worker<ExtraEvents = {}> extends EventEmitter<DiscordEventM
     /**
      * Command handler
      */
-    commands: any;
+    commands: CommandHandler;
     /**
      * Thread communications
      */
