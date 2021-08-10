@@ -20,8 +20,9 @@ function self(events, worker) {
         const currentMember = worker.selfMember.get(member.guild_id);
         if (!currentMember)
             return worker.selfMember.set(member.guild_id, member);
-        currentMember.nick = member.nick;
-        currentMember.roles = member.roles;
+        Object.keys(member).forEach(key => {
+            currentMember[key] = member[key];
+        });
         worker.selfMember.set(member.guild_id, currentMember);
     });
     events.on('GUILD_DELETE', (guild) => {

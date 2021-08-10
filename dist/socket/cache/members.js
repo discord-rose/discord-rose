@@ -26,25 +26,25 @@ function members(events, worker) {
         }
         guildMembers.set((_a = member.user) === null || _a === void 0 ? void 0 : _a.id, member);
     });
-    events.on('GUILD_MEMBER_UPDATE', (m) => {
+    events.on('GUILD_MEMBER_UPDATE', (member) => {
         var _a, _b;
-        const member = Object.assign({}, m);
         const guildMembers = worker.members.get(member.guild_id);
         if (!guildMembers)
             return;
-        let currentMember = guildMembers.get((_a = member.user) === null || _a === void 0 ? void 0 : _a.id);
+        const currentMember = guildMembers.get((_a = member.user) === null || _a === void 0 ? void 0 : _a.id);
         if (!currentMember)
             return;
-        currentMember.nick = member.nick;
-        currentMember.roles = member.roles;
         if (worker.options.cacheControl.members) {
-            const newMember = {};
             worker.options.cacheControl.members.forEach(key => {
-                newMember[key] = currentMember[key];
+                currentMember[key] = currentMember[key];
             });
-            newMember.guild_id = member.guild_id;
-            newMember.user = member.user;
-            currentMember = newMember;
+            currentMember.guild_id = member.guild_id;
+            currentMember.user = member.user;
+        }
+        else {
+            Object.keys(member).forEach(key => {
+                currentMember[key] = member[key];
+            });
         }
         guildMembers.set((_b = member.user) === null || _b === void 0 ? void 0 : _b.id, currentMember);
     });

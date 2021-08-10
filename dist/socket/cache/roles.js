@@ -25,26 +25,23 @@ function roles(events, worker) {
         guildRoles.set(role.role.id, role.role);
     });
     events.on('GUILD_ROLE_UPDATE', (r) => {
-        const role = Object.assign({}, r);
-        const guildRoles = worker.guildRoles.get(role.guild_id);
+        const role = r.role;
+        const guildRoles = worker.guildRoles.get(r.guild_id);
         if (!guildRoles)
             return;
-        let currentRole = guildRoles.get(role.role.id);
+        const currentRole = guildRoles.get(role.id);
         if (!currentRole)
             return;
-        currentRole.name = role.role.name;
-        currentRole.permissions = role.role.permissions;
-        currentRole.color = role.role.color;
-        currentRole.hoist = role.role.hoist;
-        currentRole.mentionable = role.role.mentionable;
-        currentRole.position = role.role.position;
         if (worker.options.cacheControl.roles) {
-            const newRole = {};
             worker.options.cacheControl.roles.forEach(key => {
-                newRole[key] = currentRole[key];
+                currentRole[key] = role[key];
             });
-            newRole.id = currentRole.id;
-            currentRole = newRole;
+            currentRole.id = role.id;
+        }
+        else {
+            Object.keys(role).forEach(key => {
+                currentRole[key] = role[key];
+            });
         }
         guildRoles.set(currentRole.id, currentRole);
     });
