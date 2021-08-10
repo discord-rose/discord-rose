@@ -27,24 +27,22 @@ export function members (events: CacheManager, worker: Worker): void {
     guildMembers.set(member.user?.id as Snowflake, member)
   })
 
-  events.on('GUILD_MEMBER_UPDATE', (m) => {
-    const member = Object.assign({}, m)
+  events.on('GUILD_MEMBER_UPDATE', (member) => {
     const guildMembers = worker.members.get(member.guild_id)
     if (!guildMembers) return
-    let currentMember = guildMembers.get(member.user?.id)
+    const currentMember = guildMembers.get(member.user?.id)
     if (!currentMember) return
 
-    currentMember.nick = member.nick
-    currentMember.roles = member.roles
-
     if (worker.options.cacheControl.members) {
-      const newMember = {} as GatewayGuildMemberAddDispatchData
       worker.options.cacheControl.members.forEach(key => {
-        newMember[key] = (currentMember as GatewayGuildMemberAddDispatchData)[key] as never
+        currentMember[key] = currentMember[key] as never
       })
-      newMember.guild_id = member.guild_id
-      newMember.user = member.user
-      currentMember = newMember
+      currentMember.guild_id = member.guild_id
+      currentMember.user = member.user
+    } else {
+      Object.keys(member).forEach(key => {
+        currentMember[key] = member[key]
+      })
     }
 
     guildMembers.set(member.user?.id, currentMember)

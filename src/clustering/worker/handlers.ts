@@ -43,8 +43,8 @@ export const handlers: {
     this.worker.shards.get(id)?.restart(true, 1002, 'Internally restarted')
   },
   GET_GUILD: function ({ id }, respond) {
-    const guild = this.worker.guilds.get(id) as APIGuild
-    if (!guild) return respond({ error: 'Not in guild' })
+    const guild = Object.assign({}, this.worker.guilds.get(id)) as APIGuild
+    if (!guild || !guild.id) return respond({ error: 'Not in guild' })
 
     if (this.worker.guildRoles) {
       guild.roles = this.worker.guildRoles.get(guild.id)?.array() ?? []

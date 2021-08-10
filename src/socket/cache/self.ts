@@ -18,8 +18,9 @@ export function self (events: CacheManager, worker: Worker): void {
     const currentMember = worker.selfMember.get(member.guild_id) as typeof member
     if (!currentMember) return worker.selfMember.set(member.guild_id, member as unknown as GatewayGuildMemberAddDispatchData)
 
-    currentMember.nick = member.nick
-    currentMember.roles = member.roles
+    Object.keys(member).forEach(key => {
+      currentMember[key] = member[key]
+    })
 
     worker.selfMember.set(member.guild_id, currentMember as GatewayGuildMemberAddDispatchData)
   })

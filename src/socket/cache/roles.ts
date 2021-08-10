@@ -27,26 +27,22 @@ export function roles (events: CacheManager, worker: Worker): void {
   })
 
   events.on('GUILD_ROLE_UPDATE', (r) => {
-    const role = Object.assign({}, r)
-    const guildRoles = worker.guildRoles.get(role.guild_id)
+    const role = r.role
+
+    const guildRoles = worker.guildRoles.get(r.guild_id)
     if (!guildRoles) return
-    let currentRole = guildRoles.get(role.role.id)
+    const currentRole = guildRoles.get(role.id)
     if (!currentRole) return
 
-    currentRole.name = role.role.name
-    currentRole.permissions = role.role.permissions
-    currentRole.color = role.role.color
-    currentRole.hoist = role.role.hoist
-    currentRole.mentionable = role.role.mentionable
-    currentRole.position = role.role.position
-
     if (worker.options.cacheControl.roles) {
-      const newRole = {} as APIRole
       worker.options.cacheControl.roles.forEach(key => {
-        newRole[key] = (currentRole as APIRole)[key] as never
+        currentRole[key] = role[key] as never
       })
-      newRole.id = currentRole.id
-      currentRole = newRole
+      currentRole.id = role.id
+    } else {
+      Object.keys(role).forEach(key => {
+        currentRole[key] = role[key]
+      })
     }
 
     guildRoles.set(currentRole.id, currentRole)

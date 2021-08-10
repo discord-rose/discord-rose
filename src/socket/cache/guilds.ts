@@ -3,7 +3,6 @@ import { Worker } from '../../clustering/worker/Worker'
 import { CacheManager } from '../CacheManager'
 
 import { APIGuild, GatewayGuildMemberAddDispatchData } from 'discord-api-types'
-import { CachedGuild } from '../../typings/Discord'
 
 export function guilds (events: CacheManager, worker: Worker): void {
   worker.guilds = new Collection()
@@ -41,34 +40,19 @@ export function guilds (events: CacheManager, worker: Worker): void {
     worker.guilds.set(guild.id, guild)
   })
 
-  events.on('GUILD_UPDATE', (g) => {
-    const guild = Object.assign({}, g)
-    let currentGuild = worker.guilds.get(guild.id)
+  events.on('GUILD_UPDATE', (guild) => {
+    const currentGuild = worker.guilds.get(guild.id)
     if (!currentGuild) return
 
-    currentGuild.name = guild.name
-    currentGuild.region = guild.region
-    currentGuild.verification_level = guild.verification_level
-    currentGuild.default_message_notifications = guild.default_message_notifications
-    currentGuild.explicit_content_filter = guild.explicit_content_filter
-    currentGuild.afk_channel_id = guild.afk_channel_id
-    currentGuild.afk_timeout = guild.afk_timeout
-    currentGuild.icon = guild.icon
-    currentGuild.owner_id = guild.owner_id
-    currentGuild.splash = guild.splash
-    currentGuild.banner = guild.banner
-    currentGuild.system_channel_id = guild.system_channel_id
-    currentGuild.rules_channel_id = guild.rules_channel_id
-    currentGuild.public_updates_channel_id = guild.public_updates_channel_id
-    currentGuild.preferred_locale = guild.preferred_locale
-
     if (worker.options.cacheControl.guilds) {
-      const newGuild = {} as APIGuild
       worker.options.cacheControl.guilds.forEach(key => {
-        (currentGuild as CachedGuild)[key] = guild[key] as never
+        currentGuild[key] = guild[key] as never
       })
-      newGuild.id = guild.id
-      currentGuild = newGuild
+      currentGuild.id = guild.id
+    } else {
+      Object.keys(guild).forEach(key => {
+        currentGuild[key] = guild[key]
+      })
     }
 
     worker.guilds.set(guild.id, currentGuild)
