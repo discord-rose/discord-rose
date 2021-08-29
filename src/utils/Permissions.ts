@@ -44,11 +44,11 @@ export const bits = {
   /**
  * @deprecated use createPublicThreads instead.
  */
-  usePrivateThreads: 0x1000000000,
+  usePublicThreads: 0x0800000000,
   /**
  * @deprecated use createPrivateThreads instead.
  */
-  usePublicThreads: 0x0800000000,
+  usePrivateThreads: 0x1000000000,
   createPublicThreads: 0x0800000000,
   createPrivateThreads: 0x1000000000,
   useExternalStickers: 0x2000000000,
