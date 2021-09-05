@@ -1,15 +1,15 @@
-ephemeralimport {APIGuildMember, APIMessage, APIChannel, Snowflake, APIUser} from 'discord-api-types'
+import { APIGuildMember, APIMessage, APIChannel, Snowflake, APIUser } from 'discord-api-types'
 
-import {Embed} from './Embed'
-import {MessageTypes, MessagesResource, Emoji} from '../rest/resources/Messages'
+import { Embed } from './Embed'
+import { MessageTypes, MessagesResource, Emoji } from '../rest/resources/Messages'
 
-import {CommandOptions, Worker} from '../typings/lib'
+import { CommandOptions, Worker } from '../typings/lib'
 
-import {PermissionsUtils, bits} from '../utils/Permissions'
+import { PermissionsUtils, bits } from '../utils/Permissions'
 
-import {CachedGuild} from '../typings/Discord'
-import {CommandError} from './CommandHandler'
-import {Interaction, InteractionOptions} from './SlashCommandContext'
+import { CachedGuild } from '../typings/Discord'
+import { CommandError } from './CommandHandler'
+import { Interaction, InteractionOptions } from './SlashCommandContext'
 
 /**
  * Context holding all information about a ran command and utility functions
@@ -20,7 +20,7 @@ export class CommandContext {
    */
   isInteraction = false
 
-  get interaction(): Interaction {
+  get interaction (): Interaction {
     throw new Error('Cannot access ctx.interaction since the command was ran as a message command')
   }
 
@@ -54,7 +54,7 @@ export class CommandContext {
    */
   public ran: string
 
-  constructor(opts: {worker: Worker, message: APIMessage, command: CommandOptions, prefix: string, ran: string, args: string[]}) {
+  constructor (opts: {worker: Worker, message: APIMessage, command: CommandOptions, prefix: string, ran: string, args: string[]}) {
     this.worker = opts.worker
     this.message = opts.message
     this.command = opts.command
@@ -66,29 +66,29 @@ export class CommandContext {
   /**
    * Author of the message
    */
-  get author(): APIUser {
+  get author (): APIUser {
     return this.message.author
   }
 
   /**
    * Guild where the message was sent
    */
-  get guild(): CachedGuild | undefined {
+  get guild (): CachedGuild | undefined {
     return this.worker.guilds.get(this.message.guild_id as Snowflake)
   }
 
   /**
    * Channel where the message was sent
    */
-  get channel(): APIChannel | undefined {
+  get channel (): APIChannel | undefined {
     return this.worker.channels.get(this.message.channel_id)
   }
 
   /**
    * Member who sent the message
    */
-  get member(): APIGuildMember {
-    const mem = Object.assign({user: this.message.author}, this.message.member)
+  get member (): APIGuildMember {
+    const mem = Object.assign({ user: this.message.author }, this.message.member)
 
     return mem
   }
@@ -96,7 +96,7 @@ export class CommandContext {
   /**
    * Bot's memeber within the guild
    */
-  get me(): APIGuildMember {
+  get me (): APIGuildMember {
     return this.worker.selfMember.get(this.message.guild_id as Snowflake) as APIGuildMember
   }
 
@@ -107,7 +107,7 @@ export class CommandContext {
    * @param ephermal Whether to send the message so only the user can see (only available in slash commands)
    * @returns Message sent
    */
-  async reply(data: MessageTypes, mention = false, ephermal: boolean = false): Promise<APIMessage> {
+  async reply (data: MessageTypes, mention = false, ephermal: boolean = false): Promise<APIMessage> {
     if (!mention) {
       data = MessagesResource._formMessage(data)
       if (!data.allowed_mentions) data.allowed_mentions = {}
@@ -126,7 +126,7 @@ export class CommandContext {
    * @param data Data for message
    * @returns Message sent
    */
-  async send(data: MessageTypes): Promise<APIMessage> {
+  async send (data: MessageTypes): Promise<APIMessage> {
     return await this.worker.api.messages.send(this.message.channel_id, data)
   }
 
@@ -134,7 +134,7 @@ export class CommandContext {
    * React to the invoking command message
    * @param emoji ID of custom emoji or unicode emoji
    */
-  async react(emoji: Emoji): Promise<never> {
+  async react (emoji: Emoji): Promise<never> {
     return await this.worker.api.messages.react(this.message.channel_id, this.message.id, emoji)
   }
 
@@ -142,7 +142,7 @@ export class CommandContext {
    * Runs an error through sendback of commands.error
    * @param message Message of error
    */
-  async error(message: string | Promise<string>): Promise<void> {
+  async error (message: string | Promise<string>): Promise<void> {
     const error = new CommandError(await message)
 
     error.nonFatal = true
@@ -154,7 +154,7 @@ export class CommandContext {
    * Sends a message to the user who ran the command
    * @param data Data for message
    */
-  async dm(data: MessageTypes): Promise<APIMessage> {
+  async dm (data: MessageTypes): Promise<APIMessage> {
     return await this.worker.api.users.dm(this.message.author.id, data)
   }
 
@@ -164,21 +164,21 @@ export class CommandContext {
    * @param extra Extra message options
    * @returns
    */
-  async sendFile(file: {name: string, buffer: Buffer}, extra?: MessageTypes): Promise<APIMessage> {
+  async sendFile (file: {name: string, buffer: Buffer}, extra?: MessageTypes): Promise<APIMessage> {
     return await this.worker.api.messages.sendFile(this.message.channel_id, file, extra)
   }
 
   /**
    * Starts typing in the channel
    */
-  async typing(): Promise<null> {
+  async typing (): Promise<null> {
     return await this.worker.api.channels.typing(this.message.channel_id)
   }
 
   /**
    * Deletes the invoking message
    */
-  async delete(): Promise<never> {
+  async delete (): Promise<never> {
     return await this.worker.api.messages.delete(this.message.channel_id, this.message.id)
   }
 
@@ -189,7 +189,7 @@ export class CommandContext {
    *   .title('Hello')
    *   .send()
    */
-  get embed(): Embed {
+  get embed (): Embed {
     return new Embed(async (embed, reply, mention) => {
       if (reply) return await this.reply(embed, mention)
       else return await this.send(embed)
@@ -201,7 +201,7 @@ export class CommandContext {
    * @param perms Permission to test
    * @returns
    */
-  hasPerms(perms: keyof typeof bits): boolean {
+  hasPerms (perms: keyof typeof bits): boolean {
     if (!this.guild) throw new Error('Missing guild')
 
     return PermissionsUtils.has(PermissionsUtils.combine({
@@ -217,7 +217,7 @@ export class CommandContext {
    * @param perms Permission to test
    * @returns
    */
-  myPerms(perms: keyof typeof bits): boolean {
+  myPerms (perms: keyof typeof bits): boolean {
     if (!this.guild) throw new Error()
 
     return PermissionsUtils.has(PermissionsUtils.combine({
