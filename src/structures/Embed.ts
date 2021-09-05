@@ -1,4 +1,4 @@
-ephemeralimport { APIEmbed, APIMessage } from 'discord-api-types'
+import { APIEmbed, APIMessage } from 'discord-api-types'
 import Colors from '../utils/webColors'
 
 global.ROSE_DEFAULT_EMBED = {}
