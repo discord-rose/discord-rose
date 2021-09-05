@@ -1,4 +1,4 @@
-ephemeralimport { APIGuildMember, APIMessage, APIChannel, Snowflake, APIUser } from 'discord-api-types'
+import { APIGuildMember, APIMessage, APIChannel, Snowflake, APIUser } from 'discord-api-types'
 
 import { Embed } from './Embed'
 import { MessageTypes, MessagesResource, Emoji } from '../rest/resources/Messages'
