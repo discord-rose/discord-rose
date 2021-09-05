@@ -33,11 +33,25 @@ export declare const bits: {
     manageRoles: number;
     webhooks: number;
     emojis: number;
+    /**
+     * @deprecated use useApplicationCommands instead.
+     */
     useSlashCommands: number;
+    useApplicationCommands: number;
     requestToSpeak: number;
     manageThreads: number;
+    /**
+     * @deprecated use createPublicThreads instead.
+     */
     usePublicThreads: number;
+    /**
+     * @deprecated use createPrivateThreads instead.
+     */
     usePrivateThreads: number;
+    createPublicThreads: number;
+    createPrivateThreads: number;
+    useExternalStickers: number;
+    sendMessagesInThreads: number;
 };
 export declare const PermissionsUtils: {
     bits: {
@@ -72,11 +86,25 @@ export declare const PermissionsUtils: {
         manageRoles: number;
         webhooks: number;
         emojis: number;
+        /**
+         * @deprecated use useApplicationCommands instead.
+         */
         useSlashCommands: number;
+        useApplicationCommands: number;
         requestToSpeak: number;
         manageThreads: number;
+        /**
+         * @deprecated use createPublicThreads instead.
+         */
         usePublicThreads: number;
+        /**
+         * @deprecated use createPrivateThreads instead.
+         */
         usePrivateThreads: number;
+        createPublicThreads: number;
+        createPrivateThreads: number;
+        useExternalStickers: number;
+        sendMessagesInThreads: number;
     };
     /**
      * Test a permission on a user

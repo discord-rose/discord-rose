@@ -33,11 +33,25 @@ exports.bits = {
     manageRoles: 0x0010000000,
     webhooks: 0x0020000000,
     emojis: 0x0040000000,
+    /**
+     * @deprecated use useApplicationCommands instead.
+     */
     useSlashCommands: 0x0080000000,
+    useApplicationCommands: 0x0080000000,
     requestToSpeak: 0x0100000000,
     manageThreads: 0x0400000000,
+    /**
+     * @deprecated use createPublicThreads instead.
+     */
     usePublicThreads: 0x0800000000,
-    usePrivateThreads: 0x1000000000
+    /**
+     * @deprecated use createPrivateThreads instead.
+     */
+    usePrivateThreads: 0x1000000000,
+    createPublicThreads: 0x0800000000,
+    createPrivateThreads: 0x1000000000,
+    useExternalStickers: 0x2000000000,
+    sendMessagesInThreads: 0x4000000000
 };
 exports.PermissionsUtils = {
     bits: exports.bits,
