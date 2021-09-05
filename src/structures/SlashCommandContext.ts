@@ -1,15 +1,15 @@
-import { CommandContext } from './CommandContext'
-import { APIGuildMember, APIMessage, APIChannel, APIUser, APIApplicationCommandInteractionDataOptionWithValues, APIGuildInteraction, APIApplicationCommandInteractionData, InteractionResponseType, APIInteractionResponse, MessageFlags, APIApplicationCommandInteraction, APIInteractionResponseCallbackData } from 'discord-api-types'
+import {CommandContext} from './CommandContext'
+import {APIGuildMember, APIMessage, APIChannel, APIUser, APIApplicationCommandInteractionDataOptionWithValues, APIGuildInteraction, APIApplicationCommandInteractionData, InteractionResponseType, APIInteractionResponse, MessageFlags, APIApplicationCommandInteraction, APIInteractionResponseCallbackData} from 'discord-api-types'
 
-import { Embed } from './Embed'
-import { MessagesResource, MessageTypes } from '../rest/resources/Messages'
+import {Embed} from './Embed'
+import {MessagesResource, MessageTypes} from '../rest/resources/Messages'
 
-import { CommandOptions, Worker } from '../typings/lib'
+import {CommandOptions, Worker} from '../typings/lib'
 
-import { PermissionsUtils, bits } from '../utils/Permissions'
+import {PermissionsUtils, bits} from '../utils/Permissions'
 
-import { CachedGuild } from '../typings/Discord'
-import { CommandError } from './CommandHandler'
+import {CachedGuild} from '../typings/Discord'
+import {CommandError} from './CommandHandler'
 
 export interface InteractionData extends APIApplicationCommandInteractionData {
   options: APIApplicationCommandInteractionDataOptionWithValues[]
@@ -26,7 +26,7 @@ export interface InteractionOptions {
   [key: string]: InteractionOptions | undefined | any
 }
 
-function formOptions (obj): InteractionOptions {
+function formOptions(obj): InteractionOptions {
   const res = {}
 
   obj?.forEach?.(opt => {
@@ -43,15 +43,15 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    */
   isInteraction = true
 
-  async react (): Promise<never> {
+  async react(): Promise<never> {
     throw new Error('Cannot access ctx.react() since the command was ran as a slash command')
   }
 
-  async delete (): Promise<never> {
+  async delete(): Promise<never> {
     throw new Error('Cannot access ctx.delete() since the command was ran as a slash command')
   }
 
-  get message (): APIMessage {
+  get message(): APIMessage {
     throw new Error('Cannot access ctx.message since the command was ran as a slash command')
   }
 
@@ -84,7 +84,7 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    */
   public options: InteractionOptions = {}
 
-  constructor (opts: { worker: Worker, interaction: Interaction, command: CommandOptions, prefix: string, ran: string, args: SlashCommandContext['args'] }) {
+  constructor(opts: {worker: Worker, interaction: Interaction, command: CommandOptions, prefix: string, ran: string, args: SlashCommandContext['args']}) {
     this.worker = opts.worker
     this.interaction = opts.interaction
     this.command = opts.command
@@ -100,14 +100,14 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
   /**
    * Author of the message
    */
-  get author (): APIUser {
+  get author(): APIUser {
     return (this.interaction.member?.user ?? this.interaction.user) as APIUser
   }
 
   /**
    * Guild where the message was sent
    */
-  get guild (): CachedGuild {
+  get guild(): CachedGuild {
     if (!this.interaction.guild_id) throw new Error('Command was not ran in a guild')
 
     return this.worker.guilds.get(this.interaction.guild_id) as CachedGuild
@@ -116,14 +116,14 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
   /**
    * Channel where the message was sent
    */
-  get channel (): APIChannel | undefined {
+  get channel(): APIChannel | undefined {
     return this.worker.channels.get(this.interaction.channel_id)
   }
 
   /**
    * Member who sent the message
    */
-  get member (): APIGuildInteraction['member'] {
+  get member(): APIGuildInteraction['member'] {
     if (!this.interaction.member) throw new Error('Command was not ran in a guild')
 
     return this.interaction.member
@@ -132,7 +132,7 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
   /**
    * Bot's memeber within the guild
    */
-  get me (): APIGuildMember {
+  get me(): APIGuildMember {
     if (!this.interaction.guild_id) throw new Error('Command was not ran in a guild')
 
     return this.worker.selfMember.get(this.interaction.guild_id) as APIGuildMember
@@ -143,11 +143,11 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * @param data Data for message
    * @returns nothing
    */
-  async reply (data: MessageTypes, mention: boolean = false, ephermal: boolean = false): Promise<null> {
-    return await this.send(data, ephermal)
+  async reply(data: MessageTypes, mention: boolean = false, ephemeral: boolean = false): Promise<null> {
+    return await this.send(data, ephemeral)
   }
 
-  private async _callback (data: APIInteractionResponse): Promise<null> {
+  private async _callback(data: APIInteractionResponse): Promise<null> {
     this.sent = true
 
     return await this.worker.api.interactions.callback(this.interaction.id, this.interaction.token, data)
@@ -158,9 +158,9 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * @param data Data for message
    * @returns Message sent
    */
-  async send (data: MessageTypes, ephermal: boolean = false): Promise<null> {
+  async send(data: MessageTypes, ephemeral: boolean = false): Promise<null> {
     const message = MessagesResource._formMessage(data, true)
-    if (ephermal) {
+    if (ephemeral) {
       (message as APIInteractionResponseCallbackData).flags = MessageFlags.Ephemeral
     }
 
@@ -179,7 +179,7 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * Runs an error through sendback of commands.error
    * @param message Message of error
    */
-  async error (message: string | Promise<string>): Promise<void> {
+  async error(message: string | Promise<string>): Promise<void> {
     const error = new CommandError(await message)
 
     error.nonFatal = true
@@ -191,7 +191,7 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * Sends a message to the user who ran the command
    * @param data Data for message
    */
-  async dm (data: MessageTypes): Promise<APIMessage> {
+  async dm(data: MessageTypes): Promise<APIMessage> {
     return await this.worker.api.users.dm(this.author.id, data)
   }
 
@@ -201,14 +201,14 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * @param extra Extra message options
    * @returns
    */
-  async sendFile (file: { name: string, buffer: Buffer }, extra?: MessageTypes): Promise<null> {
+  async sendFile(file: {name: string, buffer: Buffer}, extra?: MessageTypes): Promise<null> {
     return await this.worker.api.interactions.callbackFile(this.interaction.id, this.interaction.token, file, extra)
   }
 
   /**
    * Starts typing in the channel
    */
-  async typing (): Promise<null> {
+  async typing(): Promise<null> {
     return await this._callback({
       type: InteractionResponseType.DeferredChannelMessageWithSource
     })
@@ -221,10 +221,10 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    *   .title('Hello')
    *   .send()
    */
-  get embed (): Embed<null> {
-    return new Embed<null>(async (embed, reply, mention, ephermal) => {
-      if (reply) return await this.reply(embed, mention, ephermal)
-      else return await this.send(embed, ephermal)
+  get embed(): Embed<null> {
+    return new Embed<null>(async (embed, reply, mention, ephemeral) => {
+      if (reply) return await this.reply(embed, mention, ephemeral)
+      else return await this.send(embed, ephemeral)
     })
   }
 
@@ -233,7 +233,7 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * @param perms Permission to test
    * @returns
    */
-  hasPerms (perms: keyof typeof bits): boolean {
+  hasPerms(perms: keyof typeof bits): boolean {
     return PermissionsUtils.has(Number(this.member.permissions), perms)
   }
 
@@ -242,7 +242,7 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * @param perms Permission to test
    * @returns
    */
-  myPerms (perms: keyof typeof bits): boolean {
+  myPerms(perms: keyof typeof bits): boolean {
     if (!this.guild) throw new Error()
 
     return PermissionsUtils.has(PermissionsUtils.combine({
