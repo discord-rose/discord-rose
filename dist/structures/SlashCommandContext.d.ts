@@ -88,14 +88,14 @@ export declare class SlashCommandContext implements Omit<CommandContext, 'reply'
      * @param data Data for message
      * @returns nothing
      */
-    reply(data: MessageTypes, mention?: boolean, ephermal?: boolean): Promise<null>;
+    reply(data: MessageTypes, mention?: boolean, ephemeral?: boolean): Promise<null>;
     private _callback;
     /**
      * Sends a message in the same channel as invoking message
      * @param data Data for message
      * @returns Message sent
      */
-    send(data: MessageTypes, ephermal?: boolean): Promise<null>;
+    send(data: MessageTypes, ephemeral?: boolean): Promise<null>;
     /**
      * Runs an error through sendback of commands.error
      * @param message Message of error

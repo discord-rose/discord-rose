@@ -86,8 +86,8 @@ class SlashCommandContext {
      * @param data Data for message
      * @returns nothing
      */
-    async reply(data, mention = false, ephermal = false) {
-        return await this.send(data, ephermal);
+    async reply(data, mention = false, ephemeral = false) {
+        return await this.send(data, ephemeral);
     }
     async _callback(data) {
         this.sent = true;
@@ -98,9 +98,9 @@ class SlashCommandContext {
      * @param data Data for message
      * @returns Message sent
      */
-    async send(data, ephermal = false) {
+    async send(data, ephemeral = false) {
         const message = Messages_1.MessagesResource._formMessage(data, true);
-        if (ephermal) {
+        if (ephemeral) {
             message.flags = 64 /* Ephemeral */;
         }
         if (this.sent) {
@@ -153,11 +153,11 @@ class SlashCommandContext {
      *   .send()
      */
     get embed() {
-        return new Embed_1.Embed(async (embed, reply, mention, ephermal) => {
+        return new Embed_1.Embed(async (embed, reply, mention, ephemeral) => {
             if (reply)
-                return await this.reply(embed, mention, ephermal);
+                return await this.reply(embed, mention, ephemeral);
             else
-                return await this.send(embed, ephermal);
+                return await this.send(embed, ephemeral);
         });
     }
     /**
