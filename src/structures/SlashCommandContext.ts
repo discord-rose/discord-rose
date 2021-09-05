@@ -143,8 +143,8 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * @param data Data for message
    * @returns nothing
    */
-  async reply (data: MessageTypes, mention: boolean = false, ephermal: boolean = false): Promise<null> {
-    return await this.send(data, ephermal)
+  async reply (data: MessageTypes, mention: boolean = false, ephemeral: boolean = false): Promise<null> {
+    return await this.send(data, ephemeral)
   }
 
   private async _callback (data: APIInteractionResponse): Promise<null> {
@@ -158,9 +158,9 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    * @param data Data for message
    * @returns Message sent
    */
-  async send (data: MessageTypes, ephermal: boolean = false): Promise<null> {
+  async send (data: MessageTypes, ephemeral: boolean = false): Promise<null> {
     const message = MessagesResource._formMessage(data, true)
-    if (ephermal) {
+    if (ephemeral) {
       (message as APIInteractionResponseCallbackData).flags = MessageFlags.Ephemeral
     }
 
@@ -222,9 +222,9 @@ export class SlashCommandContext implements Omit<CommandContext, 'reply' | 'send
    *   .send()
    */
   get embed (): Embed<null> {
-    return new Embed<null>(async (embed, reply, mention, ephermal) => {
-      if (reply) return await this.reply(embed, mention, ephermal)
-      else return await this.send(embed, ephermal)
+    return new Embed<null>(async (embed, reply, mention, ephemeral) => {
+      if (reply) return await this.reply(embed, mention, ephemeral)
+      else return await this.send(embed, ephemeral)
     })
   }
 
